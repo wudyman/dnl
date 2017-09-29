@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% load static %}
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>B Login</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+    <link rel="stylesheet" type="text/css" href="{% static 'login/base.css' %}">
+
+    <!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+    <form action="/form/" method="post">
+    {% csrf_token %}
+        {{ formtag }}
+        <input type="submit" value="Login" class="button" />
+    </form>
+    <script class="cssdeck" src="{% static 'login/jquery.min.js' %}"></script>
+	<script src="{% static 'login/base.js' %}"></script>
+</body>
+</html>
+
