@@ -1,16 +1,17 @@
+from django.contrib.auth.decorators import login_required
 from django.views import generic
 from django.shortcuts import render
 from django.http import HttpResponse
 from pprint import pprint
 from .form import NameForm
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 
 def login1(request):
 	print(request.method)
 	print(request.__dict__)
 	return render(request,'login/login.html')
 class IndexView(generic.ListView):
-    template_name='login/index.html'
+    template_name='home/index.html'
     def get_queryset(self):
         return
 class LoginView(generic.ListView):
@@ -51,3 +52,11 @@ class FormView(generic.ListView):
 	def form1(self):
 		print(' function form1')
 		return HttpResponse('form1')
+
+@login_required
+def myView(request):
+	return HttpResponse('success myView')
+
+def logOut(request):
+	logout(request)
+	return HttpResponse('logout')
