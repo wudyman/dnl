@@ -1,35 +1,90 @@
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
-   <meta charset="utf-8"> 
-   <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-   <title>login form</title>
-   <link rel="stylesheet" href="static/home/bootstrap-3.3.7/css/bootstrap.css">
-   <link rel="stylesheet" href="static/home/main.css">     
-   <script src="jquery.js"></script>
-   <script src="static/home/bootstrap-3.3.7/js/bootstrap.js"></script>
+    {%load static %}
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>Flat Login</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+    <link rel="stylesheet" href="{% static 'home/bootstrap-3.3.7/css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/main.css' %}">
+
+    <!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
 </head>
 <body>
 
-<div class="container">
-    <form class="form-horizontal" role="form">
-        <div class="form-group">
-            <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3">
-                <input class="form-control" type="text" placeholder="Username" name="username"/>
+    <div class="container" >
+        <div class="row">
+            <div class="banner col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3">
+            大大大
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3">
-                <input class="form-control" type="password" placeholder="Password" name="password"/>
+        <div class="row">
+            <div class="flat-form form-horizontal  col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3" role="form">
+                <ul class="tabs list-inline1">
+                    <div class ="row">
+                        <div class="col-xs-4  col-xs-offset-2 col-sm-3  col-sm-offset-3 col-md-3 col-md-offset-3">
+                            <li>
+                                <a href="#login" class="active">登录</a>
+                            </li>
+                        </div>
+                        <div class="col-xs-4  col-sm-3  col-md-3">
+                            <li>
+                                <a href="#register">注册</a>
+                            </li>
+                        </div>
+                    </div>
+                </ul>
+                
+                <div id="login" class="form-action show">
+                    <form style="width:105%">
+                        <ul>
+                            <li >
+                                <input class="form-control input-lg" type="text" placeholder="Username" />
+                            </li>
+                            <li>
+                                <input class="form-control input-lg" type="password" placeholder="Password" />
+                            </li>
+                            <li>
+                                <input class="form-control input-lg btn btn-success" type="submit" value="点击登录"/>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+                <!--/#login.form-action-->
+                <div id="register" class="form-action hide">
+                    <form>
+                        <ul>
+                            <li>
+                                <input class="form-control input-sm" type="text" placeholder="Username" />
+                            </li>
+                            <li>
+                                <input class="form-control input-lg" type="password" placeholder="Password" />
+                            </li>
+                            <li>
+                                <input class="form-control input-lg btn btn-success" type="submit" value="点击注册"/>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+                <!--/#register.form-action-->
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3">
-            <input class="form-control btn btn-success" type="submit" value="Sign Up"/>
-            <div>
-        </div>
-    </form>
-</div>
-
+    </div>
+    <script class="cssdeck" src="{%static 'login/jquery.js' %}"></script>
+    <script src="{% static 'home/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
+	<script src="{% static 'home/main.js' %}"></script>
 </body>
 </html>
+
