@@ -14,6 +14,12 @@ class IndexView(generic.ListView):
     template_name='home/index.html'
     def get_queryset(self):
         return
+    def get(self,request,*args,**kwargs):
+        print(request.GET.items)
+        return render(request,self.template_name)
+    def post(self,request,*args,**kwargs):
+        print(request.POST.items)
+        return HttpResponse('post')
 class LoginView(generic.ListView):
 	print('LoginView enter 3')
 	template_name='login/login.html'
