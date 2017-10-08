@@ -3,8 +3,9 @@ from django.views import generic
 from django.shortcuts import render
 from django.http import HttpResponse
 from pprint import pprint
-from .form import NameForm
+#from .form import NameForm
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.models import User
 
 def login1(request):
 	print(request.method)
@@ -19,7 +20,26 @@ class IndexView(generic.ListView):
         return render(request,self.template_name)
     def post(self,request,*args,**kwargs):
         print(request.POST.items)
-        return HttpResponse('post')
+        if request.POST.get('signin_name'):
+            name=request.POST.get('signin_name')
+            pwd=request.POST.get('password')
+            user=authenticate(username=name,password=pwd)
+            if user is not None:
+                login(request,user)
+                return HttpResponse('login success')
+            else:
+                return HttpResponse('login fail')
+        else:
+            name=request.POST.get('signup_name')
+            pwd=request.POST.get('password')
+            email=request.POST.get('email')
+            user=User.objects.create_user(name,email,pwd)
+            user.save()
+            return HttpResponse('signup success')
+
+
+
+
 class LoginView(generic.ListView):
 	print('LoginView enter 3')
 	template_name='login/login.html'

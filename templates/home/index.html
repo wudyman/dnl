@@ -5,7 +5,7 @@
     <!-- Basic Page Needs
   ================================================== -->
     <meta charset="utf-8">
-    <title>Flat Login</title>
+    <title>大大大 登陆</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,26 +36,26 @@
                     <div class ="row">
                         <div class="col-xs-4  col-xs-offset-2 col-sm-3  col-sm-offset-3 col-md-3 col-md-offset-3">
                             <li>
-                                <a href="#login" class="active">登录</a>
+                                <a href="#signin" class="active">登录</a>
                             </li>
                         </div>
                         <div class="col-xs-4  col-sm-3  col-md-3">
                             <li>
-                                <a href="#register">注册</a>
+                                <a href="#signup">注册</a>
                             </li>
                         </div>
                     </div>
                 </ul>
                 
-                <div id="login" class="form-action show">
+                <div id="signin" class="form-action show">
                     <form action="" method="post" style="width:105%">
                         {% csrf_token %}
                         <ul>
                             <li >
-                                <input class="form-control input-lg" type="text" placeholder="Username" />
+                                <input class="form-control input-lg" type="text" placeholder="用户名" name="signin_name"/>
                             </li>
                             <li>
-                                <input class="form-control input-lg" type="password" placeholder="Password" />
+                                <input class="form-control input-lg" type="password" placeholder="密码" name="password"/>
                             </li>
                             <li>
                                 <input class="form-control input-lg btn btn-success" type="submit" value="点击登录"/>
@@ -64,15 +64,18 @@
                     </form>
                 </div>
                 <!--/#login.form-action-->
-                <div id="register" class="form-action hide">
+                <div id="signup" class="form-action hide">
                     <form action="" method="post" style="width:105%">
                         {% csrf_token %}
                         <ul>
                             <li>
-                                <input class="form-control input-sm" type="text" placeholder="Username" />
+                                <input class="form-control input-lg" type="text" placeholder="用户名" name="signup_name"/>
                             </li>
+														<li>
+														    <input class="form-control input-lg" type="password" placeholder="邮箱或手机号" name="email"/>
+														</li>
                             <li>
-                                <input class="form-control input-lg" type="password" placeholder="Password" />
+                                <input class="form-control input-lg" type="password" placeholder="密码" name="password"/>
                             </li>
                             <li>
                                 <input class="form-control input-lg btn btn-success" type="submit" value="点击注册"/>
