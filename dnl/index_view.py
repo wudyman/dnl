@@ -3,6 +3,7 @@ from django.views import generic
 from django.shortcuts import render
 from django.http import HttpResponse
 from pprint import pprint
+from django.shortcuts import redirect
 #from .form import NameForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
@@ -11,6 +12,8 @@ def login1(request):
 	print(request.method)
 	print(request.__dict__)
 	return render(request,'login/login.html')
+
+
 class IndexView(generic.ListView):
     template_name='home/index.html'
     def get_queryset(self):
@@ -26,7 +29,11 @@ class IndexView(generic.ListView):
             user=authenticate(username=name,password=pwd)
             if user is not None:
                 login(request,user)
-                return HttpResponse('login success')
+                next_to=request.GET.get('next',None)
+                if next_to:
+                    return redirect(next_to)
+                else:
+                    return HttpResponse('login success')
             else:
                 return HttpResponse('login fail')
         else:

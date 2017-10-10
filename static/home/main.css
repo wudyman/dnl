@@ -225,3 +225,12 @@ form input[type=password] {
 :-ms-input-placeholder {
   color: #e74c3c;
 }
+
+.askmodal{
+}
+.askmodal .font-black{
+    color:black;
+}
+.askmodal .font-center{
+    text-align:center;
+}
