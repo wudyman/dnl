@@ -10,8 +10,9 @@ from django.contrib.auth.models import User
 class IndexView(LoginRequiredMixin,generic.ListView):
     login_url='/'
     template_name='question/index.html'
+    context_object_name='latest_question_list'
     def get_queryset(self):
-        return
+        return Question.objects.order_by('-pub_date')[:5]
     def post(self,request):
         print(request.POST.items)
         #print(request.user.__dict__)
@@ -19,21 +20,30 @@ class IndexView(LoginRequiredMixin,generic.ListView):
         if not request.user.is_authenticated:
             return HttpResponse("fail")
         else:
-            _quizzer=get_object_or_404(User,username=request.user)
+            quizzer=get_object_or_404(User,username=request.user)
 
-            _question=Question()
-            _question.title=request.POST.get('title')
-            _question.topic=request.POST.get('topic')
-            _question.detail=request.POST.get('detail')
-            _question.quizzer=_quizzer
-            _question.save()
+            question=Question()
+            question.title=request.POST.get('title')
+            question.topic=request.POST.get('topic')
+            question.detail=request.POST.get('detail')
+            question.quizzer=quizzer
+            question.save()
 
-            _topic=get_object_or_404(Topic,name=_question.topic)
-            _topic.question.add(_question)
-            _topic.save()
+            topic=get_object_or_404(Topic,name=question.topic)
+            topic.question.add(question)
+            topic.save()
 
             return HttpResponse("success")
+            
+class QuestionView(generic.ListView):
+    template_name='question/t_question.html'
+    context_object_name='context_question'
+    #_question = get_object_or_404(Question,pk=question_id)
+    def get_queryset(self):
+        question_id=self.kwargs.get('question_id')
+        print(question_id)
+        question=get_object_or_404(Question,pk=question_id)
+        return question
 
-   
    # return render(request,self.template_name)
 

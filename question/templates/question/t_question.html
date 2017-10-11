@@ -62,24 +62,24 @@
 </div>
 
         <!--------------------main---------------------->
+        <HR style="width:100%;">
         <main role="main">
-        <div id="QuestionItems">
+        
+
         <div class="row">
+        <div class="TheQuestion col-md-8">
+        <div>{{ context_question.title }}</div>
+        </div>
+        <div id="AnswerItems">
         <div class="col-md-8">
-        {% if latest_question_list %}
-            {% for question in latest_question_list %}
-        <div class="QuestionFrame font-black">
-            <div>来自话题:python</div>
-            <div>
-            <a href="{{ question.id }}/">{{ question.title }}</a>
-            </div>
+        {% for answer in context_question.answer_set.all %}
+        <div class="AnswerFrame font-black">
+            <div>{{ answer.content }}</div>
             <div>我是作者</div>
-            <div>这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案</div>
         </div>
         
         <div>&nbsp;</div>
-            {% endfor %}
-        {% endif %}
+        {% endfor %}
         </div>
         </div>
         </div>

@@ -63,16 +63,14 @@
 
         <!--------------------main---------------------->
         <main role="main">
-        <div id="QuestionItems">
+        <div id="AnswerItems">
         <div class="row">
         <div class="col-md-8">
         {% if latest_question_list %}
             {% for question in latest_question_list %}
-        <div class="QuestionFrame font-black">
+        <div class="AnswerFrame font-black">
             <div>来自话题:python</div>
-            <div>
-            <a href="{{ question.id }}/">{{ question.title }}</a>
-            </div>
+            <div>{{ question.title }}</div>
             <div>我是作者</div>
             <div>这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案这部分是答案</div>
         </div>
@@ -93,7 +91,7 @@
 <div class="modal fade" id="askModal" tabindex="-1" role="dialog" aria-labelledby="askModalLabel" aria-hidden="true">
 	<div class="modal-dialog askmodal">
 		<div class="modal-content">
-        <form method="post" action="/question/" id="form_ask">
+        <form method="post" action="" id="form_ask">
             {% csrf_token %}
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
