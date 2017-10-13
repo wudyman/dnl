@@ -3,8 +3,9 @@
 <head>
     {%load static %}
     <meta charset="utf-8"> 
-    <link rel="stylesheet" href="{% static 'home/bootstrap-3.3.7/css/bootstrap.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'home/main.css' %}">
+    <link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
 </head>
 <body>
 
@@ -67,22 +68,39 @@
         
 
         <div class="row">
+        
         <div class="TheQuestion col-md-8">
-        <div>{{ context_question.title }}</div>
+        <div>{{ context_question.id }},{{ context_question.title }}</div>
+        <div>提问者：{{ context_question.quizzer.username }}</div>
         </div>
+        
         <div id="AnswerItems">
         <div class="col-md-8">
         {% for answer in context_question.answer_set.all %}
         <div class="AnswerFrame font-black">
-            <div>{{ answer.content }}</div>
-            <div>我是作者</div>
+            <div>{{ answer.content|safe }}</div>
+            <div>回答者：{{answer.author.username}}</div>
         </div>
         
         <div>&nbsp;</div>
         {% endfor %}
         </div>
         </div>
+        
+        <div class="AnswerToolbar col-md-8">
+        <form action="/question/{{ context_question.id }}/" method="post">
+        {% csrf_token %}
+            <textarea id="summernote" name="content" rows1="5" cols1="70" maxlength1="160" placeholder="写回答..."><p>写回答...</p></textarea>
+            <!--<div id="summernote" name="content"><p>Hello Summernote</p></div>-->
+        	<button type="submit"  class="btn btn-success btn-lg">
+				提交回答
+			</button>
+        </form>
         </div>
+        
+        </div>
+        
+        
         </main>
         <!--------------------main end-------------------->
 
@@ -118,10 +136,19 @@
 	</div><!-- /.modal -->
 </div>
 <!--- div other--->
-    <script class="cssdeck" src="{%static 'login/jquery.js' %}"></script>
-    <script src="{% static 'home/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-	<script src="{% static 'home/main.js' %}"></script>
-
+    <script src="{%static 'common/jquery.js' %}"></script>
+    <script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
+    <script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
+    <script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
+	<script src="{% static 'common/main.js' %}"></script>
+    
+  <script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+        lang:'zh-CN'
+        });
+    });
+  </script>
 </body>
 
 </html>
