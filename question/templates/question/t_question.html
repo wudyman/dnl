@@ -90,7 +90,7 @@
         <div class="AnswerToolbar col-md-8">
         <form action="/question/{{ context_question.id }}/" method="post">
         {% csrf_token %}
-            <textarea id="summernote" name="content" rows1="5" cols1="70" maxlength1="160" placeholder="写回答..."><p>写回答...</p></textarea>
+            <textarea id="summernote" name="content" rows1="5" cols1="70" maxlength1="160" placeholder="写回答..."></textarea>
             <!--<div id="summernote" name="content"><p>Hello Summernote</p></div>-->
         	<button type="submit"  class="btn btn-success btn-lg">
 				提交回答
@@ -145,7 +145,8 @@
   <script>
     $(document).ready(function() {
         $('#summernote').summernote({
-        lang:'zh-CN'
+        lang:'zh-CN',
+        placeholder:'写回答...'
         });
     });
   </script>
