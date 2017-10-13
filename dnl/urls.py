@@ -18,15 +18,16 @@ from django.contrib import admin
 from django.contrib import auth
 from django.contrib.auth import views
 from . import index_view 
+import question.views as main_views
 
 urlpatterns = [
-    url(r'^$',index_view.IndexView.as_view(),name='index'),
+    url(r'^$',main_views.IndexView.as_view(),name='homepage'),
     url(r'^admin/', admin.site.urls),
-	url(r'^login/',index_view.LoginView.as_view(),name='login'),
+	url(r'^signinup/',main_views.SigninupView.as_view(),name='signinup'),
 	#url(r'^form/',index_view.FormView.form1,name='form1'),
-	url(r'^form/',index_view.FormView.as_view(),name='form'),
-	url(r'^myView/',index_view.myView),
-	url(r'^login2/$',index_view.FormView.as_view(),name='form1'),
+	#url(r'^form/',index_view.FormView.as_view(),name='form'),
+	#url(r'^myView/',index_view.myView),
+	#url(r'^login2/$',index_view.FormView.as_view(),name='form1'),
 	url(r'^logout/',index_view.logOut),
     url(r'^question/',include('question.urls')),
 ]
