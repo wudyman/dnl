@@ -30,4 +30,5 @@ urlpatterns = [
 	#url(r'^login2/$',index_view.FormView.as_view(),name='form1'),
 	url(r'^logout/',index_view.logOut),
     url(r'^question/',include('question.urls')),
+    url(r'^ajax/',include('question.ajax_urls')),
 ]

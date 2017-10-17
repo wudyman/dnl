@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404
 from django.views import generic
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Question,Topic,Answer,Comment,UserProfile
@@ -25,16 +25,20 @@ class IndexView(LoginRequiredMixin,generic.ListView):
 
             question=Question()
             question.title=request.POST.get('title')
-            question.topic=request.POST.get('topic')
+            #question.topic=request.POST.get('topics')
             question.detail=request.POST.get('detail')
             question.quizzer=quizzer
             question.save()
-
-            topic=get_object_or_404(Topic,name=question.topic)
-            topic.question.add(question)
-            topic.save()
-
-            return HttpResponse("success")
+            
+            
+            topics=request.POST.getlist('topics_selected')#('topics')
+            for topic in topics:
+                print(topic)
+                topic=get_object_or_404(Topic,name=topic)
+                topic.question.add(question)
+                topic.save()
+            result='/question/'+str(question.id)+'/'
+            return HttpResponseRedirect(result)
             
 class SigninupView(generic.ListView):
     template_name='question/signinup.html'
@@ -93,4 +97,3 @@ class QuestionView(generic.ListView):
         answer.save()
         return render(request,self.template_name,{'context_question':question})
    # return render(request,self.template_name)
-

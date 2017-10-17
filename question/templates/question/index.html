@@ -4,6 +4,7 @@
     {%load static %}
     <meta charset="utf-8"> 
     <link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
     <link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
 </head>
@@ -107,7 +108,21 @@
 			</div>
 			<div class="modal-body font-black">
                 <textarea name="title" rows="2" cols="70" maxlength="160" placeholder="问题标题"></textarea>
-                <textarea name="topic" rows="1" cols="70" maxlength="80" placeholder="添加话题"></textarea>
+                <!--<textarea name="topic" rows="1" cols="70" maxlength="80" placeholder="添加话题"></textarea>-->
+                
+                                <select id="topics_select" name="topics_selected" class="selectpicker show-menu-arrow form-control" multiple data-live-search="true" data-max-options="5" data-style="11btn-success">
+                                        <!--<option value="苹果">苹果</option>
+                                        <option data-icon="glyphicon-heart" value="菠萝">菠萝</option>
+                                        <option data-divider="true" value="香蕉">香蕉</option>
+                                        <option value="火龙果">火龙果</option>
+                                        <option value="梨子">梨子</option>
+                                        <option value="5">草莓</option>
+                                        <option value="6">哈密瓜</option>
+                                        <option value="7">椰子</option>
+                                        <option value="8">猕猴桃</option>
+                                        <option value="9">桃子</option>-->
+                                </select>
+                <input id="hide_topics" type="hidden" name="topics" value="null">
                 <textarea name="detail" rows="5" cols="70" maxlength="400" placeholder="问题的详细描述(可选)"></textarea>
 			</div>
 			<div class="modal-footer">
@@ -122,8 +137,65 @@
 <!--- div other--->
     <script src="{%static 'common/jquery.js' %}"></script>
     <script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
+    <script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
+    <script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
     <script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
 	<script src="{% static 'common/main.js' %}"></script>
+    
+    <script>
+    $(window).on('load', function () {
+    $('#topics_select').selectpicker({
+        'selectedText': 'cat'
+    });
+});
+
+$('#topics_select').on('show.bs.select', function (e) {
+  // do something...
+  //alert("show.bs.select");
+  $.post("/ajax/topics/", function(ret){
+  //$('#result').html(ret.result)
+  //alert(JSON.stringify(ret));
+  //$.each(ret,function(data){
+  //alert(ret[data]);
+  //});
+  for (var i in ret)
+    $('#topics_select').append("<option value=" + ret[i] + ">" + ret[i] + "</option>");
+    
+  $('.selectpicker').selectpicker('refresh');
+  
+  })
+
+});
+$('#topics_select').on('shown.bs.select', function (e) {
+  // do something...
+  //alert("shown.bs.select");
+});
+$('#topics_select').on('hide.bs.select', function (e) {
+  // do something...
+  //alert("hide.bs.select");
+});
+$('#topics_select').on('hidden.bs.select', function (e) {
+  // do something...
+  //alert("hidden.bs.select");
+  $("#hide_topics").attr("value",$("#topics_select").val());
+});
+$('#topics_select').on('loaded.bs.select', function (e) {
+  // do something...
+  //alert("loaded.bs.select");
+});
+$('#topics_select').on('rendered.bs.select', function (e) {
+  // do something...
+  //alert("rendered.bs.select");
+});
+$('#topics_select').on('refreshed.bs.select', function (e) {
+  // do something...
+  //alert("refreshed.bs.select");
+});
+$('#topics_select').on('changed.bs.select', function (e) {
+  // do something...
+  //alert("changed.bs.select");
+});
+    </script>
 
 </body>
 
