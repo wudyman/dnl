@@ -18,17 +18,20 @@ from django.contrib import admin
 from django.contrib import auth
 from django.contrib.auth import views
 from . import index_view 
-import question.views as main_views
+import question.main_views as main_views
 
 urlpatterns = [
-    url(r'^$',main_views.IndexView.as_view(),name='homepage'),
+    #url(r'^$',main_views.IndexView.as_view(),name='homepage'),
+    url(r'^',include('question.question_urls')),
     url(r'^admin/', admin.site.urls),
-	url(r'^signinup/',main_views.SigninupView.as_view(),name='signinup'),
+	url(r'^signinup/$',main_views.SigninupView.as_view(),name='signinup'),
 	#url(r'^form/',index_view.FormView.form1,name='form1'),
 	#url(r'^form/',index_view.FormView.as_view(),name='form'),
 	#url(r'^myView/',index_view.myView),
 	#url(r'^login2/$',index_view.FormView.as_view(),name='form1'),
 	url(r'^logout/',index_view.logOut),
-    url(r'^question/',include('question.urls')),
+    url(r'^question/',include('question.question_urls')),
+    url(r'^topic/',include('question.topic_urls')),
     url(r'^ajax/',include('question.ajax_urls')),
+    url(r'^topics/$',main_views.AllTopicsView.as_view(),name='alltopics'),
 ]

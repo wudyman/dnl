@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404,redirect
+from django.shortcuts import render,get_object_or_404
 from django.views import generic
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 
 class IndexView(LoginRequiredMixin,generic.ListView):
-    login_url='/'
+    login_url='/signinup/'
     template_name='question/index.html'
     context_object_name='latest_question_list'
     def get_queryset(self):
@@ -39,42 +39,6 @@ class IndexView(LoginRequiredMixin,generic.ListView):
                 topic.save()
             result='/question/'+str(question.id)+'/'
             return HttpResponseRedirect(result)
-            
-class SigninupView(generic.ListView):
-    template_name='question/signinup.html'
-    def get_queryset(self):
-        return
-    def get(self,request,*args,**kwargs):
-        print(request.GET.items)
-        return render(request,self.template_name)
-    def post(self,request,*args,**kwargs):
-        print(request.POST.items)
-        if request.POST.get('nickname'):
-            name=request.POST.get('email_phone')
-            pwd=request.POST.get('password')
-            email=name
-            user=User.objects.create_user(name,email,pwd)
-            user.first_name=request.POST.get('nickname')
-            user.save()
-
-            userprofile=UserProfile()
-            userprofile.intro='i m the king'
-            userprofile.user=user
-            userprofile.save()
-            return HttpResponse('signup success')
-        else:
-            name=request.POST.get('email_phone')
-            pwd=request.POST.get('password')
-            user=authenticate(username=name,password=pwd)
-            if user is not None:
-                login(request,user)
-                next_to=request.GET.get('next',None)
-                if next_to:
-                    return redirect(next_to)
-                else:
-                    return HttpResponse('signin success')
-            else:
-                return HttpResponse('signin fail')
 
 class QuestionView(generic.ListView):
     template_name='question/t_question.html'
@@ -96,4 +60,3 @@ class QuestionView(generic.ListView):
         answer.question=question
         answer.save()
         return render(request,self.template_name,{'context_question':question})
-   # return render(request,self.template_name)

@@ -70,14 +70,16 @@
         <div class="row">
         
         <div class="TheQuestion col-md-8">
-        <div>{{ context_topic.id }},{{ context_topic.name }}</div>
+        <div>{{ context_question.id }},{{ context_question.title }}</div>
+        <div>提问者：{{ context_question.quizzer.username }}</div>
         </div>
         
         <div id="AnswerItems">
         <div class="col-md-8">
-        {% for question in context_topic.question.all %}
+        {% for answer in context_question.answer_set.all %}
         <div class="AnswerFrame font-black">
-            <div>{{ question.title|safe }}</div>
+            <div>{{ answer.content|safe }}</div>
+            <div>回答者：{{answer.author.username}}</div>
         </div>
         
         <div>&nbsp;</div>
