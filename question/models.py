@@ -15,6 +15,7 @@ class Topic(models.Model):
     name=models.CharField(max_length=50)
     detail=models.CharField(max_length=200)
     question=models.ManyToManyField(Question)
+    follower=models.ManyToManyField(User,related_name='followtopics')
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):
         return self.name
