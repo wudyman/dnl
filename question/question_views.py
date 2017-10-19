@@ -13,7 +13,7 @@ class IndexView(LoginRequiredMixin,generic.ListView):
     template_name='question/index.html'
     context_object_name='latest_question_list'
     def get_queryset(self):
-        return Question.objects.order_by('-pub_date')[:5]
+        return Question.objects.order_by('-pub_date')[0:20]
     def post(self,request):
         print(request.POST.items)
         #print(request.user.__dict__)

@@ -21,6 +21,23 @@ def get_topics(request):
     return HttpResponse(to_json,content_type='application/json')
 
 @csrf_exempt
+def get_questions(request,order,start,end):
+    print(int(start))
+    print(int(end))
+    questions=Question.objects.order_by('-pub_date')[int(start):int(end)]
+    print(questions)
+    question_list=[]
+    
+    for question in questions:
+        temp=[]
+        temp.append(question.id)
+        temp.append(question.title)
+        question_list.append(temp)
+    to_json=json.dumps(question_list)
+    print(to_json)
+    return HttpResponse(to_json,content_type='application/json')
+
+@csrf_exempt
 def follow_topic(request,follow,topic_id):
     topic=get_object_or_404(Topic,pk=topic_id)
     follower=get_object_or_404(User,username=request.user)
