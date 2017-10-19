@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404,redirect
+from django.shortcuts import render,get_object_or_404
 from django.views import generic
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -54,8 +54,8 @@ class AllTopicsView(LoginRequiredMixin,generic.ListView):
     def get(self,request,*args,**kwargs):
         topics_list=Topic.objects.order_by('-pub_date')
         user=get_object_or_404(User,username=request.user)
-        print(user.followtopics.all())
-        return render(request,self.template_name,{'topics_list':topics_list})
+        followtopics_list=user.followtopics.all()
+        return render(request,self.template_name,{'topics_list':topics_list,'followtopics_list':followtopics_list})
     def post(self,request):
         print(request.POST.items)
         #print(request.user.__dict__)

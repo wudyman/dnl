@@ -70,7 +70,19 @@
         <div class="row">
         <div class="col-md-8">
         {% if topics_list %}
+            {% for topic in followtopics_list %}
+        <div class="TopicFrame font-black">
+            <div>
+            <a href="/topic/{{ topic.id }}/" data-topic-id="{{ topic.id }}">{{ topic.name }}</a>
+            </div>
+            <button class="btn btn-success" style="display:none">取消关注</button>
+        </div>
+        
+        <div>&nbsp;</div>
+            {% endfor %}
+            
             {% for topic in topics_list %}
+            {% if topic not in followtopics_list %}
         <div class="TopicFrame font-black">
             <div>
             <a href="/topic/{{ topic.id }}/" data-topic-id="{{ topic.id }}">{{ topic.name }}</a>
@@ -79,6 +91,7 @@
         </div>
         
         <div>&nbsp;</div>
+            {% endif %}
             {% endfor %}
         {% endif %}
         </div>

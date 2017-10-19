@@ -10,10 +10,15 @@ from django.contrib.auth import authenticate,login,logout
 
 class MyTopicView(LoginRequiredMixin,generic.ListView):
     login_url='/'
-    template_name='question/index.html'
-    context_object_name='latest_question_list'
+    template_name='question/t_mytopic.html'
+    context_object_name='mytopic_list'
     def get_queryset(self):
-        return Question.objects.order_by('-pub_date')[:5]
+        pass
+    def get(self,request,*args,**kwargs):
+        user=get_object_or_404(User,username=request.user)
+        mytopic_list=user.followtopics.all()
+        return render(request,self.template_name,{'mytopic_list':mytopic_list}) 
+        
     def post(self,request):
         print(request.POST.items)
         #print(request.user.__dict__)
