@@ -120,7 +120,7 @@
                                         <option value="8">猕猴桃</option>
                                         <option value="9">桃子</option>-->
                                 </select>
-                <input id="hide_topics" type="hidden" name="topics" value="null">
+                <input id="hide_for_submit" type="hidden" name="topics" value="null123">
                 <textarea name="detail" rows="5" cols="70" maxlength="400" placeholder="问题的详细描述(可选)"></textarea>
 			</div>
 			<div class="modal-footer">
@@ -156,8 +156,11 @@ $('#topics_select').on('show.bs.select', function (e) {
   //$.each(ret,function(data){
   //alert(ret[data]);
   //});
+  $('#topics_select').empty();
   for (var i in ret)
-    $('#topics_select').append("<option value=" + ret[i] + ">" + ret[i] + "</option>");
+  {
+    $('#topics_select').append("<option value=" + ret[i][0] + ":" + ret[i][1] + ">" + ret[i][1] + "</option>");
+  }
     
   $('.selectpicker').selectpicker('refresh');
   
@@ -175,7 +178,7 @@ $('#topics_select').on('hide.bs.select', function (e) {
 $('#topics_select').on('hidden.bs.select', function (e) {
   // do something...
   //alert("hidden.bs.select");
-  $("#hide_topics").attr("value",$("#topics_select").val());
+  $("#hide_for_submit").attr("value",$("#topics_select").val());
 });
 $('#topics_select').on('loaded.bs.select', function (e) {
   // do something...
@@ -192,6 +195,7 @@ $('#topics_select').on('refreshed.bs.select', function (e) {
 $('#topics_select').on('changed.bs.select', function (e) {
   // do something...
   //alert("changed.bs.select");
+  //$("#hide_for_submit").attr("value",$("#topics_select").val());
 });
 
 
@@ -248,7 +252,7 @@ function getMoreData() {
     order=1;//pub_date
     start=nums;
     end=start+2;
-    $.post('/ajax/questions/'+order+'/'+start+'/'+end+'/',function(ret){          
+    $.get('/ajax/questions/'+order+'/'+start+'/'+end+'/',function(ret){          
             appendElement(ret)       
     });
 } 

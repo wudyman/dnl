@@ -15,26 +15,27 @@ class IndexView(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         return Question.objects.order_by('-pub_date')[0:20]
     def post(self,request):
-        print(request.POST.items)
+        #print(request.POST.items)
         #print(request.user.__dict__)
-        print(request.user)
         if not request.user.is_authenticated:
             return HttpResponse("fail")
         else:
             quizzer=get_object_or_404(User,username=request.user)
+            topics=request.POST.getlist('topics_selected')#('topics')#
+            prima_topic_array=topics[0].split(':')
 
             question=Question()
             question.title=request.POST.get('title')
             #question.topic=request.POST.get('topics')
             question.detail=request.POST.get('detail')
             question.quizzer=quizzer
+            question.prima_topic_id=int(prima_topic_array[0])
+            question.prima_topic_name=prima_topic_array[1]            
             question.save()
             
-            
-            topics=request.POST.getlist('topics_selected')#('topics')
-            for topic in topics:
-                print(topic)
-                topic=get_object_or_404(Topic,name=topic)
+            for topic_str in topics:
+                topic_array=topic_str.split(':')
+                topic=get_object_or_404(Topic,id=topic_array[0])
                 topic.question.add(question)
                 topic.save()
             result='/question/'+str(question.id)+'/'
@@ -50,7 +51,6 @@ class QuestionView(generic.ListView):
         return question
     
     def post(self,request,*args,**kwargs):
-        print(request.POST.items)
         author=get_object_or_404(User,username=request.user)
         question_id=self.kwargs.get('question_id')
         question=get_object_or_404(Question,pk=question_id)
