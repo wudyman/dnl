@@ -51,6 +51,6 @@ class AllTopicsView(LoginRequiredMixin,generic.ListView):
         # Topic.objects.order_by('-pub_date')
     def get(self,request,*args,**kwargs):
         topics_list=Topic.objects.order_by('-pub_date')
-        user=get_object_or_404(User,username=request.user)
+        user=request.user #get_object_or_404(User,username=request.user)
         followtopics_list=user.followtopics.all()
         return render(request,self.template_name,{'topics_list':topics_list,'followtopics_list':followtopics_list})

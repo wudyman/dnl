@@ -38,7 +38,7 @@ def get_questions(request,order,start,end):
 @csrf_exempt
 def follow_topic(request,follow,topic_id):
     topic=get_object_or_404(Topic,pk=topic_id)
-    follower=get_object_or_404(User,username=request.user)
+    follower=request.user #get_object_or_404(User,username=request.user)
     #if '1'==follow:
     if int(follow):
         topic.follower.add(follower)
