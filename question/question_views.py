@@ -20,7 +20,7 @@ class IndexView(LoginRequiredMixin,generic.ListView):
         if not request.user.is_authenticated:
             return HttpResponse("fail")
         else:
-            quizzer=get_object_or_404(User,username=request.user)
+            quizzer=request.user #get_object_or_404(User,username=request.user)
             topics=request.POST.getlist('topics_selected')#('topics')#
             prima_topic_array=topics[0].split(':')
 
@@ -51,7 +51,7 @@ class QuestionView(generic.ListView):
         return question
     
     def post(self,request,*args,**kwargs):
-        author=get_object_or_404(User,username=request.user)
+        author=request.user #get_object_or_404(User,username=request.user)
         question_id=self.kwargs.get('question_id')
         question=get_object_or_404(Question,pk=question_id)
         answer=Answer()

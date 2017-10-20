@@ -76,7 +76,7 @@
         
         <div id="AnswerItems">
         <div class="col-md-8">
-        {% for answer in context_question.answer_set.all %}
+        {% for answer in context_question.be_answers.all %}
         <div class="AnswerFrame font-black">
             <div>{{ answer.content|safe }}</div>
             <div>回答者：{{answer.author.username}}</div>

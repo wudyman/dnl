@@ -4,15 +4,13 @@
     {%load static %}
     <meta charset="utf-8"> 
     <link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
     <link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
 </head>
 <body>
 
 <div class="container">
-<header  role="banner" data-za-module="TopNavBar" >
-<div class="Banner"></div>
+<header role="banner" data-za-module="TopNavBar" >
 <!-- react-empty: 1220 -->
 <div class="row">
 <div class="col-md-1">
@@ -65,25 +63,19 @@
 </div>
 
         <!--------------------main---------------------->
+        <HR style="width:100%;">
         <main role="main">
+        
+
         <div class="row">
-        <div id="QuestionItems" class="col-md-8">
-        {% if latest_question_list %}
-            {% for question in latest_question_list %}
-        <div class="QuestionFrame font-black">
-            <div>来自话题:<a href="/topic/{{ question.prima_topic_id }}/">{{ question.prima_topic_name }}</a></div>
-            <div>
-            <a href="/question/{{ question.id }}/">{{ question.title }}</a>
-            </div>
-            <div>作者：<a href="/er/{{ question.be_answers.all.0.author.id }}/" class="bind_hover_card" data-toggle="popover" data-placement="bottom" data-trigger="hover">{{ question.be_answers.all.0.author.username }}</a></div>
-            <div>content:{{question.be_answers.all.0.content|safe}}</div>
+        
+        <div class="TheQuestion col-md-8">
+        <div>people homepage</div>
         </div>
         
-        <div>&nbsp;</div>
-            {% endfor %}
-        {% endif %}
         </div>
-        </div>
+        
+        
         </main>
         <!--------------------main end-------------------->
 
@@ -106,21 +98,7 @@
 			</div>
 			<div class="modal-body font-black">
                 <textarea name="title" rows="2" cols="70" maxlength="160" placeholder="问题标题"></textarea>
-                <!--<textarea name="topic" rows="1" cols="70" maxlength="80" placeholder="添加话题"></textarea>-->
-                
-                                <select id="topics_select" name="topics_selected" class="selectpicker show-menu-arrow form-control" multiple data-live-search="true" data-max-options="5" data-style="11btn-success">
-                                        <!--<option value="苹果">苹果</option>
-                                        <option data-icon="glyphicon-heart" value="菠萝">菠萝</option>
-                                        <option data-divider="true" value="香蕉">香蕉</option>
-                                        <option value="火龙果">火龙果</option>
-                                        <option value="梨子">梨子</option>
-                                        <option value="5">草莓</option>
-                                        <option value="6">哈密瓜</option>
-                                        <option value="7">椰子</option>
-                                        <option value="8">猕猴桃</option>
-                                        <option value="9">桃子</option>-->
-                                </select>
-                <input id="hide_for_submit" type="hidden" name="topics" value="null123">
+                <textarea name="topic" rows="1" cols="70" maxlength="80" placeholder="添加话题"></textarea>
                 <textarea name="detail" rows="5" cols="70" maxlength="400" placeholder="问题的详细描述(可选)"></textarea>
 			</div>
 			<div class="modal-footer">
@@ -135,174 +113,18 @@
 <!--- div other--->
     <script src="{%static 'common/jquery.js' %}"></script>
     <script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-    <script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
-    <script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
     <script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
+    <script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
 	<script src="{% static 'common/main.js' %}"></script>
     
-    <script>
-    
-    	$('.bind_hover_card').on('shown.bs.popover', function () {
-		alert("popover show 2");
-	});
- 
-//模拟动态加载标题(真实情况可能会跟后台进行ajax交互)  
-function title() {  
-    return '田喜碧Hebe(节制的人生)';  
-}  
-  
-//模拟动态加载内容(真实情况可能会跟后台进行ajax交互)  
-function content() {  
-    var data = $("<form><ul><li><span aria-hidden='true' class='icon_globe'></span>&nbsp;<font>粉丝数:</font>7389223</li>" +  
-             "<li><span aria-hidden='true' class='icon_piechart'></span>&nbsp;<font>关注:</font>265</li>" +  
-             "<li><span aria-hidden='true' class='icon_search_alt'></span>&nbsp;<font>微博:</font>645</li>" +  
-             "<li><span aria-hidden='true' class='icon_pens_alt'></span>&nbsp;<font>所在地:</font>台湾</li>" +  
-             "<input id='btn' type='button' value='关注' onclick='test()'/></form>");  
-      
-    return data;  
-}  
-//模拟悬浮框里面的按钮点击操作  
-function test() {  
-    alert('关注成功');  
-}  
- 
-    $(function() {  
-    $("[data-toggle='popover']").popover({  
-        html : true,    
-        title: title(),    
-        delay:{show:500, hide:1000},  
-        content: function() {  
-          return content();    
-        }   
-    });  
-});  
-
-    $(window).on('load', function () {
-    $('#topics_select').selectpicker({
-        'selectedText': 'cat'
+  <script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+        lang:'zh-CN',
+        placeholder:'写回答...'
+        });
     });
-});
-
-$('#topics_select').on('show.bs.select', function (e) {
-  // do something...
-  //alert("show.bs.select");
-  $.post("/ajax/topics/", function(ret){
-  //$('#result').html(ret.result)
-  //alert(JSON.stringify(ret));
-  //$.each(ret,function(data){
-  //alert(ret[data]);
-  //});
-  $('#topics_select').empty();
-  for (var i in ret)
-  {
-    $('#topics_select').append("<option value=" + ret[i][0] + ":" + ret[i][1] + ">" + ret[i][1] + "</option>");
-  }
-    
-  $('.selectpicker').selectpicker('refresh');
-  
-  })
-
-});
-$('#topics_select').on('shown.bs.select', function (e) {
-  // do something...
-  //alert("shown.bs.select");
-});
-$('#topics_select').on('hide.bs.select', function (e) {
-  // do something...
-  //alert("hide.bs.select");
-});
-$('#topics_select').on('hidden.bs.select', function (e) {
-  // do something...
-  //alert("hidden.bs.select");
-  $("#hide_for_submit").attr("value",$("#topics_select").val());
-});
-$('#topics_select').on('loaded.bs.select', function (e) {
-  // do something...
-  //alert("loaded.bs.select");
-});
-$('#topics_select').on('rendered.bs.select', function (e) {
-  // do something...
-  //alert("rendered.bs.select");
-});
-$('#topics_select').on('refreshed.bs.select', function (e) {
-  // do something...
-  //alert("refreshed.bs.select");
-});
-$('#topics_select').on('changed.bs.select', function (e) {
-  // do something...
-  //alert("changed.bs.select");
-  //$("#hide_for_submit").attr("value",$("#topics_select").val());
-});
-
-
-    //获取滚动条当前的位置 
-function getScrollTop() { 
-var scrollTop = 0; 
-if (document.documentElement && document.documentElement.scrollTop) { 
-scrollTop = document.documentElement.scrollTop; 
-} 
-else if (document.body) { 
-scrollTop = document.body.scrollTop; 
-} 
-return scrollTop; 
-} 
-
-//获取当前可是范围的高度 
-function getClientHeight() { 
-var clientHeight = 0; 
-if (document.body.clientHeight && document.documentElement.clientHeight) { 
-clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight); 
-} 
-else { 
-clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight); 
-} 
-return clientHeight; 
-} 
-
-//获取文档完整的高度 
-function getScrollHeight() { 
-return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); 
-} 
-
-function appendElement(ret)
-{
-    for(i in ret)
-    {
-    var htmlText='\
-        <div class="QuestionFrame font-black">\
-        <div>来自话题:python</div>\
-             <a href="/question/'+ret[i][0]+'/">'+ret[i][1]+'</a>\
-        </div>\
-        <div>我是作者</div>\
-        <div>这部分是答案这部分是答案这部分是答案</div>\
-        </div>\
-        <div>&nbsp;</div>\
-    ';
-    $('#QuestionItems').append(htmlText);
-    }
-}
-
-//获取文档完整的高度 
-function getMoreData() { 
-    nums=$('.QuestionFrame').length;
-    order=1;//pub_date
-    start=nums;
-    end=start+2;
-    $.get('/ajax/questions/'+order+'/'+start+'/'+end+'/',function(ret){          
-            appendElement(ret)       
-    });
-} 
-
-
-window.onscroll = function () { 
-if (getScrollTop() + getClientHeight() == getScrollHeight()) { 
-getMoreData(); 
-//alert("xxxx");
-} 
-} 
-
-    </script>
-
+  </script>
 </body>
 
 </html>

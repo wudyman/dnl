@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^',include('question.question_urls')),
     url(r'^admin/', admin.site.urls),
 	url(r'^signinup/$',main_views.SigninupView.as_view(),name='signinup'),
+    url(r'^topics/$',main_views.AllTopicsView.as_view(),name='alltopics'),
 	#url(r'^form/',index_view.FormView.form1,name='form1'),
 	#url(r'^form/',index_view.FormView.as_view(),name='form'),
 	#url(r'^myView/',index_view.myView),
@@ -33,5 +34,5 @@ urlpatterns = [
     url(r'^question/',include('question.question_urls')),
     url(r'^topic/',include('question.topic_urls')),
     url(r'^ajax/',include('question.ajax_urls')),
-    url(r'^topics/$',main_views.AllTopicsView.as_view(),name='alltopics'),
+    url(r'^er/',include('question.er_urls')),
 ]
