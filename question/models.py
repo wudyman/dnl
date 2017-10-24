@@ -50,6 +50,7 @@ class Comment(models.Model):
 
 class UserProfile(models.Model):
     user=models.OneToOneField(User)
+    avatar=models.ImageField(max_length=100,default='img/default.jpg',verbose_name='peoplehead')
     phone=models.CharField(default='0',max_length=11)
     intro=models.CharField(default='brief introduce myself',max_length=200)
     follower=models.ManyToManyField(User,related_name='followto',blank=True)

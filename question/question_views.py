@@ -11,9 +11,12 @@ from django.contrib.auth import authenticate,login,logout
 class IndexView(LoginRequiredMixin,generic.ListView):
     login_url='/signinup/'
     template_name='question/index.html'
-    context_object_name='latest_question_list'
+    #context_object_name='latest_question_list'
     def get_queryset(self):
-        return Question.objects.order_by('-pub_date')[0:20]
+        pass
+    def get(self,request):
+        questions=Question.objects.order_by('-pub_date')[0:20]
+        return render(request,self.template_name,{'latest_question_list':questions,'user':request.user})
     def post(self,request):
         #print(request.POST.items)
         #print(request.user.__dict__)
