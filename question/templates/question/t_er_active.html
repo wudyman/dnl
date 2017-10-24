@@ -68,7 +68,8 @@
         
 
         <div class="row">
-        
+        <img id="pic" src="/media/{{ user.userprofile.avatar }}" width="60" height="60">
+        <input id="upload" name="file" accept="image/*" type="file" style="display: none"/>
         <div class="TheQuestion col-md-8">
         <div>people homepage</div>
         </div>
@@ -111,6 +112,40 @@
 	</div><!-- /.modal -->
 </div>
 <!--- div other--->
+
+
+
+<div class="modal fade" id="upPicModal2" tabindex="-1" role="dialog" aria-labelledby="upPicModalLabel2" aria-hidden="true">
+<div class="modal-dialog upPicModal2" style="width:300px;">
+<div class="Modal-content">
+<div class="modal-header">
+<h3 class="Modal-title">编辑头像</h3>
+<div class="Modal-subtitle">调整头像尺寸和位置</div>
+</div>
+<div class="modal-body">
+<img id="pre_head" src="" width="300" height="300"> 
+</div>
+<div>
+<!--
+<div class="UserAvatarEditor-container">
+<canvas width="300" height="300" style="width: 240px; height: 240px;"></canvas>
+</div>
+-->
+<!--
+<div>
+<svg viewBox="0 0 18 16" class="Icon Icon--resize" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M13.296 3H1.006C.45 3 0 3.45 0 4.003v10.995C0 15.545.45 16 1.007 16h12.986C14.55 16 15 15.553 15 15V4.003C15 3.456 14.55 3 13.993 3h-.697zm-.892 11H2.596c-.33 0-.596-.266-.596-.6V5.6C2 5.27 2.267 5 2.596 5h9.81c.328 0 .595.266.595.6v7.8c0 .33-.268.6-.596.6zM4 0c-.552 0-1 .448-1 1s.448 1 1 1h11.5s.5 0 .5.5V12c0 .552.448 1 1 1s1-.448 1-1V1c0-.552-.448-1-1-1H4z" fill-rule="evenodd"></path></g></svg>
+<input type="range" step="0.01" min="1" max="2" class="RangeInput" value="1">
+<svg viewBox="0 0 18 16" class="Icon Icon--resize" width="21" height="16" aria-hidden="true" style="height: 16px; width: 21px;"><title></title><g><path d="M13.296 3H1.006C.45 3 0 3.45 0 4.003v10.995C0 15.545.45 16 1.007 16h12.986C14.55 16 15 15.553 15 15V4.003C15 3.456 14.55 3 13.993 3h-.697zm-.892 11H2.596c-.33 0-.596-.266-.596-.6V5.6C2 5.27 2.267 5 2.596 5h9.81c.328 0 .595.266.595.6v7.8c0 .33-.268.6-.596.6zM4 0c-.552 0-1 .448-1 1s.448 1 1 1h11.5s.5 0 .5.5V12c0 .552.448 1 1 1s1-.448 1-1V1c0-.552-.448-1-1-1H4z" fill-rule="evenodd"></path></g></svg>
+</div>
+-->
+<div class="modal-footer">
+<button class="btn btn-blue" type="button" onclick="FileUpload()">保存</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+
     <script src="{%static 'common/jquery.js' %}"></script>
     <script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
     <script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
@@ -124,6 +159,57 @@
         placeholder:'写回答...'
         });
     });
+    
+    $(function() {
+$("#pic").click(function () {
+$("#upload").click(); //隐藏了input:file样式后，点击头像就可以本地上传
+$("#upload").on("change",function(){
+$("#upPicModal2").modal('show');
+var objUrl = getObjectURL(this.files[0]) ; //获取图片的路径，该路径不是图片在本地的路径
+if (objUrl) {
+$("#pre_head").attr("src", objUrl) ; //将图片路径存入src中，显示出图片
+}
+});
+});
+});
+ 
+//建立一個可存取到該file的url
+function getObjectURL(file) {
+var url = null ;
+if (window.createObjectURL!=undefined) { // basic
+url = window.createObjectURL(file) ;
+} else if (window.URL!=undefined) { // mozilla(firefox)
+url = window.URL.createObjectURL(file) ;
+} else if (window.webkitURL!=undefined) { // webkit or chrome
+url = window.webkitURL.createObjectURL(file) ;
+}
+return url ;
+}
+
+        //   上传附件到方法
+function FileUpload() {
+var form_data = new FormData();
+var file_info = $('#upload')[0].files[0];
+form_data.append('imgfile',file_info);
+//if(file_info==undefined)暂且不许要判断是否有附件
+//alert('你没有选择任何文件');
+//return false
+//}
+
+// 提交ajax的请求
+$.ajax({
+url:"/ajax/upload/img/",
+type:'POST',
+data: form_data,
+processData: false,  // tell jquery not to process the data
+contentType: false, // tell jquery not to set contentType
+success: function(callback) {
+$("#upPicModal2").modal('hide');
+$("#pic").attr("src",$("#pre_head").attr("src")) ;
+console.log("success");
+}
+}); // end ajax
+}
   </script>
 </body>
 

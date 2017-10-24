@@ -7,7 +7,11 @@ from .models import Question,Topic,Answer,Comment,UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 # Create your views here.
-            
+
+def LogOut(request):
+	logout(request)
+	return HttpResponseRedirect('/signinup/')
+    
 class SigninupView(generic.ListView):
     template_name='question/signinup.html'
     def get_queryset(self):
@@ -27,7 +31,7 @@ class SigninupView(generic.ListView):
             userprofile.intro='i m the king'
             userprofile.user=user
             userprofile.save()
-            return HttpResponse('signup success')
+            return HttpResponseRedirect('/')
         else:
             name=request.POST.get('email_phone')
             pwd=request.POST.get('password')
@@ -38,7 +42,7 @@ class SigninupView(generic.ListView):
                 if next_to:
                     return redirect(next_to)
                 else:
-                    return HttpResponse('signin success')
+                    return HttpResponseRedirect('/')
             else:
                 return HttpResponse('signin fail')
 

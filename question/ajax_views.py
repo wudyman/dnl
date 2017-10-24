@@ -9,6 +9,8 @@ from django.contrib.auth import authenticate,login,logout
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
+import time
+from PIL import Image
 
 @csrf_exempt
 def get_topics(request):
@@ -48,6 +50,24 @@ def follow_topic(request,follow,topic_id):
         if topic.follower_nums > 0:
             topic.follower_nums-=1
     topic.save()
+    temp='success'
+    to_json=json.dumps(temp)
+    return HttpResponse(to_json,content_type='application/json')
+
+@csrf_exempt
+def upload_img(request):
+    imgfile=request.FILES.get('imgfile')
+    if imgfile:
+        print(str(time.time()))
+        posttime=request.user.username+str(time.time()).split('.')[0]
+        postfix=str(imgfile).split('.')[-1]
+        name='img/%s.%s'%(posttime,postfix)
+        img=Image.open(imgfile)
+        img.save('media/'+name)
+        #print(img.items)
+        request.user.userprofile.avatar=name
+        request.user.userprofile.save()
+    
     temp='success'
     to_json=json.dumps(temp)
     return HttpResponse(to_json,content_type='application/json')
