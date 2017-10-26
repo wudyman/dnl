@@ -15,7 +15,7 @@ class IndexView(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         pass
     def get(self,request):
-        questions=Question.objects.order_by('-pub_date')[0:20]
+        questions=Question.objects.order_by('-pub_date')[0:10]
         return render(request,self.template_name,{'latest_question_list':questions,'user':request.user})
     def post(self,request):
         #print(request.POST.items)

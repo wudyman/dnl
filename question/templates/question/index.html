@@ -87,8 +87,15 @@
             <div>
             <a href="/question/{{ question.id }}/">{{ question.title }}</a>
             </div>
-            <div>作者：<a href="/er/{{ question.be_answers.all.0.author.id }}/" class="bind_hover_card" data-toggle="popover" data-placement="bottom" data-trigger="hover">{{ question.be_answers.all.0.author.username }}</a></div>
-            <div>content:{{question.be_answers.all.0.content|safe}}</div>
+            <div style="float:left;">
+                <img src="/media/{{question.be_answers.all.0.author.userprofile.avatar }}" href="/er/{{ question.be_answers.all.0.author.id }}/" width="40" height="40" class="bind_hover_card" data-author-id={{question.be_answers.all.0.author.id}} data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">
+            </div>
+            <div style="float:left;">
+                <a href="/er/{{ question.be_answers.all.0.author.id }}/" class="bind_hover_card" data-author-id={{question.be_answers.all.0.author.id}} data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{ question.be_answers.all.0.author.first_name }}</a>
+            </div>
+            <div>,{{question.be_answers.all.0.author.userprofile.mood}}</div>
+            <div style="clear:both;"></div>
+            <div>{{question.be_answers.all.0.content|safe}}</div>
         </div>
         
         <div>&nbsp;</div>
@@ -145,51 +152,58 @@
 	</div><!-- /.modal -->
 </div>
 <!--- div other--->
-    <script src="{%static 'common/jquery.js' %}"></script>
-    <script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-    <script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
-    <script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
-    <script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
-	<script src="{% static 'common/main.js' %}"></script>
+<script src="{%static 'common/jquery.js' %}"></script>
+<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
+<script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
+<script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
+<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
+<script src="{% static 'common/main.js' %}"></script>
     
-    <script>
-    
-    	$('.bind_hover_card').on('shown.bs.popover', function () {
-		alert("popover show 2");
-	});
- 
-//模拟动态加载标题(真实情况可能会跟后台进行ajax交互)  
-function title() {  
-    return '田喜碧Hebe(节制的人生)';  
-}  
-  
-//模拟动态加载内容(真实情况可能会跟后台进行ajax交互)  
-function content() {  
-    var data = $("<form><ul><li><span aria-hidden='true' class='icon_globe'></span>&nbsp;<font>粉丝数1:</font>7389223</li>" +  
-             "<li><span aria-hidden='true' class='icon_piechart'></span>&nbsp;<font>关注:</font>265</li>" +  
-             "<li><span aria-hidden='true' class='icon_search_alt'></span>&nbsp;<font>微博:</font>645</li>" +  
-             "<li><span aria-hidden='true' class='icon_pens_alt'></span>&nbsp;<font>所在地:</font>台湾</li>" +  
-             "<input id='btn' type='button' value='关注' onclick='test()'/></form>");  
-      
-    return data;  
-}  
-//模拟悬浮框里面的按钮点击操作  
-function test() {  
-    alert('关注成功');  
-}  
- 
-    $(function() {  
-    $("[data-toggle='popover']").popover({  
-        html : true,    
-        title: title(),    
-        delay:{show:500, hide:1000},  
-        content: function() {  
-          return content();    
-        }   
+<script>
+function popover_show(){ 
+    $('.bind_hover_card').each(function(){
+        $(this).parent().hover(function(){
+        element=$(this).children(".bind_hover_card");
+        authorid=element.attr("data-author-id");
+        $.get("/ajax/er/"+authorid+"/",function(ret){
+        var data1='<div><img src="/media/'+ret[2]+'" width="50" height="50">'+'<span style="width:100px"><a href="/er/'+ret[0]+'/">'+ret[1]+'</a><span>'+ret[3]+'</span></span></div>';
+        var data2='<hr/><div style="float:left;"><div>回答</div><div>'+ret[4]+'</div></div><div><div>关注</div> <div id="follower_num">'+ret[5]+'</div></div>';
+        if(ret[6])
+            var data3='<hr/><button id="pop-button-follow" class="btn btn-default" type="button" data-er-id="'+ret[0]+'" onclick="unfollow_people()">已关注</button>';
+        else
+            var data3='<hr/><button id="pop-button-follow" class="btn btn-success" type="button" data-er-id="'+ret[0]+'" onclick="follow_people()">关注</button>';
+        var data=data1+data2+data3;
+        element.attr("data-content",data);
+        element.popover('show');
+        //element.siblings(".popover").attr("in",true);
+        //element.siblings(".popover").children().attr("in",true);
+        });
+	},function(){
+    $(this).children(".bind_hover_card").popover('hide');
+    //setTimeout(function(){/*if ($(this).attr("in")) console.log("true"); else console.log("not ture");*/$(this).children().popover('hide');},1000);
+        });
+    });
+}
+   
+function follow_people() {  
+    $.post("/ajax/er_follow/1/"+$("#pop-button-follow").attr("data-er-id")+"/",function(ret){
+        //alert(ret);
+        $("#follower_num").text(ret);
+        $("#pop-button-follow").removeClass("btn-success").addClass("btn-default").text("已关注");
+        $("#pop-button-follow").attr("onclick","unfollow_people()");
     });  
-});  
+}  
 
-    $(window).on('load', function () {
+function unfollow_people() {  
+    $.post("/ajax/er_follow/0/"+$("#pop-button-follow").attr("data-er-id")+"/",function(ret){
+        //alert(ret);
+        $("#follower_num").text(ret);
+        $("#pop-button-follow").removeClass("btn-defautl").addClass("btn-success").text("关注");
+        $("#pop-button-follow").attr("onclick","follow_people()");
+    });  
+}  
+
+$(window).on('load', function () {
     $('#topics_select').selectpicker({
         'selectedText': 'cat'
     });
@@ -214,36 +228,6 @@ $('#topics_select').on('show.bs.select', function (e) {
   
   })
 
-});
-$('#topics_select').on('shown.bs.select', function (e) {
-  // do something...
-  //alert("shown.bs.select");
-});
-$('#topics_select').on('hide.bs.select', function (e) {
-  // do something...
-  //alert("hide.bs.select");
-});
-$('#topics_select').on('hidden.bs.select', function (e) {
-  // do something...
-  //alert("hidden.bs.select");
-  $("#hide_for_submit").attr("value",$("#topics_select").val());
-});
-$('#topics_select').on('loaded.bs.select', function (e) {
-  // do something...
-  //alert("loaded.bs.select");
-});
-$('#topics_select').on('rendered.bs.select', function (e) {
-  // do something...
-  //alert("rendered.bs.select");
-});
-$('#topics_select').on('refreshed.bs.select', function (e) {
-  // do something...
-  //alert("refreshed.bs.select");
-});
-$('#topics_select').on('changed.bs.select', function (e) {
-  // do something...
-  //alert("changed.bs.select");
-  //$("#hide_for_submit").attr("value",$("#topics_select").val());
 });
 
 
@@ -275,18 +259,36 @@ return clientHeight;
 function getScrollHeight() { 
 return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); 
 } 
-
+/*
+        <div class="QuestionFrame font-black">
+            <div>来自话题:<a href="/topic/{{ question.prima_topic_id }}/">{{ question.prima_topic_name }}</a></div>
+            <div>
+            <a href="/question/{{ question.id }}/">{{ question.title }}</a>
+            </div>
+            <div style="float:left;">
+                <img src="/media/{{question.be_answers.all.0.author.userprofile.avatar }}" href="/er/{{ question.be_answers.all.0.author.id }}/" width="40" height="40" class="bind_hover_card" data-author-id={{question.be_answers.all.0.author.id}} data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">
+            </div>
+            <div>
+                <a href="/er/{{ question.be_answers.all.0.author.id }}/" class="bind_hover_card" data-author-id={{question.be_answers.all.0.author.id}} data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{ question.be_answers.all.0.author.first_name }}</a>
+            </div>
+            <div>,{{question.be_answers.all.0.author.userprofile.mood}}</div>
+            <div style="clear:both;"></div>
+            <div>{{question.be_answers.all.0.content|safe}}</div>
+        </div>
+*/
 function appendElement(ret)
 {
     for(i in ret)
     {
     var htmlText='\
         <div class="QuestionFrame font-black">\
-        <div>来自话题:python</div>\
-             <a href="/question/'+ret[i][0]+'/">'+ret[i][1]+'</a>\
-        </div>\
-        <div>我是作者</div>\
-        <div>这部分是答案这部分是答案这部分是答案</div>\
+          <div>来自话题:<a href="/topic/'+ret[i][2]+'/">'+ret[i][3]+'</a></div>\
+          <div><a href="/question/'+ret[i][0]+'/">'+ret[i][1]+'</a></div>\
+          <div style="float:left;"><img src="/media/'+ret[i][7]+'" href="/er/'+ret[i][5]+'/" width="40" height="40" data-author-id="'+ret[i][5]+'" class="bind_hover_card" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true"></div>\
+          <div style="float:left;"><a href="/er/'+ret[i][5]+'/" data-author-id="'+ret[i][5]+'" class="bind_hover_card" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+ret[i][6]+'</a></div>\
+          <div>,'+ret[1][8]+'</div>\
+          <div style="clear:both;"></div>\
+          <div>'+ret[i][9]+'</div>\
         </div>\
         <div>&nbsp;</div>\
     ';
@@ -301,22 +303,109 @@ function getMoreData() {
     start=nums;
     end=start+2;
     $.get('/ajax/questions/'+order+'/'+start+'/'+end+'/',function(ret){          
-            appendElement(ret)       
+        appendElement(ret);
+        //$('.bind_hover_card').popover();   
+        popover_show();
     });
 } 
 
 
 window.onscroll = function () { 
-if (getScrollTop() + getClientHeight() == getScrollHeight()) { 
-getMoreData(); 
-//alert("xxxx");
-} 
+console.log(getScrollTop());
+console.log(getClientHeight());
+console.log(getScrollHeight());
+if (getScrollTop() + getClientHeight() +1 >= getScrollHeight()) { 
+        getMoreData(); 
+    } 
 } 
 
 $(function() {
     $(".dropdown-toggle").dropdown('toggle');
 });
-    </script>
+
+
+popover_show();
+/*
+    $('.bind_hover_card').each(function(){
+        $(this).on('show.bs.popover', function () {
+		//alert("popover show 2");
+        xxx=$(this);
+        authorid=$(this).attr("data-author-id");
+        $.get("/ajax/user/"+authorid+"/",function(ret){
+        var data='<img src="/media/'+ret[2]+'">';
+        xxx.attr("data-content",data);
+        });
+        //$(this).attr("data-content",authorid);
+	});
+    });
+    
+    //模拟动态加载标题(真实情况可能会跟后台进行ajax交互)  
+function title() {  
+    return;// '田喜碧Hebe(节制的人生)';  
+}  
+  
+//模拟动态加载内容(真实情况可能会跟后台进行ajax交互)  
+function content() {  
+    var data = "<form><ul><li><span aria-hidden='true' class='icon_globe'></span>&nbsp;<font>粉丝数1:</font>7389223</li>" +  
+             "<li><span aria-hidden='true' class='icon_piechart'></span>&nbsp;<font>关注:</font>265</li>" +  
+             "<li><span aria-hidden='true' class='icon_search_alt'></span>&nbsp;<font>微博:</font>645</li>" +  
+             "<li><span aria-hidden='true' class='icon_pens_alt'></span>&nbsp;<font>所在地:</font>台湾</li>" +  
+             "<input id='btn' type='button' value='关注' onclick='test()'/></form>";   
+    return data;  
+}  
+//模拟悬浮框里面的按钮点击操作 
+
+
+function popover_show()
+{
+    $("[data-toggle='popover']").popover({  
+        html : true,       
+        delay:{show:500, hide:1000},  
+        content: function() {  
+          return content();    
+        }   
+    }); 
+}
+
+$(function() {  
+//$('.bind_hover_card').popover();
+//popover_show();
+});  
+ 
+
+$('#topics_select').on('shown.bs.select', function (e) {
+  // do something...
+  //alert("shown.bs.select");
+});
+$('#topics_select').on('hide.bs.select', function (e) {
+  // do something...
+  //alert("hide.bs.select");
+});
+$('#topics_select').on('hidden.bs.select', function (e) {
+  // do something...
+  //alert("hidden.bs.select");
+  $("#hide_for_submit").attr("value",$("#topics_select").val());
+});
+$('#topics_select').on('loaded.bs.select', function (e) {
+  // do something...
+  //alert("loaded.bs.select");
+});
+$('#topics_select').on('rendered.bs.select', function (e) {
+  // do something...
+  //alert("rendered.bs.select");
+});
+$('#topics_select').on('refreshed.bs.select', function (e) {
+  // do something...
+  //alert("refreshed.bs.select");
+});
+$('#topics_select').on('changed.bs.select', function (e) {
+  // do something...
+  //alert("changed.bs.select");
+  //$("#hide_for_submit").attr("value",$("#topics_select").val());
+});
+ 
+*/
+</script>
 
 </body>
 
