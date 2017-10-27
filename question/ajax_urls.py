@@ -3,6 +3,8 @@ from . import ajax_views as views
 
 urlpatterns= [
     url(r'^questions/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.get_questions,name='getquestions'),
+    url(r'^question_follow/(?P<follow>[0-9]+)/(?P<question_id>[0-9]+)/$',views.follow_question,name='followquestion'),
+    url(r'^answer_like/(?P<answer_id>[0-9]+)/$',views.like_answer,name='likeanswer'),
     url(r'^topics/$',views.get_topics,name='gettopics'),
     url(r'^topic_follow/(?P<follow>[0-9]+)/(?P<topic_id>[0-9]+)/$',views.follow_topic,name='followtopic'),
     url(r'^upload/img/$',views.upload_img,name='uploadimage'),

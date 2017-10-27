@@ -70,8 +70,24 @@
         <div class="row">
         
         <div class="TheQuestion col-md-8">
-        <div>{{ context_question.id }},{{ context_question.title }}</div>
-        <div>提问者：{{ context_question.quizzer.username }}</div>
+        <div>
+            {% for topic in context_question.topics.all %}
+            <a href="/topic/{{topic.id}}/">{{topic.name}}</a>
+            {% endfor %}
+        </div>
+
+        <div id="QuestionItem" data-question-id="{{ context_question.id }}">
+            <div>{{ context_question.id }},{{ context_question.title }}</div>
+            <!--<div>提问者：{{ context_question.quizzer.username }}</div>-->
+            <div>
+                {% ifequal followed "true" %}
+                <button id="follow_button" class="btn btn-default" type="button" onclick="unfollow_question()">已关注</button>
+                {% else %}
+                <button id="follow_button" class="btn btn-success" type="button" onclick="follow_question()">关注问题</button>
+                {% endifequal %}
+                <button class="btn btn-primary" type="button" onclick="answer_question()">回答问题</button>
+            </div>
+        </div>
         </div>
         
         <div id="AnswerItems">
@@ -136,20 +152,36 @@
 	</div><!-- /.modal -->
 </div>
 <!--- div other--->
-    <script src="{%static 'common/jquery.js' %}"></script>
-    <script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-    <script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
-    <script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
-	<script src="{% static 'common/main.js' %}"></script>
+<script src="{%static 'common/jquery.js' %}"></script>
+<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
+<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
+<script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
+<script src="{% static 'common/main.js' %}"></script>
     
-  <script>
-    $(document).ready(function() {
-        $('#summernote').summernote({
-        lang:'zh-CN',
-        placeholder:'写回答...'
-        });
+<script>
+function follow_question()
+{
+var question_id=$("#QuestionItem").attr("data-question-id");
+$.get("/ajax/question_follow/1/"+question_id+"/",function(ret){
+    $("#follow_button").removeClass("btn-success").addClass("btn-default").attr("onclick","unfollow_question()").text("已关注");
+});
+}
+
+function unfollow_question()
+{
+var question_id=$("#QuestionItem").attr("data-question-id");
+$.get("/ajax/question_follow/0/"+question_id+"/",function(ret){
+    $("#follow_button").removeClass("btn-default").addClass("btn-success").attr("onclick","follow_question()").text("关注问题");
+});
+}
+
+$(document).ready(function() {
+    $('#summernote').summernote({
+    lang:'zh-CN',
+    placeholder:'写回答...'
     });
-  </script>
+});
+</script>
 </body>
 
 </html>

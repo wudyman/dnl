@@ -52,22 +52,57 @@ def get_questions(request,order,start,end):
     return HttpResponse(to_json,content_type='application/json')
 
 @csrf_exempt
+def follow_question(request,follow,question_id):
+    question=get_object_or_404(Question,pk=question_id)
+    follower=request.user #get_object_or_404(User,username=request.user)
+    #if '1'==follow:
+    if int(follow):
+        question.follower.add(follower)
+    else:
+        question.follower.remove(follower)
+    question.follower_nums=question.follower.count()
+    question.save()
+    temp=question.follower_nums
+    to_json=json.dumps(temp)
+    return HttpResponse(to_json,content_type='application/json')
+
+@csrf_exempt
+def like_answer(request,answer_id):
+    answer=get_object_or_404(Answer,pk=answer_id)
+    user=request.user #get_object_or_404(User,username=request.user)
+    temp=answer.like_nums
+    if int(request.COOKIES["userid"])==user.id:
+        if time.time()-float(request.COOKIES["time"])>60:
+            answer.like_nums+=1
+            #need_reset=True
+    else:
+        answer.like_nums+=1
+        #need_reset=True
+    answer.save()
+    
+    to_json=json.dumps(answer.like_nums)
+    response=HttpResponse(to_json,content_type='application/json')
+
+    if temp!=answer.like_nums:
+        response.set_cookie('userid',user.id)
+        response.set_cookie('time',time.time())
+    return response
+
+@csrf_exempt
 def follow_topic(request,follow,topic_id):
     topic=get_object_or_404(Topic,pk=topic_id)
     follower=request.user #get_object_or_404(User,username=request.user)
     #if '1'==follow:
     if int(follow):
         topic.follower.add(follower)
-        topic.follower_nums+=1
     else:
         topic.follower.remove(follower)
-        if topic.follower_nums > 0:
-            topic.follower_nums-=1
+    topic.follower_nums=topic.follower.count()
     topic.save()
-    temp='success'
+    temp=topic.follower_nums
     to_json=json.dumps(temp)
     return HttpResponse(to_json,content_type='application/json')
-
+    
 @csrf_exempt
 def follow_er(request,follow,er_id):
     er=get_object_or_404(User,pk=er_id)
@@ -90,7 +125,7 @@ def follow_er(request,follow,er_id):
 @csrf_exempt
 def upload_img(request):
     imgfile=request.FILES.get('imgfile')
-    if imgfile:
+    if imgfile: 
         print(str(time.time()))
         posttime=request.user.username+str(time.time()).split('.')[0]
         postfix=str(imgfile).split('.')[-1]
