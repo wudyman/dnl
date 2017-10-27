@@ -7,7 +7,7 @@ class Question(models.Model):
     title=models.CharField(max_length=50)
     detail=models.CharField(max_length=200,blank=True)
     quizzer=models.ForeignKey(User,related_name='selfquestions',on_delete=models.CASCADE)
-    answers=models.ManyToManyField(User,related_name='answerquestions')
+    #answers=models.ManyToManyField(User,related_name='answerquestions')
     follower=models.ManyToManyField(User,related_name='followquestions')
     follower_nums=models.PositiveIntegerField(default=0)
     hot=models.PositiveIntegerField(default=0)

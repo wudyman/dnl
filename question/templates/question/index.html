@@ -80,22 +80,23 @@
         <main role="main">
         <div class="row">
         <div id="QuestionItems" class="col-md-8">
-        {% if latest_question_list %}
-            {% for question in latest_question_list %}
+        {% if question_list %}
+            {% for question in question_list %}
         <div class="QuestionFrame font-black">
-            <div>来自话题:<a href="/topic/{{ question.prima_topic_id }}/">{{ question.prima_topic_name }}</a></div>
+            <div>来自话题:<a href="/topic/{{ question.2 }}/">{{ question.3 }}</a></div>
             <div>
-            <a href="/question/{{ question.id }}/">{{ question.title }}</a>
+            <a href="/question/{{ question.0 }}/">{{ question.1 }}</a>
             </div>
             <div style="float:left;">
-                <img src="/media/{{question.be_answers.all.0.author.userprofile.avatar }}" href="/er/{{ question.be_answers.all.0.author.id }}/" width="40" height="40" class="bind_hover_card" data-author-id={{question.be_answers.all.0.author.id}} data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">
+                <img src="/media/{{question.7 }}" href="/er/{{ question.5 }}/" width="40" height="40" class="bind_hover_card" data-author-id="{{question.5}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">
             </div>
             <div style="float:left;">
-                <a href="/er/{{ question.be_answers.all.0.author.id }}/" class="bind_hover_card" data-author-id={{question.be_answers.all.0.author.id}} data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{ question.be_answers.all.0.author.first_name }}</a>
+                <a href="/er/{{ question.5 }}/" class="bind_hover_card" data-author-id="{{question.5}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{ question.6 }}</a>
             </div>
-            <div>,{{question.be_answers.all.0.author.userprofile.mood}}</div>
+            <div>,{{question.8}}</div>
             <div style="clear:both;"></div>
-            <div>{{question.be_answers.all.0.content|safe}}</div>
+            <div>{{question.9|safe}}</div>
+            <div class="AnswerLike" data-answer-id="{{ question.4 }}"><button class="btn btn-default" type="button">like:</button>{{ question.10}}</div>
         </div>
         
         <div>&nbsp;</div>
@@ -160,7 +161,20 @@
 <script src="{% static 'common/main.js' %}"></script>
     
 <script>
-function popover_show(){ 
+
+function check_answer_like(){
+    $(".AnswerLike").each(function(){
+        $(this).click(function(){
+            answer_id=$(this).attr("data-answer-id");
+            $.get("/ajax/answer_like/"+answer_id+"/",function(ret){
+                alert(ret); 
+            });
+        });
+    });
+
+}
+
+function check_popover_show(){ 
     $('.bind_hover_card').each(function(){
         $(this).parent().hover(function(){
         element=$(this).children(".bind_hover_card");
@@ -259,23 +273,7 @@ return clientHeight;
 function getScrollHeight() { 
 return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); 
 } 
-/*
-        <div class="QuestionFrame font-black">
-            <div>来自话题:<a href="/topic/{{ question.prima_topic_id }}/">{{ question.prima_topic_name }}</a></div>
-            <div>
-            <a href="/question/{{ question.id }}/">{{ question.title }}</a>
-            </div>
-            <div style="float:left;">
-                <img src="/media/{{question.be_answers.all.0.author.userprofile.avatar }}" href="/er/{{ question.be_answers.all.0.author.id }}/" width="40" height="40" class="bind_hover_card" data-author-id={{question.be_answers.all.0.author.id}} data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">
-            </div>
-            <div>
-                <a href="/er/{{ question.be_answers.all.0.author.id }}/" class="bind_hover_card" data-author-id={{question.be_answers.all.0.author.id}} data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{ question.be_answers.all.0.author.first_name }}</a>
-            </div>
-            <div>,{{question.be_answers.all.0.author.userprofile.mood}}</div>
-            <div style="clear:both;"></div>
-            <div>{{question.be_answers.all.0.content|safe}}</div>
-        </div>
-*/
+
 function appendElement(ret)
 {
     for(i in ret)
@@ -305,7 +303,7 @@ function getMoreData() {
     $.get('/ajax/questions/'+order+'/'+start+'/'+end+'/',function(ret){          
         appendElement(ret);
         //$('.bind_hover_card').popover();   
-        popover_show();
+        check_popover_show();
     });
 } 
 
@@ -324,7 +322,8 @@ $(function() {
 });
 
 
-popover_show();
+check_popover_show();
+check_answer_like();
 /*
     $('.bind_hover_card').each(function(){
         $(this).on('show.bs.popover', function () {
