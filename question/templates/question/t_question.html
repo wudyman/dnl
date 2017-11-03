@@ -72,7 +72,7 @@
         <div class="TheQuestion col-md-8">
         <div>
             {% for topic in context_question.topics.all %}
-            <a href="/topic/{{topic.id}}/">{{topic.name}}</a>
+            <a class="TopicNav" href="/topic/{{topic.id}}/">{{topic.name}}</a>
             {% endfor %}
         </div>
 
@@ -86,6 +86,7 @@
                 <button id="follow_button" class="btn btn-success" type="button" onclick="follow_question()">关注问题</button>
                 {% endifequal %}
                 <button class="btn btn-primary" type="button" onclick="answer_question()">回答问题</button>
+                <button class="btn btn-info" type="button" onclick="invite()">邀请回答</button>
             </div>
         </div>
         </div>
@@ -152,6 +153,29 @@
 	</div><!-- /.modal -->
 </div>
 <!--- div other--->
+
+<!--- div other for invite--->
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="inviteModalLabel" aria-hidden="true">
+	<div class="modal-dialog invitemodal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title  font-black font-center" id="inviteModalLabel">
+					模态框（Modal）标题
+				</h4>
+			</div>
+			<div class="modal-body font-black">
+                <div><div style="float:left;">用户名：xxx</div><button class="btn btn-success" type="button">邀请回答</button></div>
+			</div>
+			<div class="modal-footer">
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<!--- div other--->
 <script src="{%static 'common/jquery.js' %}"></script>
 <script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
 <script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
@@ -159,6 +183,20 @@
 <script src="{% static 'common/main.js' %}"></script>
     
 <script>
+function invite()
+{
+    var topics="";
+    $(".TopicNav").each(function(){
+        topics+=($(this).attr("href"))+";";
+        topics+=($(this).attr("href"))+";";
+    });
+
+    $.post("/ajax/topic_adept/",{"topics":topics},function(ret){
+        alert(ret);
+    })
+    //$("#inviteModal").modal('show');
+}
+
 function follow_question()
 {
 var question_id=$("#QuestionItem").attr("data-question-id");

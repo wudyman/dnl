@@ -96,7 +96,7 @@
             <div>,{{question.8}}</div>
             <div style="clear:both;"></div>
             <div>{{question.9|safe}}</div>
-            <div class="AnswerLike" data-answer-id="{{ question.4 }}"><button class="btn btn-default" type="button">like:</button>{{ question.10}}</div>
+            <div class="AnswerLike" data-answer-id="{{ question.4 }}">{{ question.10}}</div>
         </div>
         
         <div>&nbsp;</div>
@@ -165,9 +165,10 @@
 function check_answer_like(){
     $(".AnswerLike").each(function(){
         $(this).click(function(){
+            element=$(this);
             answer_id=$(this).attr("data-answer-id");
             $.get("/ajax/answer_like/"+answer_id+"/",function(ret){
-                alert(ret); 
+                element.text(ret);
             });
         });
     });
