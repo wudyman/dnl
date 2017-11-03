@@ -71,21 +71,19 @@ def like_answer(request,answer_id):
     answer=get_object_or_404(Answer,pk=answer_id)
     user=request.user #get_object_or_404(User,username=request.user)
     temp=answer.like_nums
-    if int(request.COOKIES["userid"])==user.id:
-        if time.time()-float(request.COOKIES["time"])>60:
+    anwer_like_id='al'+str(answer.id)
+    if anwer_like_id in request.COOKIES:
+        if time.time()-float(request.COOKIES[anwer_like_id])>864000: #24*60*60=864000
             answer.like_nums+=1
-            #need_reset=True
     else:
         answer.like_nums+=1
-        #need_reset=True
-    answer.save()
     
     to_json=json.dumps(answer.like_nums)
     response=HttpResponse(to_json,content_type='application/json')
 
     if temp!=answer.like_nums:
-        response.set_cookie('userid',user.id)
-        response.set_cookie('time',time.time())
+        response.set_cookie(anwer_like_id,time.time(),max_age=864000) #24*60*60=864000
+        answer.save()
     return response
 
 @csrf_exempt
@@ -160,4 +158,21 @@ def get_erinfo(request,erid):
         else:
             temp.append(0)#6
         to_json=json.dumps(temp)
+        return HttpResponse(to_json,content_type='application/json')
+
+@csrf_exempt
+def get_topic_adept(request):
+        topics=request.POST.get('topics').split(';')
+        topics.pop()
+        print(topics)
+        adepts=User.objects.all()
+        adept_list=[]
+        for adept in adepts:
+            temp=[]
+            temp.append(adept.id)
+            temp.append(adept.first_name)
+            temp.append(adept.userprofile.avatar)
+            temp.append(adept.userprofile.mood)
+            adept_list.append(temp)
+        to_json=json.dumps(adept_list)
         return HttpResponse(to_json,content_type='application/json')

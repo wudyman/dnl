@@ -25,6 +25,7 @@ class Topic(models.Model):
     question_nums=models.PositiveIntegerField(default=0)
     follower=models.ManyToManyField(User,related_name='followtopics',blank=True)
     follower_nums=models.PositiveIntegerField(default=0)
+    adept=models.ManyToManyField(User,related_name='adepttopics',blank=True)
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):
         return self.name
@@ -59,7 +60,15 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-
+class Invite(models.Model):
+    inviter=models.ForeignKey(User,related_name='sendinvite')
+    invitee=models.ForeignKey(User,related_name='receiveinvite')
+    question_id=models.PositiveIntegerField(default=0)
+    status=models.PositiveIntegerField(default=0)
+    pub_date=models.DateTimeField('date published',default=timezone.now)
+    def __str__(self):
+        return str(self.question_id)
+    
 #=================================below for ajax query==============================================#
 class PushQuestion():
     topic_id=0
