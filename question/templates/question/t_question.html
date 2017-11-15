@@ -86,7 +86,7 @@
                 <button id="follow_button" class="btn btn-success" type="button" onclick="follow_question()">关注问题</button>
                 {% endifequal %}
                 <button class="btn btn-primary" type="button" onclick="answer_question()">回答问题</button>
-                <button class="btn btn-info" type="button" onclick="invite()">邀请回答</button>
+                <button class="btn btn-info" type="button" onclick="showInvite()">邀请回答</button>
             </div>
         </div>
         </div>
@@ -167,8 +167,8 @@
 					模态框（Modal）标题
 				</h4>
 			</div>
-			<div class="modal-body font-black">
-                <div><div style="float:left;">用户名：xxx</div><button class="btn btn-success" type="button">邀请回答</button></div>
+			<div id="adeptItems" class="modal-body font-black">
+
 			</div>
 			<div class="modal-footer">
 			</div>
@@ -185,6 +185,38 @@
 <script>
 function invite()
 {
+    $(".invite").each(function(index,element){
+        $(element).click(function(){
+            question_id=$("#QuestionItem").attr("data-question-id");
+            //inviter=$(element).attr("data-from");
+            invitee=$(element).attr("data-to");
+            //$.get('/ajax/invite/?question='+question_id+'&from='+inviter+'&to='+invitee,function(ret){
+            $.get('/ajax/invite/?question='+question_id+'&to='+invitee,function(ret){
+                alert(ret);
+            });
+        });
+    });
+}
+function appendElement(ret)
+{
+    for( i in ret)
+    {
+        var htmlText='<div class="adept-item">\
+                    <div  style="float:left;">\
+                        <img src="/media/'+ret[i][2]+'" width="40" height="40">\
+                    </div>\
+                    <div  style="float:left;">\
+                        <a>'+ret[i][1]+'</a>\
+                        <h4>'+ret[i][3]+'</h4>\
+                    </div>\
+                    <button style="float:right;" class="btn btn-success invite" type="button" data-to="'+ret[i][0]+'">邀请回答</button>\
+                    <div style="clear:both"></div>\
+                </div>';
+        $("#adeptItems").append(htmlText);
+    }
+}
+function showInvite()
+{
     var topics="";
     $(".TopicNav").each(function(){
         topics+=($(this).attr("href"))+";";
@@ -192,7 +224,9 @@ function invite()
     });
 
     $.post("/ajax/topic_adept/",{"topics":topics},function(ret){
-        alert(ret);
+        appendElement(ret);
+        $("#inviteModal").modal('show');
+        invite();
     })
     //$("#inviteModal").modal('show');
 }

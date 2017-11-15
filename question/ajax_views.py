@@ -162,6 +162,7 @@ def get_erinfo(request,erid):
 
 @csrf_exempt
 def get_topic_adept(request):
+        #inviter=request.user
         topics=request.POST.get('topics').split(';')
         topics.pop()
         print(topics)
@@ -173,6 +174,26 @@ def get_topic_adept(request):
             temp.append(adept.first_name)
             temp.append(adept.userprofile.avatar)
             temp.append(adept.userprofile.mood)
+            #temp.append(inviter.id)
             adept_list.append(temp)
         to_json=json.dumps(adept_list)
+        return HttpResponse(to_json,content_type='application/json')
+        
+@csrf_exempt
+def invite(request):
+        q=request.GET.get('question')
+        #f=request.GET.get('from')
+        t=request.GET.get('to')
+        
+        inviter=request.user
+        #inviter.sendinvite.add(invitation)
+                
+        invitee=get_object_or_404(User,pk=t)
+        #invitee.receiveinvite.add(invitation)
+        
+        invitation=Invite(inviter=inviter,invitee=invitee,question_id=q)
+        invitation.save()
+        
+        temp='success'
+        to_json=json.dumps(temp)
         return HttpResponse(to_json,content_type='application/json')
