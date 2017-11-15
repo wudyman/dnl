@@ -11,4 +11,5 @@ urlpatterns= [
     url(r'^upload/img/$',views.upload_img,name='uploadimage'),
     url(r'^er/(?P<erid>[0-9]+)/$',views.get_erinfo,name='geterinfo'),
     url(r'^er_follow/(?P<follow>[0-9]+)/(?P<er_id>[0-9]+)/$',views.follow_er,name='follow_er'),
+    url(r'^invite/$',views.invite,name='invite'),
 ]

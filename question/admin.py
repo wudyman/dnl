@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from .models import Question,Topic,Answer,Comment,UserProfile
+from .models import Question,Topic,Answer,Comment,UserProfile,Invite
 
 # Register your models here.
 class ProfileInline(admin.StackedInline):
@@ -17,3 +17,4 @@ admin.site.register(Topic)
 admin.site.register(Answer)
 admin.site.register(Comment)
 admin.site.register(UserProfile)
+admin.site.register(Invite)
