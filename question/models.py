@@ -51,7 +51,7 @@ class Comment(models.Model):
 
 class UserProfile(models.Model):
     user=models.OneToOneField(User)
-    avatar=models.CharField(max_length=100,default='img/default.jpg',verbose_name='peoplehead')
+    avatar=models.CharField(max_length=100,default='/media/avatar/default.jpg',verbose_name='peoplehead')
     mood=models.CharField(default='no do no die',max_length=100)
     phone=models.CharField(default='0',max_length=11)
     intro=models.CharField(default='brief introduce myself',max_length=200)

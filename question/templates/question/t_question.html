@@ -247,10 +247,32 @@ $.get("/ajax/question_follow/0/"+question_id+"/",function(ret){
 });
 }
 
+function sendFile(file){
+    data=new FormData();
+    data.append("imgfile",file);
+    //console.log(data.get("file"));
+    $.ajax({
+        data:data,
+        type:"POST",
+        url:"/ajax/upload/img/",
+        cache:false,
+        contentType:false,
+        processData:false,
+        success:function(url){
+            $("#summernote").summernote('insertImage', url, 'image name'); // the insertImage API
+        }
+    });
+}
 $(document).ready(function() {
     $('#summernote').summernote({
     lang:'zh-CN',
-    placeholder:'写回答...'
+    placeholder:'写回答...',
+    callbacks: {
+        onImageUpload: function(files){
+            img=sendFile(files[0]);
+            console.log(img);
+        }
+    }
     });
 });
 </script>

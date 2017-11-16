@@ -121,22 +121,37 @@ def follow_er(request,follow,er_id):
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
+def upload_avatar(request):
+    imgfile=request.FILES.get('imgfile')
+    if imgfile: 
+        print(str(time.time()))
+        posttime=request.user.username+str(time.time()).split('.')[0]
+        postfix=str(imgfile).split('.')[-1]
+        name='media'+'/avatar/%s.%s'%(posttime,postfix)
+        img=Image.open(imgfile)
+        img.save(name)
+        #print(img.items)
+        request.user.userprofile.avatar='/'+name
+        request.user.userprofile.save()
+    
+    temp='success'
+    to_json=json.dumps(temp)
+    return HttpResponse(to_json,content_type='application/json')
+
+@csrf_exempt
 def upload_img(request):
     imgfile=request.FILES.get('imgfile')
     if imgfile: 
         print(str(time.time()))
         posttime=request.user.username+str(time.time()).split('.')[0]
         postfix=str(imgfile).split('.')[-1]
-        name='img/%s.%s'%(posttime,postfix)
+        name='media'+'/img/%s.%s'%(posttime,postfix)
         img=Image.open(imgfile)
-        img.save('media/'+name)
-        #print(img.items)
-        request.user.userprofile.avatar=name
-        request.user.userprofile.save()
-    
-    temp='success'
-    to_json=json.dumps(temp)
-    return HttpResponse(to_json,content_type='application/json')
+        img.save(name)
+        #print(img.items)    
+        temp='/'+name
+        to_json=json.dumps(temp)
+        return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
 def get_erinfo(request,erid):
