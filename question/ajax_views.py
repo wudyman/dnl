@@ -67,6 +67,20 @@ def follow_question(request,follow,question_id):
     return HttpResponse(to_json,content_type='application/json')
 
 @csrf_exempt
+def answer_question(request,question_id):
+    author=request.user #get_object_or_404(User,username=request.user)
+    question=get_object_or_404(Question,pk=question_id)
+    answer=Answer()
+    answer.content=request.POST.get('content')
+    answer.author=author
+    answer.question=question
+    answer.save()
+
+    temp="success"
+    to_json=json.dumps(temp)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
 def like_answer(request,answer_id):
     answer=get_object_or_404(Answer,pk=answer_id)
     user=request.user #get_object_or_404(User,username=request.user)
