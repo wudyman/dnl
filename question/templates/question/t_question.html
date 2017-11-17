@@ -104,15 +104,15 @@
         </div>
         </div>
         
-        <div class="AnswerToolbar col-md-8">
-        <form action="/question/{{ context_question.id }}/" method="post">
-        {% csrf_token %}
+        <div class="AnswerToolbar col-md-8" data-question="/ajax/question_answer/{{ context_question.id }}/">
+        <!--<form action="/question/{{ context_question.id }}/" method="post">-->
+        <!--{% csrf_token %}-->
             <textarea id="summernote" name="content" rows1="5" cols1="70" maxlength1="160" placeholder="写回答..."></textarea>
             <!--<div id="summernote" name="content"><p>Hello Summernote</p></div>-->
-        	<button type="submit"  class="btn btn-success btn-lg">
+        	<button type="button"  class="btn btn-success btn-lg" onclick="submitAnswer()">
 				提交回答
 			</button>
-        </form>
+        <!--</form>-->
         </div>
         
         </div>
@@ -179,10 +179,31 @@
 <script src="{%static 'common/jquery.js' %}"></script>
 <script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
 <script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
-<script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
+<script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script> 
 <script src="{% static 'common/main.js' %}"></script>
     
 <script>
+function appendElement(ret)
+{
+}
+function submitAnswer()
+{
+    url=$(".AnswerToolbar").attr("data-question");
+    content=$('#summernote').summernote('code');
+    data=new FormData();
+    data.append("content",content);
+    $.ajax({
+        data:data,
+        type:"POST",
+        url:url,
+        cache:false,
+        contentType:false,
+        processData:false,
+        success:function(ret){
+            appendElement(ret);
+        }
+    });
+}
 function invite()
 {
     $(".invite").each(function(index,element){
