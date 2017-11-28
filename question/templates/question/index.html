@@ -9,12 +9,12 @@
     <link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
 </head>
-<body>
+
+<body class="Entry-body">
+<header  role="banner" class="Sticky AppHeader">
+<div class="AppHeader-inner">
 
 <div class="container">
-<header  role="banner" data-za-module="TopNavBar" >
-<div class="Banner"></div>
-<!-- react-empty: 1220 -->
 <div class="row">
 <div class="col-md-1">
 <a href="/" aria-label="大大大">
@@ -28,33 +28,43 @@
 <a class="AppHeader-navItem" href="/explore">发现</a>
 <a class="AppHeader-navItem" href="/topic">话题</a>
 </nav>
+
 <div class="SearchBar col-md-6" role="search">
-<input type="text" maxlength="100" value="" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-88417-181--1" id="Popover-88417-61448-toggle" aria-haspopup="true" aria-owns="Popover-88417-61448-content" class="Input" placeholder="搜索你感兴趣的内容…">
-<button class="Button SearchBar-searchIcon Button--primary" aria-label="搜索" type="button">
-<svg viewBox="0 0 16 16" class="Icon Icon--search" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g>
-</svg>
-</button>
-<!-- react-empty: 29 -->
-<button class="Button QuestionAskButton SearchBar-askButton btn-success" type="button" data-toggle="modal" data-target="#askModal">
-<!-- react-text: 31 -->提问<!-- /react-text --><!-- react-empty: 32 -->
+<div class="SearchBar-toolWrapper" data-reactid="18">
+<form class="SearchBar-tool" data-reactid="19">
+<div data-reactid="20">
+<div class="Popover" data-reactid="21">
+<div class="SearchBar-input Input-wrapper Input-wrapper--grey" data-reactid="22">
+<input type="text" maxlength="100" value="" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-41236-89421--1" id="Popover-41236-42847-toggle" aria-haspopup="true" aria-owns="Popover-41236-42847-content" class="Input" placeholder="搜索你感兴趣的内容…" data-reactid="23">
+<div class="Input-after" data-reactid="24">
+<button class="Button SearchBar-searchIcon Button--primary" aria-label="搜索" type="button" data-reactid="25"><svg viewBox="0 0 16 16" class="Icon Icon--search" style="height:16px;width:16px;" width="16" height="16" aria-hidden="true" data-reactid="26"><title data-reactid="27"></title><g data-reactid="28"><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg>
 </button>
 </div>
+</div>
+</div>
+</div>
+</form>
+</div>
+<button class="Button QuestionAskButton SearchBar-askButton Button--primary Button--green" type="button" data-toggle="modal" data-target="#askModal">提问</button>
+</div>
+
 <div class="AppHeader-userInfo col-md-2">
+<div class="Popover PushNotifications AppHeader-notifications">
 <button class="Button PushNotifications-icon Button--plain" type="button" id="Popover-88478-67360-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-67360-content">
 <svg viewBox="0 0 20 22" class="Icon Icon--news" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M2.502 14.08C3.1 10.64 2 3 8.202 1.62 8.307.697 9.08 0 10 0s1.694.697 1.797 1.62C18 3 16.903 10.64 17.497 14.076c.106 1.102.736 1.855 1.7 2.108.527.142.868.66.793 1.206-.075.546-.542.95-1.09.943H1.1C.55 18.34.084 17.936.01 17.39c-.075-.547.266-1.064.794-1.206.963-.253 1.698-1.137 1.698-2.104zM10 22c-1.417.003-2.602-1.086-2.73-2.51-.004-.062.02-.124.063-.17.043-.045.104-.07.166-.07h5c.063 0 .124.025.167.07.044.046.067.108.063.17-.128 1.424-1.313 2.513-2.73 2.51z"></path></g>
 </svg>
-<!-- react-empty: 1226 -->
 </button>
-<!-- react-empty: 1227 -->
+</div>
 
+<div class="Popover Messages AppHeader-messages">
 <button class="Button Messages-icon Button--plain" type="button" id="Popover-88478-87650-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-87650-content">
 <svg viewBox="0 0 20 20" class="Icon Icon--message" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path><path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path></g>
 </svg>
 </button>
-<!-- react-empty: 1234 -->
+</div>
 
-<!-- react-empty: 42 -->
-
+<div class="AppHeader-profile">
+<div class="Popover AppHeader-menu">
 <span class="dropdown">
 <img class="Avatar AppHeader-profileAvatar" data-toggle="dropdown" width="30" height="30" src="/media/img/default.jpg" srcset="/media/img/default.jpg 2x">
 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -69,18 +79,42 @@
 </li>   
 </ul>
 </span>
+</div>
+</div>
 
-<!-- react-empty: 1239 -->
+
+</div>
+
+</div>
 </div>
 </div>
 </header>
-<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 53px;">
-</div>
+<!--<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 53px;">
+</div>-->
 
         <!--------------------main---------------------->
-        <main role="main">
+        <main role="main" class="App-main">
+        <div class="Topstory">
+        <div class="Topstory-container container">
         <div class="row">
-        <div id="QuestionItems" class="col-md-offset-1 col-md-7">
+        <div class="Topstory-mainColumn 1col-md-offset-1 col-md-8">
+        
+
+        <div class="Card">
+        <div class="TopstoryHeader">
+        <div class="TopstoryHeader-nav">
+        <button class="Button QuestionAskButton TopstoryHeader-navItem Button--plain" type="button"><svg width="16" height="16" viewBox="0 0 17 17" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--question" style="height:16px;width:16px;" aria-hidden="true"><title></title><g><g transform="translate(-3 -3)" fill="#8590A6" fill-rule="evenodd">     <path d="M3.833 6.356c0-1.66 1.334-3.007 2.993-3.007h9.348c1.653 0 2.993 1.338 2.993 3.006v8.498c0 1.66-1.266 3.467-2.812 4.03l-1.09.396c-2.08.757-5.447.76-7.53 0l-1.09-.396c-1.553-.565-2.812-2.363-2.812-4.03V6.356zm1.643.67v7.492c0 1.1.84 2.314 1.873 2.697l2.277.844c1.035.383 2.712.383 3.746 0l2.278-.845c1.036-.384 1.874-1.59 1.874-2.697V7.026c0-1.1-.897-2.003-2.003-2.003H7.48c-1.118 0-2.004.897-2.004 2.003z"></path>     <path d="M13.012 11.46l-.422.29c-.232.177-.433.53-.433.53s-.08.134-.11.398v.16h-1.63v-.24c.02-.555.11-.86.343-1.13.364-.422 1.168-.935 1.202-.956.114-.086.212-.184.284-.288.17-.23.244-.412.244-.59 0-.25-.074-.478-.22-.682-.143-.197-.41-.296-.798-.296-.385 0-.648.12-.806.368-.162.254-.243.523-.243.796l-.005.23-1.656-.003.003-.23c.043-1.007.406-1.732 1.078-2.155.424-.27 1.113-.396 1.657-.406.873.01 1.39.193 1.923.575.54.387.815.965.815 1.72 0 .422-.135.82-.4 1.18-.14.193-.442.434-.826.73z"></path>     <ellipse cx="11.226" cy="14.791" rx="1.095" ry="1.116"></ellipse>   </g></g></svg>提问</button>
+        <a href="/question" target="_blank" title="回答" class="TopstoryHeader-navItem" data-reactid="63"><svg width="16" height="16" viewBox="0 0 17 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--paper" style="height:16px;width:16px;" aria-hidden="true"><title></title><g><g fill="#8590A6" fill-rule="evenodd">     <path d="M.833 4.35c0-2.21 1.79-4 4.01-4h7.315c2.214 0 4.01 1.79 4.01 4v8.743c0 2.21-1.79 4-4.01 4H4.842c-2.214 0-4.01-1.792-4.01-4V4.35zm1.643-.32v9.383c0 1.106.897 2.006 2.003 2.006h8.04c1.118 0 2.004-.9 2.004-2.007V4.03c0-1.107-.897-2.007-2.003-2.007H4.48c-1.118 0-2.004.898-2.004 2.006z"></path><path d="M4.667 4.814h7.666v1.674H4.667V4.814zm0 2.79h7.666V9.28H4.667V7.604zm0 2.79h4.928v1.676H4.667v-1.675z"></path>   </g></g></svg>回答</a>
+        <a href="//zhuanlan.zhihu.com/write" target="_blank" title="写文章" class="TopstoryHeader-navItem TopstoryHeader-navItemArticle"><svg width="16" height="16" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--write" style="height:16px;width:16px;" aria-hidden="true"><title></title><g><g fill="none" fill-rule="evenodd">     <path d="M9.595 2.023H4.842c-2.22 0-4.01 1.793-4.01 4.005v7.62c0 2.21 1.796 4.003 4.01 4.003h7.316c2.22 0 4.01-1.792 4.01-4.003v-7.11.51L14.523 8.72v4.253c0 1.66-1.336 3.004-3.01 3.004h-6.03c-1.66 0-3.008-1.338-3.008-3.004V6.7c0-1.657 1.336-3.002 3.01-3.002h2.467L9.595 2.03v-.007z" fill="#8590A6"></path>     <path d="M6.372 11.08c-.185-.915.2-2.238.85-2.888l6.616-6.616c.565-.565 1.472-.567 2.038 0 .56.56.56 1.477 0 2.038L9.258 10.23c-.652.65-1.975 1.034-2.888.85z" stroke="#8590A6" stroke-width="1.5"></path>     <path fill="#8590A6" d="M13.04 2.088l2.324 2.324-.987.986-2.323-2.324z"></path>   </g></g></svg>写文章</a>
+        <span title="写想法" class="TopstoryHeader-navItem TopstoryHeader-navItemPin"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><title></title><g><path d="M12.63 2.02V0h1.35v2.02H16v1.35h-2.02V5.4h-1.35V3.36H10.6V2.02h2.03zm-.17 4.9h1.7v4.76c0 1.5-.17 2.05-.46 2.6-.3.55-.73.98-1.28 1.27-.54.3-1.1.45-2.6.45h-5.5c-1.5 0-2.05-.16-2.6-.45-.55-.3-.98-.72-1.27-1.27-.3-.55-.45-1.1-.45-2.6v-5.5c0-1.5.16-2.06.45-2.6.3-.55.72-.98 1.27-1.28.55-.3 1.1-.45 2.6-.45H9.1v1.7H4.3c-1.12 0-1.46.05-1.8.24-.26.1-.45.3-.58.55-.2.35-.26.7-.26 1.8v5.5c0 1.13.07 1.47.26 1.8.13.27.32.46.58.6.34.18.68.25 1.8.25h5.5c1.12 0 1.46-.06 1.8-.25.27-.13.46-.32.6-.58.18-.34.24-.68.24-1.8V6.9zM8.6 6.7c.7-.16 1.45.06 1.98.6.83.83.83 2.2 0 3.04l-.03.03c-.84.85-2.2.85-3.04 0l-1.92-2c-.25-.24-.64-.24-.88 0l-.04.04c-.25.28-.25.7 0 .95.15.16.37.22.57.17.4-.1.82.18.9.58.1.4-.16.82-.57.9-.7.17-1.46-.04-1.98-.58-.83-.85-.83-2.2 0-3.06l.03-.02c.86-.85 2.2-.85 3.05 0L8.6 9.3c.24.25.63.25.87 0l.03-.02c.25-.26.25-.67 0-.93-.16-.15-.37-.2-.58-.17-.4.1-.8-.16-.9-.57-.1-.4.16-.8.57-.9z"></path></g></svg>写想法</span>
+        </div>
+        <a class="TopstoryHeader-rightItem" href="/draft" target="_blank" title="草稿">草稿</a>
+        </div>
+        </div>
+        
+        <div id="QuestionItems">
+        
+
         <!--
         {% if question_list %}
             {% for question in question_list %}
@@ -149,53 +183,85 @@
         -->
         </div>
         </div>
+        
+        <div class="TopstorySideBar col-md-3" data-reactid="1243" data-za-module="RightSideBar" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:null}}">
+            <div data-reactid="1244"><div class="Sticky" data-reactid="1245"><div class="Card" data-reactid="1246"><ul class="TopstorySideBar-categoryList" data-reactid="1247"><li class="TopstorySideBar-categoryItem" data-reactid="1248"><a class="Button Button--plain" href="/lives" target="_blank" title="Live" style="color:#ffcf00;" type="button" data-reactid="1249"><span class="TopstorySideBar-categoryIcon" data-reactid="1250"><svg class="Zi Zi--Live" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1251"><path d="M13.693 10.354l1.634-7.542c.195-.901-.16-1.083-.798-.39l-9.18 9.97c-.638.693-.377 1.254.582 1.254h5.376l-1.634 7.542c-.195.901.16 1.083.798.39l9.18-9.97c.638-.693.377-1.254-.582-1.254h-5.376z" data-reactid="1252"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1253">Live</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1254"><a class="Button Button--plain" href="/pub/" target="_blank" title="书店" style="color:#43d480;" type="button" data-reactid="1255"><span class="TopstorySideBar-categoryIcon" data-reactid="1256"><svg class="Zi Zi--Ebook" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1257"><path d="M16 17.649V2.931a.921.921 0 0 0-.045-.283.943.943 0 0 0-1.182-.604L4.655 5.235A.932.932 0 0 0 4 6.122v14.947c0 .514.421.931.941.931H19.06c.52 0 .941-.417.941-.93V7.292a.936.936 0 0 0-.941-.931h-.773v12.834a.934.934 0 0 1-.83.924L6.464 21.416c-.02.002 2.94-.958 8.883-2.881a.932.932 0 0 0 .653-.886z" fill-rule="evenodd" data-reactid="1258"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1259">书店</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1260"><a class="Button Button--plain" href="/roundtable" target="_blank" title="圆桌" style="color:#0084ff;" type="button" data-reactid="1261"><span class="TopstorySideBar-categoryIcon" data-reactid="1262"><svg class="Zi Zi--Org" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1263"><path d="M10.786 8.41a8.938 8.938 0 0 0-3.968-2.528c-.305-1.719.814-3.337 2.442-3.741 1.221-.405 2.646.101 3.46 1.011 1.045 1.38.915 3.64.814 4.348-.102 1.315-1.221 3.034-1.323 3.135-.305-.809-.814-1.517-1.425-2.225zm-2.442 2.832c-1.526.202-3.052 1.01-4.171 2.123-1.12-.404-1.934-1.314-2.137-2.427-.316-2.427 1.526-3.64 2.849-3.842 1.628-.371 2.849.505 4.07 1.415 1.146 1.012 2.035 2.63 2.035 2.73-.916-.202-1.832-.1-2.646 0zm4.986.303c.509-.607.931-1.586 1.12-2.225.318-1.039.61-3.134.203-4.651 1.323-1.011 3.154-1.011 4.477.303 1.235 1.146 1.017 2.933.814 3.438-.663 1.581-1.933 2.326-3.256 2.832-1.221.404-3.256.303-3.358.303zm-2.645 1.011c-.51.607-.916 1.416-1.221 2.326-.407 1.314-.643 3.06-.102 4.55-1.323 1.011-3.256 1.011-4.477-.202-1.198-1.124-1.018-2.932-.814-3.438.599-1.605 1.933-2.326 3.256-2.831.916-.304 3.256-.405 3.358-.405zm9.259-1.82c1.017.404 1.933 1.315 2.035 2.427.233 2.57-1.526 3.64-2.849 3.842-1.526 0-2.85-.505-4.07-1.415-1.018-.81-2.035-2.528-2.035-2.63.916.203 1.831.102 2.645 0 1.628-.404 3.053-1.112 4.274-2.224zm-6.716 4.854c1.065 1.08 2.442 2.022 4.07 2.528.306 1.719-.814 3.235-2.442 3.741-1.22.405-2.645-.101-3.46-1.011-1.1-1.481-1.017-3.54-.915-4.247.102-1.315 1.221-3.034 1.323-3.135.305.708.721 1.44 1.424 2.124z" data-reactid="1264"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1265">圆桌</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1266"><a class="Button Button--plain" href="//zhuanlan.zhihu.com" target="_blank" title="专栏" style="color:#0f88eb;" type="button" data-reactid="1267"><span class="TopstorySideBar-categoryIcon" data-reactid="1268"><svg class="Zi Zi--Edit" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1269"><path d="M4.076 16.966a4.19 4.19 0 0 1 1.05-1.76l8.568-8.569a.524.524 0 0 1 .741 0l2.928 2.927a.524.524 0 0 1 0 .74l-8.568 8.57c-.49.49-1.096.852-1.761 1.051l-3.528 1.058a.394.394 0 0 1-.49-.488l1.06-3.53zM20.558 4.83c.59.59.59 1.546 0 2.136l-1.693 1.692a.503.503 0 0 1-.712 0l-2.812-2.812a.504.504 0 0 1 0-.712l1.693-1.693a1.51 1.51 0 0 1 2.135 0l1.389 1.389z" data-reactid="1270"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1271">专栏</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1272"><a class="Button Button--plain" href="/zhi" target="_blank" title="付费咨询" style="color:#5478f0;" type="button" data-reactid="1273"><span class="TopstorySideBar-categoryIcon" data-reactid="1274"><svg class="Zi Zi--Infinity" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1275"><path d="M11.267 10.188h-2.69a.26.26 0 0 0-.261.26v.508c0 .149.117.26.262.26h2.896v1.54H8.578a.26.26 0 0 0-.262.259v.508c0 .15.117.26.262.26h2.896v2.31c0 .139.119.257.265.257h.522a.258.258 0 0 0 .265-.257v-2.31h2.896a.26.26 0 0 0 .262-.26v-.508a.257.257 0 0 0-.262-.26h-2.896v-1.54h2.896a.26.26 0 0 0 .262-.26v-.507a.257.257 0 0 0-.262-.26h-2.69l2.51-2.636a.26.26 0 0 0-.004-.366l-.423-.413a.253.253 0 0 0-.36.01L12 9.418 9.545 6.784a.248.248 0 0 0-.36-.011l-.423.413a.264.264 0 0 0-.004.366l2.509 2.636zM12 19.973c-1.101 0-2.16-.15-3.152-.43-.532.18-5.27 2.177-4.743 1.179.527-.998 1.58-2.746.806-3.25C3.11 15.936 2 13.822 2 11.486 2 6.8 6.477 3 12 3s10 3.8 10 8.487-4.477 8.486-10 8.486z" data-reactid="1276"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1277">付费咨询</span></a></li></ul></div><div class="Card Banner" data-za-module="ExternalAdItem" data-za-detail-view-path-is_ad="true" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;ExternalAd&quot;,&quot;ad_info&quot;:{&quot;category&quot;:&quot;2&quot;,&quot;timestamp&quot;:1511837158,&quot;ad_zone_id&quot;:1,&quot;ad_id&quot;:9368}}}}"><a class="Button Banner-link Button--plain" target="_blank" href="https://sugar.zhihu.com/track?pr=0&amp;ci=9831&amp;ai=9368&amp;lo=new_home_up&amp;tu=aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMTQ1NjQ3Mg%3D%3D&amp;ts=1511837158&amp;lu=109597428&amp;si=7bbe68a0c31840489e35ccf57925e804&amp;vs=2&amp;au=182&amp;at=click&amp;ut=fb2d63dd0f534be99bffadfa67950732&amp;hn=ad-engine.ad-engine.9c800212&amp;pf=Windows&amp;az=1&amp;sg=da65d3d6db0a3d4c5e07be95a0571b07" type="button"><img class="Banner-image" src="https://pic3.zhimg.com/v2-96f061e37797b50680eb5106f7e5779e_294x245|adx4.jpg" srcset="https://pic3.zhimg.com/v2-96f061e37797b50680eb5106f7e5779e_540x450|adx4.jpg 2x" alt="广告"></a><button class="Button Banner-close Button--plain" data-tooltip="不再显示" data-tooltip-position="bottom" type="button"><svg width="14" height="16" viewBox="0 0 12 12" class="Icon Icon--boldRemove" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path fill-rule="evenodd" d="M3 2L2 3l3 3-3 3 1 1 3-3 3 3 1-1-3-3 3-3-1-1-3 3"></path></g></svg></button></div><div class="Card" data-reactid="1279"><ul class="TopstorySideBar-navList" data-reactid="1280"><li class="TopstorySideBar-navItem TopstorySideBar-starItem" data-reactid="1281"><a class="Button TopstorySideBar-navLink Button--plain" href="/collections" target="_blank" type="button" data-reactid="1282"><svg class="Zi Zi--Star TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" data-reactid="1283"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd" data-reactid="1284"></path></svg><span class="TopstorySideBar-navText" data-reactid="1285">我的收藏</span></a></li><li class="TopstorySideBar-navItem TopstorySideBar-questionListItem" data-reactid="1286"><a class="Button TopstorySideBar-navLink Button--plain" target="_blank" type="button" data-reactid="1287" href="/people/verna-18-5/following/questions"><svg class="Zi Zi--HelpBubble TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" data-reactid="1288"><path d="M5.74 4h12.52c.961 0 1.74.775 1.74 1.73V16.27c0 .955-.779 1.73-1.74 1.73h-3.825l-1.658 2.044a1 1 0 0 1-1.554 0l-1.658-2.044H5.74C4.78 18 4 17.224 4 16.27V5.73C4 4.775 4.778 4 5.74 4zM12 16a.976.976 0 0 0 .705-.287.951.951 0 0 0 .295-.712.954.954 0 0 0-.295-.714A.976.976 0 0 0 12 14a.962.962 0 0 0-.705.295A.961.961 0 0 0 11 15c0 .284.098.522.295.713A.975.975 0 0 0 12 16zm1.278-4.924a36.81 36.81 0 0 0 1.023-.975c.19-.193.354-.422.492-.688.138-.266.207-.575.207-.928 0-.448-.12-.864-.363-1.246a2.517 2.517 0 0 0-1.029-.906C13.164 6.111 12.652 6 12.072 6c-.624 0-1.17.133-1.638.399-.468.265-.824.6-1.068 1.005-.244.405-.366.804-.366 1.2 0 .19.077.368.231.531a.747.747 0 0 0 .567.246c.38 0 .638-.234.774-.703.144-.449.32-.788.528-1.019.208-.23.532-.345.972-.345.376 0 .683.114.921.342.238.229.357.51.357.841 0 .17-.039.328-.117.473a1.782 1.782 0 0 1-.288.396c-.114.118-.3.294-.555.526a9.71 9.71 0 0 0-.696.688c-.172.194-.31.418-.414.673a2.391 2.391 0 0 0-.156.906c0 .278.071.488.213.63a.716.716 0 0 0 .525.211c.4 0 .638-.216.714-.648.044-.203.077-.345.099-.426.022-.081.053-.162.093-.243.04-.081.101-.17.183-.268.082-.098.191-.21.327-.34z" fill-rule="evenodd" data-reactid="1289"></path></svg><span class="TopstorySideBar-navText" data-reactid="1290">我关注的问题</span></a></li><li class="TopstorySideBar-navItem TopstorySideBar-inviteItem" data-reactid="1291"><a class="Button TopstorySideBar-navLink Button--plain" href="/question/invited" target="_blank" type="button" data-reactid="1292"><svg class="Zi Zi--Invite TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" data-reactid="1293"><path d="M17.53 21c-2.47 0-4.471-2.035-4.471-4.545s2.001-4.544 4.47-4.544C20 11.911 22 13.946 22 16.455 22 18.965 19.998 21 17.53 21zm.555-5.116s-.005-2.04 0-2.272c-.014-.753-1.13-.753-1.117 0-.014.724 0 2.272 0 2.272h-2.233c-.745.003-.745 1.14 0 1.14s2.233-.004 2.233-.004v2.272c0 .765 1.12.765 1.117 0-.004-.764 0-2.272 0-2.272s1.488.004 2.237.004c.748 0 .748-1.137-.004-1.14h-2.233zm-5.778-3.074a5.692 5.692 0 0 0-.561 6.936H8.408c-4.514 0-5.32-.154-5.408-1.57 0-2.45 2.42-5.407 5.408-5.407h3.49c.14 0 .271.031.409.041zm-2.33-1.437a4.187 4.187 0 1 1 0-8.373 4.187 4.187 0 0 1 0 8.373z" fill-rule="evenodd" data-reactid="1294"></path></svg><span class="TopstorySideBar-navText" data-reactid="1295">我的邀请</span></a></li><li class="TopstorySideBar-navItem TopstorySideBar-serviceItem" data-reactid="1296"><a class="Button TopstorySideBar-navLink Button--plain" href="/community" target="_blank" type="button" data-reactid="1297"><svg class="Zi Zi--Community TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" data-reactid="1298"><path d="M5.74 4h12.52c.961 0 1.74.775 1.74 1.73V16.27c0 .955-.779 1.73-1.74 1.73h-3.825l-1.658 2.044a1 1 0 0 1-1.554 0l-1.658-2.044H5.74C4.78 18 4 17.224 4 16.27V5.73C4 4.775 4.778 4 5.74 4zM7 8.98c0 .554.449.996 1.003.996h4.994A.992.992 0 0 0 14 8.981a.997.997 0 0 0-1.003-.995H8.003A.992.992 0 0 0 7 8.98zm0 4c0 .554.446.996.995.996h8.01a.993.993 0 0 0 .995-.995.993.993 0 0 0-.995-.995h-8.01A.993.993 0 0 0 7 12.98z" fill-rule="evenodd" data-reactid="1299"></path></svg><span class="TopstorySideBar-navText" data-reactid="1300">社区服务中心</span></a></li><li class="TopstorySideBar-navItem TopstorySideBar-copyrightItem" data-reactid="1301"><a class="Button TopstorySideBar-navLink Button--plain" href="/copyright" target="_blank" type="button" data-reactid="1302"><svg class="Zi Zi--Copyright TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" data-reactid="1303"><path d="M16.517 15.815a5.871 5.871 0 0 1-4.481 2.078 5.865 5.865 0 0 1-5.859-5.857 5.865 5.865 0 0 1 5.859-5.859c1.63 0 3.204.7 4.319 1.919.085.093.24.432.209.797a1.086 1.086 0 0 1-.436.779c-.248.193-.516.29-.797.29-.402 0-.7-.198-.814-.314A3.473 3.473 0 0 0 12 8.575a3.464 3.464 0 0 0-3.46 3.461 3.464 3.464 0 0 0 3.46 3.46 3.63 3.63 0 0 0 2.654-1.181c.136-.152.458-.306.806-.306.274 0 .542.095.773.274.35.269.45.588.473.809.032.308-.072.585-.188.723m4.686-7.699C20.67 6.883 19.96 5.82 19.07 4.929c-.891-.89-1.954-1.601-3.188-2.133A9.728 9.728 0 0 0 12 2a9.733 9.733 0 0 0-3.883.796c-1.234.532-2.297 1.243-3.186 2.133-.891.891-1.602 1.954-2.134 3.187A9.713 9.713 0 0 0 2 12a9.752 9.752 0 0 0 .797 3.883c.531 1.233 1.242 2.296 2.134 3.186.89.891 1.953 1.602 3.186 2.134A9.725 9.725 0 0 0 12 22a9.72 9.72 0 0 0 3.883-.797c1.233-.532 2.296-1.243 3.188-2.134.89-.89 1.601-1.953 2.132-3.186A9.73 9.73 0 0 0 22 12a9.69 9.69 0 0 0-.797-3.884" fill-rule="evenodd" data-reactid="1304"></path></svg><span class="TopstorySideBar-navText" data-reactid="1305">版权服务中心</span></a></li><li class="TopstorySideBar-navItem TopstorySideBar-publicEditItem" data-reactid="1306"><a class="Button TopstorySideBar-navLink Button--plain" href="/watch" target="_blank" type="button" data-reactid="1307"><svg class="Zi Zi--EditRounded TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" data-reactid="1308"><path d="M16.886 3A4.114 4.114 0 0 1 21 7.114v9.772A4.114 4.114 0 0 1 16.886 21H7.114A4.114 4.114 0 0 1 3 16.886V7.114A4.114 4.114 0 0 1 7.114 3h9.772zM7.542 14.793l-.595 1.985a.22.22 0 0 0 .275.275l1.984-.595a2.36 2.36 0 0 0 .991-.592l4.82-4.82a.295.295 0 0 0 0-.416L13.37 8.983a.295.295 0 0 0-.417 0l-4.82 4.82c-.275.277-.478.617-.59.99zm9.272-6.826l-.781-.78a.849.849 0 0 0-1.202 0l-.952.951c-.11.11-.11.29 0 .4l1.582 1.583a.283.283 0 0 0 .4 0l.953-.952a.85.85 0 0 0 0-1.202z" data-reactid="1309"></path></svg><span class="TopstorySideBar-navText" data-reactid="1310">公共编辑动态</span></a></li></ul></div><!-- react-empty: 1311 --><!-- react-empty: 1312 --><footer class="Footer"><a class="Footer-item" target="_blank" href="//liukanshan.zhihu.com/">刘看山</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/question/19581624">知乎指南</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/terms">知乎协议</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/app">应用</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/careers">工作</a><br><a class="Footer-item" target="_blank" href="https://zhuanlan.zhihu.com/p/28561671">侵权举报</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="http://www.12377.cn">网上有害信息举报专区</a><br><span class="Footer-item">违法和不良信息举报：010-82716601</span><br><a class="Footer-item" target="_blank" href="/jubao">儿童色情信息举报专区</a><br><a class="Footer-item" target="_blank" href="/contact">联系我们</a><span> © 2017 知乎</span></footer></div></div>
+        </div>
+        
+        </div>
+        </div>
+        </div>
         </main>
         <!--------------------main end-------------------->
 
-</div>
 
 <!--- div other--->
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="askModal" tabindex="-1" role="dialog" aria-labelledby="askModalLabel" aria-hidden="true">
 	<div class="modal-dialog askmodal">
-		<div class="modal-content">
-        <form method="post" action="/question/" id="form_ask">
-            {% csrf_token %}
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title  font-black font-center" id="askModalLabel">
-					模态框（Modal）标题
-				</h4>
-			</div>
-			<div class="modal-body font-black">
-                <textarea name="title" rows="2" cols="70" maxlength="160" placeholder="问题标题"></textarea>
-                <!--<textarea name="topic" rows="1" cols="70" maxlength="80" placeholder="添加话题"></textarea>-->
-                
-                                <select id="topics_select" name="topics_selected" class="selectpicker show-menu-arrow form-control" multiple data-live-search="true" data-max-options="5" data-style="11btn-success">
-                                        <!--<option value="苹果">苹果</option>
+        <div class="Modal-inner">
+            <h3 class="Modal-title" id="askModalLabel">写下你的问题</h3>
+            <div class="Modal-subtitle">描述精确的问题更易得到解答</div>
+                <div class="Modal-content">
+                    <div class="QuestionAsk">
+                        <form method="post" action="/question/" id="form_ask">
+                        {% csrf_token %}
+            
+                            <div class="QuestionAsk-section">
+                                <div class="QuestionAsk-title">
+                                        <div class="Input-wrapper Input-wrapper--spread Input-wrapper--multiline Input-wrapper--large">
+                                        <textarea required="" name="title" rows="2" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-64372-3800-0" id="Popover-64372-42711-toggle" aria-haspopup="true" aria-owns="Popover-64372-42711-content" class="Input" placeholder="问题标题"></textarea>
+                                        </div>
+                                </div>
+                            </div>
+            
+                            <div class="QuestionAsk-section">
+                                <div class="TagInput TagInput--empty">
+                                            <select id="topics_select" name="topics_selected" class="selectpicker show-menu-arrow form-control" multiple data-live-search="true" data-max-options="5" data-style="Input-wrapper Input-wrapper--spread Input-wrapper--large" title="添加话题"></select>
+                                            <!--
+                                            <div class="Input-after">
+                                            <svg class="Zi Zi--Search" fill="#afbdcf" viewBox="0 0 24 24" width="18" height="18"><path d="M17.068 15.58a8.377 8.377 0 0 0 1.774-5.159 8.421 8.421 0 1 0-8.42 8.421 8.38 8.38 0 0 0 5.158-1.774l3.879 3.88c.957.573 2.131-.464 1.488-1.49l-3.879-3.878zm-6.647 1.157a6.323 6.323 0 0 1-6.316-6.316 6.323 6.323 0 0 1 6.316-6.316 6.323 6.323 0 0 1 6.316 6.316 6.323 6.323 0 0 1-6.316 6.316z" fill-rule="evenodd"></path></svg>
+                                            </div>
+                                            -->
+                                </div>
+                            </div>
+            
+			          
+                                <!--<select id="topics_select" name="topics_selected" class="selectpicker show-menu-arrow form-control" multiple data-live-search="true" data-max-options="5" data-style="11btn-success">
+                                        <option value="苹果">苹果</option>
                                         <option data-icon="glyphicon-heart" value="菠萝">菠萝</option>
                                         <option data-divider="true" value="香蕉">香蕉</option>
                                         <option value="火龙果">火龙果</option>
-                                        <option value="梨子">梨子</option>
-                                        <option value="5">草莓</option>
-                                        <option value="6">哈密瓜</option>
-                                        <option value="7">椰子</option>
-                                        <option value="8">猕猴桃</option>
-                                        <option value="9">桃子</option>-->
-                                </select>
-                <input id="hide_for_submit" type="hidden" name="topics" value="null123">
-                <textarea name="detail" rows="5" cols="70" maxlength="400" placeholder="问题的详细描述(可选)"></textarea>
-			</div>
-			<div class="modal-footer">
-				<button type="submit" form="form_ask" class="btn btn-success btn-lg">
-					提交问题
-				</button>
-			</div>
-        </form>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
+                                </select>-->
+                            <input id="hide_for_submit" type="hidden" name="topics" value="null123">
+                
+                            <div class="QuestionAsk-section QuestionAsk-DetailSection">   
+                                                    问题描述（可选）：                            
+                
+                <!--
+                <div class="QuestionAsk-sectionHeaderRight">
+                <button class="Button Editable-control Button--plain" aria-label="加粗" data-tooltip="加粗" data-tooltip-position="bottom" type="button">
+                <svg class="Zi Zi--FormatBold" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M9 17.025V13h4.418c1.19 0 2.415.562 2.415 2.012s-1.608 2.013-2.9 2.013H9zM9 7h4.336c1 0 1.814.888 1.814 2 0 .89-.814 2-1.814 2H9V7zm8.192 1.899a3.893 3.893 0 0 0-3.888-3.889S9.334 5 8.167 5C7 5 7 6.167 7 6.167v11.666C7 19 8.167 19 8.167 19l5.572.01c2.333 0 4.231-1.86 4.231-4.148a4.122 4.122 0 0 0-1.77-3.372 3.873 3.873 0 0 0 .992-2.591z" fill-rule="evenodd"></path></svg>
+                </button>
+                <button class="Button Editable-control Button--plain" aria-label="插入图片" data-tooltip="插入图片" data-tooltip-position="bottom" type="button"><svg class="Zi Zi--InsertImage" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M21 17.444C21 18.3 20.1 19 19 19H5c-1.1 0-2-.7-2-1.556V6.556C3 5.7 3.9 5 5 5h14c1.1 0 2 .7 2 1.556v10.888zm-9.437-3.919a.5.5 0 0 1-.862.013l-1.26-2.065a.5.5 0 0 0-.861.012l-2.153 3.767a.5.5 0 0 0 .435.748h10.292a.5.5 0 0 0 .438-.741L14.573 9.78a.5.5 0 0 0-.872-.006l-2.138 3.75z" fill-rule="evenodd"></path></svg></button>
+                <button class="Button Editable-control Button--plain" aria-label="插入视频" data-tooltip="插入视频" data-tooltip-position="bottom" type="button"><svg class="Zi Zi--InsertVideo" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M10.546 15c-.466.273-.86.053-.86-.5V9.505c0-.565.385-.778.86-.501l4.278 2.497c.466.272.475.726 0 1.003L10.546 15zM5 5S3 5 3 7v10s0 2 2.002 2H19c2 0 2-2 2-2V7c0-2-2-2-2-2H5z" fill-rule="evenodd"></path></svg></button>
+                </div>
+                -->                
+                                <textarea id="summernote" name="content" 1rows="5" 1cols="70" 1maxlength="160"></textarea>              
+                            </div>
+                           
+                            <div class="ModalButtonGroup QuestionAsk-buttonGroup ModalButtonGroup--vertical">
+                                <button class="Button Button--primary Button--green" type="submit" form="form_ask">提交问题</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+		</div>
+        
+        <button data-dismiss="modal" aria-hidden="true" class="Button Modal-closeButton Button--plain close" aria-label="关闭" type="button">
+        <svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>
+        
+	</div>
 </div>
 <!--- div other--->
 <script src="{%static 'common/jquery.js' %}"></script>
@@ -334,7 +400,7 @@ function get_index_img(content){
 
 function remove_img(content){
     var imgReg=/<img.*?(?:>|\/>)/gi;
-    return content.replace(imgReg,"").replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,200);
+    return content.replace(imgReg,"").replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,150);
     //return content.replace(imgReg,"").replace(/<p>/gi,"").replace(/<\/p>/gi,"").replace(/(^\s*)|(\s*$)/g,"");
 }
 
@@ -377,7 +443,7 @@ function appendElement(ret)
                 
     var data3=' <div class="ContentItem AnswerItem">\
                     <h2 class="ContentItem-title">\
-                        <a href="/question/'+ret[i][0]+'/">'+ret[i][1]+'</a>\
+                        <a href="/question/'+ret[i][0]+'/?ans='+ret[i][4]+'">'+ret[i][1]+'</a>\
                     </h2>\
                     <div class="RichContent is-collapsed">\
                         <div class="RichContent-cover">\
@@ -392,10 +458,6 @@ function appendElement(ret)
                                 阅读全文\
                                 <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" style="height:16px;width:10px;" width="10" height="16" aria-hidden="true" data-reactid="258"><title data-reactid="259"></title><g data-reactid="260"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
                             </button>\
-                            <button class="Button ContentItem-less Button--plain is-hide" type="button">\
-                                收起\
-                                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
-                            </button>\
                         </div>\
                         <div class="ContentItem-actions">\
                             <span>\
@@ -403,6 +465,10 @@ function appendElement(ret)
                                     <svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+ret[i][10]+'\
                                 </button>\
                             </span>\
+                            <button class="Button ContentItem-less ContentItem-rightButton Button--plain is-hide" type="button">\
+                                <span class="RichContent-collapsedText">收起</span>\
+                                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
+                            </button>\
                         </div>\
                     </div>\
                 </div>\
@@ -415,15 +481,35 @@ function appendElement(ret)
     $('#QuestionItems').append(elementText);
     }
 }
-function check_content_more(){
+function check_content_collapse(){
+    $(".ContentItem-less").each(function(){
+        $(this).click(function(){
+            $(this).addClass("is-hide");
+            $(this).parent().siblings(".RichContent-inner").children(".less").removeClass("is-hide");
+            $(this).parent().siblings(".RichContent-inner").children(".more").addClass("is-hide");
+            $(this).parent().siblings(".RichContent-inner").children(".ContentItem-more").removeClass("is-hide");
+            $(this).parents(".RichContent").addClass("is-collapsed");
+            if("null"!=$(this).parent().siblings(".RichContent-cover").find("img").attr("src"))
+            {
+                $(this).parent().siblings(".RichContent-cover").removeClass("is-hide");
+            }
+        });
+    });
+}
+
+function check_content_expand(){
     $(".RichContent-inner").each(function(){
+        if("null"==$(this).siblings(".RichContent-cover").find("img").attr("src"))
+        {
+            $(this).siblings(".RichContent-cover").addClass("is-hide");
+        }
         $(this).click(function(){
             $(this).children(".less").addClass("is-hide");
             $(this).children(".more").removeClass("is-hide");
             $(this).children(".ContentItem-more").addClass("is-hide");
-            $(this).children(".ContentItem-less").removeClass("is-hide");
+            $(this).siblings(".ContentItem-actions").children(".ContentItem-less").removeClass("is-hide");
             $(this).parent().removeClass("is-collapsed");
-            $(this).prev(".RichContent-cover").remove();
+            $(this).siblings(".RichContent-cover").addClass("is-hide");
         });
     });
 }
@@ -438,7 +524,8 @@ function getMoreData() {
         appendElement(ret);
         //$('.bind_hover_card').popover();   
         check_popover_show();
-        check_content_more();
+        check_content_expand();
+        check_content_collapse();
     });
 } 
 
@@ -540,6 +627,21 @@ $('#topics_select').on('changed.bs.select', function (e) {
 });
  
 */
+
+$(document).ready(function() {
+    $('#summernote').summernote({
+    height:120,
+    lang:'zh-CN',
+    placeholder:'问题背景、条件等详细信息',
+    callbacks: {
+        onImageUpload: function(files){
+            img=sendFile(files[0]);
+            console.log(img);
+        }
+    }
+    });
+});
+
 </script>
 
 </body>

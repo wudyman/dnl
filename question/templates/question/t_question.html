@@ -6,11 +6,14 @@
     <link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
 </head>
-<body>
+<body class="Entry-body">
 
+<div>
+<header role="banner" class="Sticky AppHeader">
+<div class="AppHeader-inner">
 <div class="container">
-<header role="banner" data-za-module="TopNavBar" >
 <!-- react-empty: 1220 -->
 <div class="row">
 <div class="col-md-1">
@@ -58,70 +61,388 @@
 <!-- react-empty: 1239 -->
 </div>
 </div>
-</header>
-<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 53px;">
+</div>
 </div>
 
-        <!--------------------main---------------------->
-        <HR style="width:100%;">
-        <main role="main">
-        
+<div class="PageHeader"><div data-reactroot="" class="QuestionHeader-content"><div class="QuestionHeader-main"><h1 class="QuestionHeader-title">你见过的最美丽的短发女性角色是谁？</h1></div><div class="QuestionHeader-side" data-za-module="ToolBar" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;59214151&quot;}}}"><div class="QuestionButtonGroup"><button class="Button 1FollowButton Button--primary Button--blue" type="button"><!-- react-text: 7 -->关注问题<!-- /react-text --></button><button class="Button Button--blue" type="button"><svg viewBox="0 0 12 12" class="Icon Button-icon Icon--modify" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg><!-- react-text: 12 -->写回答<!-- /react-text --></button></div></div></div></div>
 
+</header>
+</div>
+
+<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 3px;">
+</div>
+
+
+        <!--------------------main---------------------->
+        <main role="main" class="App-main">
+  <div class="AppHeader">      
+        <div class="container">
         <div class="row">
         
-        <div class="TheQuestion col-md-8">
+        <div class="QuestionPage col-md-8">
         <div>
-            {% for topic in context_question.topics.all %}
-            <a class="TopicNav" href="/topic/{{topic.id}}/">{{topic.name}}</a>
-            {% endfor %}
+        <div class="QuestionStatus">
         </div>
-
-        <div id="QuestionItem" data-question-id="{{ context_question.id }}">
-            <div>{{ context_question.id }},{{ context_question.title }}</div>
-            <!--<div>提问者：{{ context_question.quizzer.username }}</div>-->
-            <div>
-                {% ifequal followed "true" %}
-                <button id="follow_button" class="btn btn-default" type="button" onclick="unfollow_question()">已关注</button>
-                {% else %}
-                <button id="follow_button" class="btn btn-success" type="button" onclick="follow_question()">关注问题</button>
-                {% endifequal %}
-                <button class="btn btn-primary" type="button" onclick="answer_question()">回答问题</button>
-                <button class="btn btn-info" type="button" onclick="showInvite()">邀请回答</button>
-            </div>
-        </div>
-        </div>
+        <div class="QuestionHeader">
+        <div class="QuestionHeader-content">
+        <div class="QuestionHeader-main">
         
-        <div id="AnswerItems">
-        <div class="col-md-8">
-        {% for answer in context_question.be_answers.all %}
-        <div class="AnswerFrame font-black">
-            <div>{{ answer.content|safe }}</div>
-            <div>回答者：{{answer.author.username}}</div>
-        </div>
+        <div class="QuestionHeader-tags">
+        <div class="QuestionHeader-topics">
         
-        <div>&nbsp;</div>
+        {% for topic in context_question.topics.all %}
+        <div class="Tag QuestionTopic">
+        <span class="Tag-content">
+        <a class="TopicLink" href="/topic/{{topic.id}}/">
+        <div class="Popover">
+        <div id="Popover-18750-61242-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-18750-61242-content" data-reactid="70">{{topic.name}}</div>
+        </div>
+        </a>
+        </span>
+        </div>
         {% endfor %}
+               
         </div>
         </div>
         
-        <div class="AnswerToolbar col-md-8" data-question="/ajax/question_answer/{{ context_question.id }}/">
+        <h1 class="QuestionHeader-title">{{ context_question.title }}</h1>
+        <div>
+        <div class="QuestionHeader-detail">
+        <div class="QuestionRichText QuestionRichText--collapsed">
+        <div>
+        <span class="RichText" itemprop="text">
+        </span>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+        <div class="QuestionHeader-side">
+        <div class="QuestionHeader-follow-status">
+        <div class="QuestionFollowStatus">
+        <div class="NumberBoard QuestionFollowStatus-counts">
+        <button class="Button NumberBoard-item Button--plain" type="button">
+        <div class="NumberBoard-name">关注者</div>
+        <div class="NumberBoard-value">15738</div>
+        </button>
+        <div class="NumberBoard-divider">
+        </div>
+        <div class="NumberBoard-item">
+        <div class="NumberBoard-name">被浏览</div>
+        <div class="NumberBoard-value">13704565</div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+        <div class="QuestionHeader-footer">
+        <div class="QuestionHeader-footer-inner">
+        <div class="QuestionHeader-main QuestionHeader-footer-main">
+        <div class="QuestionButtonGroup">
+        {% ifequal followed "true" %}
+        <button class="Button FollowButton Button--primary Button--default" data-question-followed="true" data-question-id="{{ context_question.id }}" type="button" onclick="follow_question()">已关注</button>
+        {% else %}
+        <button class="Button FollowButton Button--primary Button--blue" data-question-followed="false" data-question-id="{{ context_question.id }}" type="button" onclick="follow_question()">关注问题</button>
+        {% endifequal %}
+        <button class="Button Button--blue" type="button" onclick="answer_question()">
+        <svg viewBox="0 0 12 12" class="Icon Button-icon Icon--modify" style="height:16px;width:14px;" width="14" height="16" aria-hidden="true" data-reactid="123"><title data-reactid="124"></title><g data-reactid="125"><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g>
+        </svg>写回答</button>
+        </div>
+        
+        <div class="QuestionHeaderActions">
+        <div class="QuestionHeader-Comment">
+        <button class="Button Button--plain Button--withIcon Button--withLabel" type="button">
+        <span style="display:inline-flex;align-items:center;">
+                                &#8203;
+        <svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="132"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd" data-reactid="133"></path></svg>
+        </span>47 条评论
+        </button>
+        </div>
+        
+        <div class="Popover ShareMenu">
+        <div class="" id="Popover-18753-20337-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-18753-20337-content">
+        <button class="Button Button--plain Button--withIcon Button--withLabel" type="button">
+        <span style="display:inline-flex;align-items:center;">
+        &#8203;
+        <svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="141"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd" data-reactid="142"></path></svg>
+        </span>分享</button>
+        </div>
+        </div>
+        
+        <button class="Button Button--plain Button--withIcon Button--withLabel" type="button" onclick="showInvite()">
+        <span style="display:inline-flex;align-items:center;">
+        &#8203;
+        <svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="148"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd" data-reactid="149"></path></svg>
+        </span>邀请回答</button>
+        
+        <button class="Button Button--plain Button--withIcon Button--withLabel" type="button">
+        <span style="display:inline-flex;align-items:center;">&#8203;<svg class="Zi Zi--Report Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="154"><path d="M19.947 3.129c-.633.136-3.927.639-5.697.385-3.133-.45-4.776-2.54-9.949-.888-.997.413-1.277 1.038-1.277 2.019L3 20.808c0 .3.101.54.304.718a.97.97 0 0 0 .73.304c.275 0 .519-.102.73-.304.202-.179.304-.418.304-.718v-6.58c4.533-1.235 8.047.668 8.562.864 2.343.893 5.542.008 6.774-.657.397-.178.596-.474.596-.887V3.964c0-.599-.42-.972-1.053-.835z" fill-rule="evenodd" data-reactid="155"></path></svg>
+        </span>举报</button>
+        
+        <div class="Popover">
+        <button class="Button Button--plain Button--withIcon Button--iconOnly" aria-label="更多" type="button" id="Popover-18753-96203-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-18753-96203-content">
+        <span style="display:inline-flex;align-items:center;">&#8203;<svg class="Zi Zi--Dots Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="161"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill-rule="evenodd" data-reactid="162"></path></svg>
+        </span>
+        </button>
+        </div>
+        </div>
+        <div class="QuestionHeader-actions">
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <div>
+        <div>
+        <div class="Sticky" style="">
+        </div>
+        </div>
+        </div>
+        </div>
+   
+   </div>
+   </div>
+   </div>
+   </div>
+
+   <div class="Question-main">
+   <div class="Question-mainColumn">
+        <div class="container">
+        <div class="row">
+        <div class="col-md-8">
+        
+        <div class="Card QuestionAnswers-answerAdd AnswerToolbar is-hide" data-question="/ajax/question_answer/{{ context_question.id }}/">
+        <div class="AnswerAdd">
+        <div class="AnswerAdd-header">
+        <div class="AuthorInfo AnswerAdd-info">
+        <span class="UserLink AuthorInfo-avatarWrapper">
+        <img class="Avatar AuthorInfo-avatar" width="38" height="38" src="{{user.userprofile.avatar}}" srcset="{{user.userprofile.avatar}}" alt="{{user.username}}">
+        </span>
+        <div class="AuthorInfo-content">
+        <div class="AuthorInfo-head">
+        <span class="UserLink AuthorInfo-name">{{user.first_name}}</span>
+        </div>
+        <div class="AuthorInfo-detail">
+        <div class="AuthorInfo-badge">
+        <button class="Button ModifyButton AnswerAdd-topicBiosButton Button--link" type="button">
+        <svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>编辑话题经验</button>
+        </div>
+        </div>
+        
+        </div>
+        </div>
+        
+        <!--<button class="Button AnswerAdd-toggleAnonymous Button--plain" type="button">使用匿名身份回答</button>-->
+        
+        </div>
+        
+        <div>
         <!--<form action="/question/{{ context_question.id }}/" method="post">-->
         <!--{% csrf_token %}-->
-            <textarea id="summernote" name="content" rows1="5" cols1="70" maxlength1="160" placeholder="写回答..."></textarea>
+            <textarea id="summernote" name="content" 1rows="5" 1cols="70" 1maxlength="160" 1placeholder="写回答..."></textarea>
             <!--<div id="summernote" name="content"><p>Hello Summernote</p></div>-->
-        	<button type="button"  class="btn btn-success btn-lg" onclick="submitAnswer()">
+            <div>
+            <div class="Sticky AnswerForm-footer is-bottom">
+            <div class="AnswerForm-footerContent AnswerForm-container">
+            <div class="AnswerForm-status"></div>
+            <div class="AnswerForm-footerRight">
+            <!--<div class="Popover"><button class="Button Button--plain" type="button" id="Popover-29254-85237-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-29254-85237-content"><svg viewBox="0 0 20 20" class="Icon Icon--setting Icon--left" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M18.868 15.185c-.164.096-.315.137-.452.137-.123 0-1.397-.26-1.617-.233-1.355.013-1.782 1.275-1.836 1.74-.055.454 0 .893.19 1.304.138.29.125.577-.067.85-.863.893-2.165 1.016-2.357 1.016-.123 0-.247-.055-.356-.15-.11-.097-.685-1.14-1.07-1.47-1.303-.954-2.246-.328-2.63 0-.397.33-.67.7-.835 1.126-.07.18-.18.302-.33.37-1.354.426-2.918-.92-3.014-1.056-.082-.11-.123-.22-.123-.356-.014-.138.383-1.276.342-1.688-.342-1.9-1.836-1.687-2.096-1.673-.303.014-.604.068-.92.178-.205.056-.396.03-.588-.054-.888-.462-1.137-2.332-1.11-2.51.055-.315.192-.52.438-.604.425-.164.81-.452 1.15-.85.932-1.262.344-2.25 0-2.634-.34-.356-.725-.645-1.15-.81-.137-.04-.233-.15-.328-.315C-.27 6.07.724 4.95.978 4.733c.255-.22.6-.055.723 0 .426.164.878.22 1.344.15C4.7 4.636 4.784 3.14 4.81 2.908c.015-.247-.11-1.29-.136-1.4-.027-.123-.014-.22.027-.315C5.318.178 7.073 0 7.223 0c.178 0 .33.055.44.178.108.124.63 1.11 1 1.4.398.338 1.582.83 2.588.013.398-.273.96-1.288 1.083-1.412.123-.123.26-.178.384-.178 1.56 0 2.33 1.03 2.438 1.22.083.124.096.248.07.37-.03.152-.33 1.153-.262 1.606.366 1.537 1.384 1.742 1.89 1.783.494.027 1.645-.357 1.81-.344.164.014.315.083.424.206.535.31.85 1.715.905 2.14.027.233-.014.44-.11.562-.11.138-1.165.714-1.48 1.112-.855.982-.342 2.25-.068 2.606.26.37 1.22.905 1.288.96.15.137.26.302.315.494.146 1.413-.89 2.387-1.07 2.47zm-8.905-.535c.644 0 1.246-.123 1.822-.356.575-.248 1.082-.59 1.493-1.016.425-.425.754-.92 1-1.495.247-.562.357-1.18.357-1.81 0-.66-.11-1.262-.356-1.825-.248-.562-.577-1.056-1.002-1.48-.41-.427-.918-.756-1.493-1.003-.576-.233-1.178-.357-1.822-.357-.644 0-1.247.124-1.81.357-.56.247-1.067.576-1.478 1.002-.425.425-.768.92-1 1.48-.247.564-.37 1.167-.37 1.826 0 .644.123 1.248.37 1.81.232.563.575 1.07 1 1.495.424.426.917.768 1.48 1.016.56.233 1.164.356 1.808.356z"></path></g></svg>设置</button></div>-->
+            <button class="AnswerForm-submit  btn btn-success" type="button" onclick="submitAnswer()">提交回答</button>
+            </div>
+            </div>
+            </div>
+            </div>
+        	<!--<button type="button"  class="btn btn-success btn-lg" onclick="submitAnswer()">
 				提交回答
-			</button>
+			</button>-->
         <!--</form>-->
         </div>
-        
+        </div>
         </div>
         
+        <div class="Card">
+        <a class="QuestionMainAction" data-za-detail-view-element_name="ViewAll" href="/question/{{ context_question.id }}">查看全部回答</a>
+        </div>
+
+        <div class="Card AnswerCard">
+        <div class="QuestionAnswer-content">
+        <div class="ContentItem AnswerItem">
+        <div class="ContentItem-meta">
+        <div class="AnswerItem-meta AnswerItem-meta--related">
+        <div class="AuthorInfo">
+        <span class="UserLink AuthorInfo-avatarWrapper">
+        <div class="Popover">
+        <div id="Popover-43549-62593-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-43549-62593-content">
+        <a class="UserLink-link" data-za-detail-view-element_name="User" href="/er/{{push_answer.author.id}}">
+        <img class="Avatar AuthorInfo-avatar" width="38" height="38" src="{{push_answer.author.userprofile.avatar}}" srcset="{{push_answer.author.userprofile.avatar}}" alt="{{push_answer.author.username}}">
+        </a>
+        </div><!-- react-empty: 7388 -->
+        </div>
+        </span>
+        <div class="AuthorInfo-content">
+        <div class="AuthorInfo-head">
+        <span class="UserLink AuthorInfo-name">
+        <div class="Popover">
+        <div id="Popover-43549-81202-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-43549-81202-content">
+        <a class="UserLink-link" data-za-detail-view-element_name="User" href="/er/{{push_answer.author.id}}">{{push_answer.author.username}}</a>
+        </div>
+        <!-- react-empty: 7395 -->
+        </div>
+        </span>
+        </div>
+        <div class="AuthorInfo-detail">
+        <div class="AuthorInfo-badge">
+        <!-- react-empty: 7398 -->
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="AnswerItem-extraInfo">
+        <span class="Voters">
+        <button class="Button Button--plain" type="button">
+        <!-- react-text: 7402 -->1078 人赞同了该回答<!-- /react-text --></button><!-- react-empty: 7403 -->
+        </span>
+        </div>
+        </div>
+        </div>
+        <div class="RichContent RichContent--unescapable">
+        <div class="RichContent-inner">
+        <span class="RichText CopyrightRichText-richText" itemprop="text">
+        {{push_answer.content|safe}}
+        </span>
+        <!-- react-empty: 7413 -->
+        </div>
+        <div>
+        <div class="ContentItem-time">
+        <a target="_blank" href="/question/26495738/answer/264682739">
+        <span data-tooltip="发布于 昨天 01:05">
+        <!-- react-text: 7418 -->编辑于 <!-- /react-text --><!-- react-text: 7419 -->昨天 21:57<!-- /react-text -->
+        </span>
+        </a>
+        </div>
+        <div class="AnswerReward">
+        <!-- react-empty: 7907 --><!-- react-empty: 7422 -->
+        </div>
+        </div>
+        <div class="ContentItem-actions RichContent-actions">
+        <span>
+        <button class="Button VoteButton VoteButton--up" aria-label="赞同" type="button">
+        <svg viewBox="0 0 20 18" class="Icon VoteButton-upIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg><!-- react-text: 8097 -->1.1K<!-- /react-text --></button>
+        <button class="Button VoteButton VoteButton--down" aria-label="反对" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-downIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg></button>
+        </span>
+        <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;"><!-- react-text: 8104 -->&#8203;<!-- /react-text --><svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span><!-- react-text: 8107 -->471 条评论<!-- /react-text --></button>
+        <div class="Popover ShareMenu ContentItem-action"><div class="" id="Popover-19231-22447-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-19231-22447-content"><button class="Button Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;"><!-- react-text: 8112 -->&#8203;<!-- /react-text --><svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span><!-- react-text: 8115 -->分享<!-- /react-text -->
+        </button>
+        </div>
+        <!-- react-empty: 8116 --></div><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;"><!-- react-text: 8119 -->&#8203;<!-- /react-text --><svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span><!-- react-text: 8122 -->收藏<!-- /react-text -->
+        </button>
+        <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;"><!-- react-text: 8125 -->&#8203;<!-- /react-text --><svg class="Zi Zi--Heart Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2 8.437C2 5.505 4.294 3.094 7.207 3 9.243 3 11.092 4.19 12 6c.823-1.758 2.649-3 4.651-3C19.545 3 22 5.507 22 8.432 22 16.24 13.842 21 12 21 10.158 21 2 16.24 2 8.437z" fill-rule="evenodd"></path></svg></span><!-- react-text: 8128 -->感谢<!-- /react-text --></button><div class="Popover ContentItem-action">
+        <button class="Button Button--plain Button--withIcon Button--iconOnly" aria-label="更多" type="button" id="Popover-19231-12148-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-19231-12148-content"><span style="display: inline-flex; align-items: center;"><!-- react-text: 8132 -->&#8203;<!-- /react-text --><svg class="Zi Zi--Dots Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill-rule="evenodd"></path></svg></span>
+        </button><!-- react-empty: 8135 -->
+        </div>
+        <button class="Button ContentItem-action ContentItem-rightButton Button--plain" data-zop-retract-question="true" type="button"><span class="RichContent-collapsedText">收起</span><svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>
+        </button>
+        </div>
+        </div>
+        <!-- react-empty: 7473 --><!-- react-empty: 7908 --><!-- react-empty: 7475 --><!-- react-empty: 7476 --><!-- react-empty: 7909 --><!-- react-empty: 7478 -->
+        </div>
+        </div>
+        </div>
+
         
+        <div class="Card MoreAnswers">
+        <div class="List">
+        <div class="List-header">
+        <h4 class="List-headerText">更多回答</h4>
+        <div class="List-headerOptions">
+        </div>
+        </div>
+        
+        {% for answer in context_question.be_answers.all %}
+        <div class="List-item">
+        <div class="ContentItem AnswerItem">
+        <div class="ContentItem-meta">
+        <div class="AnswerItem-meta AnswerItem-meta--related">
+        <div class="AuthorInfo">
+        <span class="UserLink AuthorInfo-avatarWrapper">
+        <div class="Popover">
+        <div id="Popover-43577-86249-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-43577-86249-content">
+        <a class="UserLink-link" href="/er/{{answer.author.id}}">
+        <img class="Avatar AuthorInfo-avatar" width="38" height="38" src="{{answer.author.userprofile.avatar}}" srcset="{{answer.author.userprofile.avatar}}" alt="{{answer.author.username}}">
+        </a>
+        </div>
+        </div>
+        </span>
+        <div class="AuthorInfo-content">
+        <div class="AuthorInfo-head">
+        <span class="UserLink AuthorInfo-name">
+        <div class="Popover">
+        <div id="Popover-43577-65817-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-43577-65817-content">
+        <a class="UserLink-link" data-za-detail-view-element_name="User" href="/er/{{answer.author.id}}">{{answer.author.username}}</a>
+        </div>
+        </div>
+        </span>
+        </div>
+        <div class="AuthorInfo-detail">
+        <div class="AuthorInfo-badge">
+        <div class="RichText AuthorInfo-badgeText">{{answer.author.userprofile.mood}}</div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="AnswerItem-extraInfo">
+        <span class="Voters">
+        <button class="Button Button--plain" type="button">
+        <!-- react-text: 7512 -->5610 人赞同了该回答<!-- /react-text -->
+        </button>
+        </span>
+        </div>
+        </div>
+        </div>
+        <div class="RichContent is-collapsed RichContent--unescapable">
+        <div class="RichContent-inner" style="max-height: 400px;">
+        <span class="RichText CopyrightRichText-richText">
+        {{answer.content|safe}}
+        </span><!-- react-empty: 7523 -->
+        </div>
+        <button class="Button ContentItem-rightButton Button--plain" type="button"><!-- react-text: 7525 -->展开阅读全文<!-- /react-text --><svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button><div class="ContentItem-actions">
+        <span>
+        <button class="Button VoteButton VoteButton--up" aria-label="赞同" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-upIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg><!-- react-text: 7535 -->5.6K<!-- /react-text --></button><button class="Button VoteButton VoteButton--down" aria-label="反对" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-downIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg></button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;"><!-- react-text: 7542 -->&#8203;<!-- /react-text --><svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span><!-- react-text: 7545 -->746 条评论<!-- /react-text --></button>
+        <div class="Popover ShareMenu ContentItem-action">
+        <div class="" id="Popover-43582-73972-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-43582-73972-content"><button class="Button Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;"><!-- react-text: 7550 -->&#8203;<!-- /react-text --><svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span><!-- react-text: 7553 -->分享<!-- /react-text --></button></div><!-- react-empty: 7554 --></div><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;"><!-- react-text: 7557 -->&#8203;<!-- /react-text --><svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span><!-- react-text: 7560 -->收藏<!-- /react-text --></button>
+        <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;"><!-- react-text: 7563 -->&#8203;<!-- /react-text --><svg class="Zi Zi--Heart Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2 8.437C2 5.505 4.294 3.094 7.207 3 9.243 3 11.092 4.19 12 6c.823-1.758 2.649-3 4.651-3C19.545 3 22 5.507 22 8.432 22 16.24 13.842 21 12 21 10.158 21 2 16.24 2 8.437z" fill-rule="evenodd"></path></svg></span><!-- react-text: 7566 -->感谢<!-- /react-text --></button>
+        <div class="Popover ContentItem-action">
+        <button class="Button Button--plain Button--withIcon Button--iconOnly" aria-label="更多" type="button" id="Popover-43582-29429-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-43582-29429-content"><span style="display: inline-flex; align-items: center;"><!-- react-text: 7570 -->&#8203;<!-- /react-text --><svg class="Zi Zi--Dots Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill-rule="evenodd"></path></svg></span></button><!-- react-empty: 7573 --></div></div>
+        </div><!-- react-empty: 7574 --><!-- react-empty: 7910 --><!-- react-empty: 7576 --><!-- react-empty: 7577 --><!-- react-empty: 7911 --><!-- react-empty: 7579 --></div></div>
+        {% endfor %}
+        
+        </div>
+        </div>
+        
+
+        
+        <div class="Card">
+        <a class="QuestionMainAction" data-za-detail-view-element_name="ViewAll" href="/question/{{ context_question.id }}">查看全部回答</a>
+        </div>
+                
+        </div>
+                
+
+        
+
+        
+        </div>
+        </div>
+        </div>
+        </div>
+             
         </main>
         <!--------------------main end-------------------->
 
-</div>
+
 
 <!--- div other--->
 <!-- 模态框（Modal） -->
@@ -183,8 +504,9 @@
 <script src="{% static 'common/main.js' %}"></script>
     
 <script>
-function appendElement(ret)
+function appendAnswerElement(ret)
 {
+    alert("appendAnswerElement");
 }
 function submitAnswer()
 {
@@ -200,10 +522,16 @@ function submitAnswer()
         contentType:false,
         processData:false,
         success:function(ret){
-            appendElement(ret);
+            appendAnswerElement(ret);
         }
     });
 }
+
+function answer_question()
+{
+    $(".AnswerToolbar").removeClass("is-hide");
+}
+
 function invite()
 {
     $(".invite").each(function(index,element){
@@ -254,19 +582,24 @@ function showInvite()
 
 function follow_question()
 {
-var question_id=$("#QuestionItem").attr("data-question-id");
-$.get("/ajax/question_follow/1/"+question_id+"/",function(ret){
-    $("#follow_button").removeClass("btn-success").addClass("btn-default").attr("onclick","unfollow_question()").text("已关注");
-});
+var question_id=$(".FollowButton").attr("data-question-id");
+if("true"==$(".FollowButton").attr("data-question-followed"))
+{
+    $.get("/ajax/question_follow/0/"+question_id+"/",function(ret){
+        $(".FollowButton").removeClass("Button--default").addClass("Button--blue").text("关注问题");
+        $(".FollowButton").attr("data-question-followed","false");
+    });
+}
+else
+{
+    $.get("/ajax/question_follow/1/"+question_id+"/",function(ret){
+        $(".FollowButton").removeClass("Button--blue").addClass("Button--default").text("已关注");
+        $(".FollowButton").attr("data-question-followed","true");
+    });
+}
 }
 
-function unfollow_question()
-{
-var question_id=$("#QuestionItem").attr("data-question-id");
-$.get("/ajax/question_follow/0/"+question_id+"/",function(ret){
-    $("#follow_button").removeClass("btn-default").addClass("btn-success").attr("onclick","follow_question()").text("关注问题");
-});
-}
+
 
 function sendFile(file){
     data=new FormData();
@@ -286,6 +619,7 @@ function sendFile(file){
 }
 $(document).ready(function() {
     $('#summernote').summernote({
+    height:200,
     lang:'zh-CN',
     placeholder:'写回答...',
     callbacks: {
