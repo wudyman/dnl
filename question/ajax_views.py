@@ -13,18 +13,6 @@ import time
 from PIL import Image
 
 @csrf_exempt
-def get_topics(request):
-    topics=Topic.objects.all()
-    topic_list=[]
-    for topic in topics:
-        temp=[]
-        temp.append(topic.id)
-        temp.append(topic.name)
-        topic_list.append(temp)
-    to_json=json.dumps(topic_list)
-    return HttpResponse(to_json,content_type='application/json')
-
-@csrf_exempt
 def get_questions(request,order,start,end):
     questions=Question.objects.order_by('-pub_date')[int(start):int(end)]
     question_list=[]
@@ -81,6 +69,74 @@ def answer_question(request,question_id):
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
+def get_topics(request):
+    topics=Topic.objects.all()
+    topic_list=[]
+    for topic in topics:
+        temp=[]
+        temp.append(topic.id)
+        temp.append(topic.name)
+        topic_list.append(temp)
+    to_json=json.dumps(topic_list)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def get_topicinfo(request,topic_id):
+    topic=get_object_or_404(Topic,pk=topic_id)
+    to_json='fail'
+    if topic:
+        temp=[]
+        temp.append(topic.id)#0
+        temp.append(topic.name)#1
+        temp.append(topic.avatar)#2
+        temp.append(topic.question_nums)#3
+        temp.append(topic.follower_nums)#4
+        user=request.user
+        if user:
+            if user.followtopics.filter(pk=topic.pk).exists():
+                temp.append(1)#5
+            else:
+                temp.append(0)#5
+        else:
+            temp.append(0)#5
+        to_json=json.dumps(temp)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def follow_topic(request,follow,topic_id):
+    topic=get_object_or_404(Topic,pk=topic_id)
+    follower=request.user #get_object_or_404(User,username=request.user)
+    #if '1'==follow:
+    if int(follow):
+        topic.follower.add(follower)
+    else:
+        topic.follower.remove(follower)
+    topic.follower_nums=topic.follower.count()
+    topic.save()
+    temp=topic.follower_nums
+    to_json=json.dumps(temp)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def get_topic_adept(request):
+    #inviter=request.user
+    topics=request.POST.get('topics').split(';')
+    topics.pop()
+    print(topics)
+    adepts=User.objects.all()
+    adept_list=[]
+    for adept in adepts:
+        temp=[]
+        temp.append(adept.id)
+        temp.append(adept.first_name)
+        temp.append(adept.userprofile.avatar)
+        temp.append(adept.userprofile.mood)
+        #temp.append(inviter.id)
+        adept_list.append(temp)
+    to_json=json.dumps(adept_list)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
 def like_answer(request,answer_id):
     answer=get_object_or_404(Answer,pk=answer_id)
     user=request.user #get_object_or_404(User,username=request.user)
@@ -101,20 +157,27 @@ def like_answer(request,answer_id):
     return response
 
 @csrf_exempt
-def follow_topic(request,follow,topic_id):
-    topic=get_object_or_404(Topic,pk=topic_id)
-    follower=request.user #get_object_or_404(User,username=request.user)
-    #if '1'==follow:
-    if int(follow):
-        topic.follower.add(follower)
-    else:
-        topic.follower.remove(follower)
-    topic.follower_nums=topic.follower.count()
-    topic.save()
-    temp=topic.follower_nums
-    to_json=json.dumps(temp)
-    return HttpResponse(to_json,content_type='application/json')
-    
+def get_erinfo(request,erid):
+    er=get_object_or_404(User,pk=erid)
+    user=request.user
+    if er:
+        temp=[]
+        temp.append(er.id) #0
+        temp.append(er.first_name) #1
+        temp.append(er.userprofile.avatar) #2
+        temp.append(er.userprofile.mood) #3
+        temp.append(er.answers.count()) #4
+        temp.append(er.userprofile.follower_nums) #5
+        if user:
+            if user.followto.filter(pk=er.userprofile.pk).exists():
+                temp.append(1)#6
+            else:
+                temp.append(0)#6
+        else:
+            temp.append(0)#6
+        to_json=json.dumps(temp)
+        return HttpResponse(to_json,content_type='application/json')
+        
 @csrf_exempt
 def follow_er(request,follow,er_id):
     er=get_object_or_404(User,pk=er_id)
@@ -166,63 +229,22 @@ def upload_img(request):
         temp='/'+name
         to_json=json.dumps(temp)
         return HttpResponse(to_json,content_type='application/json')
-    
-@csrf_exempt
-def get_erinfo(request,erid):
-    er=get_object_or_404(User,pk=erid)
-    user=request.user
-    if er:
-        temp=[]
-        temp.append(er.id) #0
-        temp.append(er.first_name) #1
-        temp.append(er.userprofile.avatar) #2
-        temp.append(er.userprofile.mood) #3
-        temp.append(er.answers.count()) #4
-        temp.append(er.userprofile.follower_nums) #5
-        if user:
-            if user.followto.filter(pk=er.userprofile.pk).exists():
-                temp.append(1)#6
-            else:
-                temp.append(0)#6
-        else:
-            temp.append(0)#6
-        to_json=json.dumps(temp)
-        return HttpResponse(to_json,content_type='application/json')
-
-@csrf_exempt
-def get_topic_adept(request):
-        #inviter=request.user
-        topics=request.POST.get('topics').split(';')
-        topics.pop()
-        print(topics)
-        adepts=User.objects.all()
-        adept_list=[]
-        for adept in adepts:
-            temp=[]
-            temp.append(adept.id)
-            temp.append(adept.first_name)
-            temp.append(adept.userprofile.avatar)
-            temp.append(adept.userprofile.mood)
-            #temp.append(inviter.id)
-            adept_list.append(temp)
-        to_json=json.dumps(adept_list)
-        return HttpResponse(to_json,content_type='application/json')
-        
+           
 @csrf_exempt
 def invite(request):
-        q=request.GET.get('question')
-        #f=request.GET.get('from')
-        t=request.GET.get('to')
-        
-        inviter=request.user
-        #inviter.sendinvite.add(invitation)
-                
-        invitee=get_object_or_404(User,pk=t)
-        #invitee.receiveinvite.add(invitation)
-        
-        invitation=Invite(inviter=inviter,invitee=invitee,question_id=q)
-        invitation.save()
-        
-        temp='success'
-        to_json=json.dumps(temp)
-        return HttpResponse(to_json,content_type='application/json')
+    q=request.GET.get('question')
+    #f=request.GET.get('from')
+    t=request.GET.get('to')
+
+    inviter=request.user
+    #inviter.sendinvite.add(invitation)
+            
+    invitee=get_object_or_404(User,pk=t)
+    #invitee.receiveinvite.add(invitation)
+
+    invitation=Invite(inviter=inviter,invitee=invitee,question_id=q)
+    invitation.save()
+
+    temp='success'
+    to_json=json.dumps(temp)
+    return HttpResponse(to_json,content_type='application/json')
