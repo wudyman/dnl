@@ -150,6 +150,7 @@ form input[type=password],
 form input[type=submit] {
 }
 
+/*
 form input[type=text],
 form input[type=password] {
   width: 100%;
@@ -161,6 +162,7 @@ form input[type=password] {
   color: #e74c3c;
   outline: none;
 }
+*/
 
 .dark-box {
   background: #5e0400;

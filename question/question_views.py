@@ -64,6 +64,7 @@ class IndexView(LoginRequiredMixin,generic.ListView):
                 topic_array=topic_str.split(':')
                 topic=get_object_or_404(Topic,id=topic_array[0])
                 topic.question.add(question)
+                topic.question_nums=topic.question.count()
                 topic.save()
             result='/question/'+str(question.id)+'/'
             return HttpResponseRedirect(result)
