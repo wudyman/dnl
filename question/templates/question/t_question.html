@@ -28,38 +28,73 @@
 <a class="AppHeader-navItem" href="/explore">发现</a>
 <a class="AppHeader-navItem" href="/topic">话题</a>
 </nav>
+
+<!--
 <div class="SearchBar col-md-6" role="search">
 <input type="text" maxlength="100" value="" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-88417-181--1" id="Popover-88417-61448-toggle" aria-haspopup="true" aria-owns="Popover-88417-61448-content" class="Input" placeholder="搜索你感兴趣的内容…">
 <button class="Button SearchBar-searchIcon Button--primary" aria-label="搜索" type="button">
 <svg viewBox="0 0 16 16" class="Icon Icon--search" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g>
 </svg>
 </button>
-<!-- react-empty: 29 -->
-<button class="Button QuestionAskButton SearchBar-askButton btn-success" type="button" data-toggle="modal" data-target="#askModal">
-<!-- react-text: 31 -->提问<!-- /react-text --><!-- react-empty: 32 -->
+<button class="Button QuestionAskButton SearchBar-askButton btn-success" type="button" data-toggle="modal" data-target="#askModal">提问</button>
+</div>
+-->
+
+<div class="SearchBar col-md-6" role="search">
+<div class="SearchBar-toolWrapper">
+<form class="SearchBar-tool">
+<div>
+<div class="1Popover">
+<div class="SearchBar-input Input-wrapper Input-wrapper--grey">
+<input type="text" maxlength="120" value="" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-41236-89421--1" id="Popover-41236-42847-toggle" aria-haspopup="true" aria-owns="Popover-41236-42847-content" class="Input" placeholder="搜索你感兴趣的内容…">
+<div class="Input-after">
+<button class="Button SearchBar-searchIcon Button--primary" aria-label="搜索" type="button" data-reactid="25"><svg viewBox="0 0 16 16" class="Icon Icon--search" style="height:16px;width:16px;" width="16" height="16" aria-hidden="true" data-reactid="26"><title data-reactid="27"></title><g data-reactid="28"><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg>
 </button>
 </div>
+</div>
+</div>
+</div>
+</form>
+</div>
+<button class="1Button QuestionAskButton SearchBar-askButton 1Button--primary 1Button--green btn btn-success" type="button" data-toggle="modal" data-target="#askModal">提问</button>
+</div>
+
 <div class="AppHeader-userInfo col-md-2">
-<button class="Button PushNotifications-icon Button--plain" type="button" id="Popover-88478-67360-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-67360-content">
+<div class="1Popover PushNotifications AppHeader-notifications">
+<button class="1Button PushNotifications-icon 1Button--plain" type="button" id="Popover-88478-67360-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-67360-content">
 <svg viewBox="0 0 20 22" class="Icon Icon--news" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M2.502 14.08C3.1 10.64 2 3 8.202 1.62 8.307.697 9.08 0 10 0s1.694.697 1.797 1.62C18 3 16.903 10.64 17.497 14.076c.106 1.102.736 1.855 1.7 2.108.527.142.868.66.793 1.206-.075.546-.542.95-1.09.943H1.1C.55 18.34.084 17.936.01 17.39c-.075-.547.266-1.064.794-1.206.963-.253 1.698-1.137 1.698-2.104zM10 22c-1.417.003-2.602-1.086-2.73-2.51-.004-.062.02-.124.063-.17.043-.045.104-.07.166-.07h5c.063 0 .124.025.167.07.044.046.067.108.063.17-.128 1.424-1.313 2.513-2.73 2.51z"></path></g>
 </svg>
-<!-- react-empty: 1226 -->
 </button>
-<!-- react-empty: 1227 -->
+</div>
 
-<button class="Button Messages-icon Button--plain" type="button" id="Popover-88478-87650-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-87650-content">
+<div class="1Popover Messages AppHeader-messages">
+<button class="1Button Messages-icon 1Button--plain" type="button" id="Popover-88478-87650-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-87650-content">
 <svg viewBox="0 0 20 20" class="Icon Icon--message" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path><path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path></g>
 </svg>
 </button>
-<!-- react-empty: 1234 -->
-
-<!-- react-empty: 42 -->
-
-<button class="Button AppHeader-profileEntry Button--plain" type="button" id="Popover-88478-48941-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-48941-content">
-<img class="Avatar AppHeader-profileAvatar" width="30" height="30" src="https://pic1.zhimg.com/da8e974dc_is.jpg" srcset="https://pic1.zhimg.com/da8e974dc_im.jpg 2x">
-</button>
-<!-- react-empty: 1239 -->
 </div>
+
+<div class="AppHeader-profile">
+<div class="1Popover AppHeader-menu">
+<span class="dropdown">
+<img class="Avatar AppHeader-profileAvatar CPopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="/media/img/default.jpg" srcset="/media/img/default.jpg 2x">
+<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+<li>
+<a id="action-1" href="/er/{{user.id}}">Homepage</a>
+</li>
+<li>
+<a href="#">Setting</a>
+</li>
+<li>
+<a href="/exit/">Exit</a>
+</li>   
+</ul>
+</span>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 </div>
@@ -73,16 +108,14 @@
 </div>
 
 
-        <!--------------------main---------------------->
-        <main role="main" class="App-main">
-  <div class="AppHeader">      
-        <div class="container">
-        <div class="row">
+<!--------------------main---------------------->
+<main role="main" class="App-main">
         
-        <div class="QuestionPage col-md-8">
-        <div>
+<div class="QuestionPage">
+    <div>
         <div class="QuestionStatus">
         </div>
+        
         <div class="QuestionHeader">
         <div class="QuestionHeader-content">
         <div class="QuestionHeader-main">
@@ -195,24 +228,17 @@
         </div>
         </div>
         </div>
-        <div>
-        <div>
+
         <div class="Sticky" style="">
         </div>
-        </div>
-        </div>
-        </div>
-   
-   </div>
-   </div>
-   </div>
-   </div>
 
-   <div class="Question-main">
-   <div class="Question-mainColumn">
-        <div class="container">
+    </div>
+
+    <div class="Question-main container">
         <div class="row">
-        <div class="col-md-8">
+   <div class="Question-mainColumn col-md-8">
+
+        
         
         <div class="Card QuestionAnswers-answerAdd AnswerToolbar is-hide" data-question="/ajax/question_answer/{{ context_question.id }}/">
         <div class="AnswerAdd">
@@ -432,15 +458,14 @@
                 
 
         
-
+                <div class="Question-sideColumn Question-sideColumn--sticky col-md-3" data-za-module="RightSideBar" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;member_hash_id&quot;:&quot;3de6e258d9f053c2c06834ac97db07cb&quot;}}}"><div><div class="Sticky"><!-- react-empty: 360 --><!-- react-empty: 361 --><div class="Card AnswerAuthor"><div class="Card-header AnswerAuthor-title"><div class="Card-headerText">关于作者</div></div><div class="Card-section"><div class="AnswerAuthor-user"><div class="AnswerAuthor-user-avatar"><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/ha-wei-18-55"><img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="https://pic1.zhimg.com/v2-ae48ed11aeed10fed8b71347bbc3dc20_im.jpg" srcset="https://pic1.zhimg.com/v2-ae48ed11aeed10fed8b71347bbc3dc20_xl.jpg 2x" alt="哈维"></a></span></div><div class="AnswerAuthor-user-content"><div class="AnswerAuthor-user-name"><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/ha-wei-18-55">哈维</a></span></div><div class="AnswerAuthor-user-headline"><div class="RichText">微信一对一网课英语老师 公众号：哈维的笔记 （详情见个人资料）</div></div></div></div></div><div class="Card-section"></div><div class="Card-section"><div class="AnswerAuthor-counts"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" data-za-detail-view-element_name="Answer" type="button" href="/people/ha-wei-18-55/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">314</div></a><a class="Button NumberBoard-item Button--plain" data-za-detail-view-element_name="Post" type="button" href="/people/ha-wei-18-55/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">10</div></a><a class="Button NumberBoard-item Button--plain" data-za-detail-view-element_name="Follower" type="button" href="/people/ha-wei-18-55/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value">790</div></a></div></div><div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--blue" type="button"><svg viewBox="0 0 12 12" class="Icon FollowButton-icon Icon--plus" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M6.994 4.994s-.008-3.593 0-4C6.97-.33 4.97-.33 4.996.994c-.025 1.275 0 4 0 4H1C-.334 5-.334 7 1 7c1.332 0 3.996-.006 3.996-.006v4c0 1.346 2.004 1.346 1.998 0-.006-1.347 0-4 0-4S9.658 7 10.997 7c1.338 0 1.338-2-.007-2.006H6.994z"></path></g></svg><!-- react-text: 767 -->关注他<!-- /react-text --></button><button class="Button" type="button"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span><!-- react-empty: 773 --></button></div></div></div><div class="Card"><div class="Card-header AnswerInfo-title"><div class="Card-headerText"><!-- react-text: 670 -->被收藏<!-- /react-text --><!-- react-text: 671 --> <!-- /react-text --><button class="Button Button--plain" type="button"><!-- react-text: 673 -->8<!-- /react-text --></button><!-- react-text: 674 --> <!-- /react-text --><!-- react-text: 675 -->次<!-- /react-text --></div></div><div class="Card-section AnswerInfo-favlists" data-za-module="CollectionList" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:null}}"><div class="AnswerInfo-favlist" data-za-module="CollectionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Collection&quot;,&quot;token&quot;:&quot;202578710&quot;,&quot;follower_num&quot;:0,&quot;author_member_hash_id&quot;:&quot;5cac2a2fcbeabf8f8223b1125863c30f&quot;}}}"><div class="AnswerInfo-favlist-title"><a class="Button Button--plain" target="_blank" data-za-detail-view-element_name="Collection" title="哈哈" href="/collection/202578710" type="button"><!-- react-text: 680 -->哈哈<!-- /react-text --></a></div><div class="AnswerInfo-favlist-author"><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="Author" target="_blank" href="/people/superrui-19">Super睿</a></span><!-- react-text: 684 --> 创建<!-- /react-text --></div><div class="AnswerInfo-favlist-followers"><!-- react-text: 686 -->0<!-- /react-text --><!-- react-text: 687 --> 人关注<!-- /react-text --></div></div><div class="AnswerInfo-favlist" data-za-module="CollectionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Collection&quot;,&quot;token&quot;:&quot;171422221&quot;,&quot;follower_num&quot;:0,&quot;author_member_hash_id&quot;:&quot;815f4107f80f3740b7a76328ee6ccd4e&quot;}}}"><div class="AnswerInfo-favlist-title"><a class="Button Button--plain" target="_blank" data-za-detail-view-element_name="Collection" title="(⊙o⊙)…" href="/collection/171422221" type="button"><!-- react-text: 691 -->(⊙o⊙)…<!-- /react-text --></a></div><div class="AnswerInfo-favlist-author"><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="Author" target="_blank" href="/people/bai-ye-dai-nong">白夜黛侬</a></span><!-- react-text: 695 --> 创建<!-- /react-text --></div><div class="AnswerInfo-favlist-followers"><!-- react-text: 697 -->0<!-- /react-text --><!-- react-text: 698 --> 人关注<!-- /react-text --></div></div><div class="AnswerInfo-favlist" data-za-module="CollectionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Collection&quot;,&quot;token&quot;:&quot;158669303&quot;,&quot;follower_num&quot;:0,&quot;author_member_hash_id&quot;:&quot;ed578aadb0a179e1cea4008431344bbd&quot;}}}"><div class="AnswerInfo-favlist-title"><a class="Button Button--plain" target="_blank" data-za-detail-view-element_name="Collection" title="。" href="/collection/158669303" type="button"><!-- react-text: 702 -->。<!-- /react-text --></a></div><div class="AnswerInfo-favlist-author"><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="Author" target="_blank" href="/people/year-19">黄少天</a></span><!-- react-text: 706 --> 创建<!-- /react-text --></div><div class="AnswerInfo-favlist-followers"><!-- react-text: 708 -->0<!-- /react-text --><!-- react-text: 709 --> 人关注<!-- /react-text --></div></div><div class="AnswerInfo-favlist" data-za-module="CollectionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Collection&quot;,&quot;token&quot;:&quot;170871923&quot;,&quot;follower_num&quot;:0,&quot;author_member_hash_id&quot;:&quot;a4f34ce2979e4e88df9fd81f7edbd83b&quot;}}}"><div class="AnswerInfo-favlist-title"><a class="Button Button--plain" target="_blank" data-za-detail-view-element_name="Collection" title="故事" href="/collection/170871923" type="button"><!-- react-text: 713 -->故事<!-- /react-text --></a></div><div class="AnswerInfo-favlist-author"><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="Author" target="_blank" href="/people/wang-ai-fu-93">王艾夫</a></span><!-- react-text: 717 --> 创建<!-- /react-text --></div><div class="AnswerInfo-favlist-followers"><!-- react-text: 719 -->0<!-- /react-text --><!-- react-text: 720 --> 人关注<!-- /react-text --></div></div><div class="AnswerInfo-favlist" data-za-module="CollectionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Collection&quot;,&quot;token&quot;:&quot;95990408&quot;,&quot;follower_num&quot;:0,&quot;author_member_hash_id&quot;:&quot;d41ff2a5c824c3b7a1b1afc23c85fd0f&quot;}}}"><div class="AnswerInfo-favlist-title"><a class="Button Button--plain" target="_blank" data-za-detail-view-element_name="Collection" title="喵喵喵喵喵？" href="/collection/95990408" type="button"><!-- react-text: 724 -->喵喵喵喵喵？<!-- /react-text --></a></div><div class="AnswerInfo-favlist-author"><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="Author" target="_blank" href="/people/steve-liu-98">Steve Liu</a></span><!-- react-text: 728 --> 创建<!-- /react-text --></div><div class="AnswerInfo-favlist-followers"><!-- react-text: 730 -->0<!-- /react-text --><!-- react-text: 731 --> 人关注<!-- /react-text --></div></div></div><!-- react-empty: 732 --><!-- react-empty: 733 --></div><!-- react-empty: 364 --><div class="Card" data-za-module="RelatedQuestions" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:null}}"><div class="Card-header SimilarQuestions-title"><div class="Card-headerText">相关问题</div></div><div class="Card-section SimilarQuestions-list"><div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;22360160&quot;,&quot;author_member_hash_id&quot;:&quot;aa12047f1223c7092e3a2ab10bbdb1f6&quot;}}}"><meta itemprop="name" content="如何评价电影《等风来》？"><meta itemprop="url" content="https://www.zhihu.com/question/22360160"><meta itemprop="answerCount" content="194"><meta itemprop="zhihu:followerCount" content="992"><a class="Button Button--plain" target="_blank" type="button" href="/question/22360160"><!-- react-text: 408 -->如何评价电影《等风来》？<!-- /react-text --></a><!-- react-text: 409 --> <!-- /react-text --><!-- react-text: 410 -->194<!-- /react-text --><!-- react-text: 411 --> 个回答<!-- /react-text --></div><div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;20688873&quot;,&quot;author_member_hash_id&quot;:&quot;3abd7c80c7329104dd38639c36c9d828&quot;}}}"><meta itemprop="name" content="有哪些关于王家卫的趣事？"><meta itemprop="url" content="https://www.zhihu.com/question/20688873"><meta itemprop="answerCount" content="111"><meta itemprop="zhihu:followerCount" content="10860"><a class="Button Button--plain" target="_blank" type="button" href="/question/20688873"><!-- react-text: 418 -->有哪些关于王家卫的趣事？<!-- /react-text --></a><!-- react-text: 419 --> <!-- /react-text --><!-- react-text: 420 -->111<!-- /react-text --><!-- react-text: 421 --> 个回答<!-- /react-text --></div><div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;21536276&quot;,&quot;author_member_hash_id&quot;:&quot;028c1a112074b9faefbcfa3d8cbbf6b3&quot;}}}"><meta itemprop="name" content="怎样把电影票在影院里卖得更贵？"><meta itemprop="url" content="https://www.zhihu.com/question/21536276"><meta itemprop="answerCount" content="32"><meta itemprop="zhihu:followerCount" content="377"><a class="Button Button--plain" target="_blank" type="button" href="/question/21536276"><!-- react-text: 428 -->怎样把电影票在影院里卖得更贵？<!-- /react-text --></a><!-- react-text: 429 --> <!-- /react-text --><!-- react-text: 430 -->32<!-- /react-text --><!-- react-text: 431 --> 个回答<!-- /react-text --></div><div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;21494802&quot;,&quot;author_member_hash_id&quot;:&quot;89e621346acf976a36e15486faf76b73&quot;}}}"><meta itemprop="name" content="如何评价《喜剧之王》这部电影？"><meta itemprop="url" content="https://www.zhihu.com/question/21494802"><meta itemprop="answerCount" content="327"><meta itemprop="zhihu:followerCount" content="5952"><a class="Button Button--plain" target="_blank" type="button" href="/question/21494802"><!-- react-text: 438 -->如何评价《喜剧之王》这部电影？<!-- /react-text --></a><!-- react-text: 439 --> <!-- /react-text --><!-- react-text: 440 -->327<!-- /react-text --><!-- react-text: 441 --> 个回答<!-- /react-text --></div><div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;21437495&quot;,&quot;author_member_hash_id&quot;:&quot;f063857548e1ea1de94d74ead8746f26&quot;}}}"><meta itemprop="name" content="《被嫌弃的松子的一生》中的松子要怎么做才能改变命运？"><meta itemprop="url" content="https://www.zhihu.com/question/21437495"><meta itemprop="answerCount" content="810"><meta itemprop="zhihu:followerCount" content="13584"><a class="Button Button--plain" target="_blank" type="button" href="/question/21437495"><!-- react-text: 448 -->《被嫌弃的松子的一生》中的松子要怎么做才能改变命运？<!-- /react-text --></a><!-- react-text: 449 --> <!-- /react-text --><!-- react-text: 450 -->810<!-- /react-text --><!-- react-text: 451 --> 个回答<!-- /react-text --></div></div></div><div class="Card" data-za-module="ContentList" data-za-detail-view-path-module_name="私家课 · Live 推荐" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:null},&quot;attached_info_bytes&quot;:&quot;MiAyZjM0OGU3YjU5MmI0NDVjOGM3ZDY1YjA2ODQ0OWNlMQ==&quot;}"><div class="Card-header RelatedLives-title"><div class="Card-headerText">私家课 · Live 推荐</div></div><div class="Card-section RelatedLives-list"><a class="Button RelatedLives-item Button--plain" target="_blank" href="/remix/albums/908274938669043712" type="button" data-za-module="RemixAlbumItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;RemixAlbum&quot;,&quot;id&quot;:&quot;908274938669043712&quot;}}}"><img class="RelatedLives-image" src="https://pic1.zhimg.com/90/v2-c65d71fcedb7190de0102e7993da2fd4_250x0.jpg" alt="live"><div class="RelatedLives-content"><div class="RelatedLives-subject RelatedLives-subject-two">25 节课学透比特币与区块链</div><div class="RelatedLives-meta"><div class="RelatedLives-remixMeta"><div><!-- react-text: 786 -->共 <!-- /react-text --><!-- react-text: 787 -->26<!-- /react-text --><!-- react-text: 788 --> 节课<!-- /react-text --></div><button class="Button RelatedLives-remixListen Button--plain" type="button"><!-- react-text: 790 -->试听<!-- /react-text --></button></div></div></div></a><a class="Button RelatedLives-item Button--plain" target="_blank" href="/lives/specials/907199531949629440" type="button" data-za-module="LiveAlbumItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;LiveAlbum&quot;,&quot;id&quot;:&quot;907199531949629440&quot;}}}"><img class="RelatedLives-image" src="https://pic4.zhimg.com/90/v2-80d4159dcd04d9488c04505f3d848757_250x0.jpg" alt="live"><div class="RelatedLives-content"><div class="RelatedLives-subject RelatedLives-subject-two">11.11 剁手指南，蓝心帮你科学选家电</div><div class="RelatedLives-meta">5 场 Live, 2551 次参与</div></div></a><a class="Button RelatedLives-item Button--plain" target="_blank" href="/lives/752228199001247744" type="button" data-za-module="LiveItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Live&quot;,&quot;id&quot;:&quot;752228199001247744&quot;,&quot;author_member_hash_id&quot;:&quot;2d6717f820b2fc9e6450b0a3ff7542eb&quot;}}}"><img class="RelatedLives-image" src="https://pic3.zhimg.com/90/1dc4b5dd6_250x0.jpg" alt="live"><div class="RelatedLives-content"><div class="RelatedLives-subject">正装入门：先穿对，再穿贵</div><div class="RelatedLives-description">葛巾</div><div class="RelatedLives-meta"><div class="RelatedLives-scoreWrapper"><div class="Rating"><svg viewBox="0 0 15 15" class="Icon Icon--rating" width="15" height="15" aria-hidden="true" style="margin-left: 0px; height: 15px; width: 15px;"><title></title><g><g fill-rule="evenodd">     <path fill="#ffab2e" d="M10.925 14.302c.173.13.408.13.58-.002.174-.13.244-.362.175-.572l-1.323-4.296 3.435-2.456c.175-.13.25-.36.185-.572-.064-.212-.253-.357-.468-.36H9.275L7.96 1.754c-.064-.21-.21-.354-.46-.354-.14 0-1.027 3.53-.988 6.32.04 2.788.98 3.85.98 3.85l3.433 2.732z"></path>     <path fill="#ffab2e" d="M7.5 1.4c-.25 0-.41.144-.474.354l-1.318 4.29H1.49c-.214.003-.403.148-.467.36-.065.212.01.442.185.572l3.42 2.463-1.307 4.286c-.066.21.004.44.176.572.172.13.407.132.58.003l3.42-2.734L7.5 1.4z">   </path></g></g></svg><svg viewBox="0 0 15 15" class="Icon Icon--rating" width="15" height="15" aria-hidden="true" style="margin-left: 0px; height: 15px; width: 15px;"><title></title><g><g fill-rule="evenodd">     <path fill="#ffab2e" d="M10.925 14.302c.173.13.408.13.58-.002.174-.13.244-.362.175-.572l-1.323-4.296 3.435-2.456c.175-.13.25-.36.185-.572-.064-.212-.253-.357-.468-.36H9.275L7.96 1.754c-.064-.21-.21-.354-.46-.354-.14 0-1.027 3.53-.988 6.32.04 2.788.98 3.85.98 3.85l3.433 2.732z"></path>     <path fill="#ffab2e" d="M7.5 1.4c-.25 0-.41.144-.474.354l-1.318 4.29H1.49c-.214.003-.403.148-.467.36-.065.212.01.442.185.572l3.42 2.463-1.307 4.286c-.066.21.004.44.176.572.172.13.407.132.58.003l3.42-2.734L7.5 1.4z">   </path></g></g></svg><svg viewBox="0 0 15 15" class="Icon Icon--rating" width="15" height="15" aria-hidden="true" style="margin-left: 0px; height: 15px; width: 15px;"><title></title><g><g fill-rule="evenodd">     <path fill="#ffab2e" d="M10.925 14.302c.173.13.408.13.58-.002.174-.13.244-.362.175-.572l-1.323-4.296 3.435-2.456c.175-.13.25-.36.185-.572-.064-.212-.253-.357-.468-.36H9.275L7.96 1.754c-.064-.21-.21-.354-.46-.354-.14 0-1.027 3.53-.988 6.32.04 2.788.98 3.85.98 3.85l3.433 2.732z"></path>     <path fill="#ffab2e" d="M7.5 1.4c-.25 0-.41.144-.474.354l-1.318 4.29H1.49c-.214.003-.403.148-.467.36-.065.212.01.442.185.572l3.42 2.463-1.307 4.286c-.066.21.004.44.176.572.172.13.407.132.58.003l3.42-2.734L7.5 1.4z">   </path></g></g></svg><svg viewBox="0 0 15 15" class="Icon Icon--rating" width="15" height="15" aria-hidden="true" style="margin-left: 0px; height: 15px; width: 15px;"><title></title><g><g fill-rule="evenodd">     <path fill="#ffab2e" d="M10.925 14.302c.173.13.408.13.58-.002.174-.13.244-.362.175-.572l-1.323-4.296 3.435-2.456c.175-.13.25-.36.185-.572-.064-.212-.253-.357-.468-.36H9.275L7.96 1.754c-.064-.21-.21-.354-.46-.354-.14 0-1.027 3.53-.988 6.32.04 2.788.98 3.85.98 3.85l3.433 2.732z"></path>     <path fill="#ffab2e" d="M7.5 1.4c-.25 0-.41.144-.474.354l-1.318 4.29H1.49c-.214.003-.403.148-.467.36-.065.212.01.442.185.572l3.42 2.463-1.307 4.286c-.066.21.004.44.176.572.172.13.407.132.58.003l3.42-2.734L7.5 1.4z">   </path></g></g></svg><svg width="15" height="15" viewBox="0 0 15 15" class="Icon Icon--ratingHalf" aria-hidden="true" style="margin-left: 0px; height: 15px; width: 15px;"><title></title><g><g fill-rule="evenodd">     <path fill="#d7d8d9" d="M10.925 14.302c.173.13.408.13.58-.002.174-.13.244-.362.175-.572l-1.323-4.296 3.435-2.456c.175-.13.25-.36.185-.572-.064-.212-.253-.357-.468-.36H9.275L7.96 1.754c-.064-.21-.21-.354-.46-.354-.14 0-1.027 3.53-.988 6.32.04 2.788.98 3.85.98 3.85l3.433 2.732z"></path>     <path fill="#ffab2e" d="M7.5 1.4c-.25 0-.41.144-.474.354l-1.318 4.29H1.49c-.214.003-.403.148-.467.36-.065.212.01.442.185.572l3.42 2.463-1.307 4.286c-.066.21.004.44.176.572.172.13.407.132.58.003l3.42-2.734L7.5 1.4z"></path>   </g></g></svg></div><!-- react-text: 820 -->33418 人参与<!-- /react-text --></div></div></div></a></div></div><!-- react-empty: 367 --><footer class="Footer"><a class="Footer-item" target="_blank" href="//liukanshan.zhihu.com/">刘看山</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/question/19581624">知乎指南</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/terms">知乎协议</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/app">应用</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/careers">工作</a><br><a class="Footer-item" target="_blank" href="https://zhuanlan.zhihu.com/p/28561671">侵权举报</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="http://www.12377.cn">网上有害信息举报专区</a><br><span class="Footer-item">违法和不良信息举报：010-82716601</span><br><a class="Footer-item" target="_blank" href="/jubao">儿童色情信息举报专区</a><br><a class="Footer-item" target="_blank" href="/contact">联系我们</a><span> © 2017 知乎</span></footer></div></div></div>
+        </div>
+        
         
         </div>
-        </div>
-        </div>
-        </div>
-             
-        </main>
-        <!--------------------main end-------------------->
+</div>           
+</main>
+<!--------------------main end-------------------->
 
 
 

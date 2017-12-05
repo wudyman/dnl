@@ -179,6 +179,26 @@ def get_erinfo(request,erid):
         return HttpResponse(to_json,content_type='application/json')
         
 @csrf_exempt
+def get_er_all(request,erid,command):
+    er=get_object_or_404(User,pk=erid)
+    user=request.user
+    to_json=json.dumps('null')
+    if 'answers'==command:
+        answers=er.answers.all()
+        if answers:
+            temp_list=[]
+            for answer in answers:
+                temp=[]
+                temp.append(answer.id)#0
+                temp.append(answer.question.id)#1
+                temp.append(answer.question.title)#2
+                temp.append(answer.content)#3
+                temp.append(answer.like_nums)#4                
+                temp_list.append(temp)
+            to_json=json.dumps(temp_list)
+    return HttpResponse(to_json,content_type='application/json')
+        
+@csrf_exempt
 def follow_er(request,follow,er_id):
     er=get_object_or_404(User,pk=er_id)
     user=request.user #get_object_or_404(User,username=request.user)

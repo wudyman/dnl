@@ -11,6 +11,7 @@ urlpatterns= [
     url(r'^topic_adept/$',views.get_topic_adept,name='gettopicadept'),
     url(r'^answer_like/(?P<answer_id>[0-9]+)/$',views.like_answer,name='likeanswer'),
     url(r'^er/(?P<erid>[0-9]+)/$',views.get_erinfo,name='geterinfo'),
+    url(r'^er/(?P<erid>[0-9]+)/(?P<command>[a-z]+)/$',views.get_er_all,name='geterall'),
     url(r'^er_follow/(?P<follow>[0-9]+)/(?P<er_id>[0-9]+)/$',views.follow_er,name='follow_er'),
     url(r'^upload/avatar/$',views.upload_avatar,name='uploadavatar'),
     url(r'^upload/img/$',views.upload_img,name='uploadimage'),
