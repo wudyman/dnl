@@ -4,14 +4,22 @@
     {%load static %}
     <meta charset="utf-8"> 
     <link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
     <link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
 </head>
-<body>
+<body class="Entry-body" style="overflow: auto;">
+<div id="root">
+<div>
+<div class="LoadingBar">
+</div>
+<div>
+
+<header  role="banner" class="123Sticky AppHeader">
+<div class="AppHeader-inner">
 
 <div class="container">
-<header role="banner" data-za-module="TopNavBar" >
-<!-- react-empty: 1220 -->
 <div class="row">
 <div class="col-md-1">
 <a href="/" aria-label="大大大">
@@ -25,154 +33,583 @@
 <a class="AppHeader-navItem" href="/explore">发现</a>
 <a class="AppHeader-navItem" href="/topic">话题</a>
 </nav>
+
+
 <div class="SearchBar col-md-6" role="search">
-<input type="text" maxlength="100" value="" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-88417-181--1" id="Popover-88417-61448-toggle" aria-haspopup="true" aria-owns="Popover-88417-61448-content" class="Input" placeholder="搜索你感兴趣的内容…">
-<button class="Button SearchBar-searchIcon Button--primary" aria-label="搜索" type="button">
-<svg viewBox="0 0 16 16" class="Icon Icon--search" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g>
-</svg>
-</button>
-<!-- react-empty: 29 -->
-<button class="Button QuestionAskButton SearchBar-askButton btn-success" type="button" data-toggle="modal" data-target="#askModal">
-<!-- react-text: 31 -->提问<!-- /react-text --><!-- react-empty: 32 -->
+<div class="SearchBar-toolWrapper">
+<form class="SearchBar-tool">
+<div>
+<div class="1Popover">
+<div class="SearchBar-input Input-wrapper Input-wrapper--grey">
+<input type="text" maxlength="120" value="" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-41236-89421--1" id="Popover-41236-42847-toggle" aria-haspopup="true" aria-owns="Popover-41236-42847-content" class="Input" placeholder="搜索你感兴趣的内容…">
+<div class="Input-after">
+<button class="Button SearchBar-searchIcon Button--primary" aria-label="搜索" type="button" data-reactid="25"><svg viewBox="0 0 16 16" class="Icon Icon--search" style="height:16px;width:16px;" width="16" height="16" aria-hidden="true" data-reactid="26"><title data-reactid="27"></title><g data-reactid="28"><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg>
 </button>
 </div>
+</div>
+</div>
+</div>
+</form>
+</div>
+<button class="1Button QuestionAskButton SearchBar-askButton 1Button--primary 1Button--green btn btn-success" type="button" data-toggle="modal" data-target="#askModal">提问</button>
+</div>
+
+
 <div class="AppHeader-userInfo col-md-2">
-<button class="Button PushNotifications-icon Button--plain" type="button" id="Popover-88478-67360-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-67360-content">
+<div class="1Popover PushNotifications AppHeader-notifications">
+<button class="1Button PushNotifications-icon 1Button--plain" type="button" id="Popover-88478-67360-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-67360-content">
 <svg viewBox="0 0 20 22" class="Icon Icon--news" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M2.502 14.08C3.1 10.64 2 3 8.202 1.62 8.307.697 9.08 0 10 0s1.694.697 1.797 1.62C18 3 16.903 10.64 17.497 14.076c.106 1.102.736 1.855 1.7 2.108.527.142.868.66.793 1.206-.075.546-.542.95-1.09.943H1.1C.55 18.34.084 17.936.01 17.39c-.075-.547.266-1.064.794-1.206.963-.253 1.698-1.137 1.698-2.104zM10 22c-1.417.003-2.602-1.086-2.73-2.51-.004-.062.02-.124.063-.17.043-.045.104-.07.166-.07h5c.063 0 .124.025.167.07.044.046.067.108.063.17-.128 1.424-1.313 2.513-2.73 2.51z"></path></g>
 </svg>
-<!-- react-empty: 1226 -->
 </button>
-<!-- react-empty: 1227 -->
+</div>
 
-<button class="Button Messages-icon Button--plain" type="button" id="Popover-88478-87650-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-87650-content">
+<div class="1Popover Messages AppHeader-messages">
+<button class="1Button Messages-icon 1Button--plain" type="button" id="Popover-88478-87650-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-87650-content">
 <svg viewBox="0 0 20 20" class="Icon Icon--message" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path><path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path></g>
 </svg>
 </button>
-<!-- react-empty: 1234 -->
+</div>
 
-<!-- react-empty: 42 -->
+<div class="AppHeader-profile">
+<div class="1Popover AppHeader-menu">
+<span class="dropdown">
+<img class="Avatar AppHeader-profileAvatar CPopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="/media/img/default.jpg" srcset="/media/img/default.jpg 2x">
+<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+<li>
+<a id="action-1" href="/er/{{user.id}}">Homepage</a>
+</li>
+<li>
+<a href="#">Setting</a>
+</li>
+<li>
+<a href="/exit/">Exit</a>
+</li>   
+</ul>
+</span>
+</div>
+</div>
 
-<button class="Button AppHeader-profileEntry Button--plain" type="button" id="Popover-88478-48941-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-48941-content">
-<img class="Avatar AppHeader-profileAvatar" width="30" height="30" src="https://pic1.zhimg.com/da8e974dc_is.jpg" srcset="https://pic1.zhimg.com/da8e974dc_im.jpg 2x">
-</button>
-<!-- react-empty: 1239 -->
+</div>
+
+</div>
 </div>
 </div>
 </header>
-<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 53px;">
-</div>
-
-        <!--------------------main---------------------->
-        <HR style="width:100%;">
-        <main role="main">
-        
-
-        <div class="row">
-        <img id="pic" src="{{ user.userprofile.avatar }}" width="60" height="60">
-        <input id="upload" name="file" accept="image/*" type="file" style="display: none"/>
-        <div class="TheQuestion col-md-8">
-        <div>people homepage</div>
-        </div>
-        
-        </div>
-        
-        
-        </main>
-        <!--------------------main end-------------------->
 
 </div>
+<main role="main" class="App-main" data-reactid="47">
+<div><!-- react-empty: 2694 -->
+<div itemprop="people" itemtype="http://schema.org/Person" itemscope="">
 
-<!--- div other--->
-<!-- 模态框（Modal） -->
-<div class="modal fade" id="askModal" tabindex="-1" role="dialog" aria-labelledby="askModalLabel" aria-hidden="true">
-	<div class="modal-dialog askmodal">
-		<div class="modal-content">
-        <form method="post" action="/question/" id="form_ask">
-            {% csrf_token %}
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title  font-black font-center" id="askModalLabel">
-					模态框（Modal）标题
-				</h4>
-			</div>
-			<div class="modal-body font-black">
-                <textarea name="title" rows="2" cols="70" maxlength="160" placeholder="问题标题"></textarea>
-                <textarea name="topic" rows="1" cols="70" maxlength="80" placeholder="添加话题"></textarea>
-                <textarea name="detail" rows="5" cols="70" maxlength="400" placeholder="问题的详细描述(可选)"></textarea>
-			</div>
-			<div class="modal-footer">
-				<button type="submit" form="form_ask" class="btn btn-success btn-lg">
-					提交问题
-				</button>
-			</div>
-        </form>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
+<!-- react-empty: 2834 -->
+<div id="ProfileHeader" class="ProfileHeader" data-za-module="Unknown" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;User&quot;,&quot;token&quot;:&quot;verna-18-5&quot;}}}">
+<div class="Card">
+<div class="ProfileHeader-userCover">
+<div class="UserCoverEditor">
+<div>
+<div class="UserCoverGuide">
+<div class="UserCoverGuide-inner">
+<div class="UserCoverGuide-buttonContainer">
+<button class="Button DynamicColorButton" type="button"><svg viewBox="0 0 20 16" class="Icon Icon--camera Icon--left" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M18.094 2H15s-1-2-2-2H7C6 0 5 2 5 2H2C0 2 0 3.967 0 3.967V14c0 2 2.036 2 2.036 2H17c3 0 3-1.983 3-1.983V4c0-2-1.906-2-1.906-2zM10 12c-1.933 0-3.5-1.567-3.5-3.5S8.067 5 10 5s3.5 1.567 3.5 3.5S11.933 12 10 12zm0 1.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm7.5-8c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1z" fill-rule="evenodd"></path></g></svg><!-- react-text: 2717 -->上传封面图片<!-- /react-text --></button>
 </div>
-<!--- div other--->
+<div class="UserCoverGuide-dialog">
+<h4 class="UserCoverGuide-dialogHead">上传一张图片，展示在这里</h4>
+<div class="UserCoverGuide-dialogContent">
+<p class="UserCoverGuide-dialogDescription">你可以使用自己的摄影作品、你喜欢的照片，或是任何能展现你特质的图片。</p>
+<a href="https://www.zhihu.com/question/21757507" target="_blank">哪里能找到可免费使用的优质图片？</a>
+</div>
+</div>
+</div>
+<ul class="UserCoverGuide-items">
+<li class="UserCoverGuide-item" style="background-image: url(&quot;https://static.zhihu.com/heifetz/guide-cover-1.4423ce0fcec2132f058c.jpg&quot;);"></li>
+<li class="UserCoverGuide-item" style="background-image: url(&quot;https://static.zhihu.com/heifetz/guide-cover-2.4c5018526e42872a056b.jpg&quot;);"></li>
+<li class="UserCoverGuide-item" style="background-image: url(&quot;https://static.zhihu.com/heifetz/guide-cover-3.d59ac68c89726deb3a26.jpg&quot;);"></li>
+<li class="UserCoverGuide-item" style="background-image: url(&quot;https://static.zhihu.com/heifetz/guide-cover-4.5518ba1a1aeb013b4c5c.jpg&quot;);"></li>
+<li class="UserCoverGuide-item" style="background-image: url(&quot;https://static.zhihu.com/heifetz/guide-cover-5.2b2adaebc37bf48bacae.jpg&quot;);"></li>
+</ul>
+</div>
+<div class="UserCover UserCover--colorBlock"><!-- react-text: 2730 --><!-- /react-text -->
+</div>
+</div>
+<input type="file" accept="image/png,image/jpeg" style="display: none;">
+</div>
+</div>
+<div class="ProfileHeader-wrapper">
+<div class="ProfileHeader-main">
+
+<div class="UserAvatarEditor ProfileHeader-avatar" style="top: -74px;">
+<div class="UserAvatar">
+<img id="id_avatar" class="Avatar Avatar--large UserAvatar-inner" width="160" height="160" src="{{ er.userprofile.avatar }}" srcset="{{ user.userprofile.avatar }}">
+</div>
+<div class="Mask UserAvatarEditor-mask Mask-hidden">
+<div class="Mask-mask Mask-mask--black UserAvatarEditor-maskInner">
+</div>
+<div class="Mask-content">
+<svg class="Zi Zi--Camera UserAvatarEditor-cameraIcon" fill="currentColor" viewBox="0 0 24 24" width="36" height="36"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill-rule="evenodd"></path></svg>
+<div class="UserAvatarEditor-maskInnerText">修改我的头像</div>
+</div>
+</div>
+<input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/>
+</div>
+
+<div class="ProfileHeader-content">
+<div class="ProfileHeader-contentHead">
+<h1 class="ProfileHeader-title">
+<span class="ProfileHeader-name">{{er.first_name}}</span>
+<span class="RichText ProfileHeader-headline"></span>
+</h1>
+</div>
+<span class="ProfileHeader-tips">暂无个人资料</span>
+<div class="ProfileHeader-contentFooter">
+<div class="ProfileButtonGroup ProfileHeader-buttons">
+<button class="Button Button--blue" type="button"><!-- react-text: 2754 -->编辑<!-- /react-text --><!-- react-text: 2755 -->个人<!-- /react-text --><!-- react-text: 2756 -->资料<!-- /react-text --></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="Profile-main">
+<div class="Profile-mainColumn">
+<div class="Card ProfileMain" id="ProfileMain">
+<div class="ProfileMain-header"  data-command="{{command}}" data-er-id="{{er.id}}" data-er-name="{{er.first_name}}" data-er-avatar="{{er.userprofile.avatar}}" data-er-mood="{{er.userprofile.mood}}">
+<ul role="tablist" class="Tabs ProfileMain-tabs">
+<!--
+<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities">
+<a class="Tabs-link" href="/er/{{er.id}}/activities/">动态</a>
+</li>
+-->
+<li role="tab" class="Tabs-item" aria-controls="Profile-answers">
+<a class="Tabs-link" href="/er/{{er.id}}/answers/"><!-- react-text: 2766 -->回答<!-- /react-text --><span class="Tabs-meta">0</span></a>
+</li>
+<li role="tab" class="Tabs-item" aria-controls="Profile-asks">
+<a class="Tabs-link" href="/er/{{er.id}}/asks/"><!-- react-text: 2770 -->提问<!-- /react-text --><span class="Tabs-meta">0</span></a>
+</li>
+<li role="tab" class="Tabs-item" aria-controls="Profile-posts">
+<a class="Tabs-link" href="/er/{{er.id}}/posts/"><!-- react-text: 2774 -->文章<!-- /react-text --><span class="Tabs-meta">0</span></a>
+</li>
+<li role="tab" class="Tabs-item" aria-controls="Profile-columns">
+<a class="Tabs-link" href="/er/{{er.id}}/columns/"><!-- react-text: 2778 -->专栏<!-- /react-text --><span class="Tabs-meta">0</span></a>
+</li>
+<li role="tab" class="Tabs-item" aria-controls="Profile-pins">
+<a class="Tabs-link" href="/er/{{er.id}}/pins/"><!-- react-text: 2782 -->想法<!-- /react-text --><span class="Tabs-meta">0</span></a>
+</li>
+<li role="tab" class="Tabs-item" aria-controls="Profile-collections">
+<a class="Tabs-link" href="/er/{{er.id}}/collections/"><!-- react-text: 2782 -->收藏<!-- /react-text --><span class="Tabs-meta">0</span></a>
+</li>
+<li role="tab" class="Tabs-item" aria-controls="Profile-following">
+<a class="Tabs-link" href="/er/{{er.id}}/following/"><!-- react-text: 2782 -->关注<!-- /react-text --><span class="Tabs-meta">0</span></a>
+</li>
+
+<!--
+<li role="tab" class="Tabs-item Tabs-item--noMeta">
+<div class="Popover Tabs-link">
+<button class="Button ProfileMain-menuToggler Button--plain" type="button" id="Popover-20486-79514-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-20486-79514-content">更多<svg viewBox="0 0 10 6" class="Icon ProfileMain-tabIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
+</div>
+</li>
+-->
+
+</ul>
+</div>
+
+<div>
+<div>
+<div class="Sticky">
+</div>
+</div>
+</div>
+
+<!--
+<div class="List ProfileActivities" id="Profile-activities" data-zop-feedlistfather="1">
+<div class="List-header">
+<h4 class="List-headerText"><span>我的动态</span></h4>
+<div class="List-headerOptions">
+</div>
+</div>
+<div class="">
+<div class="List-item">
+<div class="List-itemMeta">
+<div class="ActivityItem-meta">
+<span class="ActivityItem-metaTitle">关注了话题</span><span>17 天前</span></div></div><div class="ContentItem" data-za-module="TopicItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Topic&quot;,&quot;token&quot;:&quot;19550429&quot;,&quot;item_num&quot;:164811,&quot;follower_num&quot;:19177109}}}"><div class="ContentItem-main"><div class="ContentItem-image"><a class="TopicLink" href="/topic/19550429" target="_blank"><div class="Popover"><div id="Popover-21827-29778-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-21827-29778-content"><img class="Avatar Avatar--large TopicLink-avatar" width="60" height="60" src="https://pic4.zhimg.com/50/7d8c15df29ce6900c80f9cf630992687_im.jpg" srcset="https://pic4.zhimg.com/50/7d8c15df29ce6900c80f9cf630992687_xl.jpg 2x" alt="电影"></div></div></a></div><div class="ContentItem-head"><h2 class="ContentItem-title"><a class="TopicLink" href="/topic/19550429" target="_blank">
+<div class="Popover">
+<div id="Popover-21827-12864-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-21827-12864-content">电影</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+</div>
+</div>
+</div>
+</div>
+-->
+
+<div class="List Profile-answers" id="Profile-answers" data-zop-feedlistfather="1">
+<div class="List-header">
+<h4 class="List-headerText"><span>他的回答</span></h4>
+<div class="List-headerOptions">
+<div class="Popover">
+<button class="Button Select-button Select-plainButton Button--plain" role="combobox" aria-expanded="false" type="button" id="Popover-94547-77643-toggle" aria-haspopup="true" aria-owns="Popover-94547-77643-content">按时间排序<span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Select Select-arrow" fill="#9fadc7" viewBox="0 0 24 24" width="24" height="24"><path d="M12 16.183l2.716-2.966a.757.757 0 0 1 1.064.001.738.738 0 0 1 0 1.052l-3.247 3.512a.758.758 0 0 1-1.064 0L8.22 14.27a.738.738 0 0 1 0-1.052.758.758 0 0 1 1.063 0L12 16.183zm0-9.365L9.284 9.782a.758.758 0 0 1-1.064 0 .738.738 0 0 1 0-1.052l3.248-3.512a.758.758 0 0 1 1.065 0L15.78 8.73a.738.738 0 0 1 0 1.052.757.757 0 0 1-1.063.001L12 6.818z" fill-rule="evenodd"></path></svg></span></button>
+</div>
+</div>
+</div>
+
+<div id="Append-element">
+
+<div class="List-item">
+<div class="ContentItem AnswerItem" data-zop="{&quot;authorName&quot;:&quot;CloudEdogawa&quot;,&quot;itemId&quot;:269059485,&quot;title&quot;:&quot;普通人跟职业运动员到底有多大差距？&quot;,&quot;type&quot;:&quot;answer&quot;}" name="269059485" itemprop="zhihu:answer" itemtype="http://schema.org/Answer" itemscope="" data-za-module="AnswerItem" data-za-module-info="{&quot;card&quot;:{&quot;has_image&quot;:false,&quot;has_video&quot;:true,&quot;content&quot;:{&quot;type&quot;:&quot;Answer&quot;,&quot;token&quot;:&quot;269059485&quot;,&quot;upvote_num&quot;:4882,&quot;comment_num&quot;:696,&quot;publish_timestamp&quot;:null,&quot;parent_token&quot;:&quot;29888808&quot;,&quot;author_member_hash_id&quot;:&quot;fbe03534280441c1d0fb448b4acb4e81&quot;,&quot;video_id&quot;:&quot;919946920011665408&quot;}}}">
+<h2 class="ContentItem-title">
+<div itemprop="zhihu:question" itemtype="http://schema.org/Question" itemscope="">
+<a target="_blank" data-za-detail-view-element_name="Title" href="/question/29888808/answer/269059485">普通人跟职业运动员到底有多大差距？</a>
+</div>
+</h2>
+<div class="ContentItem-meta">
+<div class="AnswerItem-meta">
+<div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+<span class="UserLink AuthorInfo-avatarWrapper">
+<div class="Popover">
+<div id="Popover-94547-45049-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94547-45049-content">
+<a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/cloudedogawa">
+<img class="Avatar AuthorInfo-avatar" width="38" height="38" src="https://pic3.zhimg.com/50/v2-8ebaa9535a928f7ab36e6a8d745749fa_xs.jpg" srcset="https://pic3.zhimg.com/50/v2-8ebaa9535a928f7ab36e6a8d745749fa_l.jpg 2x" alt="CloudEdogawa"></a>
+</div>
+</div>
+</span>
+<div class="AuthorInfo-content">
+<div class="AuthorInfo-head">
+<span class="UserLink AuthorInfo-name">
+<div class="Popover">
+<div id="Popover-94547-29920-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94547-29920-content">
+<a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/cloudedogawa">CloudEdogawa</a>
+</div>
+</div>
+</span>
+</div>
+<div class="AuthorInfo-detail">
+<div class="AuthorInfo-badge">
+<div class="RichText AuthorInfo-badgeText">公众号「生涯旋转」创始人、职业转笔者</div>
+</div>
+</div>
+</div>
+</div>
+<div class="AnswerItem-extraInfo">
+<span class="Voters">
+<button class="Button Button--plain" type="button">4882 人赞同了该回答</button>
+</span>
+</div>
+</div>
+</div>
+<div class="RichContent is-collapsed">
+<div class="RichContent-cover">
+<div class="RichContent-cover-inner">
+<img width="190" src="https://pic1.zhimg.com/v2-d19dbfffbe58fb893815ff810027e4e8_400x224.jpg" alt="cover">
+</div>
+<div class="RichContent-cover-play"><svg viewBox="0 0 64 64" class="Icon Icon--play" width="50" height="50" aria-hidden="true" style="height: 50px; width: 50px;"><title></title><g><path fill-opacity="0.9" fill="#fff" d="M32,64 C14.326888,64 0,49.673112 0,32 C0,14.326888 14.326888,0 32,0 C49.673112,0 64,14.326888 64,32 C64,49.673112 49.673112,64 32,64 Z M32.2363929,61.6 C48.5840215,61.6 61.8363929,48.3476286 61.8363929,32 C61.8363929,15.6523714 48.5840215,2.4 32.2363929,2.4 C15.8887643,2.4 2.63639293,15.6523714 2.63639293,32 C2.63639293,48.3476286 15.8887643,61.6 32.2363929,61.6 Z"></path>   <circle fill-opacity="0.3" fill="#000" cx="32" cy="32" r="29.6"></circle>   <path fill-opacity="0.9" fill="#fff" d="M43.5634409,30.7271505 C44.6882014,31.4301259 44.6868607,32.5707121 43.5634409,33.2728495 L28.4365591,42.7271505 C27.3117986,43.4301259 26.4,42.9221451 26.4,41.5999847 L26.4,22.4000153 C26.4,21.0745235 27.3131393,20.5707121 28.4365591,21.2728495 L43.5634409,30.7271505 Z"></path></g></svg></div>
+</div>
+<div class="RichContent-inner">
+<span class="RichText CopyrightRichText-richText" itemprop="text">以前在知乎看过一句话“不要拿你们的业余爱好挑战我们的吃饭本事”。 就拿转笔来讲吧。转笔这项运动大家应该都不陌生，来源课堂的一个随手动作。但如今已经发展成一项世界性的竞技运动，虽然还是很小众。现在中国目前…</span>
+<button class="Button ContentItem-more Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
+</div>
+<div class="ContentItem-actions">
+<span>
+<button class="Button VoteButton VoteButton--up" aria-label="赞同" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-upIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg>4.9K</button>
+<button class="Button VoteButton VoteButton--down" aria-label="反对" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-downIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg></button>
+</span>
+<button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button">
+<span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>696 条评论</button>
+<div class="Popover ShareMenu ContentItem-action">
+<div class="" id="Popover-94553-53870-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94553-53870-content">
+<img class="ShareMenu-fakeQRCode" src="https://www.zhihu.com/qrcode?url=https%3A%2F%2Fwww.zhihu.com%2Fanswer%2F269059485%23showWechatShareTip" alt="微信二维码">
+<button class="Button Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button>
+</div>
+</div>
+<button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span>收藏</button>
+<button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Heart Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2 8.437C2 5.505 4.294 3.094 7.207 3 9.243 3 11.092 4.19 12 6c.823-1.758 2.649-3 4.651-3C19.545 3 22 5.507 22 8.432 22 16.24 13.842 21 12 21 10.158 21 2 16.24 2 8.437z" fill-rule="evenodd"></path></svg></span>感谢</button>
+<div class="Popover ContentItem-action"><button class="Button Button--plain Button--withIcon Button--iconOnly" aria-label="更多" type="button" id="Popover-94553-60105-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94553-60105-content"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Dots Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill-rule="evenodd"></path></svg></span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 
 
-<div class="modal fade" id="upPicModal2" tabindex="-1" role="dialog" aria-labelledby="upPicModalLabel2" aria-hidden="true">
-<div class="modal-dialog upPicModal2" style="width:300px;">
+</div>
+</div>
+
+
+</div>
+</div>
+
+<div class="Profile-sideColumn" data-za-module="RightSideBar">
+<div class="Card FollowshipCard">
+<div class="NumberBoard FollowshipCard-counts"><a class="Button NumberBoard-item Button--plain" type="button" href="/people/verna-18-5/following">
+<div class="NumberBoard-name">关注了</div><div class="NumberBoard-value">0</div></a><div class="NumberBoard-divider"></div>
+<a class="Button NumberBoard-item Button--plain" type="button" href="/people/verna-18-5/followers"><div class="NumberBoard-name">关注者</div>
+<div class="NumberBoard-value">0</div></a></div></div>
+<div class="Profile-lightList"><a class="Profile-lightItem" href="/people/verna-18-5/following/topics"><span class="Profile-lightItemName">关注的话题</span>
+<span class="Profile-lightItemValue">1</span></a>
+<a class="Profile-lightItem" href="/people/verna-18-5/following/columns"><span class="Profile-lightItemName">关注的专栏</span>
+<span class="Profile-lightItemValue">0</span></a><a class="Profile-lightItem" href="/people/verna-18-5/following/questions">
+<span class="Profile-lightItemName">关注的问题</span><span class="Profile-lightItemValue">0</span></a><a class="Profile-lightItem" href="/people/verna-18-5/following/collections"><span class="Profile-lightItemName">关注的收藏夹</span><span class="Profile-lightItemValue">0</span></a></div>
+<div class="Profile-footerOperations"><!-- react-text: 2829 -->个人<!-- /react-text --><!-- react-text: 2830 -->主页被浏览 <!-- /react-text --><!-- react-text: 2831 -->2<!-- /react-text --><!-- react-text: 2832 --> 次<!-- /react-text --></div>
+<footer class="Footer"><a class="Footer-item" target="_blank" href="//liukanshan.zhihu.com/">刘看山</a><span class="Footer-dot"></span>
+<a class="Footer-item" target="_blank" href="/question/19581624">知乎指南</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/terms">知乎协议</a>
+<span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/app">应用</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/careers">工作</a><br><a class="Footer-item" target="_blank" href="https://zhuanlan.zhihu.com/p/28561671">侵权举报</a>
+<span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="http://www.12377.cn">网上有害信息举报专区</a><br>
+<span class="Footer-item">违法和不良信息举报：010-82716601
+</span><br>
+<a class="Footer-item" target="_blank" href="/jubao">儿童色情信息举报专区</a><br><a class="Footer-item" target="_blank" href="/contact">联系我们</a><span> © 2017 知乎</span></footer></div>
+</div>
+</div></div></main><!-- react-empty: 1335 --><!-- react-empty: 2683 --><!-- react-empty: 1337 --><div class="CornerButtons">
+<div class="CornerAnimayedFlex"><button class="Button CornerButton Button--plain" data-tooltip="建议反馈" data-tooltip-position="left" aria-label="建议反馈" type="button"><svg class="Zi Zi--Feedback" title="建议反馈" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M19.99 6.99L18 5s-1-1-2-1H8C7 4 6 5 6 5L4 7S3 8 3 9v9s0 2 2.002 2H19c2 0 2-2 2-2V9c0-1-1.01-2.01-1.01-2.01zM16.5 5.5L19 8H5l2.5-2.5h9zm-2 5.5s.5 0 .5.5-.5.5-.5.5h-5s-.5 0-.5-.5.5-.5.5-.5h5z"></path></svg></button></div><div class="CornerAnimayedFlex CornerAnimayedFlex--hidden"><button class="Button CornerButton Button--plain" data-tooltip="回到顶部" data-tooltip-position="left" aria-label="回到顶部" type="button"><svg class="Zi Zi--BackToTop" title="回到顶部" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M16.036 19.59a1 1 0 0 1-.997.995H9.032a.996.996 0 0 1-.997-.996v-7.005H5.03c-1.1 0-1.36-.633-.578-1.416L11.33 4.29a1.003 1.003 0 0 1 1.412 0l6.878 6.88c.782.78.523 1.415-.58 1.415h-3.004v7.005z"></path></svg></button></div></div></div></div><script src="https://static.zhihu.com/heifetz/vendor.72d10fe31301a0517a94.js"></script><script src="https://static.zhihu.com/heifetz/main.raven.a31320181616684830a2.js" async=""></script><script src="https://static.zhihu.com/heifetz/main.app.35c8ff3a88b940af11b0.js"></script><script></script><div><div data-reactroot="" style="display: none;">想来知乎工作？请发送邮件到 jobs@zhihu.com</div></div>
+<span><div></div></span>
+
+<div class="modal fade" id="11upAvatarModal" tabindex="-1" role="dialog" aria-labelledby="upAvatarModalLabel" aria-hidden="true">
+<div class="modal-dialog" style="width:300px;">
+
 <div class="Modal-content">
+
 <div class="modal-header">
 <h3 class="Modal-title">编辑头像</h3>
 <div class="Modal-subtitle">调整头像尺寸和位置</div>
 </div>
+<!--
 <div class="modal-body">
 <img id="pre_head" src="" width="300" height="300"> 
 </div>
 <div>
-<!--
-<div class="UserAvatarEditor-container">
-<canvas width="300" height="300" style="width: 240px; height: 240px;"></canvas>
-</div>
--->
-<!--
-<div>
-<svg viewBox="0 0 18 16" class="Icon Icon--resize" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M13.296 3H1.006C.45 3 0 3.45 0 4.003v10.995C0 15.545.45 16 1.007 16h12.986C14.55 16 15 15.553 15 15V4.003C15 3.456 14.55 3 13.993 3h-.697zm-.892 11H2.596c-.33 0-.596-.266-.596-.6V5.6C2 5.27 2.267 5 2.596 5h9.81c.328 0 .595.266.595.6v7.8c0 .33-.268.6-.596.6zM4 0c-.552 0-1 .448-1 1s.448 1 1 1h11.5s.5 0 .5.5V12c0 .552.448 1 1 1s1-.448 1-1V1c0-.552-.448-1-1-1H4z" fill-rule="evenodd"></path></g></svg>
-<input type="range" step="0.01" min="1" max="2" class="RangeInput" value="1">
-<svg viewBox="0 0 18 16" class="Icon Icon--resize" width="21" height="16" aria-hidden="true" style="height: 16px; width: 21px;"><title></title><g><path d="M13.296 3H1.006C.45 3 0 3.45 0 4.003v10.995C0 15.545.45 16 1.007 16h12.986C14.55 16 15 15.553 15 15V4.003C15 3.456 14.55 3 13.993 3h-.697zm-.892 11H2.596c-.33 0-.596-.266-.596-.6V5.6C2 5.27 2.267 5 2.596 5h9.81c.328 0 .595.266.595.6v7.8c0 .33-.268.6-.596.6zM4 0c-.552 0-1 .448-1 1s.448 1 1 1h11.5s.5 0 .5.5V12c0 .552.448 1 1 1s1-.448 1-1V1c0-.552-.448-1-1-1H4z" fill-rule="evenodd"></path></g></svg>
-</div>
--->
 <div class="modal-footer">
 <button class="btn btn-blue" type="button" onclick="FileUpload()">保存</button>
 </div>
 </div>
+-->
 </div>
 </div>
 </div>
 
-    <script src="{%static 'common/jquery.js' %}"></script>
-    <script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-    <script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
-    <script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
-	<script src="{% static 'common/main.js' %}"></script>
+<!--
+<div class="Modal-wrapper">
+<div class="Modal-backdrop">
+</div>
+-->
+<div id="upAvatarModal" class="modal fade 1Modal 1Modal--default 1UploadImageModal-modal" tabindex="-1" role="dialog" 1aria-labelledby="upAvatarModalLabel" 1aria-hidden="true">
+<div class="modal-dialog" style="width:500px;">
+
+<div class="Modal-inner">
+<h3 class="Modal-title">编辑头像</h3>
+<div class="Modal-subtitle">调整头像尺寸和位置</div>
+<div class="Modal-content">
+<div>
+<div class="UploadImageModal-container">
+<canvas width="300" height="300" style="width: 240px; height: 240px;"></canvas>
+</div>
+<div>
+<svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
+<input type="range" step="0.01" min="1" max="2" class="RangeInput" value="1">
+<svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="22" height="22"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
+</div>
+<div class="ModalButtonGroup ModalButtonGroup--vertical">
+<button class="Button Button--primary Button--blue" type="button">保存</button>
+</div>
+</div>
+</div>
+</div>
+<button class="Button Modal-closeButton Button--plain" aria-label="关闭" type="button">
+<svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+<!--</div>-->
+
+<script src="{%static 'common/jquery.js' %}"></script>
+<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
+<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
+<script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script> 
+<script src="{% static 'common/main.js' %}"></script>
+<script>
+
+function get_index_img(content){
+    var imgReg=/<img.*?(?:>|\/>)/gi;
+    var arr=content.match(imgReg);
+    if(arr!=null)
+    {
+        var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+        imgsrc=arr[0].match(srcReg);
+        return imgsrc[1];
+    }
+    else
+        return null;
+}
+
+function remove_img(content){
+    var imgReg=/<img.*?(?:>|\/>)/gi;
+    return content.replace(imgReg,"").replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,150);
+    //return content.replace(imgReg,"").replace(/<p>/gi,"").replace(/<\/p>/gi,"").replace(/(^\s*)|(\s*$)/g,"");
+}
+function appendAnswerElementSub(ret)
+{
+    er_id=$(".ProfileMain-header").attr("data-er-id");
+    er_name=$(".ProfileMain-header").attr("data-er-name");
+    er_avatar=$(".ProfileMain-header").attr("data-er-avatar");
+    er_mood=$(".ProfileMain-header").attr("data-er-mood");
     
-  <script>
-    $(document).ready(function() {
-        $('#summernote').summernote({
-        lang:'zh-CN',
-        placeholder:'写回答...'
+    answer_id=ret[0];
+    question_id=ret[1];
+    question_title=ret[2];
+    answer_content=ret[3];
+    answer_like_nums=ret[4];
+    indexImgSrc=get_index_img(answer_content);
+    var data='\
+<div class="List-item">\
+<div class="ContentItem AnswerItem">\
+<h2 class="ContentItem-title">\
+<div>\
+<a target="_blank" data-za-detail-view-element_name="Title" href="/question/'+question_id+'/?answer='+answer_id+'">'+question_title+'</a>\
+</div>\
+</h2>\
+<div class="ContentItem-meta">\
+<div class="AnswerItem-meta">\
+<div class="AuthorInfo">\
+<span class="UserLink AuthorInfo-avatarWrapper">\
+<div class="Popover">\
+<div id="Popover-94547-45049-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94547-45049-content">\
+<a class="UserLink-link" data-za-detail-view-element_name="User" href="/er/'+er_id+'/answers/">\
+<img class="Avatar AuthorInfo-avatar" width="38" height="38" src="'+er_avatar+'" srcset="'+er_avatar+'" alt="'+er_name+'"></a>\
+</div>\
+</div>\
+</span>\
+<div class="AuthorInfo-content">\
+<div class="AuthorInfo-head">\
+<span class="UserLink AuthorInfo-name">\
+<div class="Popover">\
+<div id="Popover-94547-29920-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94547-29920-content">\
+<a class="UserLink-link" data-za-detail-view-element_name="User" href="/er/'+er_id+'/answers/">'+er_name+'</a>\
+</div>\
+</div>\
+</span>\
+</div>\
+<div class="AuthorInfo-detail">\
+<div class="AuthorInfo-badge">\
+<div class="RichText AuthorInfo-badgeText">'+er_mood+'</div>\
+</div>\
+</div>\
+</div>\
+</div>\
+<div class="AnswerItem-extraInfo">\
+<span class="Voters">\
+<button class="Button Button--plain" type="button">'+answer_like_nums+' 人赞同了该回答</button>\
+</span>\
+</div>\
+</div>\
+</div>\
+<div class="RichContent is-collapsed">\
+<div class="RichContent-cover">\
+<div class="RichContent-cover-inner">\
+<img width="190" src="'+indexImgSrc+'"> alt="cover">\
+</div>\
+<div class="RichContent-cover-play"><svg viewBox="0 0 64 64" class="Icon Icon--play" width="50" height="50" aria-hidden="true" style="height: 50px; width: 50px;"><title></title><g><path fill-opacity="0.9" fill="#fff" d="M32,64 C14.326888,64 0,49.673112 0,32 C0,14.326888 14.326888,0 32,0 C49.673112,0 64,14.326888 64,32 C64,49.673112 49.673112,64 32,64 Z M32.2363929,61.6 C48.5840215,61.6 61.8363929,48.3476286 61.8363929,32 C61.8363929,15.6523714 48.5840215,2.4 32.2363929,2.4 C15.8887643,2.4 2.63639293,15.6523714 2.63639293,32 C2.63639293,48.3476286 15.8887643,61.6 32.2363929,61.6 Z"></path>   <circle fill-opacity="0.3" fill="#000" cx="32" cy="32" r="29.6"></circle>   <path fill-opacity="0.9" fill="#fff" d="M43.5634409,30.7271505 C44.6882014,31.4301259 44.6868607,32.5707121 43.5634409,33.2728495 L28.4365591,42.7271505 C27.3117986,43.4301259 26.4,42.9221451 26.4,41.5999847 L26.4,22.4000153 C26.4,21.0745235 27.3131393,20.5707121 28.4365591,21.2728495 L43.5634409,30.7271505 Z"></path></g></svg></div>\
+</div>\
+<div class="RichContent-inner">\
+<span class="RichText CopyrightRichText-richText less">'+remove_img(answer_content)+'</span>\
+<span class="RichText CopyrightRichText-richText more is-hide">'+answer_content+'</span>\
+<button class="Button ContentItem-more Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
+</div>\
+<div class="ContentItem-actions">\
+<span>\
+<button class="AnswerLike Button LikeButton 1ContentItem-action" type="button" data-answer-id="'+answer_id+'">\
+<svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'\
+</button>\
+</span>\
+<button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button">\
+<span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>696 条评论</button>\
+<div class="Popover ShareMenu ContentItem-action">\
+<div class="" id="Popover-94553-53870-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94553-53870-content">\
+<img class="ShareMenu-fakeQRCode" src="https://www.zhihu.com/qrcode?url=https%3A%2F%2Fwww.zhihu.com%2Fanswer%2F269059485%23showWechatShareTip" alt="微信二维码">\
+<button class="Button Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button>\
+</div>\
+</div>\
+<button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span>收藏</button>\
+<button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Heart Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2 8.437C2 5.505 4.294 3.094 7.207 3 9.243 3 11.092 4.19 12 6c.823-1.758 2.649-3 4.651-3C19.545 3 22 5.507 22 8.432 22 16.24 13.842 21 12 21 10.158 21 2 16.24 2 8.437z" fill-rule="evenodd"></path></svg></span>感谢</button>\
+<div class="Popover ContentItem-action"><button class="Button Button--plain Button--withIcon Button--iconOnly" aria-label="更多" type="button" id="Popover-94553-60105-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94553-60105-content"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Dots Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill-rule="evenodd"></path></svg></span></button>\
+</div>\
+<button class="Button ContentItem-less ContentItem-rightButton Button--plain is-hide" type="button">\
+<span class="RichContent-collapsedText">收起</span>\
+<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
+</button>\
+</div>\
+</div>\
+</div>\
+</div>';
+    $("#Append-element").append(data);
+}
+function appendAnswerElement()
+{
+    erid=$(".ProfileMain-header").attr("data-er-id");
+    command=$(".ProfileMain-header").attr("data-command");
+    $.get("/ajax/er/"+erid+"/"+command+"/",function(ret){
+        for(i in ret)
+            appendAnswerElementSub(ret[i]);
+        check_content_collapse();
+        check_content_expand()
+    });
+}
+function check_content_collapse(){
+    $(".ContentItem-less").each(function(){
+        $(this).click(function(){
+            $(this).addClass("is-hide");
+            $(this).parent().siblings(".RichContent-inner").children(".less").removeClass("is-hide");
+            $(this).parent().siblings(".RichContent-inner").children(".more").addClass("is-hide");
+            $(this).parent().siblings(".RichContent-inner").children(".ContentItem-more").removeClass("is-hide");
+            $(this).parents(".RichContent").addClass("is-collapsed");
+            if("null"!=$(this).parent().siblings(".RichContent-cover").find("img").attr("src"))
+            {
+                $(this).parent().siblings(".RichContent-cover").removeClass("is-hide");
+            }
         });
     });
-    
-    $(function() {
-$("#pic").click(function () {
-$("#upload").click(); //隐藏了input:file样式后，点击头像就可以本地上传
-$("#upload").on("change",function(){
-$("#upPicModal2").modal('show');
-var objUrl = getObjectURL(this.files[0]) ; //获取图片的路径，该路径不是图片在本地的路径
-if (objUrl) {
-$("#pre_head").attr("src", objUrl) ; //将图片路径存入src中，显示出图片
 }
-});
-});
-});
- 
+
+function check_content_expand(){
+    $(".RichContent-inner").each(function(){
+        if("null"==$(this).siblings(".RichContent-cover").find("img").attr("src"))
+        {
+            $(this).siblings(".RichContent-cover").addClass("is-hide");
+        }
+        $(this).click(function(){
+            $(this).children(".less").addClass("is-hide");
+            $(this).children(".more").removeClass("is-hide");
+            $(this).children(".ContentItem-more").addClass("is-hide");
+            $(this).siblings(".ContentItem-actions").children(".ContentItem-less").removeClass("is-hide");
+            $(this).parent().removeClass("is-collapsed");
+            $(this).siblings(".RichContent-cover").addClass("is-hide");
+        });
+    });
+}
+//$(function(){
+function check_avatar(){
+    $(".UserAvatarEditor").hover(
+        function(){
+            $(".Mask").removeClass("Mask-hidden");
+        },
+        function(){
+            $(".Mask").addClass("Mask-hidden");
+        }
+    );
+    
+    $(".Mask-content").click(function(){
+            $("#id_avatar_input").click();
+            $("#id_avatar_input").on("change",function(){
+               $("#upAvatarModal").modal('show');
+                var objUrl = getObjectURL(this.files[0]) ; //获取图片的路径，该路径不是图片在本地的路径
+                if (objUrl) {
+                    $("#pre_head").attr("src", objUrl) ; //将图片路径存入src中，显示出图片
+                }
+            });
+    });
+}
+//});
+
 //建立一個可存取到該file的url
 function getObjectURL(file) {
 var url = null ;
@@ -186,10 +623,10 @@ url = window.webkitURL.createObjectURL(file) ;
 return url ;
 }
 
-        //   上传附件到方法
+//   上传附件到方法
 function FileUpload() {
 var form_data = new FormData();
-var file_info = $('#upload')[0].files[0];
+var file_info = $('#id_avatar_input')[0].files[0];
 form_data.append('imgfile',file_info);
 //if(file_info==undefined)暂且不许要判断是否有附件
 //alert('你没有选择任何文件');
@@ -204,13 +641,32 @@ data: form_data,
 processData: false,  // tell jquery not to process the data
 contentType: false, // tell jquery not to set contentType
 success: function(callback) {
-$("#upPicModal2").modal('hide');
-$("#pic").attr("src",$("#pre_head").attr("src")) ;
+$("#upAvatarModal").modal('hide');
+$("#id_avatar").attr("src",$("#pre_head").attr("src"));
+$("#id_avatar").attr("srcset",$("#pre_head").attr("src"));
 console.log("success");
 }
 }); // end ajax
 }
-  </script>
-</body>
 
+$(document).ready(function(){
+    check_avatar();
+    command=$(".ProfileMain-header").attr("data-command");
+    $(".Tabs-link").removeClass("is-active");
+    $(".Tabs-link").each(function(){
+        //console.log($(this).attr("href"));
+        if($(this).attr("href"))
+        {
+            //console.log($(this).attr("href").indexOf(command))
+            if($(this).attr("href").indexOf(command)>-1)
+                $(this).addClass("is-active");
+        }
+    });
+    if ("answers"==command)
+        appendAnswerElement();
+    else
+        alert("false");
+});
+</script>
+</body>
 </html>

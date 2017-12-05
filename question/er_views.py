@@ -12,8 +12,11 @@ class ActiveView(generic.ListView):
     template_name='question/t_er_active.html'
     def get_queryset(self): 
         pass
-    def get(self,request,*args,**kwargs): 
+    def get(self,request,*args,**kwargs):
+        command=self.kwargs.get('command')
+        if not command:
+            command='answers'
         user=request.user
-        print(user.userprofile)
-        userid=self.kwargs.get('userid')
-        return render(request,self.template_name,{'user':user})
+        erid=self.kwargs.get('erid')
+        er=get_object_or_404(User,pk=erid)
+        return render(request,self.template_name,{'er':er,'user':user,'command':command})
