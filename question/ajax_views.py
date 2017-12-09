@@ -196,6 +196,19 @@ def get_er_all(request,erid,command):
                 temp.append(answer.like_nums)#4                
                 temp_list.append(temp)
             to_json=json.dumps(temp_list)
+    elif 'asks'==command:
+        questions=er.selfquestions.all()
+        if questions:
+            temp_list=[]
+            for question in questions:
+                temp=[]
+                temp.append(question.id)#0
+                temp.append(question.title)#1
+                temp.append(str(question.pub_date))#2
+                temp.append(question.be_answers.count())#2
+                temp.append(question.follower_nums)#2
+                temp_list.append(temp)
+            to_json=json.dumps(temp_list)
     return HttpResponse(to_json,content_type='application/json')
         
 @csrf_exempt
@@ -219,6 +232,7 @@ def follow_er(request,follow,er_id):
     
 @csrf_exempt
 def upload_avatar(request):
+    print(request.POST.items)
     imgfile=request.FILES.get('imgfile')
     if imgfile: 
         print(str(time.time()))
@@ -231,7 +245,7 @@ def upload_avatar(request):
         request.user.userprofile.avatar='/'+name
         request.user.userprofile.save()
     
-    temp='success'
+    temp=request.user.userprofile.avatar
     to_json=json.dumps(temp)
     return HttpResponse(to_json,content_type='application/json')
 
