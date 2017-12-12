@@ -14,9 +14,17 @@ class ActiveView(generic.ListView):
         pass
     def get(self,request,*args,**kwargs):
         command=self.kwargs.get('command')
+        subcmd=self.kwargs.get('subcmd')
+        who='he'
         if not command:
             command='answers'
+        if not subcmd:
+            subcmd='followtos'
         user=request.user
         erid=self.kwargs.get('erid')
         er=get_object_or_404(User,pk=erid)
-        return render(request,self.template_name,{'er':er,'user':user,'command':command})
+        if user.id==er.id:
+            who='me'
+        #if er.sex=femal:
+        #    who='she'
+        return render(request,self.template_name,{'er':er,'user':user,'who':who,'command':command,'subcmd':subcmd})

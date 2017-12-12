@@ -173,7 +173,7 @@
 <div class="Profile-main">
 <div class="Profile-mainColumn">
 <div class="Card ProfileMain" id="ProfileMain">
-<div class="ProfileMain-header"  data-command="{{command}}" data-er-id="{{er.id}}" data-er-name="{{er.first_name}}" data-er-avatar="{{er.userprofile.avatar}}" data-er-mood="{{er.userprofile.mood}}">
+<div class="ProfileMain-header"  data-who="{{who}}" data-command="{{command}}" data-subcmd="{{subcmd}}" data-er-id="{{er.id}}" data-er-name="{{er.first_name}}" data-er-avatar="{{er.userprofile.avatar}}" data-er-mood="{{er.userprofile.mood}}">
 <ul role="tablist" class="Tabs ProfileMain-tabs">
 <!--
 <li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities">
@@ -406,13 +406,63 @@ function remove_img(content){
     return content.replace(imgReg,"").replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,150);
     //return content.replace(imgReg,"").replace(/<p>/gi,"").replace(/<\/p>/gi,"").replace(/(^\s*)|(\s*$)/g,"");
 }
-function appendAnswerElementSub(ret)
+
+function appendFollowElementSub(subcmd,ret)
 {
-    er_id=$(".ProfileMain-header").attr("data-er-id");
-    er_name=$(".ProfileMain-header").attr("data-er-name");
-    er_avatar=$(".ProfileMain-header").attr("data-er-avatar");
-    er_mood=$(".ProfileMain-header").attr("data-er-mood");
+    if(("followtos"==subcmd)||("followers"==subcmd))
+    {
+        var people_id=ret[0];
+        var people_name=ret[1];
+        var people_anwser_nums=ret[2];
+        var people_avatar=ret[3];
+        var people_mood=ret[4];
+        var people_follower_nums=ret[5];
+        var people_followed=ret[6];
+        var people_followed_each=ret[7];
+        if("1"==people_followed)
+            var followed_html='<button class="Button FollowButton Button--primary Button--grey" type="button">已关注</button>';
+        else
+            var followed_html='<button class="Button FollowButton Button--primary Button--green" type="button">关注</button>';
+        if("1"==people_followed_each)
+            var followed_each_html='<span class="FollowStatus">相互关注</span>';
+        else
+            var followed_each_html='';
+        var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><div class="Popover"><div id="Popover-28784-64463-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-64463-content"><a class="UserLink-link" target="_blank" href="/er/'+people_id+'">\
+                <img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+people_avatar+'" srcset="'+people_avatar+'" alt="'+people_name+'"></a></div></div></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><div class="Popover"><div id="Popover-28784-44728-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-44728-content"><a class="UserLink-link" data-za-detail-view-element_name="User" target="_blank" href="/er/'+people_id+'">'+people_name+'</a></div></div></span>'+followed_each_html+'</div></h2><div class="ContentItem-meta"><div><div class="RichText">'+people_mood+'</div>\
+                <div class="ContentItem-status"><span class="ContentItem-statusItem">'+people_anwser_nums+' 回答</span><span class="ContentItem-statusItem">0 文章</span><span class="ContentItem-statusItem">'+people_follower_nums+' 关注者</span></div></div></div></div><div class="ContentItem-extra">'+followed_html+'</div></div></div></div>';
+        $("#Append-element").append(data);
+    }
+}
+
+function appendFollowElement(subcmd)
+{
+    var data='<div class="List" id="Profile-following"><div class="List-header"><h4 class="List-headerText"><div class="SubTabs">\
+    <a class="SubTabs-item" href="/er/'+er_id+'/following/followtos">'+who_han+'关注的人</a>\
+    <a class="SubTabs-item" href="/er/'+er_id+'/following/followers">关注'+who_han+'的人</a>\
+    <a class="SubTabs-item" href="/er/'+er_id+'/following/topics">'+who_han+'关注的话题</a>\
+    <a class="SubTabs-item" href="/er/'+er_id+'/following/questions">'+who_han+'关注的问题</a>\
+    </div></h4></div><div id="Append-element"></div></div>';
+    $("#ProfileMain").append(data);
     
+    $(".SubTabs-item").each(function(){
+        if($(this).attr("href"))
+        {
+            if($(this).attr("href").indexOf(subcmd)>-1)
+                $(this).addClass("is-active");
+        }
+    });
+    
+    $.get("/ajax/er/"+er_id+"/following/"+subcmd+"/",function(ret){
+        if("null"!=ret)
+        {
+            for(i in ret)
+                appendFollowElementSub(subcmd,ret[i]);
+        }
+    });
+}
+
+function appendAnswerElementSub(ret)
+{    
     answer_id=ret[0];
     question_id=ret[1];
     question_title=ret[2];
@@ -504,18 +554,16 @@ function appendAnswerElementSub(ret)
 }
 function appendAnswerElement()
 {
-    data='<div class="List Profile-answers" id="11Profile-answers" data-zop-feedlistfather="1">\
+    var data='<div class="List Profile-answers" id="11Profile-answers" data-zop-feedlistfather="1">\
             <div class="List-header">\
-            <h4 class="List-headerText"><span>他的回答</span></h4>\
+            <h4 class="List-headerText"><span>'+who_han+'的回答</span></h4>\
             </div>\
             <div id="Append-element">\
             </div>\
             </div>\
             ';
     $("#ProfileMain").append(data);
-    erid=$(".ProfileMain-header").attr("data-er-id");
-    command=$(".ProfileMain-header").attr("data-command");
-    $.get("/ajax/er/"+erid+"/"+command+"/",function(ret){
+    $.get("/ajax/er/"+er_id+"/"+command+"/",function(ret){
         if("null"!=ret)
         {
             for(i in ret)
@@ -544,16 +592,14 @@ function appendQuestionElement()
 {
     data='<div class="List Profile-answers" id="Profile-answers">\
             <div class="List-header">\
-            <h4 class="List-headerText"><span>他的问题</span></h4>\
+            <h4 class="List-headerText"><span>'+who_han+'的问题</span></h4>\
             </div>\
             <div id="Append-element">\
             </div>\
             </div>\
             ';
     $("#ProfileMain").append(data);
-    erid=$(".ProfileMain-header").attr("data-er-id");
-    command=$(".ProfileMain-header").attr("data-command");
-    $.get("/ajax/er/"+erid+"/"+command+"/",function(ret){
+    $.get("/ajax/er/"+er_id+"/"+command+"/",function(ret){
         if("null"!=ret)
         {
         for(i in ret)
@@ -791,7 +837,21 @@ console.log("success");
 
 $(document).ready(function(){
     check_avatar();
+    er_id=$(".ProfileMain-header").attr("data-er-id");
+    er_name=$(".ProfileMain-header").attr("data-er-name");
+    er_avatar=$(".ProfileMain-header").attr("data-er-avatar");
+    er_mood=$(".ProfileMain-header").attr("data-er-mood");
     command=$(".ProfileMain-header").attr("data-command");
+    subcmd=$(".ProfileMain-header").attr("data-subcmd");
+    who_han="他";
+    var who=$(".ProfileMain-header").attr("data-who");
+    if ("me"==who)
+        who_han="我";
+    else if("he"==who)
+        who_han="他";
+    else if("she"==who)
+        who_han="她";
+    
     $(".Tabs-link").removeClass("is-active");
     $(".Tabs-link").each(function(){
         //console.log($(this).attr("href"));
@@ -806,6 +866,8 @@ $(document).ready(function(){
         appendAnswerElement();
     else if("asks"==command)
         appendQuestionElement();
+    else if("following"==command)
+        appendFollowElement(subcmd);
     else 
         console.log("false");
 });
