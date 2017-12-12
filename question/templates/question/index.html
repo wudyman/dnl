@@ -25,7 +25,7 @@
 </div>
 <nav role="navigation" class="col-md-3">
 <a class="AppHeader-navItem is-active" href="/">首页</a>
-<a class="AppHeader-navItem" href="/explore">发现</a>
+<a class="AppHeader-navItem" href="/maimai">发现</a>
 <a class="AppHeader-navItem" href="/topic">话题</a>
 </nav>
 
@@ -52,14 +52,14 @@
 
 <div class="AppHeader-userInfo col-md-2">
 <div class="1Popover PushNotifications AppHeader-notifications">
-<button class="1Button PushNotifications-icon 1Button--plain" type="button" id="Popover-88478-67360-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-67360-content">
+<button class="1Button PushNotifications-icon 1Button--plain" type="button" id="cPopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
 <svg viewBox="0 0 20 22" class="Icon Icon--news" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M2.502 14.08C3.1 10.64 2 3 8.202 1.62 8.307.697 9.08 0 10 0s1.694.697 1.797 1.62C18 3 16.903 10.64 17.497 14.076c.106 1.102.736 1.855 1.7 2.108.527.142.868.66.793 1.206-.075.546-.542.95-1.09.943H1.1C.55 18.34.084 17.936.01 17.39c-.075-.547.266-1.064.794-1.206.963-.253 1.698-1.137 1.698-2.104zM10 22c-1.417.003-2.602-1.086-2.73-2.51-.004-.062.02-.124.063-.17.043-.045.104-.07.166-.07h5c.063 0 .124.025.167.07.044.046.067.108.063.17-.128 1.424-1.313 2.513-2.73 2.51z"></path></g>
 </svg>
 </button>
 </div>
 
 <div class="1Popover Messages AppHeader-messages">
-<button class="1Button Messages-icon 1Button--plain" type="button" id="Popover-88478-87650-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-87650-content">
+<button class="1Button Messages-icon 1Button--plain" id="dPopover" type="button" id="Popover-88478-87650-toggle" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
 <svg viewBox="0 0 20 20" class="Icon Icon--message" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path><path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path></g>
 </svg>
 </button>
@@ -67,20 +67,7 @@
 
 <div class="AppHeader-profile">
 <div class="1Popover AppHeader-menu">
-<span class="dropdown">
-<img class="Avatar AppHeader-profileAvatar CPopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="/media/img/default.jpg" srcset="/media/img/default.jpg 2x">
-<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-<li>
-<a id="action-1" href="/er/{{user.id}}/answers/">Homepage</a>
-</li>
-<li>
-<a href="#">Setting</a>
-</li>
-<li>
-<a href="/exit/">Exit</a>
-</li>   
-</ul>
-</span>
+<img class="Avatar AppHeader-profileAvatar" id="ePopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="/media/img/default.jpg" srcset="/media/img/default.jpg 2x">
 </div>
 </div>
 
@@ -114,75 +101,8 @@
         </div>
         
         <div id="QuestionItems">
-        
-
-        <!--
-        {% if question_list %}
-            {% for question in question_list %}
-        <div class="QuestionFrame Card">
-            <div class="Feed">
-                <div class="Feed-title">
-                    <div class="Feed-meta">
-                        <span class="Feed-meta-item">来自话题:<span>
-                        <a href="/topic/{{ question.2 }}/" class="bind_hover_card" data-topic-id="{{question.2}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{ question.3 }}</a>
-                    </div>
-                </div>
-
-                <div class="AuthorInfo Feed-meta-author AuthorInfo--plain">
-                    <span class="UserLink AuthorInfo-avatarWrapper">
-                        <img src="{{question.7 }}" href="/er/{{ question.5 }}/" width="40" height="40" class="bind_hover_card" data-author-id="{{question.5}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">
-                    </span>
-                    <div class="AuthorInfo-content">
-                        <div class="AuthorInfo-head">
-                            <span class="UserLink AuthorInfo-name">
-                                <a href="/er/{{ question.5 }}/" class="bind_hover_card" data-author-id="{{question.5}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{ question.6 }}</a>
-                            </span>
-                        </div>
-                        <div class="AuthorInfo-detail">
-                            <div class="AuthorInfo-badge">
-                                <div class="RichText AuthorInfo-badgeText">
-                                    {{question.8}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="ContentItem AnswerItem">
-                    <h2 class="ContentItem-title">
-                        <a href="/question/{{ question.0 }}/">{{ question.1 }}</a>
-                    </h2>
-                    <div class="RichContent is-collapsed">
-                        <div class="RichContent-cover">
-                            <div class="RichContent-cover-inner">
-                                <img src="/media/img/wudy1510883020.jpg">
-                            </div>
-                        </div>
-                        <div class="RichContent-inner">
-                            <span class="RichText CopyrightRichText-richText">
-                                {{question.9|safe}}
-                            </span>
-                            <button class="Button ContentItem-more Button--plain" type="button" data-reactid="256">
-                                阅读全文
-                                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" style="height:16px;width:10px;" width="10" height="16" aria-hidden="true" data-reactid="258"><title data-reactid="259"></title><g data-reactid="260"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>
-                            </button>
-                        </div>
-                        <div class="ContentItem-actions">
-                            <span>
-                                <button class="AnswerLike Button LikeButton 1ContentItem-action" type="button" data-answer-id="{{ question.4 }}">
-                                    <svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>{{question.10}}
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         
-            {% endfor %}
-        {% endif %}
-        -->
-        </div>
         </div>
         
         <div class="TopstorySideBar col-md-3" data-reactid="1243" data-za-module="RightSideBar" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:null}}">
@@ -299,13 +219,13 @@ function check_popover_show(){
                     er_answer_nums=ret[4];
                     er_follower_nums=ret[5];
                     er_followed=ret[6];
-                    var data1='<div class="AnswerAuthor-user"><div class="AnswerAuthor-user-avatar"><span class="UserLink"><a class="UserLink-link" href="/er/'+er_id+'/"><img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+er_avatar+'" srcset="'+er_avatar+'" alt="'+er_name+'"></a></span></div><div class="AnswerAuthor-user-content"><div class="AnswerAuthor-user-name"><span class="UserLink"><a class="UserLink-link" href="/er/'+er_id+'/">'+er_name+'</a></span></div><div class="AnswerAuthor-user-headline"><div class="RichText">'+er_mood+'</div></div></div></div>';
-                    var data2='<hr/><div class="AnswerAuthor-counts"><div class="NumberBoard"><a class="1Button NumberBoard-item 1Button--plain" type="button" href="/er/'+er_id+'/answers/"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+er_answer_nums+'</div></a><a class="1Button NumberBoard-item 1Button--plain" data-za-detail-view-element_name="Post" type="button" href="/people/ha-wei-18-55/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">10</div></a><a class="1Button NumberBoard-item 1Button--plain" data-za-detail-view-element_name="Follower" type="button" href="/er/'+er_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value">'+er_follower_nums+'</div></a></div></div>';
+                    
+                    var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+er_avatar+'" srcset="'+er_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><span><a href="/er/'+er_id+'">'+er_name+'</a></span></div><div class="HoverCard-subtitle"><span class="RichText">'+er_mood+'</span></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+er_answer_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">0</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value">'+er_follower_nums+'</div></a></div>';
                     if(er_followed)
-                        var data3='<hr/><button id="pop-button-follow" class="btn btn-default" type="button" data-er-id="'+er_id+'" data-people-followed="true" onclick="follow_people()">已关注</button>';
+                        var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button id="pop-button-follow" class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+er_id+'" data-people-followed="true" onclick="follow_people()">已关注</button><button class="Button" type="button"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
                     else
-                        var data3='<hr/><button id="pop-button-follow" class="btn btn-success" type="button" data-er-id="'+er_id+'" data-people-followed="false" onclick="follow_people()">关注</button>';
-                    var data=data1+data2+data3;
+                        var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button id="pop-button-follow" class="Button FollowButton Button--primary Button--green" type="button" data-er-id="'+er_id+'" data-people-followed="false" onclick="follow_people()">关注</button><button class="Button" type="button"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
+                    var data=data1+data2;
                     element.attr("data-content",data);
                     element.popover('show');
                     //element.siblings(".popover").attr("in",true);
@@ -328,13 +248,13 @@ function check_popover_show(){
                     topic_question_nums=ret[3];
                     topic_follower_nums=ret[4];
                     topic_followed=ret[5];
-                    var data1='<div class="AnswerAuthor-user"><div class="AnswerAuthor-user-avatar"><span class="UserLink"><a class="UserLink-link" href="/topic/'+topic_id+'/"><img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+topic_avatar+'" srcset="'+topic_avatar+'" alt="'+topic_name+'"></a></span></div><div class="AnswerAuthor-user-content"><div class="AnswerAuthor-user-name"><span class="UserLink"><a class="UserLink-link" href="/topic/'+topic_id+'/">'+topic_name+'</a></span></div></div></div>';
-                    var data2='<hr/><div class="AnswerAuthor-counts"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" data-za-detail-view-element_name="Answer" type="button" href="/topic/'+topic_id+'/questions/"><div class="NumberBoard-name">问题</div><div class="NumberBoard-value">'+topic_question_nums+'</div></a><a class="Button NumberBoard-item Button--plain" data-za-detail-view-element_name="Post" type="button" href="/people/ha-wei-18-55/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">10</div></a><a class="Button NumberBoard-item Button--plain" data-za-detail-view-element_name="Follower" type="button" href="/topic/'+topic_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value">'+topic_follower_nums+'</div></a></div></div>';
+
+                    var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+topic_avatar+'" srcset="'+topic_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><a target="_blank" href="/topic/'+topic_id+'">'+topic_name+'</a></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" href="/topic/'+topic_id+'/questions" type="button"><div class="NumberBoard-name">问题&nbsp;</div><div class="NumberBoard-value">'+topic_question_nums+'</div></a><a class="Button NumberBoard-item Button--plain" href="/topic/'+topic_id+'/followers" type="button"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value">'+topic_follower_nums+'</div></a></div>';
                     if(topic_followed)
-                        var data3='<hr/><button id="pop-button-follow" class="btn btn-default" type="button" data-topic-id="'+topic_id+'" data-topic-followed="true" onclick="follow_topic()">已关注</button>';
+                        var data2='<div class="HoverCard-buttons"><button id="pop-button-follow" class="Button Button--primary Button--grey" type="button" data-topic-id="'+topic_id+'" data-topic-followed="true" onclick="follow_topic()">已关注</button></div></div>';
                     else
-                        var data3='<hr/><button id="pop-button-follow" class="btn btn-success" type="button" data-topic-id="'+topic_id+'" data-topic-followed="false" onclick="follow_topic()">关注</button>';
-                    var data=data1+data2+data3;
+                        var data2='<div class="HoverCard-buttons"><button id="pop-button-follow" class="Button Button--primary Button--green" type="button" data-topic-id="'+topic_id+'" data-topic-followed="false" onclick="follow_topic()">关注</button></div></div>';
+                    var data=data1+data2;
                     element.attr("data-content",data);
                     element.popover('show');
                 });
@@ -343,21 +263,36 @@ function check_popover_show(){
             });
     });
     
-    $('.CPopover').click(function(e){
+        $('#cPopover').click(function(e){
+        $("#dPopover").popover("hide");
+        $("#ePopover").popover("hide");
         e.stopPropagation();
-        var data='<ul>\
-                <li>\
-                <a id="action-1" href="/er/{{user.id}}/answers/">Homepage</a>\
-                </li>\
-                <li>\
-                <a href="#">Setting</a>\
-                </li>\
-                <li>\
-                <a href="/exit/">Exit</a>\
-                </li>\
-                </ul>';
-        $('.CPopover').attr("data-content",data);
-        $('.CPopover').popover('show');
+        var data='<div class="Menu PushNotifications-menu"><div class="PushNotifications-content"><div class="PushNotifications-header" role="tablist"><button class="Button PushNotifications-tab Button--plain" role="tab" aria-controls="PushNotifications-default" aria-label="消息" type="button"><svg viewBox="0 0 20 15" class="Icon PushNotifications-tabIcon PushNotifications-selectedTabIcon Icon--lastNews" width="20" height="16" aria-hidden="true" style="height: 16px; width: 20px;"><title></title><g><path d="M6.493 6C5.668 6 5 6.666 5 7.5 5 8.328 5.664 9 6.493 9h12.014C19.332 9 20 8.334 20 7.5c0-.828-.664-1.5-1.493-1.5H6.493zm0 6C5.668 12 5 12.666 5 13.5c0 .828.664 1.5 1.493 1.5h12.014c.825 0 1.493-.666 1.493-1.5 0-.828-.664-1.5-1.493-1.5H6.493zM1.5 0C.672 0 0 .666 0 1.5 0 2.328.666 3 1.5 3 2.328 3 3 2.334 3 1.5 3 .672 2.334 0 1.5 0zm0 6C.672 6 0 6.666 0 7.5 0 8.328.666 9 1.5 9 2.328 9 3 8.334 3 7.5 3 6.672 2.334 6 1.5 6zm0 6c-.828 0-1.5.666-1.5 1.5 0 .828.666 1.5 1.5 1.5.828 0 1.5-.666 1.5-1.5 0-.828-.666-1.5-1.5-1.5zM6.493 0C5.668 0 5 .666 5 1.5 5 2.328 5.664 3 6.493 3h12.014C19.332 3 20 2.334 20 1.5c0-.828-.664-1.5-1.493-1.5H6.493z"></path></g></svg></button><button class="Button PushNotifications-tab Button--plain" role="tab" aria-controls="PushNotifications-follow" aria-label="用户" type="button"><svg viewBox="0 0 24 17" class="Icon PushNotifications-tabIcon Icon--userNews" width="20" height="16" aria-hidden="true" style="height: 16px; width: 20px;"><title></title><g><path d="M9.464 7.705c-.265.46-.59.904-.538 1.315.206 1.603 3.205 1.92 4.087 2.99.643.783.91 1.97.972 3.96.01.32 0 1.03-.946 1.03H1.02c-1 0-1.01-.683-1-.995.068-1.994.318-3.208.976-3.994.886-1.056 4.084-1.345 4.224-3.05.032-.385-.268-.786-.538-1.255C3.182 5.102 2.608 0 7.054 0s3.824 5.25 2.41 7.705zM18.27 8.545c.963.126 2.924-.574 2.924-.574-.664-.68-.815-1.472-1.294-4.586C19.507.27 16.8.3 16.597.3c-.203 0-2.91-.03-3.297 3.084-.485 3.113-.636 3.907-1.3 4.586 0 0 1.96.7 2.923.575l-.003.68c-.494.542-1.79.725-2.376 1.077 2.796.316 2.954 3.696 2.954 6.678 1.475-.002 6.497.02 7.5.02 1.002 0 .996-.674.986-.976-.06-1.8-.28-2.786-.418-3.434-.416-1.976-3.58-1.488-5.292-3.364l-.003-.68z"></path></g></svg></button><button class="Button PushNotifications-tab Button--plain" role="tab" aria-controls="PushNotifications-vote-thank" aria-label="赞同和感谢" type="button"><div><svg viewBox="0 0 20 18" class="Icon PushNotifications-tabIcon Icon--thankNews" width="20" height="16" aria-hidden="true" style="height: 16px; width: 20px;"><title></title><g><path d="M0,5.43706401 C5.73656627e-08,2.50510671 2.2938809,0.094365083 5.20737357,1.60732864e-07 C7.2427157,-0.000505078569 9.0922816,1.19013727 9.9999282,3 C10.8228521,1.24236064 12.6486957,1.60732867e-07 14.6514359,1.60732864e-07 C17.5445125,1.60732867e-07 19.9999282,2.50715387 19.9999282,5.43242499 C19.9999282,13.2399998 11.8420757,18 9.99997552,18 C8.15785253,18 -1.52669543e-07,13.2399998 0,5.43706401 Z"></path></g></svg></div></button></div><div class="PushNotifications-list"><div class="PushNotifications-item"><span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/aall-55">Aall</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/jiang-zheng-52-14-81">姜铮</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/lillian-68-42">拂晓</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/pi-pi-hui-ke-ting">皮皮鲁</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/wang-xiao-yang-48-49">王潇洋</a></span></span></span><span> 回答了 </span><span><a href="/question/66834114?group_id=907384988165775360">有哪些「以为会碾压，结果被秒杀」 的例子？</a></span></div><div class="PushNotifications-item"><span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/di-xin-liang">我不是亮哥</a></span></span></span><span> 回答了 </span><span><a href="/question/22049270/answer/250850226">外国的民谣歌词和中国的民谣歌词有什么比较不一样的地方？</a></span></div><div class="PushNotifications-item"><span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/hubertuswi">顾宇</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/kkleft">你典哥哥</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/ye-xiao-zi">夜小紫</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/bao-mi-mi">包咪咪</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/chen-ke-55-65">皮耶霍</a></span></span></span><span> 回答了 </span><span><a href="/question/66834114?group_id=904733421180817408">有哪些「以为会碾压，结果被秒杀」 的例子？</a></span></div><div></div></div><div class="Notifications-footer"><a class="Button Button--plain" href="/settings/notification" type="button"><svg viewBox="0 0 20 20" class="Icon Button-icon Icon--setting" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M18.868 15.185c-.164.096-.315.137-.452.137-.123 0-1.397-.26-1.617-.233-1.355.013-1.782 1.275-1.836 1.74-.055.454 0 .893.19 1.304.138.29.125.577-.067.85-.863.893-2.165 1.016-2.357 1.016-.123 0-.247-.055-.356-.15-.11-.097-.685-1.14-1.07-1.47-1.303-.954-2.246-.328-2.63 0-.397.33-.67.7-.835 1.126-.07.18-.18.302-.33.37-1.354.426-2.918-.92-3.014-1.056-.082-.11-.123-.22-.123-.356-.014-.138.383-1.276.342-1.688-.342-1.9-1.836-1.687-2.096-1.673-.303.014-.604.068-.92.178-.205.056-.396.03-.588-.054-.888-.462-1.137-2.332-1.11-2.51.055-.315.192-.52.438-.604.425-.164.81-.452 1.15-.85.932-1.262.344-2.25 0-2.634-.34-.356-.725-.645-1.15-.81-.137-.04-.233-.15-.328-.315C-.27 6.07.724 4.95.978 4.733c.255-.22.6-.055.723 0 .426.164.878.22 1.344.15C4.7 4.636 4.784 3.14 4.81 2.908c.015-.247-.11-1.29-.136-1.4-.027-.123-.014-.22.027-.315C5.318.178 7.073 0 7.223 0c.178 0 .33.055.44.178.108.124.63 1.11 1 1.4.398.338 1.582.83 2.588.013.398-.273.96-1.288 1.083-1.412.123-.123.26-.178.384-.178 1.56 0 2.33 1.03 2.438 1.22.083.124.096.248.07.37-.03.152-.33 1.153-.262 1.606.366 1.537 1.384 1.742 1.89 1.783.494.027 1.645-.357 1.81-.344.164.014.315.083.424.206.535.31.85 1.715.905 2.14.027.233-.014.44-.11.562-.11.138-1.165.714-1.48 1.112-.855.982-.342 2.25-.068 2.606.26.37 1.22.905 1.288.96.15.137.26.302.315.494.146 1.413-.89 2.387-1.07 2.47zm-8.905-.535c.644 0 1.246-.123 1.822-.356.575-.248 1.082-.59 1.493-1.016.425-.425.754-.92 1-1.495.247-.562.357-1.18.357-1.81 0-.66-.11-1.262-.356-1.825-.248-.562-.577-1.056-1.002-1.48-.41-.427-.918-.756-1.493-1.003-.576-.233-1.178-.357-1.822-.357-.644 0-1.247.124-1.81.357-.56.247-1.067.576-1.478 1.002-.425.425-.768.92-1 1.48-.247.564-.37 1.167-.37 1.826 0 .644.123 1.248.37 1.81.232.563.575 1.07 1 1.495.424.426.917.768 1.48 1.016.56.233 1.164.356 1.808.356z"></path></g></svg><!-- react-text: 28 -->设置<!-- /react-text --></a><a class="Button Button--plain" href="/notifications" type="button"><!-- react-text: 30 -->查看全部提醒<!-- /react-text --></a></div></div></div>';
+        $('#cPopover').attr("data-content",data);
+        $('#cPopover').popover('show');
+
+    });
+    
+        $('#dPopover').click(function(e){
+        $("#cPopover").popover("hide");
+        $("#ePopover").popover("hide");
+        e.stopPropagation();
+        var data='<div class="Menu Messages-menu"><div class="Messages-content"><div class="Messages-header" role="tablist"><button class="Button Messages-tab Messages-myMessageTab Button--plain" type="button"><!-- react-text: 9 -->我的私信<!-- /react-text --></button></div><div class="Messages-list"><a href="/inbox/5587284910" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="https://pic3.zhimg.com/v2-b14587a6079c43702f1f0251098f3ec2_xs.jpg" srcset="https://pic3.zhimg.com/v2-b14587a6079c43702f1f0251098f3ec2_l.jpg 2x" alt="verna wu"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink"><!-- react-text: 26 -->verna wu<!-- /react-text --></span></div><div class="Messages-itemContent">hi verna</div></div></a><a href="/inbox/6213324000" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="https://pic3.zhimg.com/fd56780c37f0b316c56f27fe8b388532_xs.jpg" srcset="https://pic3.zhimg.com/fd56780c37f0b316c56f27fe8b388532_l.jpg 2x" alt="知乎团队"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink"><!-- react-text: 34 -->知乎团队<!-- /react-text --></span></div><div class="Messages-itemContent">wudy:见信好。第三届「知乎盐 Club」将于 5 月 14 日在上海国际时尚中心举办，届时将有丰富有趣的「15 分钟」演讲、展位互动和知友见面会「知乎 Live」，以及一年一度的「盐 Club」颁奖礼。欢迎关注「知识青年」专栏：https://zhuanlan.zhihu.com/p/20852694?source=message ，了解更多活动信息。如果活动当天你无法到场参与，也期待你参与我们的线上直播互动，视频直播地址： http://www.bilibili.com/html/activity-zh-yanclub.html 。和真实的你在一起知乎团队</div></div></a><div></div></div><div class="Messages-footer"><button class="Button Button--plain" type="button"><svg viewBox="0 0 12 12" class="Icon Button-icon Icon--modify" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg><!-- react-text: 17 -->写新私信<!-- /react-text --></button><a class="Button Button--plain" href="/inbox" type="button"><!-- react-text: 19 -->查看全部私信<!-- /react-text --></a></div></div></div>';
+        $('#dPopover').attr("data-content",data);
+        $('#dPopover').popover('show');
+
+    });
+    
+    $('#ePopover').click(function(e){
+        $("#cPopover").popover("hide");
+        $("#dPopover").popover("hide");
+        e.stopPropagation();
+        var data='<div class="Menu">\
+        <a class="Button Menu-item AppHeaderProfileMenu-item Button--plain" type="button" href="/er/{{user.id}}/"><svg viewBox="0 0 20 20" class="Icon Button-icon Icon--profile" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M13.4170937,10.9231839 C13.0412306,11.5757324 12.5795351,12.204074 12.6542924,12.7864225 C12.9457074,15.059449 18.2164534,14.5560766 19.4340179,15.8344151 C20,16.4286478 20,16.4978969 20,19.9978966 C13.3887136,19.9271077 6.63736785,19.9978966 0,19.9978966 C0.0272309069,16.4978969 0,16.5202878 0.620443914,15.8344151 C1.92305664,14.3944356 7.20116276,15.1185829 7.40016946,12.7013525 C7.44516228,12.1563518 7.02015319,11.5871442 6.63736814,10.9228381 C4.51128441,7.2323256 3.69679769,4.67956187e-11 10,9.32587341e-14 C16.3032023,-4.66091013e-11 15.4216968,7.4429255 13.4170937,10.9231839 Z"></path></g></svg>我的主页</a>\
+        <a class="Button Menu-item AppHeaderProfileMenu-item Button--plain" href="/settings/profile" type="button"><svg viewBox="0 0 20 20" class="Icon Button-icon Icon--setting" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M18.868 15.185c-.164.096-.315.137-.452.137-.123 0-1.397-.26-1.617-.233-1.355.013-1.782 1.275-1.836 1.74-.055.454 0 .893.19 1.304.138.29.125.577-.067.85-.863.893-2.165 1.016-2.357 1.016-.123 0-.247-.055-.356-.15-.11-.097-.685-1.14-1.07-1.47-1.303-.954-2.246-.328-2.63 0-.397.33-.67.7-.835 1.126-.07.18-.18.302-.33.37-1.354.426-2.918-.92-3.014-1.056-.082-.11-.123-.22-.123-.356-.014-.138.383-1.276.342-1.688-.342-1.9-1.836-1.687-2.096-1.673-.303.014-.604.068-.92.178-.205.056-.396.03-.588-.054-.888-.462-1.137-2.332-1.11-2.51.055-.315.192-.52.438-.604.425-.164.81-.452 1.15-.85.932-1.262.344-2.25 0-2.634-.34-.356-.725-.645-1.15-.81-.137-.04-.233-.15-.328-.315C-.27 6.07.724 4.95.978 4.733c.255-.22.6-.055.723 0 .426.164.878.22 1.344.15C4.7 4.636 4.784 3.14 4.81 2.908c.015-.247-.11-1.29-.136-1.4-.027-.123-.014-.22.027-.315C5.318.178 7.073 0 7.223 0c.178 0 .33.055.44.178.108.124.63 1.11 1 1.4.398.338 1.582.83 2.588.013.398-.273.96-1.288 1.083-1.412.123-.123.26-.178.384-.178 1.56 0 2.33 1.03 2.438 1.22.083.124.096.248.07.37-.03.152-.33 1.153-.262 1.606.366 1.537 1.384 1.742 1.89 1.783.494.027 1.645-.357 1.81-.344.164.014.315.083.424.206.535.31.85 1.715.905 2.14.027.233-.014.44-.11.562-.11.138-1.165.714-1.48 1.112-.855.982-.342 2.25-.068 2.606.26.37 1.22.905 1.288.96.15.137.26.302.315.494.146 1.413-.89 2.387-1.07 2.47zm-8.905-.535c.644 0 1.246-.123 1.822-.356.575-.248 1.082-.59 1.493-1.016.425-.425.754-.92 1-1.495.247-.562.357-1.18.357-1.81 0-.66-.11-1.262-.356-1.825-.248-.562-.577-1.056-1.002-1.48-.41-.427-.918-.756-1.493-1.003-.576-.233-1.178-.357-1.822-.357-.644 0-1.247.124-1.81.357-.56.247-1.067.576-1.478 1.002-.425.425-.768.92-1 1.48-.247.564-.37 1.167-.37 1.826 0 .644.123 1.248.37 1.81.232.563.575 1.07 1 1.495.424.426.917.768 1.48 1.016.56.233 1.164.356 1.808.356z"></path></g></svg>设置</a>\
+        <a class="Button Menu-item AppHeaderProfileMenu-item Button--plain" href="/exit/" type="button"><svg viewBox="0 0 20 20" class="Icon Button-icon Icon--logout" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M0 10C0 7.242 1.154 4.58 3.167 2.697c.51-.477 1.31-.45 1.79.06.475.51.45 1.31-.06 1.787C3.37 5.975 2.53 7.91 2.53 10c0 4.118 3.35 7.468 7.47 7.468 4.12 0 7.47-3.35 7.47-7.47 0-2.04-.81-3.948-2.28-5.37-.5-.485-.514-1.286-.028-1.788.485-.5 1.286-.517 1.79-.03C18.915 4.712 20 7.265 20 10c0 5.512-4.486 9.998-10 9.998s-10-4.486-10-10zm8.7-.483V1.26C8.7.564 9.26 0 9.96 0c.695 0 1.26.564 1.26 1.26v8.257c0 .696-.565 1.26-1.26 1.26-.698 0-1.26-.564-1.26-1.26z"></path></g></svg>退出</a></div>';
+        $('#ePopover').attr("data-content",data);
+        $('#ePopover').popover('show');
 
     });
     
@@ -370,7 +305,8 @@ function follow_people(){
         $.post("/ajax/er_follow/0/"+erid+"/",function(ret){
         //alert(ret);
         $("#follower_num").text(ret);
-        $("#pop-button-follow").removeClass("btn-defautl").addClass("btn-success").text("关注");
+        //$("#pop-button-follow").removeClass("btn-default").addClass("btn-success").text("关注");
+        $("#pop-button-follow").removeClass("Button--grey").addClass("Button--green").text("关注");
         $("#pop-button-follow").attr("data-people-followed","false");
     }); 
     }
@@ -379,7 +315,8 @@ function follow_people(){
         $.post("/ajax/er_follow/1/"+erid+"/",function(ret){
             //alert(ret);
             $("#follower_num").text(ret);
-            $("#pop-button-follow").removeClass("btn-success").addClass("btn-default").text("已关注");
+            //$("#pop-button-follow").removeClass("btn-success").addClass("btn-default").text("已关注");
+            $("#pop-button-follow").removeClass("Button--green").addClass("Button--grey").text("已关注");
             $("#pop-button-follow").attr("data-people-followed","true");
         });  
     }
@@ -392,7 +329,8 @@ function follow_topic(){
         $.post("/ajax/topic_follow/0/"+topicid+"/",function(ret){
         //alert(ret);
         $("#follower_num").text(ret);
-        $("#pop-button-follow").removeClass("btn-defautl").addClass("btn-success").text("关注");
+        //$("#pop-button-follow").removeClass("btn-default").addClass("btn-success").text("关注");
+        $("#pop-button-follow").removeClass("Button--grey").addClass("Button--green").text("关注");
         $("#pop-button-follow").attr("data-topic-followed","false");
     }); 
     }
@@ -401,7 +339,8 @@ function follow_topic(){
         $.post("/ajax/topic_follow/1/"+topicid+"/",function(ret){
             //alert(ret);
             $("#follower_num").text(ret);
-            $("#pop-button-follow").removeClass("btn-success").addClass("btn-default").text("已关注");
+            //$("#pop-button-follow").removeClass("btn-success").addClass("btn-default").text("已关注");
+            $("#pop-button-follow").removeClass("Button--green").addClass("Button--grey").text("已关注");
             $("#pop-button-follow").attr("data-topic-followed","true");
         });  
     }
@@ -512,7 +451,7 @@ function appendElement(ret)
                 
     var data2= '<div class="AuthorInfo Feed-meta-author AuthorInfo--plain">\
                     <span class="UserLink AuthorInfo-avatarWrapper">\
-                        <img src="'+anthor_avatar+'" href="/er/'+author_id+'/" width="40" height="40" class="APopover" data-author-id="'+author_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">\
+                        <img src="'+anthor_avatar+'" href="/er/'+author_id+'/" width="40" height="40" class="APopover" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">\
                     </span>\
                     <div class="AuthorInfo-content">\
                         <div class="AuthorInfo-head">\
@@ -637,86 +576,7 @@ $(function() {
 
 check_popover_show();
 check_answer_like();
-/*
-    $('.APopover').each(function(){
-        $(this).on('show.bs.popover', function () {
-		//alert("popover show 2");
-        xxx=$(this);
-        authorid=$(this).attr("data-author-id");
-        $.get("/ajax/user/"+authorid+"/",function(ret){
-        var data='<img src="/media/'+ret[2]+'">';
-        xxx.attr("data-content",data);
-        });
-        //$(this).attr("data-content",authorid);
-	});
-    });
-    
-    //模拟动态加载标题(真实情况可能会跟后台进行ajax交互)  
-function title() {  
-    return;// '田喜碧Hebe(节制的人生)';  
-}  
-  
-//模拟动态加载内容(真实情况可能会跟后台进行ajax交互)  
-function content() {  
-    var data = "<form><ul><li><span aria-hidden='true' class='icon_globe'></span>&nbsp;<font>粉丝数1:</font>7389223</li>" +  
-             "<li><span aria-hidden='true' class='icon_piechart'></span>&nbsp;<font>关注:</font>265</li>" +  
-             "<li><span aria-hidden='true' class='icon_search_alt'></span>&nbsp;<font>微博:</font>645</li>" +  
-             "<li><span aria-hidden='true' class='icon_pens_alt'></span>&nbsp;<font>所在地:</font>台湾</li>" +  
-             "<input id='btn' type='button' value='关注' onclick='test()'/></form>";   
-    return data;  
-}  
-//模拟悬浮框里面的按钮点击操作 
 
-
-function popover_show()
-{
-    $("[data-toggle='popover']").popover({  
-        html : true,       
-        delay:{show:500, hide:1000},  
-        content: function() {  
-          return content();    
-        }   
-    }); 
-}
-
-$(function() {  
-//$('.APopover').popover();
-//popover_show();
-});  
- 
-
-$('#topics_select').on('shown.bs.select', function (e) {
-  // do something...
-  //alert("shown.bs.select");
-});
-$('#topics_select').on('hide.bs.select', function (e) {
-  // do something...
-  //alert("hide.bs.select");
-});
-$('#topics_select').on('hidden.bs.select', function (e) {
-  // do something...
-  //alert("hidden.bs.select");
-  $("#hide_for_submit").attr("value",$("#topics_select").val());
-});
-$('#topics_select').on('loaded.bs.select', function (e) {
-  // do something...
-  //alert("loaded.bs.select");
-});
-$('#topics_select').on('rendered.bs.select', function (e) {
-  // do something...
-  //alert("rendered.bs.select");
-});
-$('#topics_select').on('refreshed.bs.select', function (e) {
-  // do something...
-  //alert("refreshed.bs.select");
-});
-$('#topics_select').on('changed.bs.select', function (e) {
-  // do something...
-  //alert("changed.bs.select");
-  //$("#hide_for_submit").attr("value",$("#topics_select").val());
-});
- 
-*/
 
 $(document).ready(function() {
     $('#summernote').summernote({
@@ -733,7 +593,9 @@ $(document).ready(function() {
 });
 
 $(document).click(function(e) {
-    $(".CPopover").popover("hide");
+    $("#cPopover").popover("hide");
+    $("#dPopover").popover("hide");
+    $("#ePopover").popover("hide");
 });
 
 </script>
