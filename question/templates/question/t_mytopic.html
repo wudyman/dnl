@@ -4,14 +4,21 @@
     {%load static %}
     <meta charset="utf-8"> 
     <link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
     <link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'common/11z_main_2.css' %}">
+
+<!--<style type="text/css">.CloseIcon-icon-2xww{transition:opacity .3s ease-out}.CloseIcon-icon-2xww:hover{opacity:.8}</style><style type="text/css">.animations-fadeIn-1aFv{animation:animations-fadeIn-1aFv .3s ease-out both}@keyframes animations-fadeIn-1aFv{0%{opacity:0}to{opacity:1}}.animations-fadeOut-3XSQ{animation:animations-fadeOut-3XSQ .3s ease-out both}@keyframes animations-fadeOut-3XSQ{0%{opacity:1}to{opacity:0}}.animations-fadeInUp-3KKK{animation:animations-fadeInUp-3KKK .3s cubic-bezier(.25,.1,.35,1) both}@keyframes animations-fadeInUp-3KKK{0%{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.animations-fadeOutDown-r_A_{animation:animations-fadeOutDown-r_A_ .3s cubic-bezier(.25,.1,.35,1) both}@keyframes animations-fadeOutDown-r_A_{0%{transform:translateY(0)}to{opacity:0;transform:translateY(20px)}}</style><style type="text/css">.Modal-backdrop-2ksh{background-color:rgba(0,0,0,.65)}.Modal-backdrop-2ksh,.Modal-modalWrapper-56Mq{position:fixed;top:0;right:0;bottom:0;left:0;z-index:10010}.Modal-modalWrapper-56Mq{display:-ms-flexbox;display:flex;-ms-flex-align:center;align-items:center;-ms-flex-pack:center;justify-content:center}.Modal-modal-wf58{position:relative;z-index:10011;background:#fff;border-radius:2px}.Modal-content-3JxL{width:588px;max-height:calc(100vh - 24px * 2);overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}.Modal-closeButton-3JkR{position:absolute;top:4px;right:-44px;padding:12px;width:40px;height:40px;cursor:pointer;box-sizing:border-box;background:none;outline:none;border:none}</style><style type="text/css">.FeedbackButton-button-3waL{position:fixed;z-index:10000;bottom:40px;right:40px;width:40px;height:40px;cursor:pointer;border-radius:50%;background-color:#fff;border:none;outline:none;box-shadow:0 0 10px rgba(0,0,0,.15);font-weight:700;line-height:normal}.FeedbackButton-icon-1Rgw{display:inline-block;vertical-align:middle;width:18px;height:18px;background-image:url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzUiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNSAzNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+R3JvdXAgNjwvdGl0bGU+PGcgZmlsbD0iIzAwOEZFQiIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTMgMTguM2MwLS40IDAtLjcuNC0xIC4yLS4yLjUtLjMuOC0uMy40IDAgLjcgMCAxIC40LjIuMi4zLjUuMyAxIDAgLjIgMCAuNS0uNC43IDAgLjQtLjQuNS0uOC41LS4zIDAtLjYgMC0uOC0uNC0uMyAwLS40LS40LS40LS43ek0xMCAxMC43di0xYy40LTEgMS41LTIuNyA0LjItMi43IDIgMCAzLjggMS40IDMuOCAzcy0xLjQgMi43LTIgMy4zYy0uOC42LTEgMS0xLjIgMS43LS4yLjYtLjYgMS0xLjMgMS0uMy0uMi0uNi0uMy0uNy0uNXYtLjhjMC0uMiAwLS43LjMtMS4ybDEuNC0xLjVjMS40LTEuMiAxLjYtMiAuOC0yLjgtLjUtLjQtMS42LS41LTIuMiAwLS44LjQtMSAxLTEuMiAxLjMtLjIuNS0uMyAxLTEuMyAxLS4zLS4yLS40LS40LS41LS44eiIvPjxwYXRoIGQ9Ik0yOS44IDEwLjJ2M2MxLjQgMS44IDIuMyA0IDIuMyA2LjMgMCAzLjgtMi4yIDctNS41IDl2My44bC0zLjctMi41LTMgLjNjLTIuOCAwLTQuMy0uOC02LjQtMi4yaC0zLjFDMTMgMzAuNCAxNS42IDMyIDIwIDMyYy44IDAgMS43IDAgMi42LS4ybDYgNHYtNi40YzMuNS0yLjQgNS43LTYgNS43LTEwIDAtMy42LTEuNy03LTQuNS05LjJ6TTE0LjQgMjUuNmM4IDAgMTMuMi02IDEzLjItMTNTMjEgMCAxNC40IDBDNi40IDAgMCA1LjcgMCAxMi43YzAgNCAxLjUgNy41IDQuNCAxMFYyOWw2LjMtMy42IDMuNy4yek0xNC4yIDJjNi41IDAgMTEuNSA1LjMgMTEuNSAxMUMyNS43IDE5IDIxIDI0IDE0LjQgMjRjLTEgMC0zLjYtLjMtNC41LS41TDYgMjUuN3YtNGMtMi43LTIuMi00LTUtNC04LjZDMiA3IDcgMiAxNCAyeiIvPjwvZz48L3N2Zz4=);background-repeat:no-repeat;background-size:contain}.FeedbackButton-button-3waL:hover .FeedbackButton-icon-1Rgw{background-image:url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzUiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNSAzNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+R3JvdXAgMTE8L3RpdGxlPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0iTTI5LjQgMTNjMCAyLS4zIDguMi01IDExLjQtNC4zIDMtOSAzLjMtMTEuMyAzLjNoLTNjMi44IDIuNyA2LjYgNC44IDEyLjIgNCAxIDAgNi4zIDQgNi4zIDRWMjljMy41LTIuMyA1LjMtNS4yIDUuNi05LjUuMy0zLjctMS42LTctNC41LTkuNXYzem0tMTUgMTIuNmM4IDAgMTMuMi02IDEzLjItMTNTMjEgMCAxNC40IDBDNi40IDAgMCA1LjcgMCAxMi43YzAgNCAxLjUgNy41IDQuNCAxMFYyOWw2LjMtMy42IDMuNy4zeiIgZmlsbD0iIzAwOEZFQiIvPjxwYXRoIGQ9Ik0xMyAxOC4zYzAtLjQgMC0uNy40LTFzLjUtLjMuOC0uM2MuNCAwIC43IDAgMSAuNC4yLjIuMy41LjMgMSAwIC4yIDAgLjUtLjQuNyAwIC40LS40LjUtLjguNS0uMyAwLS42IDAtLjgtLjQtLjMgMC0uNC0uNC0uNC0uN3ptLTMtNy42di0xYy40LTEgMS40LTIuNyA0LjItMi43IDIgMCAzLjggMS40IDMuOCAzcy0xLjQgMi43LTIgMy4zYy0uOC42LTEgMS0xLjIgMS43LS4yLjYtLjYgMS0xLjMgMS0uMy0uMi0uNi0uMy0uNy0uNXYtLjhjMC0uMiAwLS43LjMtMS4ybDEuNC0xLjVjMS40LTEuMiAxLjYtMiAuOC0yLjgtLjUtLjQtMS42LS41LTIuMiAwLS44LjQtMSAxLTEuMiAxLjMtLjIuNS0uMyAxLTEuMyAxLS4zLS4yLS40LS40LS41LS44eiIgZmlsbD0iI0ZGRiIvPjwvZz48L3N2Zz4=)}</style><style type="text/css">.DrawingExample-svg-30WA{position:absolute;top:30px;right:0;left:0;margin:auto;transform:rotate(-44deg)}.DrawingExample-ellipse-26bv{stroke-dasharray:520;transform-origin:center;animation:DrawingExample-drawingExample-3Bm3 .6s linear both}@keyframes DrawingExample-drawingExample-3Bm3{0%{stroke-dashoffset:520}50%{stroke-dashoffset:1000;opacity:1}to{stroke-dashoffset:1000;opacity:0}}</style><style type="text/css">.Spinner-spinner-2PGn{position:absolute;width:30px;height:30px;top:50%;left:50%;margin:-15px 0 0 -15px;animation:Spinner-rotate-RMMJ .8s linear infinite}.Spinner-spinner-2PGn .Spinner-circle-teFy{stroke:#4197ff;stroke-dasharray:187;stroke-dashoffset:46.75;transform-origin:center}@keyframes Spinner-rotate-RMMJ{0%{transform:rotate(0deg)}to{transform:rotate(1turn)}}</style><style type="text/css">.FeedbackForm-form-1uUg{padding:40px 24px 32px;width:100%;font-size:14px;line-height:1.5;font-family:HelveticaNeue-Light,Helvetica,PingFangSC-Light,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif;color:#404040;box-sizing:border-box}.FeedbackForm-header-3hQI{margin-bottom:26px;text-align:center}.FeedbackForm-title-2uCC{font-size:24px;font-weight:500;line-height:33px;font-family:Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif}.FeedbackForm-inputBox-15yJ{display:block;padding:12px;width:100%;height:auto;font-size:15px;border:1px solid #e7eaf1;border-radius:3px;box-sizing:border-box;resize:none;outline:none;color:inherit;transition:box-shadow .15s ease-out;overflow:auto}.FeedbackForm-inputBox-15yJ::-webkit-input-placeholder{color:#9aaabf;transition:color .15s ease-out}.FeedbackForm-inputBox-15yJ:-ms-input-placeholder{color:#9aaabf;transition:color .15s ease-out}.FeedbackForm-inputBox-15yJ::placeholder{color:#9aaabf;transition:color .15s ease-out}.FeedbackForm-inputBox-15yJ:hover::-webkit-input-placeholder{color:rgba(154,170,191,.8)}.FeedbackForm-inputBox-15yJ:hover:-ms-input-placeholder{color:rgba(154,170,191,.8)}.FeedbackForm-inputBox-15yJ:hover::placeholder{color:rgba(154,170,191,.8)}.FeedbackForm-inputBox-15yJ:focus{box-shadow:0 0 5px #e7eaf1}.FeedbackForm-inputBox-15yJ:focus::-webkit-input-placeholder{color:rgba(154,170,191,.8)}.FeedbackForm-inputBox-15yJ:focus:-ms-input-placeholder{color:rgba(154,170,191,.8)}.FeedbackForm-inputBox-15yJ:focus::placeholder{color:rgba(154,170,191,.8)}.FeedbackForm-inputBox-15yJ.FeedbackForm-isWarning-2ds-{border-color:#f75659}.FeedbackForm-inputBox-15yJ.FeedbackForm-isWarning-2ds-::-webkit-input-placeholder{color:#f75659}.FeedbackForm-inputBox-15yJ.FeedbackForm-isWarning-2ds-:-ms-input-placeholder{color:#f75659}.FeedbackForm-inputBox-15yJ.FeedbackForm-isWarning-2ds-::placeholder{color:#f75659}.FeedbackForm-inputBox-15yJ.FeedbackForm-isWarning-2ds-:focus{box-shadow:none}.FeedbackForm-screenShot--Gsn{overflow:hidden;box-sizing:border-box;transition:max-height .3s ease,opacity .3s ease}.FeedbackForm-screenShotLabel-2Sgh{padding-top:22px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.FeedbackForm-canvasContainer-mrde{margin-top:8px;position:relative;background-color:#f6f7f9}.FeedbackForm-canvas-tSGI{display:block;max-width:100%;cursor:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAABGdBTUEAALGPC/xhBQAAARpJREFUOBGdkr1KA0EUhTcxEkSQQIpAihQWPoedD2BnIVsZQiBVEkiR7SwtBDsJqXwBLQwEgoWNjY2FjYUQ38Ei5Oc7sBeGLTKze+Djzsyecxh2N4ryq0zkHpYQQ2H1SW5TNsxukaZzQsewACvTvIBg3eFUaABHMEv3OruBIN3icm8wZl+FZ3iBQ/AqweGW2FrlKlChV0McFsxOvaegm/T2lLzzTC/dqzaO7A1s/8GzE28Dhhj0f1jQnZ+c18CrKxxrcMO2/uK87m3AcAkrsKA7vzlvQJAmuNywrX84bwY1YBrBATyCFWj+QguCJKNCU1DZQ7r/Y55CsK5x2i2eWFcggTPIJd3Eiv5Zd3KlU3OJOQd9lVd4A5Xl1g4YG2GGhwRfegAAAABJRU5ErkJggg==) 0 17,default;cursor:-webkit-image-set(url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAABGdBTUEAALGPC/xhBQAAARpJREFUOBGdkr1KA0EUhTcxEkSQQIpAihQWPoedD2BnIVsZQiBVEkiR7SwtBDsJqXwBLQwEgoWNjY2FjYUQ38Ei5Oc7sBeGLTKze+Djzsyecxh2N4ryq0zkHpYQQ2H1SW5TNsxukaZzQsewACvTvIBg3eFUaABHMEv3OruBIN3icm8wZl+FZ3iBQ/AqweGW2FrlKlChV0McFsxOvaegm/T2lLzzTC/dqzaO7A1s/8GzE28Dhhj0f1jQnZ+c18CrKxxrcMO2/uK87m3AcAkrsKA7vzlvQJAmuNywrX84bwY1YBrBATyCFWj+QguCJKNCU1DZQ7r/Y55CsK5x2i2eWFcggTPIJd3Eiv5Zd3KlU3OJOQd9lVd4A5Xl1g4YG2GGhwRfegAAAABJRU5ErkJggg==) 1x,url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAABGdBTUEAALGPC/xhBQAAAn9JREFUWAnFlz1IV2EUxs2+ixCCrCCrIaiGGnLIRdBacqkhtCEbqqVaoqmacpIma6rFHHITh1pKMKFaInATkb4hKChKIwj7rt8D74XDy3tfKM69Hng4zz3nvc9zfH3/93//DQ31xWqsBsEnMAU6wILFSpwnwB+Db/BDoPZYjuMYsMMU/Af1nron2o7hh5KBNNhP0AtqjV24vQPFzsT5F70jVU7UiPhNcNyY7IC/AfEwxfUsvcVmvRtdhNIQkNFvcAoUsQ3yGhRDxLmpWOiZryUMzxqDrfCXiTXjZo0bvZIwKnbhvHHZBH9q1s7Am03fhV42BsUQcb5knDbAp8EzsNHUXWgfKrF52XW/cVwH1265xgXUyszL6gOuExixc/8xjIZ8C9YbHRd6GpWyHcjV33PfTpcJjMgJuJ4xOeNU7yP37DY6LvQoKnrUpwxzNb12tLpMYES64foyzBmnep+5p83ouNCDqHwHKcNc7Qv3tLtMYEQOwPVClTNO9ea5Z7/RcaH7UJFwyjBX0x/Q5TKBEdFWa8tzxqme3gTdX0/3IqrDmDLM1XTodfhdYw9qcyBnnOrpcdDrOglienDpAZYyzNX0oDwJ3GMUxZxxWe+M+yRBcBX53j8OpS9Z9ziM4tKguoJ8B5Tthq1fDPe4p+co3gbLgrLyLWDNY94X1rqnFmN8F64dUiwBIyAeRNd6Za0sjqFsTXWGdJYU+q00DGz/qhpVxg3EraH4Q7AmmDaSB4Hq10Ot0vQimMVDPaLeFJz1A1DvQsqVxmbU40Hs9ST9tZVOYMT1r+gw1zF9ReEx2BI3qrrWp6jTiH+FPwD6pI2BJ6DW0HkYBzNAQ9wH82DB4i/kUnkzGX+skQAAAABJRU5ErkJggg==) 2x) 0 17,default}.FeedbackForm-canvas-tSGI.FeedbackForm-isCapturing-3UFp{display:none}.FeedbackForm-checkLabelWrapper-3B7w{margin-top:12px}.FeedbackForm-checkLabel-2VTb{cursor:pointer;color:#9aaabf;transition:color .15s ease-out;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.FeedbackForm-checkLabel-2VTb:hover{color:rgba(154,170,191,.8)}.FeedbackForm-checkLabel-2VTb input{margin-right:.5em;vertical-align:1px}.FeedbackForm-actions-dJ87{margin-top:40px;text-align:center}.FeedbackForm-submitButton-1oKQ{display:inline-block;min-width:220px;padding:8px 1em;background-color:#0f88eb;border:1px solid #0f88eb;border-radius:3px;font:inherit;color:#fff;transition:background-color .15s ease-out,opacity .15s ease-out;cursor:pointer;outline:none}.FeedbackForm-submitButton-1oKQ[disabled]{opacity:.8;cursor:default}.FeedbackForm-submitButton-1oKQ:hover{background-color:#0d79d1}.FeedbackForm-submitButton-1oKQ:active{opacity:.8}.FeedbackForm-successMask-34go{display:-ms-flexbox;display:flex;-ms-flex-pack:center;justify-content:center;-ms-flex-align:center;align-items:center;position:absolute;top:0;left:0;width:100%;height:100%;background-color:#fff}.FeedbackForm-successTitle-1Y6p{font-size:24px;font-weight:500;line-height:33px;font-family:Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif;text-align:center}.FeedbackForm-successSubtitle-A_aP{margin-top:10px;font-size:18px;line-height:33px;text-align:center}</style><style type="text/css">._colors_text-muted_5fu-{color:#999}</style><style type="text/css">._Pager_root_2GoR{font-size:1.1em;text-align:center;line-height:3}._Pager_item_3xy4{padding:.5em;-webkit-transition:color .5s ease;transition:color .5s ease}</style><style type="text/css">._InputBox_root_1Xwi{width:100%;padding:9px 12px;min-height:38px;min-height:22px\9;line-height:1.4;color:#222;cursor:text;border:1px solid #ddd;border-radius:4px;box-shadow:inset 0 1px 3px rgba(0,0,0,.1);box-sizing:border-box;background:#fff}._InputBox_root_1Xwi:focus{border:1px solid #ccc}._InputBox_blur_3JWV._InputBox_empty_3_ur:before{content:attr(placeholder);color:#999}</style><style type="text/css">._CommentBox_dialog_2jQ_.modal-dialog{width:520px}._CommentBox_dialog_2jQ_.modal-dialog .modal-dialog-content{margin:0;padding:0}._CommentBox_root_G_1m{position:relative;margin-top:1em;margin-bottom:3em}._CommentBox_root_G_1m._CommentBox_embedded_1c_2{margin:0}._CommentBox_root_G_1m._CommentBox_embedded_1c_2._CommentBox_empty_1VbA{padding:1em}._CommentBox_root_G_1m._CommentBox_bordered_3Fo-{border:1px solid #ddd;border-radius:4px;box-shadow:0 1px 1px rgba(0,0,0,.05)}._CommentBox_list_10_K{padding-left:1em;padding-right:1em}._CommentBox_pagerBorder_yuO1{border-top:1px solid #eee}._CommentBox_list_10_K[hidden]+._CommentBox_pagerBorder_yuO1,._CommentBox_pagerBorder_yuO1[hidden]{border-top:none}._CommentBox_inConversations_MnYD{margin:0}._CommentBox_inConversations_MnYD ._CommentBox_list_10_K{margin:17px;padding:0;border:none}._CommentBox_inConversations_MnYD ._CommentBox_list_10_K._CommentBox_scrollable_87FS{padding-right:.1em}._CommentBox_inConversations_MnYD ._CommentBox_list_10_K>:first-child{padding-top:0}._CommentBox_inConversations_MnYD ._CommentBox_list_10_K>:last-child{padding-bottom:0}._CommentBox_button_1bar{font-size:.9em;cursor:pointer}._CommentBox_textButton_3t9_{padding:0;border:0;outline:0;background:none;cursor:pointer;color:#999}._CommentBox_textButton_3t9_:focus,html.no-touchevents ._CommentBox_textButton_3t9_:hover{color:#778087}._CommentBox_scrollable_87FS{padding-right:.9em;overflow-y:auto;max-height:550px;max-height:60vh;-webkit-overflow-scrolling:touch}@media (min-height:900px){._CommentBox_scrollable_87FS{max-height:550px}}._CommentBox_cannotCommentReason_1_q5{padding:1.5em 1em;border-radius:4px;text-align:center;background:#fbfbfb;border-top:1px solid #eee;color:#999}._CommentBox_root_G_1m._CommentBox_empty_1VbA ._CommentBox_cannotCommentReason_1_q5{border:none;background:#fff}._CommentBox_root_G_1m._CommentBox_embedded_1c_2 ._CommentBox_cannotCommentReason_1_q5{padding:.5em 1em}._CommentBox_loading_3DjF{padding:6px 12px;color:#999}._CommentBox_inConversations_MnYD ._CommentBox_loading_3DjF{padding:20px;text-align:center}._CommentBox_divider_3NgO{margin:0 -1em;height:0;color:#999;text-align:center;border-top:1px solid #eee}._CommentBox_divider_3NgO:last-child{margin-bottom:20px}._CommentBox_dividerText_eF9Y{position:relative;z-index:2;top:-.8em;padding:0 .8em;display:inline-block;background:#fff}._CommentBox_reviewNav_ipOY{padding:.5em 1em;border-bottom:1px solid #eee}._CommentBox_reviewDivider_3JDY{margin:0 .5em;color:#999}._CommentBox_reviewTab_25VS{color:#698ebf}._CommentBox_reviewTab_25VS._CommentBox_is-active_37tq{color:#999!important}html.no-touchevents ._CommentBox_reviewTab_25VS:hover{text-decoration:underline}._CommentBox_totalCount_277F{border-bottom:1px solid #eee;line-height:36px;text-indent:1em;font-size:14px}._CommentBox_commentListEmptyTip_1ril{display:table;height:65px;width:100%;text-align:center;font-size:14px;color:#666}._CommentBox_commentListEmptyTip_1ril span{display:table-cell;vertical-align:middle}._CommentBox_collapsedHint_9MYh{padding:10px 1em;color:#999}._CommentBox_collapsedHint_9MYh+._CommentBox_list_10_K,._CommentBox_collapsedHint_9MYh._CommentBox_bordered_3Fo-{border-top:1px solid #eee}._CommentBox_collapsedHint_9MYh a,._CommentBox_collapsedHint_9MYh button{color:inherit}._CommentBox_collapsedHint_9MYh button{background:none;border:none;outline:none}._CommentBox_collapsedHint_9MYh button:hover{color:#698ebf;cursor:pointer;text-decoration:underline}._CommentBox_plainBox_36Dz{border:none;background:#fff}</style><style type="text/css">._CommentForm_root_1-ko{position:relative;margin-top:1em}._CommentForm_bordered_2isg{margin:0;padding:1em;border-top:1px solid #eee;border-radius:0 0 4px 4px;background:#fbfbfb}._CommentForm_actions_ooEq{margin-top:1em;padding-bottom:0;text-align:right;line-height:33px;display:none}._CommentForm_expanded_39uD ._CommentForm_actions_ooEq{display:block}._CommentForm_submitButton_1N49{float:right}._CommentForm_cancelButton_cy3u{margin-right:1em}._CommentForm_mask_6Rp2{position:absolute;top:0;right:0;bottom:0;left:0}</style><style type="text/css">._CommentItem_root_PQNS{position:relative;list-style:none;outline:none;padding:.9em 0}._CommentItem_root_PQNS+._CommentItem_root_PQNS{border-top:1px solid #eee}._CommentItem_root_PQNS .OrgIcon{display:none}._CommentItem_deleted_3yx3{color:#999}._CommentItem_likes_2hey{float:right;padding-right:2px}._CommentItem_bull_T4Px{font-family:Arial;margin:0 3px}._CommentItem_avatarLink_3V51{float:left;margin:4px 1em 0 0}._CommentItem_avatar_3i-F{width:25px;height:25px;border-radius:2px}._CommentItem_body_3qwB{overflow:hidden}._CommentItem_content_CYqW{min-height:22px;word-wrap:break-word;color:#222}._CommentItem_content_CYqW._CommentItem_isContentCollapsed_3ppT{color:#999}._CommentItem_footer_46v8,._CommentItem_header_2JGh{color:#999}._CommentItem_footer_46v8,._CommentItem_footer_46v8 button{font-size:.95em}._CommentItem_action_Hk0w{margin-left:.6em;visibility:hidden}html.no-touchevents ._CommentItem_action_Hk0w:hover{color:#698ebf}._CommentItem_action_Hk0w._CommentItem_alwaysVisible_26qB,._CommentItem_root_PQNS._CommentItem_focusin_1khT ._CommentItem_action_Hk0w,._CommentItem_root_PQNS:hover ._CommentItem_action_Hk0w,html.touchevents ._CommentItem_action_Hk0w{visibility:visible}._CommentItem_action_Hk0w .zg-icon{width:12px;height:12px}._CommentItem_action_Hk0w ._CommentItem_spriteIcon_2r3E,._CommentItem_action_Hk0w .zg-icon{margin-right:5px;vertical-align:-2px}@media screen and (max-width:420px){._CommentItem_action_Hk0w ._CommentItem_spriteIcon_2r3E,._CommentItem_action_Hk0w .zg-icon{display:none}}._CommentItem_openConversations_36xr{float:right;padding-right:0;visibility:visible;font-size:.95em}._CommentItem_openConversations_36xr i{margin-right:.5em}._CommentItem_reviewNotice_9OXH{margin-left:6px;vertical-align:-2px!important}._CommentItem_flipV_1pj5{-webkit-transform:scaleY(-1);-ms-transform:scaleY(-1);transform:scaleY(-1)}</style><style type="text/css">[class*=sprite-comment-icon-]{display:inline-block;vertical-align:middle}.sprite-comment,[class*=sprite-comment-]{background-image:url(/static/revved/img/comment/sprites.auto.fe6c5ea2.png);background-repeat:no-repeat}.sprite-comment-icon-approve-default{background-position:0 -14px;width:12px;height:12px}.sprite-comment-icon-approve-hover,html.no-touchevents .sprite-comment-icon-approve-default:hover,html.no-touchevents a:hover .sprite-comment-icon-approve-default,html.no-touchevents button:hover .sprite-comment-icon-approve-default{background-position:-14px -14px;width:12px;height:12px}.sprite-comment-icon-collapse-default{background-position:0 0;width:14px;height:12px}.sprite-comment-icon-collapse-hover,html.no-touchevents .sprite-comment-icon-collapse-default:hover,html.no-touchevents a:hover .sprite-comment-icon-collapse-default,html.no-touchevents button:hover .sprite-comment-icon-collapse-default{background-position:-16px 0;width:14px;height:12px}.sprite-comment-icon-invisible-default{background-position:-32px 0;width:12px;height:12px}.sprite-comment-icon-invisible-hover,html.no-touchevents .sprite-comment-icon-invisible-default:hover,html.no-touchevents a:hover .sprite-comment-icon-invisible-default,html.no-touchevents button:hover .sprite-comment-icon-invisible-default{background-position:-32px -14px;width:12px;height:12px}.sprite-comment-icon-open-conversations-default{background-position:-28px -28px;width:12px;height:11px}.sprite-comment-icon-open-conversations-hover,html.no-touchevents .sprite-comment-icon-open-conversations-default:hover,html.no-touchevents a:hover .sprite-comment-icon-open-conversations-default,html.no-touchevents button:hover .sprite-comment-icon-open-conversations-default{background-position:-46px 0;width:12px;height:11px}.sprite-comment-icon-recommend-default{background-position:0 -28px;width:12px;height:12px}.sprite-comment-icon-recommend-hover,html.no-touchevents .sprite-comment-icon-recommend-default:hover,html.no-touchevents a:hover .sprite-comment-icon-recommend-default,html.no-touchevents button:hover .sprite-comment-icon-recommend-default{background-position:-14px -28px;width:12px;height:12px}@media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi){.sprite-comment,[class*=sprite-comment-]{background-image:url(/static/revved/img/comment/sprites@2x.auto.32784ddf.png);background-size:58px 40px}}</style>-->
+
 </head>
-<body>
+
+<body class="Entry-body">
+<header  role="banner" class="123Sticky AppHeader">
+<div class="AppHeader-inner">
 
 <div class="container">
-<header role="banner" data-za-module="TopNavBar" >
-<!-- react-empty: 1220 -->
 <div class="row">
 <div class="col-md-1">
 <a href="/" aria-label="大大大">
@@ -22,74 +29,755 @@
 </div>
 <nav role="navigation" class="col-md-3">
 <a class="AppHeader-navItem is-active" href="/">首页</a>
-<a class="AppHeader-navItem" href="/explore">发现</a>
+<a class="AppHeader-navItem" href="/maimai">买卖</a>
 <a class="AppHeader-navItem" href="/topic">话题</a>
 </nav>
+
+
 <div class="SearchBar col-md-6" role="search">
-<input type="text" maxlength="100" value="" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-88417-181--1" id="Popover-88417-61448-toggle" aria-haspopup="true" aria-owns="Popover-88417-61448-content" class="Input" placeholder="搜索你感兴趣的内容…">
-<button class="Button SearchBar-searchIcon Button--primary" aria-label="搜索" type="button">
-<svg viewBox="0 0 16 16" class="Icon Icon--search" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g>
-</svg>
-</button>
-<!-- react-empty: 29 -->
-<button class="Button QuestionAskButton SearchBar-askButton btn-success" type="button" data-toggle="modal" data-target="#askModal">
-<!-- react-text: 31 -->提问<!-- /react-text --><!-- react-empty: 32 -->
+<div class="SearchBar-toolWrapper">
+<form class="SearchBar-tool">
+<div>
+<div class="1Popover">
+<div class="SearchBar-input Input-wrapper Input-wrapper--grey">
+<input type="text" maxlength="120" value="" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-41236-89421--1" id="Popover-41236-42847-toggle" aria-haspopup="true" aria-owns="Popover-41236-42847-content" class="Input" placeholder="搜索你感兴趣的内容…">
+<div class="Input-after">
+<button class="Button SearchBar-searchIcon Button--primary" aria-label="搜索" type="button" data-reactid="25"><svg viewBox="0 0 16 16" class="Icon Icon--search" style="height:16px;width:16px;" width="16" height="16" aria-hidden="true" data-reactid="26"><title data-reactid="27"></title><g data-reactid="28"><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg>
 </button>
 </div>
+</div>
+</div>
+</div>
+</form>
+</div>
+<button class="1Button QuestionAskButton SearchBar-askButton 1Button--primary 1Button--green btn btn-success" type="button" data-toggle="modal" data-target="#askModal">提问</button>
+</div>
+
+
 <div class="AppHeader-userInfo col-md-2">
-<button class="Button PushNotifications-icon Button--plain" type="button" id="Popover-88478-67360-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-67360-content">
+<div class="1Popover PushNotifications AppHeader-notifications">
+<button class="1Button PushNotifications-icon 1Button--plain" type="button" id="cPopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
 <svg viewBox="0 0 20 22" class="Icon Icon--news" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M2.502 14.08C3.1 10.64 2 3 8.202 1.62 8.307.697 9.08 0 10 0s1.694.697 1.797 1.62C18 3 16.903 10.64 17.497 14.076c.106 1.102.736 1.855 1.7 2.108.527.142.868.66.793 1.206-.075.546-.542.95-1.09.943H1.1C.55 18.34.084 17.936.01 17.39c-.075-.547.266-1.064.794-1.206.963-.253 1.698-1.137 1.698-2.104zM10 22c-1.417.003-2.602-1.086-2.73-2.51-.004-.062.02-.124.063-.17.043-.045.104-.07.166-.07h5c.063 0 .124.025.167.07.044.046.067.108.063.17-.128 1.424-1.313 2.513-2.73 2.51z"></path></g>
 </svg>
-<!-- react-empty: 1226 -->
 </button>
-<!-- react-empty: 1227 -->
+</div>
 
-<button class="Button Messages-icon Button--plain" type="button" id="Popover-88478-87650-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-87650-content">
+<div class="1Popover Messages AppHeader-messages">
+<button class="1Button Messages-icon 1Button--plain" id="dPopover" type="button" id="Popover-88478-87650-toggle" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
 <svg viewBox="0 0 20 20" class="Icon Icon--message" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path><path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path></g>
 </svg>
 </button>
-<!-- react-empty: 1234 -->
+</div>
 
-<!-- react-empty: 42 -->
+<div class="AppHeader-profile">
+<div class="1Popover AppHeader-menu">
+<img class="Avatar AppHeader-profileAvatar" id="ePopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="/media/img/default.jpg" srcset="/media/img/default.jpg 2x">
+</div>
+</div>
 
-<button class="Button AppHeader-profileEntry Button--plain" type="button" id="Popover-88478-48941-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-88478-48941-content">
-<img class="Avatar AppHeader-profileAvatar" width="30" height="30" src="https://pic1.zhimg.com/da8e974dc_is.jpg" srcset="https://pic1.zhimg.com/da8e974dc_im.jpg 2x">
-</button>
-<!-- react-empty: 1239 -->
+</div>
+
+</div>
 </div>
 </div>
 </header>
-<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 53px;">
+
+
+<!--
+<div class="1zg-wrap 1zu-main clearfix " role="main">
+<div class="1zu-main-content">
+<div class="1zu-main-content-inner">
+-->
+
+<main role="main" class="App-main">
+<div class="Topstory">
+<div class="Topstory-container container">
+<div class="row">
+<div class="Topstory-mainColumn 1col-md-offset-1 col-md-8">
+
+
+<div class="Card">
+
+<div class="Card-header">
+<div class="Card-headerText">
+<a target="_blank" href="/er/1/following/topics/">已关注的话题</a> 
+</div>
 </div>
 
-        <!--------------------main---------------------->
-        <HR style="width:100%;">
-        <main role="main">
+<div class="Card-section">
+{% if mytopic_list %}
+{% for topic in mytopic_list %}
+<div class="Tag FollowedTopic 1QuestionTopic" data-topic-id="{{ topic.id }}">
+<span class="Tag-content">
+<a class="1TopicLink" href="#{{ topic.id }}">{{ topic.name }}</a>
+</span>
+</div>
+{% endfor %}
+{% endif %} 
+</div>
+  
+</div>
         
+<!--
+<div>
+<a href="" target="_blank" class=""><img class="Avatar Avatar--m js-topic-avatar" src="" srcset="" alt=""></a>
+<a href="" target="_blank" class="">电影</a>
+</div>
+-->
 
-        <div id="MyTopicItems">
-        <div class="row">
-        <div class="col-md-8">
-        {% if mytopic_list %}
-            {% for topic in mytopic_list %}
-        <div class="MyTopicFrame font-black">
-            <div>
-            <a href="/topic/{{ topic.id }}/" data-topic-id="{{ topic.id }}">{{ topic.name }}</a>
-            </div>
-            <!--<button class="btn btn-success" style="display:none">取消关注</button>-->
-        </div>
-        
-        <div>&nbsp;</div>
-            {% endfor %}
-        {% endif %}
-        </div>
 
-        </main>
-        <!--------------------main end-------------------->
+
+<div id="QuestionItems">
+</div>
+
+
+
 
 </div>
 
-<div><a href="/topics/">更多话题</a><div>
+<!--
+<div class="zu-main-sidebar" data-za-module="RightSideBar">
+
+
+<div class="topics-plaza">
+<a target="_blank" href="/topics" class="zg-btn-blue">
+进入话题广场
+</a>
+<a target="_blank" href="https://www.zhihu.com/topics" class="text">
+来这里发现更多有趣话题
+</a>
+</div>
+
+<div class="topic-recommend">
+<div class="topic-recommend-head">
+<h2 class="topic-recommend-name">其他人关注的话题</h2>
+<a href="https://www.zhihu.com/topic#" class="zg-link-litblue-normal js-pager topics-pager">
+换一换
+</a>
+</div>
+<div class="topic-recommend-list js-list">
+
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="https://www.zhihu.com/topic/19604128" target="_blank"><img class="Avatar Avatar--xs" src="./(1 条消息) 话题动态 - 知乎_files/a78b253d8f27af0933c63bae17bb5cb0_xs.jpg" srcset="https://pic1.zhimg.com/a78b253d8f27af0933c63bae17bb5cb0_l.jpg 2x" alt="医学"></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="https://www.zhihu.com/topic/19604128" target="_blank"><strong>医学</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="18012" data-token="19604128" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="https://www.zhihu.com/topic/19551432" target="_blank"><img class="Avatar Avatar--xs" src="./(1 条消息) 话题动态 - 知乎_files/7a579133e50fc9125ff7cda05249fcf1_xs.jpg" srcset="https://pic2.zhimg.com/7a579133e50fc9125ff7cda05249fcf1_l.jpg 2x" alt="心理学"></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="https://www.zhihu.com/topic/19551432" target="_blank"><strong>心理学</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="404" data-token="19551432" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="https://www.zhihu.com/topic/19551137" target="_blank"><img class="Avatar Avatar--xs" src="./(1 条消息) 话题动态 - 知乎_files/975baaf73fd76f48ce6f05e19b176878_xs.jpg" srcset="https://pic1.zhimg.com/975baaf73fd76f48ce6f05e19b176878_l.jpg 2x" alt="美食"></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="https://www.zhihu.com/topic/19551137" target="_blank"><strong>美食</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="304" data-token="19551137" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="https://www.zhihu.com/topic/19550937" target="_blank"><img class="Avatar Avatar--xs" src="./(1 条消息) 话题动态 - 知乎_files/8aa11b633_xs.jpg" srcset="https://pic4.zhimg.com/8aa11b633_l.jpg 2x" alt="健康"></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="https://www.zhihu.com/topic/19550937" target="_blank"><strong>健康</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="237" data-token="19550937" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="https://www.zhihu.com/topic/19564606" target="_blank"><img class="Avatar Avatar--xs" src="./(1 条消息) 话题动态 - 知乎_files/0970be9f5_xs.jpg" srcset="https://pic2.zhimg.com/0970be9f5_l.jpg 2x" alt="户外运动"></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="https://www.zhihu.com/topic/19564606" target="_blank"><strong>户外运动</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="4797" data-token="19564606" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="https://www.zhihu.com/topic/19562832" target="_blank"><img class="Avatar Avatar--xs" src="./(1 条消息) 话题动态 - 知乎_files/f85294643_xs.jpg" srcset="https://pic4.zhimg.com/f85294643_l.jpg 2x" alt="篮球"></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="https://www.zhihu.com/topic/19562832" target="_blank"><strong>篮球</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="4196" data-token="19562832" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+
+</div>
+<script type="text/html" class="js-hidden-list">
+
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19551388" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/d0786c77632f8287d03205491d731792_xs.png" srcset="https://pic3.zhimg.com/d0786c77632f8287d03205491d731792_l.png 2x" alt="摄影" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19551388" target="_blank"><strong>摄影</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="388" data-token="19551388" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19551077" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/v2-475e8628d01bb3c4a2eae7e3fdd4ac0f_xs.png" srcset="https://pic4.zhimg.com/v2-475e8628d01bb3c4a2eae7e3fdd4ac0f_l.png 2x" alt="历史" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19551077" target="_blank"><strong>历史</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="285" data-token="19551077" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19555513" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/v2-b79da6d4d51b9c889cf9e2e7c392697f_xs.jpg" srcset="https://pic4.zhimg.com/v2-b79da6d4d51b9c889cf9e2e7c392697f_l.jpg 2x" alt="生活方式" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19555513" target="_blank"><strong>生活方式</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="1761" data-token="19555513" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19551404" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/cdadbe013_xs.jpg" srcset="https://pic4.zhimg.com/cdadbe013_l.jpg 2x" alt="投资" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19551404" target="_blank"><strong>投资</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="395" data-token="19551404" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19570709" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/cafae465b8ea283498c69ab9757f86ba_xs.jpg" srcset="https://pic3.zhimg.com/cafae465b8ea283498c69ab9757f86ba_l.jpg 2x" alt="对冲基金" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19570709" target="_blank"><strong>对冲基金</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="6839" data-token="19570709" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19552706" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/874291333_xs.jpg" srcset="https://pic4.zhimg.com/874291333_l.jpg 2x" alt="运动" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19552706" target="_blank"><strong>运动</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="833" data-token="19552706" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19564876" target="_blank"><img class="Avatar Avatar--xs" src="https://pic1.zhimg.com/a240a363b7d7e0681502017c57b0ba20_xs.jpg" srcset="https://pic1.zhimg.com/a240a363b7d7e0681502017c57b0ba20_l.jpg 2x" alt="财务" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19564876" target="_blank"><strong>财务</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="4887" data-token="19564876" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19550994" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/fb89e0ea3_xs.jpg" srcset="https://pic4.zhimg.com/fb89e0ea3_l.jpg 2x" alt="游戏" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19550994" target="_blank"><strong>游戏</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="253" data-token="19550994" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19575492" target="_blank"><img class="Avatar Avatar--xs" src="https://pic2.zhimg.com/1c4a6ce239afed5a71e041ccdfa59f35_xs.jpg" srcset="https://pic2.zhimg.com/1c4a6ce239afed5a71e041ccdfa59f35_l.jpg 2x" alt="生物学" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19575492" target="_blank"><strong>生物学</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="8437" data-token="19575492" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19554827" target="_blank"><img class="Avatar Avatar--xs" src="https://pic2.zhimg.com/c8f2d728879d05657d86ca6fa6b0336d_xs.jpg" srcset="https://pic2.zhimg.com/c8f2d728879d05657d86ca6fa6b0336d_l.jpg 2x" alt="体育" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19554827" target="_blank"><strong>体育</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="1538" data-token="19554827" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19550434" target="_blank"><img class="Avatar Avatar--xs" src="https://pic2.zhimg.com/eab85c3ad_xs.jpg" srcset="https://pic2.zhimg.com/eab85c3ad_l.jpg 2x" alt="艺术" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19550434" target="_blank"><strong>艺术</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="69" data-token="19550434" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19967967" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/1190104157a2c594a477f90f66172b6a_xs.jpg" srcset="https://pic3.zhimg.com/1190104157a2c594a477f90f66172b6a_l.jpg 2x" alt="区域经济学" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19967967" target="_blank"><strong>区域经济学</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="141334" data-token="19967967" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19673988" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/022feb1bff02e636ed84fb28166f5b67_xs.png" srcset="https://pic4.zhimg.com/022feb1bff02e636ed84fb28166f5b67_l.png 2x" alt="发展经济学" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19673988" target="_blank"><strong>发展经济学</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="41344" data-token="19673988" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19577124" target="_blank"><img class="Avatar Avatar--xs" src="https://pic1.zhimg.com/335a695b0_xs.jpg" srcset="https://pic1.zhimg.com/335a695b0_l.jpg 2x" alt="戏剧" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19577124" target="_blank"><strong>戏剧</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="8973" data-token="19577124" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19550874" target="_blank"><img class="Avatar Avatar--xs" src="https://pic2.zhimg.com/f126e096216e4554289b0996539b79b5_xs.jpg" srcset="https://pic2.zhimg.com/f126e096216e4554289b0996539b79b5_l.jpg 2x" alt="法律" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19550874" target="_blank"><strong>法律</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="215" data-token="19550874" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19591985" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/v2-70ad9e8e09aaa91a71c3c03f5f7a2a0e_xs.jpg" srcset="https://pic3.zhimg.com/v2-70ad9e8e09aaa91a71c3c03f5f7a2a0e_l.jpg 2x" alt="动漫" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19591985" target="_blank"><strong>动漫</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="13908" data-token="19591985" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19555457" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/34799a68980175b37acfd487a46bce43_xs.jpg" srcset="https://pic4.zhimg.com/34799a68980175b37acfd487a46bce43_l.jpg 2x" alt="商业" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19555457" target="_blank"><strong>商业</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="1740" data-token="19555457" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/20031686" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/1720d08cb8e682f0d5219efa4453c4a2_xs.png" srcset="https://pic3.zhimg.com/1720d08cb8e682f0d5219efa4453c4a2_l.png 2x" alt="2015 年盘点" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/20031686" target="_blank"><strong>2015 年盘点</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="162745" data-token="20031686" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19551556" target="_blank"><img class="Avatar Avatar--xs" src="https://pic2.zhimg.com/2178ec835c7198af83d6b541bb2b9849_xs.jpg" srcset="https://pic2.zhimg.com/2178ec835c7198af83d6b541bb2b9849_l.jpg 2x" alt="旅行" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19551556" target="_blank"><strong>旅行</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="444" data-token="19551556" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19551557" target="_blank"><img class="Avatar Avatar--xs" src="https://pic1.zhimg.com/e8b840284350f4a2d01ea6869926bfcc_xs.jpg" srcset="https://pic1.zhimg.com/e8b840284350f4a2d01ea6869926bfcc_l.jpg 2x" alt="设计" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19551557" target="_blank"><strong>设计</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="445" data-token="19551557" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19551052" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/465de28443de54e4f89b39f5486525e7_xs.jpg" srcset="https://pic4.zhimg.com/465de28443de54e4f89b39f5486525e7_l.jpg 2x" alt="时尚" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19551052" target="_blank"><strong>时尚</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="276" data-token="19551052" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19551915" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/e803f3e7a832b035f9bd2dff87033133_xs.jpg" srcset="https://pic4.zhimg.com/e803f3e7a832b035f9bd2dff87033133_l.jpg 2x" alt="汽车" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19551915" target="_blank"><strong>汽车</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="570" data-token="19551915" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/20048909" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/6e2f43f355c545833e7a825cad067a62_xs.png" srcset="https://pic3.zhimg.com/6e2f43f355c545833e7a825cad067a62_l.png 2x" alt="知乎 Live" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/20048909" target="_blank"><strong>知乎 Live</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="168696" data-token="20048909" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19562435" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/d6b1c3d193581b4110a3ea289c7f5623_xs.png" srcset="https://pic4.zhimg.com/d6b1c3d193581b4110a3ea289c7f5623_l.png 2x" alt="食品安全" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19562435" target="_blank"><strong>食品安全</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="4075" data-token="19562435" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19553298" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/2bd2e49d3f849155376393085edc1d9e_xs.jpg" srcset="https://pic3.zhimg.com/2bd2e49d3f849155376393085edc1d9e_l.jpg 2x" alt="自然科学" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19553298" target="_blank"><strong>自然科学</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="1027" data-token="19553298" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19559052" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/v2-73b6c853c337ba8ff1684855306b3cfb_xs.jpg" srcset="https://pic4.zhimg.com/v2-73b6c853c337ba8ff1684855306b3cfb_l.jpg 2x" alt="足球" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19559052" target="_blank"><strong>足球</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="2955" data-token="19559052" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19553176" target="_blank"><img class="Avatar Avatar--xs" src="https://pic2.zhimg.com/f672948364a6592511342b965bbfad91_xs.jpg" srcset="https://pic2.zhimg.com/f672948364a6592511342b965bbfad91_l.jpg 2x" alt="教育" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19553176" target="_blank"><strong>教育</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="988" data-token="19553176" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19551469" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/d8426d43e_xs.jpg" srcset="https://pic3.zhimg.com/d8426d43e_l.jpg 2x" alt="旅游" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19551469" target="_blank"><strong>旅游</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="415" data-token="19551469" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19562906" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/f5b4524ab48273ed913a113d84ba009e_xs.png" srcset="https://pic3.zhimg.com/f5b4524ab48273ed913a113d84ba009e_l.png 2x" alt="化学" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19562906" target="_blank"><strong>化学</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="4217" data-token="19562906" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19567962" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/43efd061747369b1f03cc2c34adca45e_xs.jpg" srcset="https://pic3.zhimg.com/43efd061747369b1f03cc2c34adca45e_l.jpg 2x" alt="博弈论" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19567962" target="_blank"><strong>博弈论</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="5930" data-token="19567962" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19551036" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/0fa82692a_xs.jpg" srcset="https://pic3.zhimg.com/0fa82692a_l.jpg 2x" alt="字体设计" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19551036" target="_blank"><strong>字体设计</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="271" data-token="19551036" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19556671" target="_blank"><img class="Avatar Avatar--xs" src="https://pic1.zhimg.com/b1ff5998c_xs.jpg" srcset="https://pic1.zhimg.com/b1ff5998c_l.jpg 2x" alt="儿童教育" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19556671" target="_blank"><strong>儿童教育</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="2146" data-token="19556671" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19561988" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/a3b82d40a0fcf4a95422d8bf33c95b36_xs.png" srcset="https://pic3.zhimg.com/a3b82d40a0fcf4a95422d8bf33c95b36_l.png 2x" alt="审计" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19561988" target="_blank"><strong>审计</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="3930" data-token="19561988" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19556950" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/7a7dfc72e_xs.jpg" srcset="https://pic3.zhimg.com/7a7dfc72e_l.jpg 2x" alt="物理学" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19556950" target="_blank"><strong>物理学</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="2253" data-token="19556950" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19550517" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/f07808da5625fef3607f8b75b770349f_xs.jpg" srcset="https://pic4.zhimg.com/f07808da5625fef3607f8b75b770349f_l.jpg 2x" alt="互联网" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19550517" target="_blank"><strong>互联网</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="99" data-token="19550517" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19550564" target="_blank"><img class="Avatar Avatar--xs" src="https://pic1.zhimg.com/3f30afdfc_xs.jpg" srcset="https://pic1.zhimg.com/3f30afdfc_l.jpg 2x" alt="阅读" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19550564" target="_blank"><strong>阅读</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="113" data-token="19550564" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19559424" target="_blank"><img class="Avatar Avatar--xs" src="https://pic2.zhimg.com/afa4afb3d_xs.jpg" srcset="https://pic2.zhimg.com/afa4afb3d_l.jpg 2x" alt="数据分析" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19559424" target="_blank"><strong>数据分析</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="3074" data-token="19559424" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19550560" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/b75f995419ff775ff71fca685d7825af_xs.jpg" srcset="https://pic4.zhimg.com/b75f995419ff775ff71fca685d7825af_l.jpg 2x" alt="创业" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19550560" target="_blank"><strong>创业</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="112" data-token="19550560" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19552266" target="_blank"><img class="Avatar Avatar--xs" src="https://pic2.zhimg.com/v2-9f075b35829159327b01d82b64565aa5_xs.jpg" srcset="https://pic2.zhimg.com/v2-9f075b35829159327b01d82b64565aa5_l.jpg 2x" alt="文化" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19552266" target="_blank"><strong>文化</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="686" data-token="19552266" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19551683" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/v2-89c781f1ab7aa25e9feedbdcb216d107_xs.jpg" srcset="https://pic4.zhimg.com/v2-89c781f1ab7aa25e9feedbdcb216d107_l.jpg 2x" alt="语言" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19551683" target="_blank"><strong>语言</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="491" data-token="19551683" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19556664" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/6d7dc1d82127396331a952e93fda484e_xs.jpg" srcset="https://pic3.zhimg.com/6d7dc1d82127396331a952e93fda484e_l.jpg 2x" alt="科技" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19556664" target="_blank"><strong>科技</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="2143" data-token="19556664" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19556231" target="_blank"><img class="Avatar Avatar--xs" src="https://pic1.zhimg.com/e77cabe14_xs.jpg" srcset="https://pic1.zhimg.com/e77cabe14_l.jpg 2x" alt="交互设计" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19556231" target="_blank"><strong>交互设计</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="1990" data-token="19556231" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19560170" target="_blank"><img class="Avatar Avatar--xs" src="https://pic4.zhimg.com/30ffc337a555a56877aebdab9c5042f7_xs.jpg" srcset="https://pic4.zhimg.com/30ffc337a555a56877aebdab9c5042f7_l.jpg 2x" alt="经济学" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19560170" target="_blank"><strong>经济学</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="3324" data-token="19560170" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+<div class="topic-item zg-clear zm-profile-section-item zm-item">
+<div class="topic-avatar">
+<a href="/topic/19550453" target="_blank"><img class="Avatar Avatar--xs" src="https://pic3.zhimg.com/v2-78b5c36faca65325a8007b143fab7cf2_xs.png" srcset="https://pic3.zhimg.com/v2-78b5c36faca65325a8007b143fab7cf2_l.png 2x" alt="音乐" /></a>
+</div>
+<div class="topic-item-content">
+<h3 class="topic-item-title">
+<a href="/topic/19550453" target="_blank"><strong>音乐</strong></a>
+</h3>
+<a data-follow="t:link:simple" data-id="75" data-token="19550453" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
+</div>
+</div>
+
+
+</script>
+
+</div>
+
+
+
+</div>
+-->
+
+
+</div>
+</div>
+</div>
+</main>
 
 <!--- div other--->
 <!-- 模态框（Modal） -->
@@ -128,13 +816,291 @@
 	<script src="{% static 'common/main.js' %}"></script>
     
   <script>
+  function check_content_collapse(){
+    $(".ContentItem-less").each(function(){
+        $(this).click(function(){
+            $(this).addClass("is-hide");
+            $(this).parent().siblings(".RichContent-inner").children(".less").removeClass("is-hide");
+            $(this).parent().siblings(".RichContent-inner").children(".more").addClass("is-hide");
+            $(this).parent().siblings(".RichContent-inner").children(".ContentItem-more").removeClass("is-hide");
+            $(this).parents(".RichContent").addClass("is-collapsed");
+            if("null"!=$(this).parent().siblings(".RichContent-cover").find("img").attr("src"))
+            {
+                $(this).parent().siblings(".RichContent-cover").removeClass("is-hide");
+            }
+        });
+    });
+}
+
+function check_content_expand(){
+    $(".RichContent-inner").each(function(){
+        if("null"==$(this).siblings(".RichContent-cover").find("img").attr("src"))
+        {
+            $(this).siblings(".RichContent-cover").addClass("is-hide");
+        }
+        $(this).click(function(){
+            $(this).children(".less").addClass("is-hide");
+            $(this).children(".more").removeClass("is-hide");
+            $(this).children(".ContentItem-more").addClass("is-hide");
+            $(this).siblings(".ContentItem-actions").children(".ContentItem-less").removeClass("is-hide");
+            $(this).parent().removeClass("is-collapsed");
+            $(this).siblings(".RichContent-cover").addClass("is-hide");
+        });
+    });
+}
+
+function check_popover_show(){ 
+    $('.APopover').each(function(){
+            $(this).parent().hover(function(){
+                element=$(this).children(".APopover");
+                authorid=element.attr("data-author-id");
+                $.get("/ajax/er/"+authorid+"/",function(ret){
+                    er_id=ret[0];
+                    er_name=ret[1];
+                    er_avatar=ret[2];
+                    er_mood=ret[3];
+                    er_answer_nums=ret[4];
+                    er_follower_nums=ret[5];
+                    er_followed=ret[6];
+                    
+                    var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+er_avatar+'" srcset="'+er_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><span><a href="/er/'+er_id+'">'+er_name+'</a></span></div><div class="HoverCard-subtitle"><span class="RichText">'+er_mood+'</span></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+er_answer_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">0</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value">'+er_follower_nums+'</div></a></div>';
+                    if(er_followed)
+                        var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button id="pop-button-follow" class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+er_id+'" data-people-followed="true" onclick="follow_people()">已关注</button><button class="Button" type="button"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
+                    else
+                        var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button id="pop-button-follow" class="Button FollowButton Button--primary Button--green" type="button" data-er-id="'+er_id+'" data-people-followed="false" onclick="follow_people()">关注</button><button class="Button" type="button"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
+                    var data=data1+data2;
+                    element.attr("data-content",data);
+                    element.popover('show');
+                    //element.siblings(".popover").attr("in",true);
+                    //element.siblings(".popover").children().attr("in",true);
+                });
+            },function(){
+                    $(this).children(".APopover").popover('hide');
+                    //setTimeout(function(){/*if ($(this).attr("in")) console.log("true"); else console.log("not ture");*/$(this).children().popover('hide');},1000);
+            });
+    });
+    
+    $('.BPopover').each(function(){
+            $(this).parent().hover(function(){
+                element=$(this).children(".BPopover");
+                topicid=element.attr("data-topic-id");
+                $.get("/ajax/topic/"+topicid+"/",function(ret){
+                    topic_id=ret[0];
+                    topic_name=ret[1];
+                    topic_avatar=ret[2];
+                    topic_question_nums=ret[3];
+                    topic_follower_nums=ret[4];
+                    topic_followed=ret[5];
+
+                    var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+topic_avatar+'" srcset="'+topic_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><a target="_blank" href="/topic/'+topic_id+'">'+topic_name+'</a></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" href="/topic/'+topic_id+'/questions" type="button"><div class="NumberBoard-name">问题&nbsp;</div><div class="NumberBoard-value">'+topic_question_nums+'</div></a><a class="Button NumberBoard-item Button--plain" href="/topic/'+topic_id+'/followers" type="button"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value">'+topic_follower_nums+'</div></a></div>';
+                    if(topic_followed)
+                        var data2='<div class="HoverCard-buttons"><button id="pop-button-follow" class="Button Button--primary Button--grey" type="button" data-topic-id="'+topic_id+'" data-topic-followed="true" onclick="follow_topic()">已关注</button></div></div>';
+                    else
+                        var data2='<div class="HoverCard-buttons"><button id="pop-button-follow" class="Button Button--primary Button--green" type="button" data-topic-id="'+topic_id+'" data-topic-followed="false" onclick="follow_topic()">关注</button></div></div>';
+                    var data=data1+data2;
+                    element.attr("data-content",data);
+                    element.popover('show');
+                });
+            },function(){
+                    $(this).children(".BPopover").popover('hide');
+            });
+    });
+    
+        $('#cPopover').click(function(e){
+        $("#dPopover").popover("hide");
+        $("#ePopover").popover("hide");
+        e.stopPropagation();
+        var data='<div class="Menu PushNotifications-menu"><div class="PushNotifications-content"><div class="PushNotifications-header" role="tablist"><button class="Button PushNotifications-tab Button--plain" role="tab" aria-controls="PushNotifications-default" aria-label="消息" type="button"><svg viewBox="0 0 20 15" class="Icon PushNotifications-tabIcon PushNotifications-selectedTabIcon Icon--lastNews" width="20" height="16" aria-hidden="true" style="height: 16px; width: 20px;"><title></title><g><path d="M6.493 6C5.668 6 5 6.666 5 7.5 5 8.328 5.664 9 6.493 9h12.014C19.332 9 20 8.334 20 7.5c0-.828-.664-1.5-1.493-1.5H6.493zm0 6C5.668 12 5 12.666 5 13.5c0 .828.664 1.5 1.493 1.5h12.014c.825 0 1.493-.666 1.493-1.5 0-.828-.664-1.5-1.493-1.5H6.493zM1.5 0C.672 0 0 .666 0 1.5 0 2.328.666 3 1.5 3 2.328 3 3 2.334 3 1.5 3 .672 2.334 0 1.5 0zm0 6C.672 6 0 6.666 0 7.5 0 8.328.666 9 1.5 9 2.328 9 3 8.334 3 7.5 3 6.672 2.334 6 1.5 6zm0 6c-.828 0-1.5.666-1.5 1.5 0 .828.666 1.5 1.5 1.5.828 0 1.5-.666 1.5-1.5 0-.828-.666-1.5-1.5-1.5zM6.493 0C5.668 0 5 .666 5 1.5 5 2.328 5.664 3 6.493 3h12.014C19.332 3 20 2.334 20 1.5c0-.828-.664-1.5-1.493-1.5H6.493z"></path></g></svg></button><button class="Button PushNotifications-tab Button--plain" role="tab" aria-controls="PushNotifications-follow" aria-label="用户" type="button"><svg viewBox="0 0 24 17" class="Icon PushNotifications-tabIcon Icon--userNews" width="20" height="16" aria-hidden="true" style="height: 16px; width: 20px;"><title></title><g><path d="M9.464 7.705c-.265.46-.59.904-.538 1.315.206 1.603 3.205 1.92 4.087 2.99.643.783.91 1.97.972 3.96.01.32 0 1.03-.946 1.03H1.02c-1 0-1.01-.683-1-.995.068-1.994.318-3.208.976-3.994.886-1.056 4.084-1.345 4.224-3.05.032-.385-.268-.786-.538-1.255C3.182 5.102 2.608 0 7.054 0s3.824 5.25 2.41 7.705zM18.27 8.545c.963.126 2.924-.574 2.924-.574-.664-.68-.815-1.472-1.294-4.586C19.507.27 16.8.3 16.597.3c-.203 0-2.91-.03-3.297 3.084-.485 3.113-.636 3.907-1.3 4.586 0 0 1.96.7 2.923.575l-.003.68c-.494.542-1.79.725-2.376 1.077 2.796.316 2.954 3.696 2.954 6.678 1.475-.002 6.497.02 7.5.02 1.002 0 .996-.674.986-.976-.06-1.8-.28-2.786-.418-3.434-.416-1.976-3.58-1.488-5.292-3.364l-.003-.68z"></path></g></svg></button><button class="Button PushNotifications-tab Button--plain" role="tab" aria-controls="PushNotifications-vote-thank" aria-label="赞同和感谢" type="button"><div><svg viewBox="0 0 20 18" class="Icon PushNotifications-tabIcon Icon--thankNews" width="20" height="16" aria-hidden="true" style="height: 16px; width: 20px;"><title></title><g><path d="M0,5.43706401 C5.73656627e-08,2.50510671 2.2938809,0.094365083 5.20737357,1.60732864e-07 C7.2427157,-0.000505078569 9.0922816,1.19013727 9.9999282,3 C10.8228521,1.24236064 12.6486957,1.60732867e-07 14.6514359,1.60732864e-07 C17.5445125,1.60732867e-07 19.9999282,2.50715387 19.9999282,5.43242499 C19.9999282,13.2399998 11.8420757,18 9.99997552,18 C8.15785253,18 -1.52669543e-07,13.2399998 0,5.43706401 Z"></path></g></svg></div></button></div><div class="PushNotifications-list"><div class="PushNotifications-item"><span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/aall-55">Aall</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/jiang-zheng-52-14-81">姜铮</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/lillian-68-42">拂晓</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/pi-pi-hui-ke-ting">皮皮鲁</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/wang-xiao-yang-48-49">王潇洋</a></span></span></span><span> 回答了 </span><span><a href="/question/66834114?group_id=907384988165775360">有哪些「以为会碾压，结果被秒杀」 的例子？</a></span></div><div class="PushNotifications-item"><span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/di-xin-liang">我不是亮哥</a></span></span></span><span> 回答了 </span><span><a href="/question/22049270/answer/250850226">外国的民谣歌词和中国的民谣歌词有什么比较不一样的地方？</a></span></div><div class="PushNotifications-item"><span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/hubertuswi">顾宇</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/kkleft">你典哥哥</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/ye-xiao-zi">夜小紫</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/bao-mi-mi">包咪咪</a></span><span style="color: rgb(62, 122, 194);">、</span></span><span><span class="UserLink"><a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/chen-ke-55-65">皮耶霍</a></span></span></span><span> 回答了 </span><span><a href="/question/66834114?group_id=904733421180817408">有哪些「以为会碾压，结果被秒杀」 的例子？</a></span></div><div></div></div><div class="Notifications-footer"><a class="Button Button--plain" href="/settings/notification" type="button"><svg viewBox="0 0 20 20" class="Icon Button-icon Icon--setting" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M18.868 15.185c-.164.096-.315.137-.452.137-.123 0-1.397-.26-1.617-.233-1.355.013-1.782 1.275-1.836 1.74-.055.454 0 .893.19 1.304.138.29.125.577-.067.85-.863.893-2.165 1.016-2.357 1.016-.123 0-.247-.055-.356-.15-.11-.097-.685-1.14-1.07-1.47-1.303-.954-2.246-.328-2.63 0-.397.33-.67.7-.835 1.126-.07.18-.18.302-.33.37-1.354.426-2.918-.92-3.014-1.056-.082-.11-.123-.22-.123-.356-.014-.138.383-1.276.342-1.688-.342-1.9-1.836-1.687-2.096-1.673-.303.014-.604.068-.92.178-.205.056-.396.03-.588-.054-.888-.462-1.137-2.332-1.11-2.51.055-.315.192-.52.438-.604.425-.164.81-.452 1.15-.85.932-1.262.344-2.25 0-2.634-.34-.356-.725-.645-1.15-.81-.137-.04-.233-.15-.328-.315C-.27 6.07.724 4.95.978 4.733c.255-.22.6-.055.723 0 .426.164.878.22 1.344.15C4.7 4.636 4.784 3.14 4.81 2.908c.015-.247-.11-1.29-.136-1.4-.027-.123-.014-.22.027-.315C5.318.178 7.073 0 7.223 0c.178 0 .33.055.44.178.108.124.63 1.11 1 1.4.398.338 1.582.83 2.588.013.398-.273.96-1.288 1.083-1.412.123-.123.26-.178.384-.178 1.56 0 2.33 1.03 2.438 1.22.083.124.096.248.07.37-.03.152-.33 1.153-.262 1.606.366 1.537 1.384 1.742 1.89 1.783.494.027 1.645-.357 1.81-.344.164.014.315.083.424.206.535.31.85 1.715.905 2.14.027.233-.014.44-.11.562-.11.138-1.165.714-1.48 1.112-.855.982-.342 2.25-.068 2.606.26.37 1.22.905 1.288.96.15.137.26.302.315.494.146 1.413-.89 2.387-1.07 2.47zm-8.905-.535c.644 0 1.246-.123 1.822-.356.575-.248 1.082-.59 1.493-1.016.425-.425.754-.92 1-1.495.247-.562.357-1.18.357-1.81 0-.66-.11-1.262-.356-1.825-.248-.562-.577-1.056-1.002-1.48-.41-.427-.918-.756-1.493-1.003-.576-.233-1.178-.357-1.822-.357-.644 0-1.247.124-1.81.357-.56.247-1.067.576-1.478 1.002-.425.425-.768.92-1 1.48-.247.564-.37 1.167-.37 1.826 0 .644.123 1.248.37 1.81.232.563.575 1.07 1 1.495.424.426.917.768 1.48 1.016.56.233 1.164.356 1.808.356z"></path></g></svg><!-- react-text: 28 -->设置<!-- /react-text --></a><a class="Button Button--plain" href="/notifications" type="button"><!-- react-text: 30 -->查看全部提醒<!-- /react-text --></a></div></div></div>';
+        $('#cPopover').attr("data-content",data);
+        $('#cPopover').popover('show');
+
+    });
+    
+        $('#dPopover').click(function(e){
+        $("#cPopover").popover("hide");
+        $("#ePopover").popover("hide");
+        e.stopPropagation();
+        var data='<div class="Menu Messages-menu"><div class="Messages-content"><div class="Messages-header" role="tablist"><button class="Button Messages-tab Messages-myMessageTab Button--plain" type="button"><!-- react-text: 9 -->我的私信<!-- /react-text --></button></div><div class="Messages-list"><a href="/inbox/5587284910" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="https://pic3.zhimg.com/v2-b14587a6079c43702f1f0251098f3ec2_xs.jpg" srcset="https://pic3.zhimg.com/v2-b14587a6079c43702f1f0251098f3ec2_l.jpg 2x" alt="verna wu"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink"><!-- react-text: 26 -->verna wu<!-- /react-text --></span></div><div class="Messages-itemContent">hi verna</div></div></a><a href="/inbox/6213324000" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="https://pic3.zhimg.com/fd56780c37f0b316c56f27fe8b388532_xs.jpg" srcset="https://pic3.zhimg.com/fd56780c37f0b316c56f27fe8b388532_l.jpg 2x" alt="知乎团队"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink"><!-- react-text: 34 -->知乎团队<!-- /react-text --></span></div><div class="Messages-itemContent">wudy:见信好。第三届「知乎盐 Club」将于 5 月 14 日在上海国际时尚中心举办，届时将有丰富有趣的「15 分钟」演讲、展位互动和知友见面会「知乎 Live」，以及一年一度的「盐 Club」颁奖礼。欢迎关注「知识青年」专栏：https://zhuanlan.zhihu.com/p/20852694?source=message ，了解更多活动信息。如果活动当天你无法到场参与，也期待你参与我们的线上直播互动，视频直播地址： http://www.bilibili.com/html/activity-zh-yanclub.html 。和真实的你在一起知乎团队</div></div></a><div></div></div><div class="Messages-footer"><button class="Button Button--plain" type="button"><svg viewBox="0 0 12 12" class="Icon Button-icon Icon--modify" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg><!-- react-text: 17 -->写新私信<!-- /react-text --></button><a class="Button Button--plain" href="/inbox" type="button"><!-- react-text: 19 -->查看全部私信<!-- /react-text --></a></div></div></div>';
+        $('#dPopover').attr("data-content",data);
+        $('#dPopover').popover('show');
+
+    });
+    
+    $('#ePopover').click(function(e){
+        $("#cPopover").popover("hide");
+        $("#dPopover").popover("hide");
+        e.stopPropagation();
+        var data='<div class="Menu">\
+        <a class="Button Menu-item AppHeaderProfileMenu-item Button--plain" type="button" href="/er/{{user.id}}/"><svg viewBox="0 0 20 20" class="Icon Button-icon Icon--profile" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M13.4170937,10.9231839 C13.0412306,11.5757324 12.5795351,12.204074 12.6542924,12.7864225 C12.9457074,15.059449 18.2164534,14.5560766 19.4340179,15.8344151 C20,16.4286478 20,16.4978969 20,19.9978966 C13.3887136,19.9271077 6.63736785,19.9978966 0,19.9978966 C0.0272309069,16.4978969 0,16.5202878 0.620443914,15.8344151 C1.92305664,14.3944356 7.20116276,15.1185829 7.40016946,12.7013525 C7.44516228,12.1563518 7.02015319,11.5871442 6.63736814,10.9228381 C4.51128441,7.2323256 3.69679769,4.67956187e-11 10,9.32587341e-14 C16.3032023,-4.66091013e-11 15.4216968,7.4429255 13.4170937,10.9231839 Z"></path></g></svg>我的主页</a>\
+        <a class="Button Menu-item AppHeaderProfileMenu-item Button--plain" href="/settings/profile" type="button"><svg viewBox="0 0 20 20" class="Icon Button-icon Icon--setting" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M18.868 15.185c-.164.096-.315.137-.452.137-.123 0-1.397-.26-1.617-.233-1.355.013-1.782 1.275-1.836 1.74-.055.454 0 .893.19 1.304.138.29.125.577-.067.85-.863.893-2.165 1.016-2.357 1.016-.123 0-.247-.055-.356-.15-.11-.097-.685-1.14-1.07-1.47-1.303-.954-2.246-.328-2.63 0-.397.33-.67.7-.835 1.126-.07.18-.18.302-.33.37-1.354.426-2.918-.92-3.014-1.056-.082-.11-.123-.22-.123-.356-.014-.138.383-1.276.342-1.688-.342-1.9-1.836-1.687-2.096-1.673-.303.014-.604.068-.92.178-.205.056-.396.03-.588-.054-.888-.462-1.137-2.332-1.11-2.51.055-.315.192-.52.438-.604.425-.164.81-.452 1.15-.85.932-1.262.344-2.25 0-2.634-.34-.356-.725-.645-1.15-.81-.137-.04-.233-.15-.328-.315C-.27 6.07.724 4.95.978 4.733c.255-.22.6-.055.723 0 .426.164.878.22 1.344.15C4.7 4.636 4.784 3.14 4.81 2.908c.015-.247-.11-1.29-.136-1.4-.027-.123-.014-.22.027-.315C5.318.178 7.073 0 7.223 0c.178 0 .33.055.44.178.108.124.63 1.11 1 1.4.398.338 1.582.83 2.588.013.398-.273.96-1.288 1.083-1.412.123-.123.26-.178.384-.178 1.56 0 2.33 1.03 2.438 1.22.083.124.096.248.07.37-.03.152-.33 1.153-.262 1.606.366 1.537 1.384 1.742 1.89 1.783.494.027 1.645-.357 1.81-.344.164.014.315.083.424.206.535.31.85 1.715.905 2.14.027.233-.014.44-.11.562-.11.138-1.165.714-1.48 1.112-.855.982-.342 2.25-.068 2.606.26.37 1.22.905 1.288.96.15.137.26.302.315.494.146 1.413-.89 2.387-1.07 2.47zm-8.905-.535c.644 0 1.246-.123 1.822-.356.575-.248 1.082-.59 1.493-1.016.425-.425.754-.92 1-1.495.247-.562.357-1.18.357-1.81 0-.66-.11-1.262-.356-1.825-.248-.562-.577-1.056-1.002-1.48-.41-.427-.918-.756-1.493-1.003-.576-.233-1.178-.357-1.822-.357-.644 0-1.247.124-1.81.357-.56.247-1.067.576-1.478 1.002-.425.425-.768.92-1 1.48-.247.564-.37 1.167-.37 1.826 0 .644.123 1.248.37 1.81.232.563.575 1.07 1 1.495.424.426.917.768 1.48 1.016.56.233 1.164.356 1.808.356z"></path></g></svg>设置</a>\
+        <a class="Button Menu-item AppHeaderProfileMenu-item Button--plain" href="/exit/" type="button"><svg viewBox="0 0 20 20" class="Icon Button-icon Icon--logout" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M0 10C0 7.242 1.154 4.58 3.167 2.697c.51-.477 1.31-.45 1.79.06.475.51.45 1.31-.06 1.787C3.37 5.975 2.53 7.91 2.53 10c0 4.118 3.35 7.468 7.47 7.468 4.12 0 7.47-3.35 7.47-7.47 0-2.04-.81-3.948-2.28-5.37-.5-.485-.514-1.286-.028-1.788.485-.5 1.286-.517 1.79-.03C18.915 4.712 20 7.265 20 10c0 5.512-4.486 9.998-10 9.998s-10-4.486-10-10zm8.7-.483V1.26C8.7.564 9.26 0 9.96 0c.695 0 1.26.564 1.26 1.26v8.257c0 .696-.565 1.26-1.26 1.26-.698 0-1.26-.564-1.26-1.26z"></path></g></svg>退出</a></div>';
+        $('#ePopover').attr("data-content",data);
+        $('#ePopover').popover('show');
+
+    });
+    
+}
+
+  function get_index_img(content){
+    var imgReg=/<img.*?(?:>|\/>)/gi;
+    var arr=content.match(imgReg);
+    if(arr!=null)
+    {
+        var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+        imgsrc=arr[0].match(srcReg);
+        return imgsrc[1];
+    }
+    else
+        return null;
+}
+
+function remove_img(content){
+    var imgReg=/<img.*?(?:>|\/>)/gi;
+    return content.replace(imgReg,"").replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,150);
+    //return content.replace(imgReg,"").replace(/<p>/gi,"").replace(/<\/p>/gi,"").replace(/(^\s*)|(\s*$)/g,"");
+}
+  function appendTopicElement(ret)
+{
+    for(i in ret)
+    {
+    question_id=ret[i][0];
+    question_title=ret[i][1];
+    topic_id=ret[i][2];
+    topic_name=ret[i][3];
+    answer_id=ret[i][4];
+    author_id=ret[i][5];
+    author_name=ret[i][6];
+    anthor_avatar=ret[i][7];
+    anthor_mood=ret[i][8];
+    answer_content=ret[i][9];
+    answer_like_nums=ret[i][10];
+    indexImgSrc=get_index_img(answer_content);
+    var dataStart='<div class="QuestionFrame Card">\
+                        <div class="Feed">\
+                  ';
+    var data1= '<div class="Feed-title">\
+                    <div class="Feed-meta">\
+                        <span class="Feed-meta-item">来自话题:<span>\
+                        <a href="/topic/'+topic_id+'/" class="BPopover" data-topic-id="'+topic_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+topic_name+'</a>\
+                    </div>\
+                </div>\
+                ';
+                
+    var data2= '<div class="AuthorInfo Feed-meta-author AuthorInfo--plain">\
+                    <span class="UserLink AuthorInfo-avatarWrapper">\
+                        <img src="'+anthor_avatar+'" href="/er/'+author_id+'/" width="40" height="40" class="APopover" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">\
+                    </span>\
+                    <div class="AuthorInfo-content">\
+                        <div class="AuthorInfo-head">\
+                            <span class="UserLink AuthorInfo-name">\
+                                <a href="/er/'+author_id+'/" class="1APopover" data-author-id="'+author_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+author_name+'</a>\
+                            </span>\
+                        </div>\
+                        <div class="AuthorInfo-detail">\
+                            <div class="AuthorInfo-badge">\
+                                <div class="RichText AuthorInfo-badgeText">\
+                                    '+anthor_mood+'\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>\
+                ';
+                
+    var data3=' <div class="ContentItem AnswerItem">\
+                    <h2 class="ContentItem-title">\
+                        <a href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a>\
+                    </h2>\
+                    <div class="RichContent is-collapsed">\
+                        <div class="RichContent-cover">\
+                            <div class="RichContent-cover-inner">\
+                                <img src="'+indexImgSrc+'">\
+                            </div>\
+                        </div>\
+                        <div class="RichContent-inner">\
+                            <span class="RichText CopyrightRichText-richText less">'+remove_img(answer_content)+'</span>\
+                            <span class="RichText CopyrightRichText-richText more is-hide">'+answer_content+'</span>\
+                            <button class="Button ContentItem-more Button--plain" type="button">\
+                                阅读全文\
+                                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" style="height:16px;width:10px;" width="10" height="16" aria-hidden="true" data-reactid="258"><title data-reactid="259"></title><g data-reactid="260"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
+                            </button>\
+                        </div>\
+                        <div class="ContentItem-actions">\
+                            <span>\
+                                <button class="AnswerLike Button LikeButton 1ContentItem-action" type="button" data-answer-id="'+answer_id+'">\
+                                    <svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'\
+                                </button>\
+                            </span>\
+                            <button class="Button ContentItem-less ContentItem-rightButton Button--plain is-hide" type="button">\
+                                <span class="RichContent-collapsedText">收起</span>\
+                                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
+                            </button>\
+                        </div>\
+                    </div>\
+                </div>\
+                ';
+    
+    var dataEnd='</div>\
+                    </div>\
+                  ';  
+    var elementText=dataStart+data2+data3+dataEnd;
+    $("#QuestionItems").append(elementText);
+    }
+}
+    function getTopicElement(topic_id)
+    {
+        order=0;
+        var start=0;
+        var end=5;
+        console.log(topic_id);
+        $.get("/ajax/topic/"+topic_id+"/"+order+"/"+start+"/"+end+"/",function(ret){
+            appendTopicElement(ret);
+            console.log(ret);
+            check_popover_show();
+            check_content_expand();
+            check_content_collapse();           
+        });
+    }
+    function hashChange()
+    {
+            topic_id=location.hash.replace("#","");
+            $(".FollowedTopic").each(function(){
+                var item=$(this);
+                if(topic_id==item.attr("data-topic-id"))
+                    item.addClass("current");
+                else
+                    item.removeClass("current");
+                    
+            });
+            $('#QuestionItems').empty();
+            console.log(topic_id);
+            getTopicElement(topic_id);      
+    }
+    
     $(document).ready(function() {
+        window.onhashchange=hashChange; 
+        if((location.hash!="")&&(location.hash!=undefined))
+        {
+            hashChange();
+        }
+        else
+        {
+            topic_id=$(".FollowedTopic:first").addClass("current").attr("data-topic-id");
+            getTopicElement(topic_id); 
+        }
+                
+        
         $('#summernote').summernote({
         lang:'zh-CN',
         placeholder:'写回答...'
         });
     });
     
+$(document).click(function(e) {
+    $("#cPopover").popover("hide");
+    $("#dPopover").popover("hide");
+    $("#ePopover").popover("hide");
+});
 
   </script>
 </body>
