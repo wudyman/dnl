@@ -278,3 +278,10 @@ form input[type=password] {
 .popover{
     max-width: 100%; /* Max Width of the popover (depending on the container!) */
 }
+.keep-topic-feed-title{font-size:14px;font-weight:700;color:#666;border-bottom:1px solid #ccc;padding-bottom:8px}
+.keep-topic-feed-title a{margin-top:3px}
+.keep-zg-link-gray{color:#999;font-weight:400;font-size:12px}
+.keep-zg-right{float:right}
+.keep-zg-left{float:left}
+.Tag.current{position:relative;display:inline-block;height:30px;padding:0 12px;font-size:14px;line-height:30px;vertical-align:top;border-radius:100px;background:#259;border-color:#259;color:#fff}
+.current a{color:#fff}
