@@ -252,12 +252,14 @@ function appendFeedElement(ret)
                 
     var data2= '<div class="AuthorInfo Feed-meta-author AuthorInfo--plain">\
                     <span class="UserLink AuthorInfo-avatarWrapper">\
-                        <img src="'+anthor_avatar+'" href="/er/'+author_id+'/" width="40" height="40" class="PeoplePopover" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">\
+                        <a class="UserLink-link" href="/er/'+author_id+'/">\
+                        <img src="'+anthor_avatar+'" width="40" height="40" class="PeoplePopover" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">\
+                        </a>\
                     </span>\
                     <div class="AuthorInfo-content">\
                         <div class="AuthorInfo-head">\
                             <span class="UserLink AuthorInfo-name">\
-                                <a href="/er/'+author_id+'/" class="1PeoplePopover" data-author-id="'+author_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+author_name+'</a>\
+                                <a href="/er/'+author_id+'/" class="1PeoplePopover" data-author-id="'+author_id+'" data-toggle="1popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+author_name+'</a>\
                             </span>\
                         </div>\
                         <div class="AuthorInfo-detail">\
@@ -360,11 +362,7 @@ $(document).ready(function() {
     });
 });
 
-$(document).click(function(e) {
-    $("#NotificationPopover").popover("hide");
-    $("#MessagePopover").popover("hide");
-    $("#MenuPopover").popover("hide");
-});
+
 
 </script>
 
