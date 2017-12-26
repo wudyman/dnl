@@ -86,10 +86,10 @@ function update_value(type,value)
     });
 }
 function follow_people(button){
-    erid=button.attr("data-er-id");
+    var er_id=button.attr("data-er-id");
     if("true"==button.attr("data-followed"))
     {
-        $.post("/ajax/er_follow/0/"+erid+"/",function(ret){
+        $.post("/ajax/er_follow/0/"+er_id+"/",function(ret){
             button.removeClass("Button--grey").addClass("Button--green").text("关注");
             button.attr("data-followed","false");
             update_value("people-followed",ret);
@@ -97,7 +97,7 @@ function follow_people(button){
     }
     else
     {
-        $.post("/ajax/er_follow/1/"+erid+"/",function(ret){
+        $.post("/ajax/er_follow/1/"+er_id+"/",function(ret){
             button.removeClass("Button--green").addClass("Button--grey").text("已关注");
             button.attr("data-followed","true");
             update_value("people-followed",ret);
@@ -106,10 +106,10 @@ function follow_people(button){
 } 
 
 function follow_topic(button){
-    topicid=button.attr("data-topic-id");
+    var topic_id=button.attr("data-topic-id");
     if("true"==button.attr("data-followed"))
     {
-        $.post("/ajax/topic_follow/0/"+topicid+"/",function(ret){
+        $.post("/ajax/topic_follow/0/"+topic_id+"/",function(ret){
             button.removeClass("Button--grey").addClass("Button--green").text("关注");
             button.attr("data-followed","false");
             update_value("topic-followed",ret);
@@ -117,10 +117,30 @@ function follow_topic(button){
     }
     else
     {
-        $.post("/ajax/topic_follow/1/"+topicid+"/",function(ret){
+        $.post("/ajax/topic_follow/1/"+topic_id+"/",function(ret){
             button.removeClass("Button--green").addClass("Button--grey").text("已关注");
             button.attr("data-followed","true");
             update_value("topic-followed",ret);
+        });  
+    }
+} 
+
+function follow_question(button){
+    var question_id=button.attr("data-question-id");
+    if("true"==button.attr("data-followed"))
+    {
+        $.post("/ajax/question_follow/0/"+question_id+"/",function(ret){
+            button.removeClass("Button--grey").addClass("Button--green").text("关注");
+            button.attr("data-followed","false");
+            update_value("question-followed",ret);
+        }); 
+    }
+    else
+    {
+        $.post("/ajax/question_follow/1/"+question_id+"/",function(ret){
+            button.removeClass("Button--green").addClass("Button--grey").text("已关注");
+            button.attr("data-followed","true");
+            update_value("question-followed",ret);
         });  
     }
 }  
@@ -139,6 +159,7 @@ function check_follow()
             });
     });
 }
+
 function check_content_collapse(){
     $(".ContentItem-less").each(function(){
         $(this).click(function(){
@@ -171,10 +192,33 @@ function check_content_expand(){
         });
     });
 }
+
+function check_content_collapse_2(){
+    $(".ContentItem-rightButton.ContentItem-less").each(function(){
+        $(this).click(function(){
+            $(this).addClass("is-hide");
+            $(this).parent().siblings(".RichContent-inner").children(".ContentItem-rightButton.ContentItem-more").removeClass("is-hide");
+            $(this).parents(".RichContent").addClass("is-collapsed");
+            $(this).parent().siblings(".RichContent-inner").css("max-height","400px");
+        });
+    });
+}
+
+function check_content_expand_2(){
+    $(".RichContent-inner").each(function(){
+        $(this).click(function(){
+            $(this).children(".ContentItem-rightButton.ContentItem-more").addClass("is-hide");
+            $(this).siblings(".ContentItem-actions").children(".ContentItem-rightButton.ContentItem-less").removeClass("is-hide");
+            $(this).parent().removeClass("is-collapsed");
+            $(this).css("max-height","");
+        });
+    });
+}
+
 function check_answer_like(){
     $(".AnswerLike").each(function(){
         $(this).click(function(){
-            element=$(this);
+            var element=$(this);
             answer_id=$(this).attr("data-answer-id");
             $.get("/ajax/answer_like/"+answer_id+"/",function(ret){
                 element.text(ret);
@@ -187,9 +231,9 @@ function check_answer_like(){
 function check_popover_show(){ 
     $('.PeoplePopover').each(function(){
             $(this).parent().hover(function(){
-                element=$(this).children(".PeoplePopover");
-                authorid=element.attr("data-author-id");
-                $.get("/ajax/er/"+authorid+"/",function(ret){
+                var element=$(this).children(".PeoplePopover");
+                var author_id=element.attr("data-author-id");
+                $.get("/ajax/er/"+author_id+"/",function(ret){
                     er_id=ret[0];
                     er_name=ret[1];
                     er_avatar=ret[2];
@@ -218,9 +262,9 @@ function check_popover_show(){
     
     $('.TopicPopover').each(function(){
             $(this).parent().hover(function(){
-                element=$(this).children(".TopicPopover");
-                topicid=element.attr("data-topic-id");
-                $.get("/ajax/topic/"+topicid+"/",function(ret){
+                var element=$(this).children(".TopicPopover");
+                var topic_id=element.attr("data-topic-id");
+                $.get("/ajax/topic/"+topic_id+"/",function(ret){
                     topic_id=ret[0];
                     topic_name=ret[1];
                     topic_avatar=ret[2];
@@ -277,52 +321,9 @@ function check_popover_show(){
     });
     
 }
-/*
-function follow_people(){
-    erid=$("#pop-button-follow").attr("data-er-id");
-    if("true"==$("#pop-button-follow").attr("data-people-followed"))
-    {
-        $.post("/ajax/er_follow/0/"+erid+"/",function(ret){
-        //alert(ret);
-        $("#follower_num").text(ret);
-        //$("#pop-button-follow").removeClass("btn-default").addClass("btn-success").text("关注");
-        $("#pop-button-follow").removeClass("Button--grey").addClass("Button--green").text("关注");
-        $("#pop-button-follow").attr("data-people-followed","false");
-    }); 
-    }
-    else
-    {
-        $.post("/ajax/er_follow/1/"+erid+"/",function(ret){
-            //alert(ret);
-            $("#follower_num").text(ret);
-            //$("#pop-button-follow").removeClass("btn-success").addClass("btn-default").text("已关注");
-            $("#pop-button-follow").removeClass("Button--green").addClass("Button--grey").text("已关注");
-            $("#pop-button-follow").attr("data-people-followed","true");
-        });  
-    }
-} 
 
-function follow_topic(){
-    topicid=$("#pop-button-follow").attr("data-topic-id");
-    if("true"==$("#pop-button-follow").attr("data-topic-followed"))
-    {
-        $.post("/ajax/topic_follow/0/"+topicid+"/",function(ret){
-        //alert(ret);
-        $("#follower_num").text(ret);
-        //$("#pop-button-follow").removeClass("btn-default").addClass("btn-success").text("关注");
-        $("#pop-button-follow").removeClass("Button--grey").addClass("Button--green").text("关注");
-        $("#pop-button-follow").attr("data-topic-followed","false");
-    }); 
-    }
-    else
-    {
-        $.post("/ajax/topic_follow/1/"+topicid+"/",function(ret){
-            //alert(ret);
-            $("#follower_num").text(ret);
-            //$("#pop-button-follow").removeClass("btn-success").addClass("btn-default").text("已关注");
-            $("#pop-button-follow").removeClass("Button--green").addClass("Button--grey").text("已关注");
-            $("#pop-button-follow").attr("data-topic-followed","true");
-        });  
-    }
-}  
-*/
+$(document).click(function(e) {
+    $("#NotificationPopover").popover("hide");
+    $("#MessagePopover").popover("hide");
+    $("#MenuPopover").popover("hide");
+});
