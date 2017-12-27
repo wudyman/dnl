@@ -91,6 +91,7 @@ class QuestionView(generic.ListView):
         else:
             print('none')
             return render(request,self.template_name,{'user':user,'context_question':question,'followed':followed})
+    '''
     def post(self,request,*args,**kwargs):
         author=request.user #get_object_or_404(User,username=request.user)
         question_id=self.kwargs.get('question_id')
@@ -101,3 +102,4 @@ class QuestionView(generic.ListView):
         answer.question=question
         answer.save()
         return render(request,self.template_name,{'context_question':question})
+    '''
