@@ -453,7 +453,7 @@ function appendFollowElement(subcmd)
     });
     
     $.get("/ajax/er/"+er_id+"/following/"+subcmd+"/",function(ret){
-        if("null"!=ret)
+        if("fail"!=ret)
         {
             for(i in ret)
                 appendFollowElementSub(subcmd,ret[i]);
@@ -564,7 +564,7 @@ function appendAnswerElement()
             ';
     $("#ProfileMain").append(data);
     $.get("/ajax/er/"+er_id+"/"+command+"/",function(ret){
-        if("null"!=ret)
+        if("fail"!=ret)
         {
             for(i in ret)
                 appendAnswerElementSub(ret[i]);
@@ -600,7 +600,7 @@ function appendQuestionElement()
             ';
     $("#ProfileMain").append(data);
     $.get("/ajax/er/"+er_id+"/"+command+"/",function(ret){
-        if("null"!=ret)
+        if("fail"!=ret)
         {
         for(i in ret)
             appendQuestionElementSub(ret[i]);

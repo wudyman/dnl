@@ -14,76 +14,96 @@ from PIL import Image
 
 @csrf_exempt
 def get_questions(request,order,start,end):
+    to_json=json.dumps('fail')
     questions=Question.objects.order_by('-pub_date')[int(start):int(end)]
     question_list=[]
-    
-    for question in questions:
-        temp=[]
-        temp.append(question.id) #0
-        temp.append(question.title) #1
-        temp.append(question.prima_topic_id) #2
-        temp.append(question.prima_topic_name) #3
-        if question.push_answer_id!=0:
-            temp.append(question.push_answer_id) #4
-            answer=get_object_or_404(Answer,pk=question.push_answer_id)
-            if answer:
-                temp.append(answer.author.id) #5
-                temp.append(answer.author.first_name) #6
-                temp.append(answer.author.userprofile.avatar) #7
-                temp.append(answer.author.userprofile.mood) #8
-                temp.append(answer.content) #9
-                temp.append(answer.like_nums) #10
-                temp.append(answer.comment_nums) #11
-                temp.append(str(answer.pub_date)) #12
-                question_list.append(temp)
-    to_json=json.dumps(question_list)
+    if questions:
+        for question in questions:
+            temp=[]
+            temp.append(question.id) #0
+            temp.append(question.title) #1
+            temp.append(question.prima_topic_id) #2
+            temp.append(question.prima_topic_name) #3
+            if question.push_answer_id!=0:
+                temp.append(question.push_answer_id) #4
+                answer=get_object_or_404(Answer,pk=question.push_answer_id)
+                if answer:
+                    temp.append(answer.author.id) #5
+                    temp.append(answer.author.first_name) #6
+                    temp.append(answer.author.userprofile.avatar) #7
+                    temp.append(answer.author.userprofile.mood) #8
+                    temp.append(answer.content) #9
+                    temp.append(answer.like_nums) #10
+                    temp.append(answer.comment_nums) #11
+                    temp.append(str(answer.pub_date)) #12
+                    question_list.append(temp)
+        to_json=json.dumps(question_list)
     return HttpResponse(to_json,content_type='application/json')
 
 @csrf_exempt
 def follow_question(request,follow,question_id):
+    to_json=json.dumps('fail')
     question=get_object_or_404(Question,pk=question_id)
-    follower=request.user #get_object_or_404(User,username=request.user)
-    #if '1'==follow:
-    if int(follow):
-        question.follower.add(follower)
-    else:
-        question.follower.remove(follower)
-    question.follower_nums=question.follower.count()
-    question.save()
-    temp=question.follower_nums
-    to_json=json.dumps(temp)
+    if question:
+        follower=request.user #get_object_or_404(User,username=request.user)
+        #if '1'==follow:
+        if int(follow):
+            question.follower.add(follower)
+        else:
+            question.follower.remove(follower)
+        question.follower_nums=question.follower.count()
+        question.save()
+        temp=question.follower_nums
+        to_json=json.dumps(temp)
     return HttpResponse(to_json,content_type='application/json')
 
 @csrf_exempt
 def answer_question(request,question_id):
+    to_json=json.dumps('fail')
     author=request.user #get_object_or_404(User,username=request.user)
     question=get_object_or_404(Question,pk=question_id)
-    answer=Answer()
-    answer.content=request.POST.get('content')
-    answer.author=author
-    answer.question=question
-    answer.save()
-
-    temp="success"
-    to_json=json.dumps(temp)
+    if question:
+        answer=Answer()
+        answer.content=request.POST.get('content')
+        answer.author=author
+        answer.question=question
+        answer.save()
+        answer_list=[]
+        temp=[]
+        temp.append(answer.id) #0
+        temp.append(answer.content) #1
+        temp.append(answer.like_nums) #2
+        temp.append(answer.comment_nums) #3
+        temp.append(str(answer.pub_date)) #4
+        temp.append(answer.author.id) #5
+        temp.append(answer.author.first_name) #6
+        temp.append(answer.author.userprofile.avatar) #7
+        temp.append(answer.author.userprofile.mood) #8
+        answer_list.append(temp)
+        to_json=json.dumps(answer_list)
+        
+        question.answer_nums=question.be_answers.count();
+        question.save()
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
 def get_topics(request):
+    to_json=json.dumps('fail')
     topics=Topic.objects.all()
     topic_list=[]
-    for topic in topics:
-        temp=[]
-        temp.append(topic.id)
-        temp.append(topic.name)
-        topic_list.append(temp)
-    to_json=json.dumps(topic_list)
+    if topics:
+        for topic in topics:
+            temp=[]
+            temp.append(topic.id)
+            temp.append(topic.name)
+            topic_list.append(temp)
+        to_json=json.dumps(topic_list)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
 def get_topicinfo(request,topic_id):
+    to_json=json.dumps('fail')
     topic=get_object_or_404(Topic,pk=topic_id)
-    to_json='fail'
     if topic:
         temp=[]
         temp.append(topic.id)#0
@@ -104,10 +124,10 @@ def get_topicinfo(request,topic_id):
     
 @csrf_exempt
 def get_topic_questions(request,topic_id,order,start,end):
+    to_json=json.dumps('fail')
     topic=get_object_or_404(Topic,pk=topic_id)
     question_list=[]
     questions=topic.question.order_by('-pub_date')[int(start):int(end)]
-    to_json='fail'
     if questions:
         for question in questions:
             temp=[]
@@ -127,58 +147,83 @@ def get_topic_questions(request,topic_id,order,start,end):
                     temp.append(answer.like_nums) #10
                     temp.append(answer.comment_nums) #11
                     temp.append(str(answer.pub_date)) #12
-                    print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
                     question_list.append(temp)
         to_json=json.dumps(question_list)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
 def follow_topic(request,follow,topic_id):
+    to_json=json.dumps('fail')
     topic=get_object_or_404(Topic,pk=topic_id)
-    follower=request.user #get_object_or_404(User,username=request.user)
-    #if '1'==follow:
-    if int(follow):
-        topic.follower.add(follower)
-    else:
-        topic.follower.remove(follower)
-    topic.follower_nums=topic.follower.count()
-    topic.save()
-    temp=topic.follower_nums
-    to_json=json.dumps(temp)
+    if topic:
+        follower=request.user #get_object_or_404(User,username=request.user)
+        #if '1'==follow:
+        if int(follow):
+            topic.follower.add(follower)
+        else:
+            topic.follower.remove(follower)
+        topic.follower_nums=topic.follower.count()
+        topic.save()
+        temp=topic.follower_nums
+        to_json=json.dumps(temp)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
 def get_topic_adept(request):
+    to_json=json.dumps('fail')
     #inviter=request.user
     topics=request.POST.get('topics').split(';')
     topics.pop()
-    print(topics)
     adepts=User.objects.all()
     adept_list=[]
-    for adept in adepts:
-        temp=[]
-        temp.append(adept.id)
-        temp.append(adept.first_name)
-        temp.append(adept.userprofile.avatar)
-        temp.append(adept.userprofile.mood)
-        #temp.append(inviter.id)
-        adept_list.append(temp)
-    to_json=json.dumps(adept_list)
+    if adepts:
+        for adept in adepts:
+            temp=[]
+            temp.append(adept.id)
+            temp.append(adept.first_name)
+            temp.append(adept.userprofile.avatar)
+            temp.append(adept.userprofile.mood)
+            #temp.append(inviter.id)
+            adept_list.append(temp)
+        to_json=json.dumps(adept_list)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def get_question_answers(request,question_id,order,start,end):
+    to_json=json.dumps('fail')
+    question=get_object_or_404(Question,pk=question_id)
+    answer_list=[]
+    answers=question.be_answers.order_by('-pub_date')[int(start):int(end)]
+    if answers:
+        for answer in answers:
+            temp=[]
+            temp.append(answer.id) #0
+            temp.append(answer.content) #1
+            temp.append(answer.like_nums) #2
+            temp.append(answer.comment_nums) #3
+            temp.append(str(answer.pub_date)) #4
+            temp.append(answer.author.id) #5
+            temp.append(answer.author.first_name) #6
+            temp.append(answer.author.userprofile.avatar) #7
+            temp.append(answer.author.userprofile.mood) #8
+            answer_list.append(temp)
+        to_json=json.dumps(answer_list)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
 def like_answer(request,answer_id):
+    to_json=json.dumps('fail')
     answer=get_object_or_404(Answer,pk=answer_id)
-    user=request.user #get_object_or_404(User,username=request.user)
-    temp=answer.like_nums
-    anwer_like_id='al'+str(answer.id)
-    if anwer_like_id in request.COOKIES:
-        if time.time()-float(request.COOKIES[anwer_like_id])>864000: #24*60*60=864000
-            answer.like_nums+=1
-    else:
-        answer.like_nums+=1
-    
-    to_json=json.dumps(answer.like_nums)
+    if answer:
+        user=request.user #get_object_or_404(User,username=request.user)
+        temp=answer.like_nums
+        anwer_like_id='al'+str(answer.id)
+        if anwer_like_id in request.COOKIES:
+            if time.time()-float(request.COOKIES[anwer_like_id])>864000: #24*60*60=864000
+                answer.like_nums+=1
+        else:
+            answer.like_nums+=1   
+        to_json=json.dumps(answer.like_nums)
     response=HttpResponse(to_json,content_type='application/json')
 
     if temp!=answer.like_nums:
@@ -188,6 +233,7 @@ def like_answer(request,answer_id):
 
 @csrf_exempt
 def get_erinfo(request,erid):
+    to_json=json.dumps('fail')
     er=get_object_or_404(User,pk=erid)
     user=request.user
     if er:
@@ -206,13 +252,13 @@ def get_erinfo(request,erid):
         else:
             temp.append(0)#6
         to_json=json.dumps(temp)
-        return HttpResponse(to_json,content_type='application/json')
+    return HttpResponse(to_json,content_type='application/json')
         
 @csrf_exempt
 def get_er_all(request,erid,command):
+    to_json=json.dumps('fail')
     er=get_object_or_404(User,pk=erid)
     user=request.user
-    to_json=json.dumps('null')
     if 'answers'==command:
         answers=er.answers.all()
         if answers:
@@ -243,9 +289,9 @@ def get_er_all(request,erid,command):
     
 @csrf_exempt
 def get_er_following_all(request,erid,subcmd):
+    to_json=json.dumps('fail')
     er=get_object_or_404(User,pk=erid)
     user=request.user
-    to_json=json.dumps('null')
     if 'followtos'==subcmd:
         followtos=er.followto.all()
         if followtos:
@@ -298,26 +344,28 @@ def get_er_following_all(request,erid,subcmd):
         
 @csrf_exempt
 def follow_er(request,follow,er_id):
+    to_json=json.dumps('fail')
     er=get_object_or_404(User,pk=er_id)
     user=request.user #get_object_or_404(User,username=request.user)
     #if '1'==follow:
-    if int(follow):
-        er.userprofile.follower.add(user)
-        er.userprofile.follower_nums=er.userprofile.follower.count()
-        user.followto.add(er.userprofile)
-    else:
-        er.userprofile.follower.remove(user)
-        er.userprofile.follower_nums=er.userprofile.follower.count()
-        user.followto.remove(er.userprofile)
-    er.userprofile.save()
-    user.save()
-    temp=er.userprofile.follower_nums
-    to_json=json.dumps(temp)
+    if er:
+        if int(follow):
+            er.userprofile.follower.add(user)
+            er.userprofile.follower_nums=er.userprofile.follower.count()
+            user.followto.add(er.userprofile)
+        else:
+            er.userprofile.follower.remove(user)
+            er.userprofile.follower_nums=er.userprofile.follower.count()
+            user.followto.remove(er.userprofile)
+        er.userprofile.save()
+        user.save()
+        temp=er.userprofile.follower_nums
+        to_json=json.dumps(temp)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
 def upload_avatar(request):
-    print(request.POST.items)
+    to_json=json.dumps('fail')
     imgfile=request.FILES.get('imgfile')
     if imgfile: 
         print(str(time.time()))
@@ -329,13 +377,14 @@ def upload_avatar(request):
         #print(img.items)
         request.user.userprofile.avatar='/'+name
         request.user.userprofile.save()
-    
-    temp=request.user.userprofile.avatar
-    to_json=json.dumps(temp)
+        
+        temp=request.user.userprofile.avatar
+        to_json=json.dumps(temp)
     return HttpResponse(to_json,content_type='application/json')
 
 @csrf_exempt
 def upload_img(request):
+    to_json=json.dumps('fail')
     imgfile=request.FILES.get('imgfile')
     if imgfile: 
         print(str(time.time()))
@@ -347,10 +396,11 @@ def upload_img(request):
         #print(img.items)    
         temp='/'+name
         to_json=json.dumps(temp)
-        return HttpResponse(to_json,content_type='application/json')
+    return HttpResponse(to_json,content_type='application/json')
            
 @csrf_exempt
 def invite(request):
+    to_json=json.dumps('fail')
     q=request.GET.get('question')
     #f=request.GET.get('from')
     t=request.GET.get('to')
@@ -360,10 +410,9 @@ def invite(request):
             
     invitee=get_object_or_404(User,pk=t)
     #invitee.receiveinvite.add(invitation)
-
-    invitation=Invite(inviter=inviter,invitee=invitee,question_id=q)
-    invitation.save()
-
-    temp='success'
-    to_json=json.dumps(temp)
+    if invitee:
+        invitation=Invite(inviter=inviter,invitee=invitee,question_id=q)
+        invitation.save()
+        temp='success'
+        to_json=json.dumps(temp)
     return HttpResponse(to_json,content_type='application/json')
