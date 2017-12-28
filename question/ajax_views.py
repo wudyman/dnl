@@ -173,16 +173,18 @@ def get_topic_adept(request):
     to_json=json.dumps('fail')
     #inviter=request.user
     topics=request.POST.get('topics').split(';')
+    print(topics)
     topics.pop()
+    print(topics)
     adepts=User.objects.all()
     adept_list=[]
     if adepts:
         for adept in adepts:
             temp=[]
-            temp.append(adept.id)
-            temp.append(adept.first_name)
-            temp.append(adept.userprofile.avatar)
-            temp.append(adept.userprofile.mood)
+            temp.append(adept.id)#0
+            temp.append(adept.first_name)#1
+            temp.append(adept.userprofile.avatar)#2
+            temp.append(adept.userprofile.mood)#3
             #temp.append(inviter.id)
             adept_list.append(temp)
         to_json=json.dumps(adept_list)
