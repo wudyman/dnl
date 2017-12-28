@@ -368,55 +368,10 @@
         <div>
         <div class="Sticky">
         -->
+        {% if push_answer %}
         <div class="Card AnswerAuthor">
-        <!--
-        <div class="Card-header AnswerAuthor-title">
-        <div class="Card-headerText">关于作者</div>
         </div>
-        <div class="Card-section">
-        <div class="AnswerAuthor-user">
-        <div class="AnswerAuthor-user-avatar">
-        <span class="UserLink">
-        <a class="UserLink-link" href="/er/{{push_answer.author.id}}">
-        <img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="{{push_answer.author.userprofile.avatar}}" srcset="{{push_answer.author.userprofile.avatar}}" alt="{{push_answer.author.first_name}}">
-        </a>
-        </span>
-        </div>
-        <div class="AnswerAuthor-user-content">
-        <div class="AnswerAuthor-user-name">
-        <span class="UserLink">
-        <a class="UserLink-link" href="/er/{{push_answer.author.id}}">{{push_answer.author.first_name}}</a>
-        </span>
-        </div>
-        <div class="AnswerAuthor-user-headline">
-        <div class="RichText">{{push_answer.author.userprofile.mood}}</div>
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="Card-section">
-        <div class="AnswerAuthor-counts">
-        <div class="NumberBoard">
-        <a class="Button NumberBoard-item Button--plain" type="button" href="/er/{{push_answer.author.id}}/answers"><div class="NumberBoard-name">回答</div>
-        <div class="NumberBoard-value">314</div>
-        </a>
-        <a class="Button NumberBoard-item Button--plain" type="button" href="/people/ha-wei-18-55/posts">
-        <div class="NumberBoard-name">文章</div>
-        <div class="NumberBoard-value">10</div>
-        </a>
-        <a class="Button NumberBoard-item Button--plain" type="button" href="/people/ha-wei-18-55/followers">
-        <div class="NumberBoard-name">关注者</div>
-        <div class="NumberBoard-value">790</div>
-        </a>
-        </div>
-        </div>
-        <div class="MemberButtonGroup AnswerAuthor-buttons">
-        <button class="Button FollowButton Button--primary Button--blue" type="button"><svg viewBox="0 0 12 12" class="Icon FollowButton-icon Icon--plus" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M6.994 4.994s-.008-3.593 0-4C6.97-.33 4.97-.33 4.996.994c-.025 1.275 0 4 0 4H1C-.334 5-.334 7 1 7c1.332 0 3.996-.006 3.996-.006v4c0 1.346 2.004 1.346 1.998 0-.006-1.347 0-4 0-4S9.658 7 10.997 7c1.338 0 1.338-2-.007-2.006H6.994z"></path></g></svg>关注他</button>
-        <button class="Button" type="button"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button>
-        </div>
-        </div>
-        -->
-        </div>
+        {% endif %}
         
         <div class="Card" data-za-module="RelatedQuestions" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:null}}"><div class="Card-header SimilarQuestions-title"><div class="Card-headerText">相关问题</div></div>
         <div class="Card-section SimilarQuestions-list"><div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;22360160&quot;,&quot;author_member_hash_id&quot;:&quot;aa12047f1223c7092e3a2ab10bbdb1f6&quot;}}}"><meta itemprop="name" content="如何评价电影《等风来》？"><meta itemprop="url" content="https://www.zhihu.com/question/22360160"><meta itemprop="answerCount" content="194"><meta itemprop="zhihu:followerCount" content="992">
@@ -491,7 +446,7 @@
                     </div>
                 </div>
 		</div>        
-        <button data-dismiss="modal" aria-hidden="true" class="Button Modal-closeButton Button--plain close" aria-label="关闭" type="button">
+        <button data-dismiss="modal" aria-hidden="true" class="Button Modal-closeButton Button--plain 1close" aria-label="关闭" type="button">
         <svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>        
 	</div>
 </div>
@@ -500,24 +455,33 @@
 <!--- div other for invite--->
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="inviteModalLabel" aria-hidden="true">
-	<div class="modal-dialog invitemodal">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title  font-black font-center" id="inviteModalLabel">
-					模态框（Modal）标题
-				</h4>
-			</div>
-			<div id="adeptItems" class="modal-body font-black">
-
-			</div>
-			<div class="modal-footer">
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal -->
+<div class="modal-dialog inviteModal">
+<div class="Modal-inner">
+<div class="Modal-content Modal-content--spread">
+<div class="QuestionInvitation">
+<div class="Topbar">
+<div class="Topbar-title">
+<h2 class="QuestionInvitation-title">你可以邀请下面用户，快速获得回答</h2>
 </div>
+<div class="Topbar-options">
+<div class="QuestionInvitation-input Input-wrapper">
+<input data-tooltip="也可以搜索职业、公司等资料" data-tooltip-position="bottom" class="Input" placeholder="搜索你想邀请的人">
+<div class="Input-after">
+<svg viewBox="0 0 16 16" class="Icon Icon--search" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg>
+</div>
+</div>
+</div>
+</div>
+<div class="QuestionInvitation-content">
+<div class="List">
+</div>
+</div>
+</div>
+</div>
+<button data-dismiss="modal" aria-hidden="true" class="Button Modal-closeButton Button--plain 1close" aria-label="关闭" type="button"><svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>
+</div>
+</div>
+
 <!--- div other--->
 
 <script src="{%static 'common/jquery.js' %}"></script>
@@ -591,7 +555,7 @@ function appendMoreAnswerListElement(ret)
         </div>\
         ';
         
-        $(".List").append(data);
+        $("#AnswerItems .List").append(data);
     }
 }
 
@@ -658,7 +622,7 @@ function appendNormalAnswerListElement(ret) //"type_list"
         </div>\
         ';
         
-        $(".List").append(data);
+        $("#AnswerItems .List").append(data);
     }
 }
 
@@ -666,9 +630,9 @@ function appendNormalAnswerListElement(ret) //"type_list"
 
 function invite()
 {
-    $(".invite").each(function(index,element){
+    $(".Invite").each(function(index,element){
         $(element).click(function(){
-            question_id=$("#QuestionItem").attr("data-question-id");
+            var question_id=$(".QuestionPage").attr("data-question-id");
             //inviter=$(element).attr("data-from");
             invitee=$(element).attr("data-to");
             //$.get('/ajax/invite/?question='+question_id+'&from='+inviter+'&to='+invitee,function(ret){
@@ -682,26 +646,52 @@ function appendInviteElement(ret)
 {
     for( i in ret)
     {
-        var htmlText='<div class="adept-item">\
-                    <div  style="float:left;">\
-                        <img src="'+ret[i][2]+'" width="40" height="40">\
+        var adept_id=ret[i][0];
+        var adept_name=ret[i][1];
+        var adept_avatar=ret[i][2];
+        var adept_mood=ret[i][3];
+        
+        var data='<div class="List-item">\
+                    <div class="ContentItem">\
+                    <div class="ContentItem-main">\
+                    <div class="ContentItem-image">\
+                    <span class="UserLink UserItem-avatar">\
+                    <a class="UserLink-link" target="_blank" href="/er/'+adept_id+'">\
+                    <img class="Avatar Avatar--large UserLink-avatar PeoplePopover" width="60" height="60" src="'+adept_avatar+'" srcset="'+adept_avatar+'" alt="'+adept_name+'" data-author-id="'+adept_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">\
+                    </a>\
+                    </span>\
                     </div>\
-                    <div  style="float:left;">\
-                        <a>'+ret[i][1]+'</a>\
-                        <h4>'+ret[i][3]+'</h4>\
+                    <div class="ContentItem-head">\
+                    <h2 class="ContentItem-title">\
+                    <div class="UserItem-title">\
+                    <span class="UserLink UserItem-name">\
+                    <a class="UserLink-link" target="_blank" href="/er/'+adept_id+'"><span class="RichText">'+adept_name+'</span></a>\
+                    </span>\
                     </div>\
-                    <button style="float:right;" class="btn btn-success invite" type="button" data-to="'+ret[i][0]+'">邀请回答</button>\
-                    <div style="clear:both"></div>\
-                </div>';
-        $("#adeptItems").append(htmlText);
+                    </h2>\
+                    <div class="ContentItem-meta">\
+                    <div>\
+                    <div class="ContentItem-status">\
+                    <div class="ContentItem-statusItem">'+adept_mood+'</div>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    <div class="ContentItem-extra">\
+                    <button class="Button Button--blue Invite" type="button" data-to="'+adept_id+'">邀请回答</button>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    ';
+        $(".QuestionInvitation-content .List").append(data);
     }
 }
 function showInvite()
 {
     var topics="";
-    $(".TopicNav").each(function(){
-        topics+=($(this).attr("href"))+";";
-        topics+=($(this).attr("href"))+";";
+    $(".TopicLink").each(function(){
+        topics+=($(this).attr("data-topic-id"))+";";
     });
 
     $.post("/ajax/topic_adept/",{"topics":topics},function(ret){
@@ -709,6 +699,7 @@ function showInvite()
         {
             appendInviteElement(ret);
             $("#inviteModal").modal('show');
+            check_sets();
             invite();
         }
     })
@@ -824,7 +815,7 @@ function get_more_content(type)
     }
     else if("normal_answer_list"==type)
     {
-        var nums=$('.List-item').length;
+        var nums=$('#AnswerItems .List-item').length;
         var order=1;
         var start=nums;
         var end=start+5;
