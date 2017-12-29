@@ -19,4 +19,6 @@ urlpatterns= [
     url(r'^upload/avatar/$',views.upload_avatar,name='uploadavatar'),
     url(r'^upload/img/$',views.upload_img,name='uploadimage'),
     url(r'^invite/$',views.invite,name='invite'),
+    url(r'^notifications/$',views.get_notifications,name='getnotifications'),
+    url(r'^messages/$',views.get_messages,name='getmessages'),
 ]

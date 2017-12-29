@@ -29,7 +29,7 @@
 </a>
 </div>
 <nav role="navigation" class="col-md-3">
-<a class="AppHeader-navItem is-active" href="/">首页</a>
+<a class="AppHeader-navItem" href="/">首页</a>
 <a class="AppHeader-navItem" href="/explore">发现</a>
 <a class="AppHeader-navItem" href="/topic">话题</a>
 </nav>
@@ -387,26 +387,6 @@
 <script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script> 
 <script src="{% static 'common/main.js' %}"></script>
 <script>
-
-function get_index_img(content){
-    var imgReg=/<img.*?(?:>|\/>)/gi;
-    var arr=content.match(imgReg);
-    if(arr!=null)
-    {
-        var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
-        imgsrc=arr[0].match(srcReg);
-        return imgsrc[1];
-    }
-    else
-        return null;
-}
-
-function remove_img(content){
-    var imgReg=/<img.*?(?:>|\/>)/gi;
-    return content.replace(imgReg,"").replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,150);
-    //return content.replace(imgReg,"").replace(/<p>/gi,"").replace(/<\/p>/gi,"").replace(/(^\s*)|(\s*$)/g,"");
-}
-
 function appendFollowElementSub(subcmd,ret)
 {
     if(("followtos"==subcmd)||("followers"==subcmd))
@@ -468,7 +448,7 @@ function appendAnswerElementSub(ret)
     question_title=ret[2];
     answer_content=ret[3];
     answer_like_nums=ret[4];
-    indexImgSrc=get_index_img(answer_content);
+    index_img_url=get_index_img(answer_content);
     var data='\
 <div class="List-item">\
 <div class="ContentItem AnswerItem">\
@@ -481,21 +461,13 @@ function appendAnswerElementSub(ret)
 <div class="AnswerItem-meta">\
 <div class="AuthorInfo">\
 <span class="UserLink AuthorInfo-avatarWrapper">\
-<div class="Popover">\
-<div id="Popover-94547-45049-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94547-45049-content">\
-<a class="UserLink-link" data-za-detail-view-element_name="User" href="/er/'+er_id+'/answers/">\
-<img class="Avatar AuthorInfo-avatar" width="38" height="38" src="'+er_avatar+'" srcset="'+er_avatar+'" alt="'+er_name+'"></a>\
-</div>\
-</div>\
+<a class="UserLink-link" href="/er/'+er_id+'/answers/">\
+<img class="Avatar AuthorInfo-avatar PeoplePopover" width="38" height="38" src="'+er_avatar+'" srcset="'+er_avatar+'" alt="'+er_name+'" data-author-id="'+er_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"></a>\
 </span>\
 <div class="AuthorInfo-content">\
 <div class="AuthorInfo-head">\
 <span class="UserLink AuthorInfo-name">\
-<div class="Popover">\
-<div id="Popover-94547-29920-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94547-29920-content">\
 <a class="UserLink-link" data-za-detail-view-element_name="User" href="/er/'+er_id+'/answers/">'+er_name+'</a>\
-</div>\
-</div>\
 </span>\
 </div>\
 <div class="AuthorInfo-detail">\
@@ -514,15 +486,13 @@ function appendAnswerElementSub(ret)
 </div>\
 <div class="RichContent is-collapsed">\
 <div class="RichContent-cover">\
-<div class="RichContent-cover-inner">\
-<img width="190" src="'+indexImgSrc+'"> alt="cover">\
-</div>\
+<div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div>\
 <div class="RichContent-cover-play"><svg viewBox="0 0 64 64" class="Icon Icon--play" width="50" height="50" aria-hidden="true" style="height: 50px; width: 50px;"><title></title><g><path fill-opacity="0.9" fill="#fff" d="M32,64 C14.326888,64 0,49.673112 0,32 C0,14.326888 14.326888,0 32,0 C49.673112,0 64,14.326888 64,32 C64,49.673112 49.673112,64 32,64 Z M32.2363929,61.6 C48.5840215,61.6 61.8363929,48.3476286 61.8363929,32 C61.8363929,15.6523714 48.5840215,2.4 32.2363929,2.4 C15.8887643,2.4 2.63639293,15.6523714 2.63639293,32 C2.63639293,48.3476286 15.8887643,61.6 32.2363929,61.6 Z"></path>   <circle fill-opacity="0.3" fill="#000" cx="32" cy="32" r="29.6"></circle>   <path fill-opacity="0.9" fill="#fff" d="M43.5634409,30.7271505 C44.6882014,31.4301259 44.6868607,32.5707121 43.5634409,33.2728495 L28.4365591,42.7271505 C27.3117986,43.4301259 26.4,42.9221451 26.4,41.5999847 L26.4,22.4000153 C26.4,21.0745235 27.3131393,20.5707121 28.4365591,21.2728495 L43.5634409,30.7271505 Z"></path></g></svg></div>\
 </div>\
 <div class="RichContent-inner">\
 <span class="RichText CopyrightRichText-richText less">'+remove_img(answer_content)+'</span>\
 <span class="RichText CopyrightRichText-richText more is-hide">'+answer_content+'</span>\
-<button class="Button ContentItem-more Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
+<button class="Button ContentItem-more NC-RichContent-type1 Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
 </div>\
 <div class="ContentItem-actions">\
 <span>\
@@ -542,7 +512,7 @@ function appendAnswerElementSub(ret)
 <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Heart Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2 8.437C2 5.505 4.294 3.094 7.207 3 9.243 3 11.092 4.19 12 6c.823-1.758 2.649-3 4.651-3C19.545 3 22 5.507 22 8.432 22 16.24 13.842 21 12 21 10.158 21 2 16.24 2 8.437z" fill-rule="evenodd"></path></svg></span>感谢</button>\
 <div class="Popover ContentItem-action"><button class="Button Button--plain Button--withIcon Button--iconOnly" aria-label="更多" type="button" id="Popover-94553-60105-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94553-60105-content"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Dots Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill-rule="evenodd"></path></svg></span></button>\
 </div>\
-<button class="Button ContentItem-less ContentItem-rightButton Button--plain is-hide" type="button">\
+<button class="Button ContentItem-less NC-RichContent-type1 ContentItem-rightButton Button--plain is-hide" type="button">\
 <span class="RichContent-collapsedText">收起</span>\
 <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
 </button>\
@@ -568,8 +538,7 @@ function appendAnswerElement()
         {
             for(i in ret)
                 appendAnswerElementSub(ret[i]);
-            check_content_collapse();
-            check_content_expand()
+            check_sets();
         }
     });
 }
@@ -602,42 +571,10 @@ function appendQuestionElement()
     $.get("/ajax/er/"+er_id+"/"+command+"/",function(ret){
         if("fail"!=ret)
         {
-        for(i in ret)
-            appendQuestionElementSub(ret[i]);
+            for(i in ret)
+                appendQuestionElementSub(ret[i]);
+            check_sets();
         }
-    });
-}
-
-function check_content_collapse(){
-    $(".ContentItem-less").each(function(){
-        $(this).click(function(){
-            $(this).addClass("is-hide");
-            $(this).parent().siblings(".RichContent-inner").children(".less").removeClass("is-hide");
-            $(this).parent().siblings(".RichContent-inner").children(".more").addClass("is-hide");
-            $(this).parent().siblings(".RichContent-inner").children(".ContentItem-more").removeClass("is-hide");
-            $(this).parents(".RichContent").addClass("is-collapsed");
-            if("null"!=$(this).parent().siblings(".RichContent-cover").find("img").attr("src"))
-            {
-                $(this).parent().siblings(".RichContent-cover").removeClass("is-hide");
-            }
-        });
-    });
-}
-
-function check_content_expand(){
-    $(".RichContent-inner").each(function(){
-        if("null"==$(this).siblings(".RichContent-cover").find("img").attr("src"))
-        {
-            $(this).siblings(".RichContent-cover").addClass("is-hide");
-        }
-        $(this).click(function(){
-            $(this).children(".less").addClass("is-hide");
-            $(this).children(".more").removeClass("is-hide");
-            $(this).children(".ContentItem-more").addClass("is-hide");
-            $(this).siblings(".ContentItem-actions").children(".ContentItem-less").removeClass("is-hide");
-            $(this).parent().removeClass("is-collapsed");
-            $(this).siblings(".RichContent-cover").addClass("is-hide");
-        });
     });
 }
 
