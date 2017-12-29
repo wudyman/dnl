@@ -83,6 +83,7 @@ def answer_question(request,question_id):
         to_json=json.dumps(answer_list)
         
         question.answer_nums=question.be_answers.count();
+        question.push_answer_id=answer.id
         question.save()
     return HttpResponse(to_json,content_type='application/json')
     
@@ -413,8 +414,52 @@ def invite(request):
     invitee=get_object_or_404(User,pk=t)
     #invitee.receiveinvite.add(invitation)
     if invitee:
-        invitation=Invite(inviter=inviter,invitee=invitee,question_id=q)
-        invitation.save()
+        notification=Notification(type='invite',sender=inviter,receiver=invitee,active_id=q)
+        notification.save()
         temp='success'
         to_json=json.dumps(temp)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def get_notifications(request):
+    to_json=json.dumps('fail')
+    user=request.user
+    notifications=user.receives.all()
+    if notifications:
+        notification_list=[]
+        for notification in notifications:
+            temp=[]
+            temp.append(notification.id)#0
+            temp.append(notification.type)#1
+            temp.append(notification.active_id)#2
+            temp.append(notification.status)#3
+            temp.append(str(notification.pub_date))#4
+            temp.append(notification.sender.id)#5
+            temp.append(notification.sender.first_name)#6
+            if 'invite'==notification.type:
+                question=get_object_or_404(Question,pk=notification.active_id)
+                temp.append(question.title)#7
+            notification_list.append(temp)
+        to_json=json.dumps(notification_list)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def get_messages(request):
+    to_json=json.dumps('fail')
+    user=request.user
+    messages=user.message_receives.all()
+    if messages:
+        message_list=[]
+        for message in messages:
+            temp=[]
+            temp.append(message.id)#0
+            temp.append(message.type)#1
+            temp.append(message.content)#2
+            temp.append(message.status)#3
+            temp.append(str(message.pub_date))#4
+            temp.append(message.sender.id)#5
+            temp.append(message.sender.first_name)#6
+            temp.append(message.sender.userprofile.avatar)#7
+            message_list.append(temp)
+        to_json=json.dumps(message_list)
     return HttpResponse(to_json,content_type='application/json')

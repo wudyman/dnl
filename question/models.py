@@ -70,6 +70,27 @@ class Invite(models.Model):
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):
         return str(self.question_id)
+
+class Notification(models.Model):
+    type=models.CharField(default='invite',max_length=11)
+    sender=models.ForeignKey(User,related_name='sends')
+    receiver=models.ForeignKey(User,related_name='receives')
+    active_id=models.PositiveIntegerField(default=0)# question_id,answer_id,comment_id,user_id
+    status=models.PositiveIntegerField(default=0)
+    pub_date=models.DateTimeField('date published',default=timezone.now)
+    def __str__(self):
+        return str(self.type)
+        
+class Message(models.Model):
+    type=models.CharField(default='letter',max_length=11)
+    content=models.CharField(max_length=1000)
+    sender=models.ForeignKey(User,related_name='message_sends')
+    receiver=models.ForeignKey(User,related_name='message_receives')
+    #active_id=models.PositiveIntegerField(default=0)# question_id,answer_id,comment_id,user_id
+    status=models.PositiveIntegerField(default=0)
+    pub_date=models.DateTimeField('date published',default=timezone.now)
+    def __str__(self):
+        return str(self.type)
     
 #=================================below for ajax query==============================================#
 class PushQuestion():
