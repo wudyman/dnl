@@ -444,6 +444,19 @@ def get_notifications(request):
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
+def send_message(request,receiver_id):
+    to_json=json.dumps('fail')
+    content=request.POST.get('content')
+    print(content)
+    if content:
+        sender=request.user
+        receiver=get_object_or_404(User,pk=receiver_id)
+        message=Message(type='letter',content=content,sender=sender,receiver=receiver)
+        message.save()
+        to_json=json.dumps('success') 
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
 def get_messages(request):
     to_json=json.dumps('fail')
     user=request.user

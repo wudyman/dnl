@@ -74,7 +74,7 @@ function getScrollHeight() {
 return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); 
 } 
 
-function get_index_img(content){
+function getIndexImg(content){
     var imgReg=/<img.*?(?:>|\/>)/gi;
     var arr=content.match(imgReg);
     if(arr!=null)
@@ -87,12 +87,12 @@ function get_index_img(content){
         return null;
 }
 
-function remove_img(content){
+function removeImg(content){
     var imgReg=/<img.*?(?:>|\/>)/gi;
     return content.replace(imgReg,"").replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,150);
     //return content.replace(imgReg,"").replace(/<p>/gi,"").replace(/<\/p>/gi,"").replace(/(^\s*)|(\s*$)/g,"");
 }
-function update_value(type,value)
+function updateValue(type,value)
 {
     $(".NumberBoard-value").each(function(){
         var item=$(this);
@@ -100,14 +100,14 @@ function update_value(type,value)
             item.text(value)
     });
 }
-function follow_people(button){
+function followPeople(button){
     var er_id=button.attr("data-er-id");
     if("true"==button.attr("data-followed"))
     {
         $.post("/ajax/er_follow/0/"+er_id+"/",function(ret){
             button.removeClass("Button--grey").addClass("Button--green").text("关注");
             button.attr("data-followed","false");
-            update_value("people-followed",ret);
+            updateValue("people-followed",ret);
         }); 
     }
     else
@@ -115,19 +115,19 @@ function follow_people(button){
         $.post("/ajax/er_follow/1/"+er_id+"/",function(ret){
             button.removeClass("Button--green").addClass("Button--grey").text("已关注");
             button.attr("data-followed","true");
-            update_value("people-followed",ret);
+            updateValue("people-followed",ret);
         });  
     }
 } 
 
-function follow_topic(button){
+function followTopic(button){
     var topic_id=button.attr("data-topic-id");
     if("true"==button.attr("data-followed"))
     {
         $.post("/ajax/topic_follow/0/"+topic_id+"/",function(ret){
             button.removeClass("Button--grey").addClass("Button--green").text("关注");
             button.attr("data-followed","false");
-            update_value("topic-followed",ret);
+            updateValue("topic-followed",ret);
         }); 
     }
     else
@@ -140,14 +140,14 @@ function follow_topic(button){
     }
 } 
 
-function follow_question(button){
+function followQuestion(button){
     var question_id=button.attr("data-question-id");
     if("true"==button.attr("data-followed"))
     {
         $.post("/ajax/question_follow/0/"+question_id+"/",function(ret){
             button.removeClass("Button--grey").addClass("Button--green").text("关注");
             button.attr("data-followed","false");
-            update_value("question-followed",ret);
+            updateValue("question-followed",ret);
         }); 
     }
     else
@@ -155,27 +155,27 @@ function follow_question(button){
         $.post("/ajax/question_follow/1/"+question_id+"/",function(ret){
             button.removeClass("Button--green").addClass("Button--grey").text("已关注");
             button.attr("data-followed","true");
-            update_value("question-followed",ret);
+            updateValue("question-followed",ret);
         });  
     }
 }  
 
-function check_follow()
+function checkFollow()
 {
     $(".FollowButton").each(function(){
         var button=$(this);
         button.click(function(){
             if("people"==button.attr("data-follow-type"))
-                follow_people(button);
+                followPeople(button);
             else if("topic"==button.attr("data-follow-type"))
-                follow_topic(button);
+                followTopic(button);
             else if("question"==button.attr("data-follow-type"))
-                follow_question(button);
+                followQuestion(button);
             });
     });
 }
 
-function check_content_collapse(){
+function checkContentCollapse(){
     $(".ContentItem-less.NC-RichContent-type1").each(function(){
         $(this).click(function(){
             $(this).addClass("is-hide");
@@ -186,6 +186,7 @@ function check_content_collapse(){
             var index_img_url=$(this).parent().siblings(".RichContent-cover").find(".RichContent-cover-inner").attr("data-index-img-url");
             if("null"!=index_img_url)
             {
+                $(this).parent().siblings(".RichContent-cover").find(".RichContent-cover-inner").empty();
                 $(this).parent().siblings(".RichContent-cover").find(".RichContent-cover-inner").append('<img src="'+index_img_url+'">');
                 $(this).parent().siblings(".RichContent-cover").removeClass("is-hide");
             }
@@ -193,7 +194,7 @@ function check_content_collapse(){
     });
 }
 
-function check_content_expand(){
+function checkContentExpand(){
     $(".RichContent-inner").each(function(){
         var index_img_url=$(this).siblings(".RichContent-cover").find(".RichContent-cover-inner").attr("data-index-img-url")
         if("null"==index_img_url)
@@ -215,7 +216,7 @@ function check_content_expand(){
     });
 }
 
-function check_content_collapse_2(){
+function checkContentCollapse2(){
     $(".ContentItem-less.NC-RichContent-type2").each(function(){
         $(this).click(function(){
             $(this).addClass("is-hide");
@@ -226,7 +227,7 @@ function check_content_collapse_2(){
     });
 }
 
-function check_content_expand_2(){
+function checkContentExpand2(){
     $(".RichContent-inner").each(function(){
         $(this).click(function(){
             $(this).siblings(".ContentItem-more.NC-RichContent-type2").addClass("is-hide");
@@ -245,7 +246,7 @@ function check_content_expand_2(){
     });
 }
 
-function check_answer_like(){
+function checkAnswerLike(){
     $(".AnswerLike").each(function(){
         $(this).click(function(){
             var element=$(this);
@@ -258,7 +259,7 @@ function check_answer_like(){
 
 }
 
-function check_popover_show(){ 
+function checkPopoverShow(){ 
     $('.PeoplePopover').each(function(){
             $(this).parent().hover(function(){
                 var element=$(this).children(".PeoplePopover");
@@ -280,7 +281,8 @@ function check_popover_show(){
                     var data=data1+data2;
                     element.attr("data-content",data);
                     element.popover('show'); 
-                    check_follow(); 
+                    setLetterReceiver(er_id,er_name);
+                    checkFollow();                     
                     //element.siblings(".popover").attr("in",true);
                     //element.siblings(".popover").children().attr("in",true);
                 });
@@ -310,7 +312,7 @@ function check_popover_show(){
                     var data=data1+data2;
                     element.attr("data-content",data);
                     element.popover('show');
-                    check_follow(); 
+                    checkFollow(); 
                 });
             },function(){
                     $(this).children(".TopicPopover").popover('hide');
@@ -377,7 +379,7 @@ function check_popover_show(){
         $("#MenuPopover").popover("hide");
         e.stopPropagation();
         //var data='<div class="Menu Messages-menu"><div class="Messages-content"><div class="Messages-header" role="tablist"><button class="Button Messages-tab Messages-myMessageTab Button--plain" type="button">????</button></div><div class="Messages-list"><a href="/inbox/5587284910" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="https://pic3.zhimg.com/v2-b14587a6079c43702f1f0251098f3ec2_xs.jpg" srcset="https://pic3.zhimg.com/v2-b14587a6079c43702f1f0251098f3ec2_l.jpg 2x" alt="verna wu"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink"><!-- react-text: 26 -->verna wu<!-- /react-text --></span></div><div class="Messages-itemContent">hi verna</div></div></a><a href="/inbox/6213324000" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="https://pic3.zhimg.com/fd56780c37f0b316c56f27fe8b388532_xs.jpg" srcset="https://pic3.zhimg.com/fd56780c37f0b316c56f27fe8b388532_l.jpg 2x" alt="????"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink"><!-- react-text: 34 -->????<!-- /react-text --></span></div><div class="Messages-itemContent">wudy:??????????? Club??? 5 ? 14 ???????????????????????15 ??????????????????? Live??????????? Club??????????????????https://zhuanlan.zhihu.com/p/20852694?source=message ??????????????????????????????????????????????? http://www.bilibili.com/html/activity-zh-yanclub.html ?????????????</div></div></a><div></div></div><div class="Messages-footer"><button class="Button Button--plain" type="button"><svg viewBox="0 0 12 12" class="Icon Button-icon Icon--modify" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>????</button><a class="Button Button--plain" href="/inbox" type="button">??????</a></div></div></div>';
-        var data='<div class="Menu Messages-menu"><div class="Messages-content"><div class="Messages-header" role="tablist"><button class="Button Messages-tab Messages-myMessageTab Button--plain" type="button">我的私信</button></div><div class="Messages-list"><a href="/inbox/5587284910" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="https://pic3.zhimg.com/v2-b14587a6079c43702f1f0251098f3ec2_xs.jpg" srcset="https://pic3.zhimg.com/v2-b14587a6079c43702f1f0251098f3ec2_l.jpg 2x" alt="verna wu"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink"><!-- react-text: 26 -->verna wu<!-- /react-text --></span></div><div class="Messages-itemContent">hi verna</div></div></a><a href="/inbox/6213324000" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="https://pic3.zhimg.com/fd56780c37f0b316c56f27fe8b388532_xs.jpg" srcset="https://pic3.zhimg.com/fd56780c37f0b316c56f27fe8b388532_l.jpg 2x" alt="知乎团队"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink"><!-- react-text: 34 -->知乎团队<!-- /react-text --></span></div><div class="Messages-itemContent">wudy:见信好。第三届「知乎盐 Club」将于 5 月 14 日在上海国际时尚中心举办，届时将有丰富有趣的「15 分钟」演讲、展位互动和知友见面会「知乎 Live」，以及一年一度的「盐 Club」颁奖礼。欢迎关注「知识青年」专栏：https://zhuanlan.zhihu.com/p/20852694?source=message ，了解更多活动信息。如果活动当天你无法到场参与，也期待你参与我们的线上直播互动，视频直播地址： http://www.bilibili.com/html/activity-zh-yanclub.html 。和真实的你在一起知乎团队</div></div></a><div></div></div><div class="Messages-footer"><button class="Button Button--plain" type="button"><svg viewBox="0 0 12 12" class="Icon Button-icon Icon--modify" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>写新私信</button><a class="Button Button--plain" href="/inbox" type="button">查看全部私信</a></div></div></div>';
+        var data='<div class="Menu Messages-menu"><div class="Messages-content"><div class="Messages-header" role="tablist"><button class="Button Messages-tab Messages-myMessageTab Button--plain" type="button">我的私信</button></div><div class="Messages-list"><div></div></div><div class="Messages-footer"><a class="Button Button--plain" href="/inbox" type="button">查看全部私信</a></div></div></div>';
         $('#MessagePopover').attr("data-content",data);
         $('#MessagePopover').popover('show');
         if("null"==messages)
@@ -431,18 +433,18 @@ function check_popover_show(){
     
 }
 
-function check_sets()
+function checkSets()
 {
-    check_follow();
-    check_content_expand();
-    check_content_collapse();
-    check_content_expand_2();
-    check_content_collapse_2();
-    check_popover_show();
-    check_answer_like();
+    checkFollow();
+    checkContentExpand();
+    checkContentCollapse();
+    checkContentExpand2();
+    checkContentCollapse2();
+    checkPopoverShow();
+    checkAnswerLike();
 }
 
-function sendFile_question(file){
+function sendFileQuestion(file){
     var data=new FormData();
     data.append("imgfile",file);
     //console.log(data.get("file"));
@@ -459,7 +461,7 @@ function sendFile_question(file){
     });
 }
 
-function sendFile_answer(file){
+function sendFileAnswer(file){
     var data=new FormData();
     data.append("imgfile",file);
     //console.log(data.get("file"));
@@ -493,26 +495,130 @@ function submitAnswer()
             if("fail"!=ret)
             {
                 appendMoreAnswerListElement(ret);
-                hide_answer_toolbar();                
-                check_sets();
+                hideAnswerToolbar();                
+                checkSets();
             }
         }
     });
 }
 
-function show_answer_toolbar()
+function showAnswerToolbar()
 {
     $(".AnswerToolbar").removeClass("is-hide");
 }
 
-function hide_answer_toolbar()
+function hideAnswerToolbar()
 {
     $(".AnswerToolbar").addClass("is-hide");
 }
+function sendLetter()
+{
+    var value=$("#LetterText").val();
+    er_id=$(".Messages-receiverInfo").attr("data-receiver-id");
+    console.log(value);
+    //$("#letterModal").modal("hide");
+    $('#letterModal').modal('toggle');
+    $.post("/ajax/send_message/"+er_id+"/",{"content":value},function(ret){
+        console.log(ret);
+    });
+}
+function setLetterReceiver(id,name)
+{
+    $(".Messages-receiverInfo").attr("data-receiver-id",id);
+    $(".Messages-receiverInfo").text(name);
+}
 
+function appendLetterModal()
+{
+    var data='<div class="modal fade" id="letterModal" tabindex="0" role="dialog" aria-labelledby="letterModalLabel" aria-hidden="true">\
+        <div class="modal-dialog lettermodal">\
+        <div class="Modal-inner">\
+        <h3 class="Modal-title">发送私信</h3>\
+        <div class="Modal-content">\
+        <div class="Messages-newDialog">\
+        <div class="Messages-receiver">\
+        <span class="Messages-receiverInfo" data-receiver-id="">who</span>\
+        <a href="/inbox/5587284910" class="Messages-records">查看私信记录</a>\
+        </div>\
+        <div class="Messages-sendContent Input-wrapper Input-wrapper--spread Input-wrapper--multiline">\
+        <textarea id="LetterText" rows="5" class="Input" placeholder="私信内容"></textarea>\
+        </div>\
+        <span class="Messages-warning"></span>\
+        <div class="ModalButtonGroup ModalButtonGroup--vertical">\
+        <button class="Button Messages-sendButton Button--primary Button--blue" type="button" onclick="sendLetter()">发送</button>\
+        </div>\
+        </div>\
+        </div>\
+        </div>\
+        <button class="Button Modal-closeButton Button--plain" data-dismiss="modal" aria-label="关闭" type="button"><svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>\
+        </div>\
+        </div>\
+        ';
+
+    $("body").append(data);
+    
+    $("#letterModal").on("show.bs.modal", function(){
+        $(".PeoplePopover").popover("hide");
+    });
+}
+
+function appendMessageElement(ret)
+{
+    $(".Messages-list").empty();
+    for (i in ret)
+    {
+        var message_id=ret[i][0];
+        var message_type=ret[i][1];
+        var message_content=ret[i][2];
+        var message_status=ret[i][3];
+        var message_pub_date=ret[i][4];
+        var message_sender_id=ret[i][5];
+        var message_sender_first_name=ret[i][6];
+        var message_sender_avatar=ret[i][7];
+        
+        if("letter"==message_type)
+        {
+            var data='<a href="/inbox/5587284910" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="'+message_sender_avatar+'" srcset="'+message_sender_avatar+'" alt="'+message_sender_first_name+'"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink">'+message_sender_first_name+'</span></div><div class="Messages-itemContent">'+message_content+'</div></div></a>';
+        }
+        $(".Messages-list").append(data);
+    }
+}
+
+function appendNotificationElement(ret)
+{
+    $(".PushNotifications-list").empty();
+    for (i in ret)
+    {
+        var notification_id=ret[i][0];
+        var notification_type=ret[i][1];
+        var notification_active_id=ret[i][2];
+        var notification_status=ret[i][3];
+        var notification_pub_date=ret[i][4];
+        var notification_sender_id=ret[i][5];
+        var notification_sender_first_name=ret[i][6];
+        
+        if("invite"==notification_type)
+        {
+            var question_title=ret[i][7];
+            var data='<div class="PushNotifications-item"><span><span><span class="UserLink"><a class="UserLink-link" href="/er/'+notification_sender_id+'">'+notification_sender_first_name+'</a></span></span></span><span> 邀请你回答 </span><span><a href="/question/'+notification_active_id+'">'+question_title+'</a></span></div>';
+        }
+        $(".PushNotifications-list").append(data);
+    }
+}
 
 $(document).click(function(e) {
     $("#NotificationPopover").popover("hide");
     $("#MessagePopover").popover("hide");
     $("#MenuPopover").popover("hide");
+});
+
+function initCommon()
+{
+    notifications="null";
+    messages="null";
+}
+
+$(document).ready(function() {
+    initCommon();
+    init();
 });
