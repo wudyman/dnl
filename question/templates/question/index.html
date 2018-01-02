@@ -165,28 +165,7 @@
 
 <!--- div other--->
 <!-- 私信（Modal） -->
-<div class="modal fade" id="letterModal" tabindex="0" role="dialog" aria-labelledby="letterModalLabel" aria-hidden="true">
-<div class="modal-dialog lettermodal">
-<div class="Modal-inner">
-<h3 class="Modal-title">发送私信</h3>
-<div class="Modal-content">
-<div class="Messages-newDialog">
-<div class="Messages-receiver">
-<span class="Messages-receiverInfo">who</span>
-</div>
-<div class="Messages-sendContent Input-wrapper Input-wrapper--spread Input-wrapper--multiline">
-<textarea rows="5" class="Input" placeholder="私信内容"></textarea>
-</div>
-<span class="Messages-warning"></span>
-<div class="ModalButtonGroup ModalButtonGroup--vertical">
-<button class="Button Messages-sendButton Button--primary Button--blue" type="button">发送</button>
-</div>
-</div>
-</div>
-</div>
-<button class="Button Modal-closeButton Button--plain" aria-label="关闭" type="button"><svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>
-</div>
-</div>
+<!-- append by js -->
 <!--- div other--->
 <script src="{%static 'common/jquery.js' %}"></script>
 <script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
@@ -196,48 +175,7 @@
 <script src="{% static 'common/main.js' %}"></script>
     
 <script>
-function appendMessageElement(ret)
-{
-    $(".PushNotifications-list").empty();
-    for (i in ret)
-    {
-        var notification_id=ret[i][0];
-        var notification_type=ret[i][1];
-        var notification_active_id=ret[i][2];
-        var notification_status=ret[i][3];
-        var notification_pub_date=ret[i][4];
-        var notification_sender_id=ret[i][5];
-        var notification_sender_first_name=ret[i][6];
-        
-        if("invite"==notification_type)
-        {
-            var question_title=ret[i][7];
-            var data='<div class="PushNotifications-item"><span><span><span class="UserLink"><a class="UserLink-link" href="/er/'+notification_sender_id+'">'+notification_sender_first_name+'</a></span></span></span><span> 邀请你回答 </span><span><a href="/question/'+notification_active_id+'">'+question_title+'</a></span></div>';
-        }
-        $(".PushNotifications-list").append(data);
-    }
-}
-function appendNotificationElement(ret)
-{
-    $(".PushNotifications-list").empty();
-    for (i in ret)
-    {
-        var notification_id=ret[i][0];
-        var notification_type=ret[i][1];
-        var notification_active_id=ret[i][2];
-        var notification_status=ret[i][3];
-        var notification_pub_date=ret[i][4];
-        var notification_sender_id=ret[i][5];
-        var notification_sender_first_name=ret[i][6];
-        
-        if("invite"==notification_type)
-        {
-            var question_title=ret[i][7];
-            var data='<div class="PushNotifications-item"><span><span><span class="UserLink"><a class="UserLink-link" href="/er/'+notification_sender_id+'">'+notification_sender_first_name+'</a></span></span></span><span> 邀请你回答 </span><span><a href="/question/'+notification_active_id+'">'+question_title+'</a></span></div>';
-        }
-        $(".PushNotifications-list").append(data);
-    }
-}
+
 function appendFeedElement(ret)
 {
     for(i in ret)
@@ -253,7 +191,7 @@ function appendFeedElement(ret)
     var anthor_mood=ret[i][8];
     var answer_content=ret[i][9];
     var answer_like_nums=ret[i][10];
-    var index_img_url=get_index_img(answer_content);
+    var index_img_url=getIndexImg(answer_content);
     var dataStart='<div class="QuestionFrame Card">\
                         <div class="Feed">\
                   ';
@@ -297,7 +235,7 @@ function appendFeedElement(ret)
                             <div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div>\
                         </div>\
                         <div class="RichContent-inner">\
-                            <span class="RichText CopyrightRichText-richText less">'+remove_img(answer_content)+'</span>\
+                            <span class="RichText CopyrightRichText-richText less">'+removeImg(answer_content)+'</span>\
                             <span class="RichText CopyrightRichText-richText more is-hide">'+answer_content+'</span>\
                             <button class="Button ContentItem-more NC-RichContent-type1 Button--plain" type="button">\
                                 阅读全文\
@@ -338,7 +276,7 @@ function getMoreData() {
         if("fail"!=ret)
         {
             appendFeedElement(ret);  
-            check_sets();
+            checkSets();
         }
     });
 } 
@@ -360,8 +298,6 @@ $(function() {
 */
 function init()
 {
-    notifications="null";
-    messages="null";
     getMoreData();  
     $('#summernote_question').summernote({
     height:120,
@@ -369,19 +305,14 @@ function init()
     placeholder:'问题背景、条件等详细信息',
     callbacks: {
         onImageUpload: function(files){
-            img=sendFile_question(files[0]);
+            img=sendFileQuestion(files[0]);
             console.log(img);
         }
     }
     });
+    
+    appendLetterModal();
 }
-
-$(document).ready(function() {
-    init();
-});
-
-
-
 </script>
 
 </body>

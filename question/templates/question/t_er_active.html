@@ -365,11 +365,11 @@
 </div>
 <div style="text-align:center">
 <svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
-<input id="adjust_choosebox"type="range" step="1" min="0" max="100" class="RangeInput" value="50" style="display:inline" oninput="AdjustChooseBox()">
+<input id="adjust_choosebox"type="range" step="1" min="0" max="100" class="RangeInput" value="50" style="display:inline" oninput="adjustChooseBox()">
 <svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="22" height="22"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
 </div>
 <div class="ModalButtonGroup ModalButtonGroup--vertical">
-<button class="Button Button--primary Button--blue" type="button" onclick="SaveFile()">保存</button>
+<button class="Button Button--primary Button--blue" type="button" onclick="saveFile()">保存</button>
 </div>
 </div>
 </div>
@@ -448,7 +448,7 @@ function appendAnswerElementSub(ret)
     question_title=ret[2];
     answer_content=ret[3];
     answer_like_nums=ret[4];
-    index_img_url=get_index_img(answer_content);
+    index_img_url=getIndexImg(answer_content);
     var data='\
 <div class="List-item">\
 <div class="ContentItem AnswerItem">\
@@ -490,7 +490,7 @@ function appendAnswerElementSub(ret)
 <div class="RichContent-cover-play"><svg viewBox="0 0 64 64" class="Icon Icon--play" width="50" height="50" aria-hidden="true" style="height: 50px; width: 50px;"><title></title><g><path fill-opacity="0.9" fill="#fff" d="M32,64 C14.326888,64 0,49.673112 0,32 C0,14.326888 14.326888,0 32,0 C49.673112,0 64,14.326888 64,32 C64,49.673112 49.673112,64 32,64 Z M32.2363929,61.6 C48.5840215,61.6 61.8363929,48.3476286 61.8363929,32 C61.8363929,15.6523714 48.5840215,2.4 32.2363929,2.4 C15.8887643,2.4 2.63639293,15.6523714 2.63639293,32 C2.63639293,48.3476286 15.8887643,61.6 32.2363929,61.6 Z"></path>   <circle fill-opacity="0.3" fill="#000" cx="32" cy="32" r="29.6"></circle>   <path fill-opacity="0.9" fill="#fff" d="M43.5634409,30.7271505 C44.6882014,31.4301259 44.6868607,32.5707121 43.5634409,33.2728495 L28.4365591,42.7271505 C27.3117986,43.4301259 26.4,42.9221451 26.4,41.5999847 L26.4,22.4000153 C26.4,21.0745235 27.3131393,20.5707121 28.4365591,21.2728495 L43.5634409,30.7271505 Z"></path></g></svg></div>\
 </div>\
 <div class="RichContent-inner">\
-<span class="RichText CopyrightRichText-richText less">'+remove_img(answer_content)+'</span>\
+<span class="RichText CopyrightRichText-richText less">'+removeImg(answer_content)+'</span>\
 <span class="RichText CopyrightRichText-richText more is-hide">'+answer_content+'</span>\
 <button class="Button ContentItem-more NC-RichContent-type1 Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
 </div>\
@@ -538,7 +538,7 @@ function appendAnswerElement()
         {
             for(i in ret)
                 appendAnswerElementSub(ret[i]);
-            check_sets();
+            checkSets();
         }
     });
 }
@@ -573,12 +573,12 @@ function appendQuestionElement()
         {
             for(i in ret)
                 appendQuestionElementSub(ret[i]);
-            check_sets();
+            checkSets();
         }
     });
 }
 
-function AdjustChooseBox()
+function adjustChooseBox()
 {
     var width=200;
     var height=200;
@@ -666,7 +666,7 @@ function AdjustChooseBox()
         });
 }
 //$(function(){
-function check_avatar(){
+function checkAvatar(){
     $(".UserAvatarEditor").hover(
         function(){
             $(".Mask").removeClass("Mask-hidden");
@@ -690,7 +690,7 @@ function check_avatar(){
                     $("#preview_avatar").attr("src", objUrl) ; //将图片路径存入src中，显示出图片
                     $("#adjust_choosebox").val(50);                    
                     
-                    setTimeout(AdjustChooseBox,1*1000);
+                    setTimeout(adjustChooseBox,1*1000);
                 }
             });
     });
@@ -721,7 +721,7 @@ function dataURLtoBlob(dataurl) {
 }
 */
 
-function SaveFile()
+function saveFile()
 {
     var img=document.getElementById("preview_avatar");
     imgWidth=img.naturalWidth;
@@ -743,11 +743,11 @@ function SaveFile()
     //console.log(blob);
     can.toBlob(function(blobUrl){
         console.log(blobUrl);
-        FileUpload(blobUrl);
+        fileUpload(blobUrl);
     },"image/jpeg");   
 }
 //   上传附件到方法
-function FileUpload(file_info) {
+function fileUpload(file_info) {
 var form_data = new FormData();
 //var file_info = $('#id_avatar_input')[0].files[0];
 form_data.append('imgfile',file_info,"image.jpg");
@@ -772,8 +772,9 @@ console.log("success");
 }); // end ajax
 }
 
-$(document).ready(function(){
-    check_avatar();
+function init()
+{
+    checkAvatar();
     er_id=$(".ProfileMain-header").attr("data-er-id");
     er_name=$(".ProfileMain-header").attr("data-er-name");
     er_avatar=$(".ProfileMain-header").attr("data-er-avatar");
@@ -807,7 +808,7 @@ $(document).ready(function(){
         appendFollowElement(subcmd);
     else 
         console.log("false");
-});
+}
 </script>
 </body>
 </html>
