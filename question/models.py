@@ -80,9 +80,15 @@ class Notification(models.Model):
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):
         return str(self.type)
-        
+class Conversation(models.Model):
+    initator=models.ForeignKey(User,related_name='init_conversations')
+    parter=models.ForeignKey(User,related_name='join_conversations')
+    update_date=models.DateTimeField('date published',default=timezone.now)
+    def __str__(self):
+        return str(self.id)
 class Message(models.Model):
-    type=models.CharField(default='letter',max_length=11)
+    #type=models.CharField(default='letter',max_length=11)
+    conversation=models.ForeignKey(Conversation,related_name='messages',on_delete=models.CASCADE)
     content=models.CharField(max_length=1000)
     sender=models.ForeignKey(User,related_name='message_sends')
     receiver=models.ForeignKey(User,related_name='message_receives')

@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import *
 import time
 from PIL import Image
+from django.db import connection
 
 @csrf_exempt
 def get_questions(request,order,start,end):
@@ -38,6 +39,7 @@ def get_questions(request,order,start,end):
                     temp.append(str(answer.pub_date)) #12
                     question_list.append(temp)
         to_json=json.dumps(question_list)
+    #print(connection.queries)
     return HttpResponse(to_json,content_type='application/json')
 
 @csrf_exempt
@@ -446,13 +448,24 @@ def get_notifications(request):
 @csrf_exempt
 def send_message(request,receiver_id):
     to_json=json.dumps('fail')
+    sender=request.user
+    receiver=get_object_or_404(User,pk=receiver_id)
+    conversations=Conversation.objects.filter(initator__id=sender.id,parter__id=receiver_id)
+    if conversations:
+        conversation=conversations[0]
+    else:
+        conversations=Conversation.objects.filter(initator__id=receiver_id,parter__id=sender.id)
+        if conversations:
+            conversation=conversations[0]
+        else:
+            conversation=Conversation(initator=sender,parter=receiver)
+            conversation.save()
     content=request.POST.get('content')
-    print(content)
     if content:
-        sender=request.user
-        receiver=get_object_or_404(User,pk=receiver_id)
-        message=Message(type='letter',content=content,sender=sender,receiver=receiver)
+        message=Message(conversation=conversation,content=content,sender=sender,receiver=receiver)
         message.save()
+        conversation.update_date=message.pub_date
+        conversation.save()
         to_json=json.dumps('success') 
     return HttpResponse(to_json,content_type='application/json')
     
@@ -460,19 +473,41 @@ def send_message(request,receiver_id):
 def get_messages(request):
     to_json=json.dumps('fail')
     user=request.user
-    messages=user.message_receives.all()
+    conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
+    print(conversations)
+    conversations=conversations.order_by('-update_date')[:10]
+    print(conversations)
+    if conversations:
+        conversation_list=[]
+        for conversation in conversations:
+            temp=[]
+            temp.append(conversation.id)#0
+            temp.append(str(conversation.update_date))#1
+            er=conversation.initator
+            if user.id==er.id:
+                er=conversation.parter
+            temp.append(er.id)#2
+            temp.append(er.first_name)#3
+            temp.append(er.userprofile.avatar)#4
+            latest_message=conversation.messages.order_by('-pub_date')[0]
+            if latest_message:
+                temp.append(latest_message.content)#5
+                conversation_list.append(temp)
+        to_json=json.dumps(conversation_list)
+    '''
+    messages=user.message_receives.all(initator__id=user.id)
     if messages:
         message_list=[]
         for message in messages:
             temp=[]
             temp.append(message.id)#0
-            temp.append(message.type)#1
-            temp.append(message.content)#2
-            temp.append(message.status)#3
-            temp.append(str(message.pub_date))#4
-            temp.append(message.sender.id)#5
-            temp.append(message.sender.first_name)#6
-            temp.append(message.sender.userprofile.avatar)#7
+            temp.append(message.content)#1
+            temp.append(message.status)#2
+            temp.append(str(message.pub_date))#3
+            temp.append(message.sender.id)#4
+            temp.append(message.sender.first_name)#5
+            temp.append(message.sender.userprofile.avatar)#6
             message_list.append(temp)
         to_json=json.dumps(message_list)
+    '''
     return HttpResponse(to_json,content_type='application/json')
