@@ -285,3 +285,66 @@ form input[type=password] {
 .keep-zg-left{float:left}
 .Tag.current{position:relative;display:inline-block;height:30px;padding:0 12px;font-size:14px;line-height:30px;vertical-align:top;border-radius:100px;background:#259;border-color:#259;color:#fff}
 .current a{color:#fff}
+.Topic{
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-align:center;
+    -ms-flex-align:center;
+    align-items:center
+}
+.Topic-avatar{
+    vertical-align:top
+}
+.Topic-content{
+    -webkit-box-flex:1;
+    -ms-flex:1;
+    flex:1;
+    margin-left:14px;
+    /*overflow:hidden*/
+}
+.Topic-head{
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-align:center;
+    -ms-flex-align:center;
+    align-items:center;
+    font-size:15px;
+    line-height:1.1;
+    -ms-flex-negative:0;
+    flex-shrink:0
+}
+.Topic-name{
+    font-weight:600
+}
+.Topic-badge{
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    -webkit-box-align:center;
+    -ms-flex-align:center;
+    align-items:center;
+    margin-top:12px;
+    font-size:14px
+}
+.Topic-badgeText{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+.Topic--plain .Topic-content{
+    display:-webkit-box;
+    display:-ms-flexbox;
+    display:flex;
+    margin-left:10px
+}
+.Topic--plain .Topic-badge>:first-child{
+    margin-top:0
+}
+.Topic--plain .Topic-badge>:first-child:before{
+    content:"\FF0C"
+}
+.Topic-detail{
+    overflow:hidden
+}

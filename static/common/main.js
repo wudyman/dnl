@@ -567,19 +567,14 @@ function appendMessageElement(ret)
     $(".Messages-list").empty();
     for (i in ret)
     {
-        var message_id=ret[i][0];
-        var message_type=ret[i][1];
-        var message_content=ret[i][2];
-        var message_status=ret[i][3];
-        var message_pub_date=ret[i][4];
-        var message_sender_id=ret[i][5];
-        var message_sender_first_name=ret[i][6];
-        var message_sender_avatar=ret[i][7];
+        var conversation_id=ret[i][0];
+        var conversation_update=ret[i][1];
+        var er_id=ret[i][2];
+        var er_name=ret[i][3];
+        var er_avatar=ret[i][4];
+        var message_content=ret[i][5];
         
-        if("letter"==message_type)
-        {
-            var data='<a href="/inbox/5587284910" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="'+message_sender_avatar+'" srcset="'+message_sender_avatar+'" alt="'+message_sender_first_name+'"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink">'+message_sender_first_name+'</span></div><div class="Messages-itemContent">'+message_content+'</div></div></a>';
-        }
+        var data='<a href="/conversation/'+conversation_id+'" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="'+er_avatar+'" srcset="'+er_avatar+'" alt="'+er_name+'"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink">'+er_name+'</span></div><div class="Messages-itemContent">'+message_content+'</div></div></a>';
         $(".Messages-list").append(data);
     }
 }
@@ -616,6 +611,17 @@ function initCommon()
 {
     notifications="null";
     messages="null";
+    $('#summernote_question').summernote({
+    height:120,
+    lang:'zh-CN',
+    placeholder:'问题背景、条件等详细信息',
+    callbacks: {
+        onImageUpload: function(files){
+            img=sendFileQuestion(files[0]);
+            console.log(img);
+        }
+    }
+    });
 }
 
 $(document).ready(function() {
