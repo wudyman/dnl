@@ -27,6 +27,7 @@ urlpatterns = [
 	url(r'^signinup/$',main_views.SigninupView.as_view(),name='signinup'),
     url(r'^topics/$',main_views.AllTopicsView.as_view(),name='alltopics'),
     url(r'^exit/',main_views.LogOut),
+    url(r'^conversation/$',main_views.ConversationView.as_view()),
 	#url(r'^form/',index_view.FormView.form1,name='form1'),
 	#url(r'^form/',index_view.FormView.as_view(),name='form'),
 	#url(r'^myView/',index_view.myView),

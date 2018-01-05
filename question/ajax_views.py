@@ -470,13 +470,11 @@ def send_message(request,receiver_id):
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
-def get_messages(request):
+def get_conversations(request,order,start,end):
     to_json=json.dumps('fail')
     user=request.user
     conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
-    print(conversations)
-    conversations=conversations.order_by('-update_date')[:10]
-    print(conversations)
+    conversations=conversations.order_by('-update_date')[int(start):int(end)]
     if conversations:
         conversation_list=[]
         for conversation in conversations:
@@ -494,20 +492,26 @@ def get_messages(request):
                 temp.append(latest_message.content)#5
                 conversation_list.append(temp)
         to_json=json.dumps(conversation_list)
-    '''
-    messages=user.message_receives.all(initator__id=user.id)
-    if messages:
-        message_list=[]
-        for message in messages:
-            temp=[]
-            temp.append(message.id)#0
-            temp.append(message.content)#1
-            temp.append(message.status)#2
-            temp.append(str(message.pub_date))#3
-            temp.append(message.sender.id)#4
-            temp.append(message.sender.first_name)#5
-            temp.append(message.sender.userprofile.avatar)#6
-            message_list.append(temp)
-        to_json=json.dumps(message_list)
-    '''
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def get_conversation_messages(request,conversation_id,order,start,end):
+    to_json=json.dumps('fail')
+    #user=request.user
+    conversation=get_object_or_404(Conversation,pk=conversation_id)
+    if conversation:
+        messages=conversation.messages.order_by('-pub_date')[int(start):int(end)]
+        if messages:
+            message_list=[]
+            for message in messages:
+                temp=[]
+                temp.append(message.id)#0
+                temp.append(message.content)#1
+                temp.append(message.status)#2
+                temp.append(str(message.pub_date))#3
+                temp.append(message.sender.id)#4
+                temp.append(message.sender.first_name)#5
+                temp.append(message.sender.userprofile.avatar)#6
+                message_list.append(temp)
+            to_json=json.dumps(message_list)
     return HttpResponse(to_json,content_type='application/json')

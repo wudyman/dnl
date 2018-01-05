@@ -348,3 +348,118 @@ form input[type=password] {
 .Topic-detail{
     overflow:hidden
 }
+
+.zm-pm-item {
+    padding: 12px 0;
+    min-height: 74px;
+}
+.zm-item-link-avatar50 {
+    float: left;
+    height: 50px;
+    width: 50px;
+    margin: 0 10px 0 0;
+}
+.zm-item-img-avatar50 {
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.2);
+}
+.zm-pm-item-main {
+    position: relative;
+    margin: 0 0 5px 62px;
+}
+.zm-pm-item .zm-item-meta, .zm-pm-item .zu-pm-item-meta {
+    margin: 0 0 0 63px;
+}
+.zu-pm-item-meta {
+    text-align: right;
+}
+.zg-gray {
+    color: #999;
+    font-size: 12px;
+    font-weight: 400;
+}
+.zg-left {
+    float: left;
+}
+
+.zg-link-litblue {
+    font-size: 12px;
+}
+
+.zg-link-litblue, .zg-link-litblue-normal {
+    color: #698ebf;
+    font-weight: 400;
+}
+
+.zg-bull {
+    padding: 0 3px;
+    color: #BBB;
+    font-family: Arial;
+}
+
+
+/*html.no-touchevents .zm-pm-item:hover .zu-autohide{display:inline-block}*/
+.zm-pm-item+.zm-pm-item{border-top:1px solid #eee}
+/*.zm-pm-nav{list-style:none;margin:0;padding:0}*/
+
+
+
+
+.zg-section {
+    margin: 0 0 10px;
+    display: block;
+}
+.zg-editor-simple-wrap {
+    border: 1px solid #999;
+    padding: 4px 4px 0;
+}
+.zg-form-text-input, .zg-form-select {
+    padding: 8px 10px;
+    font-size: 13px;
+    line-height: 15px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.1) inset;
+    border-radius: 3px;
+    background: #fff;
+    border: 1px solid #ccc;
+    color: #222;
+}
+textarea.zg-form-text-input, .zg-form-text-input>textarea {
+    color: #222;
+    overflow: hidden;
+    min-height: 66px;
+    line-height: 22px;
+    font-size: 13px;
+    padding: 0!important;
+    margin: 0!important;
+    border: 0 none;
+}
+
+.zg-editor-input {
+    width: 100%;
+    font-weight: 400;
+    min-height: 66px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+.zu-seamless-input-origin-element {
+    overflow: hidden;
+}
+textarea {
+    border: 0;
+    border: 0;
+    -moz-outline: 0;
+    outline: 0;
+    overflow: auto;
+    resize: none;
+    -webkit-appearance: none;
+}
+.zm-command {
+    padding: 10px 0;
+    text-align: right;
+}
+
