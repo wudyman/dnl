@@ -21,5 +21,6 @@ urlpatterns= [
     url(r'^invite/$',views.invite,name='invite'),
     url(r'^notifications/$',views.get_notifications,name='getnotifications'),
     url(r'^send_message/(?P<receiver_id>[0-9]+)/$',views.send_message,name='sendmessage'),
-    url(r'^messages/$',views.get_messages,name='getmessages'),
+    url(r'^conversations/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.get_conversations,name='getconversations'),
+    url(r'^conversation_messages/(?P<conversation_id>[0-9]+)/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.get_conversation_messages,name='getconversationmessages'),
 ]

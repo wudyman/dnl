@@ -165,6 +165,7 @@ function checkFollow()
     $(".FollowButton").each(function(){
         var button=$(this);
         button.click(function(){
+            console.log("checkFollow");
             if("people"==button.attr("data-follow-type"))
                 followPeople(button);
             else if("topic"==button.attr("data-follow-type"))
@@ -176,6 +177,7 @@ function checkFollow()
 }
 
 function checkContentCollapse(){
+    $(".ContentItem-less.NC-RichContent-type1").off("click");
     $(".ContentItem-less.NC-RichContent-type1").each(function(){
         $(this).click(function(){
             $(this).addClass("is-hide");
@@ -195,6 +197,7 @@ function checkContentCollapse(){
 }
 
 function checkContentExpand(){
+    $(".RichContent-inner").off("click");
     $(".RichContent-inner").each(function(){
         var index_img_url=$(this).siblings(".RichContent-cover").find(".RichContent-cover-inner").attr("data-index-img-url")
         if("null"==index_img_url)
@@ -206,6 +209,7 @@ function checkContentExpand(){
             $(this).siblings(".RichContent-cover").find(".RichContent-cover-inner").append('<img src="'+index_img_url+'">');
         }
         $(this).click(function(){
+            console.log("checkContentExpand");
             $(this).children(".less").addClass("is-hide");
             $(this).children(".more").removeClass("is-hide");
             $(this).children(".ContentItem-more.NC-RichContent-type1").addClass("is-hide");
@@ -217,6 +221,7 @@ function checkContentExpand(){
 }
 
 function checkContentCollapse2(){
+    $(".ContentItem-less.NC-RichContent-type2").off("click");
     $(".ContentItem-less.NC-RichContent-type2").each(function(){
         $(this).click(function(){
             $(this).addClass("is-hide");
@@ -228,6 +233,7 @@ function checkContentCollapse2(){
 }
 
 function checkContentExpand2(){
+    $(".RichContent-inner").off("click");
     $(".RichContent-inner").each(function(){
         $(this).click(function(){
             $(this).siblings(".ContentItem-more.NC-RichContent-type2").addClass("is-hide");
@@ -236,6 +242,7 @@ function checkContentExpand2(){
             $(this).css("max-height","");
         });
     });
+    $(".ContentItem-more.NC-RichContent-type2").off("click");
     $(".ContentItem-more.NC-RichContent-type2").each(function(){
         $(this).click(function(){
             $(this).addClass("is-hide");
@@ -247,6 +254,7 @@ function checkContentExpand2(){
 }
 
 function checkAnswerLike(){
+    $(".AnswerLike").off("click");
     $(".AnswerLike").each(function(){
         $(this).click(function(){
             var element=$(this);
@@ -259,11 +267,57 @@ function checkAnswerLike(){
 
 }
 
-function checkPopoverShow(){ 
+function checkPopoverShow(){
+   
+    $('.PeoplePopover').off("mouseenter mouseleave");
+    $('.PeoplePopover').on("mouseenter mouseleave",function(event){
+        if(event.type=="mouseenter")
+        {
+                console.log("PeoplePopover show1");
+                var element=$(this);//.children(".PeoplePopover");
+                var author_id=element.attr("data-author-id");
+                $.get("/ajax/er/"+author_id+"/",function(ret){
+                    er_id=ret[0];
+                    er_name=ret[1];
+                    er_avatar=ret[2];
+                    er_mood=ret[3];
+                    er_answer_nums=ret[4];
+                    er_follower_nums=ret[5];
+                    er_followed=ret[6];
+                    
+                    var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+er_avatar+'" srcset="'+er_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><span><a href="/er/'+er_id+'">'+er_name+'</a></span></div><div class="HoverCard-subtitle"><span class="RichText">'+er_mood+'</span></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+er_answer_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">0</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="people-followed">'+er_follower_nums+'</div></a></div>';
+                    if(er_followed)
+                        var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="true">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
+                    else
+                        var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="false">关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
+                    var data=data1+data2;
+                    element.attr("data-content",data);
+                    element.popover('show');                    
+                    setLetterReceiver(er_id,er_name);
+                    checkFollow(); 
+                    $(".popover").on("mouseleave",function(){
+                        element.popover('hide'); 
+                    });
+                });
+        }
+        else if(event.type=="mouseleave"){
+            var element=$(this);
+            console.log("PeoplePopover hide");
+            setTimeout(function(){
+                console.log($(".popover:hover").length);
+                if(!$(".popover:hover").length)
+                    element.popover('hide');
+                },300);
+        }
+    
+    });
+
+    /*
     $('.PeoplePopover').each(function(){
             $(this).parent().hover(function(){
                 var element=$(this).children(".PeoplePopover");
                 var author_id=element.attr("data-author-id");
+                console.log("popover");
                 $.get("/ajax/er/"+author_id+"/",function(ret){
                     er_id=ret[0];
                     er_name=ret[1];
@@ -288,12 +342,53 @@ function checkPopoverShow(){
                 });
             },function(){
                     $(this).children(".PeoplePopover").popover('hide');
-                    //setTimeout(function(){/*if ($(this).attr("in")) console.log("true"); else console.log("not ture");*/$(this).children().popover('hide');},1000);
             });
     });
+    */
+    $('.TopicPopover').off("mouseenter mouseleave");
+    $('.TopicPopover').on("mouseenter mouseleave",function(event){
+        if(event.type=="mouseenter")
+        {
+                console.log("TopicPopover show");
+                var element=$(this);//.children(".TopicPopover");
+                var topic_id=element.attr("data-topic-id");
+                $.get("/ajax/topic/"+topic_id+"/",function(ret){
+                    topic_id=ret[0];
+                    topic_name=ret[1];
+                    topic_avatar=ret[2];
+                    topic_question_nums=ret[3];
+                    topic_follower_nums=ret[4];
+                    topic_followed=ret[5];
+
+                    var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+topic_avatar+'" srcset="'+topic_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><a target="_blank" href="/topic/'+topic_id+'">'+topic_name+'</a></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" href="/topic/'+topic_id+'/questions" type="button"><div class="NumberBoard-name">问题&nbsp;</div><div class="NumberBoard-value">'+topic_question_nums+'</div></a><a class="Button NumberBoard-item Button--plain" href="/topic/'+topic_id+'/followers" type="button"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="topic-followed">'+topic_follower_nums+'</div></a></div>';
+                    if(topic_followed)
+                        var data2='<div class="HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-topic-id="'+topic_id+'" data-follow-type="topic" data-followed="true">已关注</button></div></div>';
+                    else
+                        var data2='<div class="HoverCard-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-topic-id="'+topic_id+'" data-follow-type="topic" data-followed="false">关注</button></div></div>';
+                    var data=data1+data2;
+                    element.attr("data-content",data);
+                    element.popover('show');
+                    checkFollow(); 
+                    $(".popover").on("mouseleave",function(){
+                        element.popover('hide'); 
+                    });
+                });
+        }
+        else if(event.type=="mouseleave"){
+                var element=$(this);
+                console.log("TopicPopover hide");
+                setTimeout(function(){
+                    console.log($(".popover:hover").length);
+                    if(!$(".popover:hover").length)
+                        element.popover('hide');
+                },300);
+        }
     
+    }); 
+    /*
     $('.TopicPopover').each(function(){
             $(this).parent().hover(function(){
+                console.log("TopicPopover show");
                 var element=$(this).children(".TopicPopover");
                 var topic_id=element.attr("data-topic-id");
                 $.get("/ajax/topic/"+topic_id+"/",function(ret){
@@ -315,11 +410,14 @@ function checkPopoverShow(){
                     checkFollow(); 
                 });
             },function(){
+                    console.log("TopicPopover hide");
                     $(this).children(".TopicPopover").popover('hide');
             });
     });
-    
+    */
+    $('#NotificationPopover').off("click");
     $('#NotificationPopover').click(function(e){
+        console.log("NotificationPopover click");
         $("#MessagePopover").popover("hide");
         $("#MenuPopover").popover("hide");
         e.stopPropagation();
@@ -355,36 +453,22 @@ function checkPopoverShow(){
         $(".Menu.PushNotifications-menu").click(function(e){
             e.stopPropagation();
         });
-        
-        /*
-        $(".PushNotifications-tabIcon").each(function(){
-            $(this).click(function(){
-                var element=$(this);
-                $(".PushNotifications-tabIcon").removeClass("PushNotifications-selectedTabIcon");
-                element.addClass("PushNotifications-selectedTabIcon");
-                $.get("/ajax/notifications/",function(ret){
-                    if("fail"!=ret)
-                    {
-                        appendNotificationElement(ret);
-                    }
-                });
-            });
-        });
-        */
          
     });
     
+    $('#MessagePopover').off("click");
     $('#MessagePopover').click(function(e){
+        console.log("MessagePopover click");
         $("#NotificationPopover").popover("hide");
         $("#MenuPopover").popover("hide");
         e.stopPropagation();
         //var data='<div class="Menu Messages-menu"><div class="Messages-content"><div class="Messages-header" role="tablist"><button class="Button Messages-tab Messages-myMessageTab Button--plain" type="button">????</button></div><div class="Messages-list"><a href="/inbox/5587284910" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="https://pic3.zhimg.com/v2-b14587a6079c43702f1f0251098f3ec2_xs.jpg" srcset="https://pic3.zhimg.com/v2-b14587a6079c43702f1f0251098f3ec2_l.jpg 2x" alt="verna wu"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink"><!-- react-text: 26 -->verna wu<!-- /react-text --></span></div><div class="Messages-itemContent">hi verna</div></div></a><a href="/inbox/6213324000" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="https://pic3.zhimg.com/fd56780c37f0b316c56f27fe8b388532_xs.jpg" srcset="https://pic3.zhimg.com/fd56780c37f0b316c56f27fe8b388532_l.jpg 2x" alt="????"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink"><!-- react-text: 34 -->????<!-- /react-text --></span></div><div class="Messages-itemContent">wudy:??????????? Club??? 5 ? 14 ???????????????????????15 ??????????????????? Live??????????? Club??????????????????https://zhuanlan.zhihu.com/p/20852694?source=message ??????????????????????????????????????????????? http://www.bilibili.com/html/activity-zh-yanclub.html ?????????????</div></div></a><div></div></div><div class="Messages-footer"><button class="Button Button--plain" type="button"><svg viewBox="0 0 12 12" class="Icon Button-icon Icon--modify" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>????</button><a class="Button Button--plain" href="/inbox" type="button">??????</a></div></div></div>';
-        var data='<div class="Menu Messages-menu"><div class="Messages-content"><div class="Messages-header" role="tablist"><button class="Button Messages-tab Messages-myMessageTab Button--plain" type="button">我的私信</button></div><div class="Messages-list"><div></div></div><div class="Messages-footer"><a class="Button Button--plain" href="/inbox" type="button">查看全部私信</a></div></div></div>';
+        var data='<div class="Menu Messages-menu"><div class="Messages-content"><div class="Messages-header" role="tablist"><button class="Button Messages-tab Messages-myMessageTab Button--plain" type="button">我的私信</button></div><div class="Messages-list"><div></div></div><div class="Messages-footer"><a class="Button Button--plain" href="/conversation/" type="button">查看全部私信</a></div></div></div>';
         $('#MessagePopover').attr("data-content",data);
         $('#MessagePopover').popover('show');
         if("null"==messages)
         {
-            $.get("/ajax/messages/",function(ret){
+            $.get("/ajax/conversations/1/0/10/",function(ret){
                 if("fail"!=ret)
                 {
                     messages=ret;
@@ -398,7 +482,7 @@ function checkPopoverShow(){
         }
         
         $(".Messages-tab").click(function(){
-            $.get("/ajax/messages/",function(ret){
+            $.get("/ajax/conversations/1/0/10/",function(ret){
                 if("fail"!=ret)
                 {
                     messages=ret;
@@ -413,7 +497,9 @@ function checkPopoverShow(){
 
     });
     
+    $('#MenuPopover').off("click");
     $('#MenuPopover').click(function(e){
+        console.log("MenuPopover click");
         $("#NotificationPopover").popover("hide");
         $("#MessagePopover").popover("hide");
         e.stopPropagation();
@@ -511,10 +597,19 @@ function hideAnswerToolbar()
 {
     $(".AnswerToolbar").addClass("is-hide");
 }
+function sendLetter2()
+{
+    var value=$("#letterText2").val();
+    var er_id=$("#letterText2").attr("data-receiver-id");
+    console.log(value);
+    $.post("/ajax/send_message/"+er_id+"/",{"content":value},function(ret){
+        pushOneConversationMessagesElement();
+    });
+}
 function sendLetter()
 {
-    var value=$("#LetterText").val();
-    er_id=$(".Messages-receiverInfo").attr("data-receiver-id");
+    var value=$("#letterText").val();
+    var er_id=$(".Messages-receiverInfo").attr("data-receiver-id");
     console.log(value);
     //$("#letterModal").modal("hide");
     $('#letterModal').modal('toggle');
@@ -541,7 +636,7 @@ function appendLetterModal()
         <a href="/inbox/5587284910" class="Messages-records">查看私信记录</a>\
         </div>\
         <div class="Messages-sendContent Input-wrapper Input-wrapper--spread Input-wrapper--multiline">\
-        <textarea id="LetterText" rows="5" class="Input" placeholder="私信内容"></textarea>\
+        <textarea id="letterText" rows="5" class="Input" placeholder="私信内容"></textarea>\
         </div>\
         <span class="Messages-warning"></span>\
         <div class="ModalButtonGroup ModalButtonGroup--vertical">\
@@ -574,7 +669,7 @@ function appendMessageElement(ret)
         var er_avatar=ret[i][4];
         var message_content=ret[i][5];
         
-        var data='<a href="/conversation/'+conversation_id+'" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="'+er_avatar+'" srcset="'+er_avatar+'" alt="'+er_name+'"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink">'+er_name+'</span></div><div class="Messages-itemContent">'+message_content+'</div></div></a>';
+        var data='<a href="/conversation/?i='+conversation_id+'" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="'+er_avatar+'" srcset="'+er_avatar+'" alt="'+er_name+'"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink">'+er_name+'</span></div><div class="Messages-itemContent">'+message_content+'</div></div></a>';
         $(".Messages-list").append(data);
     }
 }

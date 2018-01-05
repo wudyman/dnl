@@ -96,7 +96,7 @@ class Message(models.Model):
     status=models.PositiveIntegerField(default=0)
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):
-        return str(self.type)
+        return str(self.id)
     
 #=================================below for ajax query==============================================#
 class PushQuestion():
