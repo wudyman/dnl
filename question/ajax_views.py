@@ -462,11 +462,11 @@ def send_message(request,receiver_id):
             conversation.save()
     content=request.POST.get('content')
     if content:
-        message=Message(conversation=conversation,content=content,sender=sender,receiver=receiver)
+        message=Message(conversation=conversation,content=content,sender=sender,receiver=receiver,delete_id=-1)
         message.save()
         conversation.update_date=message.pub_date
         conversation.save()
-        to_json=json.dumps('success') 
+        to_json=json.dumps(message.id) 
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
@@ -480,16 +480,17 @@ def get_conversations(request,order,start,end):
         for conversation in conversations:
             temp=[]
             temp.append(conversation.id)#0
-            temp.append(str(conversation.update_date))#1
+            temp.append(conversation.delete_id)#1
+            temp.append(str(conversation.update_date))#2
             er=conversation.initator
             if user.id==er.id:
                 er=conversation.parter
-            temp.append(er.id)#2
-            temp.append(er.first_name)#3
-            temp.append(er.userprofile.avatar)#4
+            temp.append(er.id)#3
+            temp.append(er.first_name)#4
+            temp.append(er.userprofile.avatar)#5
             latest_message=conversation.messages.order_by('-pub_date')[0]
             if latest_message:
-                temp.append(latest_message.content)#5
+                temp.append(latest_message.content)#6
                 conversation_list.append(temp)
         to_json=json.dumps(conversation_list)
     return HttpResponse(to_json,content_type='application/json')
@@ -508,10 +509,43 @@ def get_conversation_messages(request,conversation_id,order,start,end):
                 temp.append(message.id)#0
                 temp.append(message.content)#1
                 temp.append(message.status)#2
-                temp.append(str(message.pub_date))#3
-                temp.append(message.sender.id)#4
-                temp.append(message.sender.first_name)#5
-                temp.append(message.sender.userprofile.avatar)#6
+                temp.append(message.delete_id)#3
+                temp.append(str(message.pub_date))#4
+                temp.append(message.sender.id)#5
+                temp.append(message.sender.first_name)#6
+                temp.append(message.sender.userprofile.avatar)#7
                 message_list.append(temp)
             to_json=json.dumps(message_list)
+    return HttpResponse(to_json,content_type='application/json')
+ 
+@csrf_exempt
+def delete_conversation_message(request,message_id):
+    to_json=json.dumps('fail')
+    message=get_object_or_404(Message,pk=message_id)
+    if message:
+        user=request.user
+        if user.id==message.sender.id or user.id==message.receiver.id:
+            #Message.objects.filter(id=message_id).delete()
+            if message.delete_id==-1: #delete one side
+                message.delete_id=user.id
+                message.save()
+            else:# delete both side,real delete.
+                message.delete()
+            to_json=json.dumps('success')
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def delete_conversation(request,conversation_id):
+    to_json=json.dumps('fail')
+    conversation=get_object_or_404(Conversation,pk=conversation_id)
+    if conversation:
+        user=request.user
+        if user.id==conversation.initator.id or user.id==conversation.parter.id:
+            #Conversation.objects.filter(id=message_id).delete()
+            if conversation.delete_id==-1: #delete one side
+                conversation.delete_id=user.id
+                conversation.save()
+            else:# delete both side,real delete.
+                conversation.delete()
+            to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')

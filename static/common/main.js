@@ -233,7 +233,7 @@ function checkContentCollapse2(){
 }
 
 function checkContentExpand2(){
-    $(".RichContent-inner").off("click");
+    //$(".RichContent-inner").off("click");
     $(".RichContent-inner").each(function(){
         $(this).click(function(){
             $(this).siblings(".ContentItem-more.NC-RichContent-type2").addClass("is-hide");
@@ -603,7 +603,8 @@ function sendLetter2()
     var er_id=$("#letterText2").attr("data-receiver-id");
     console.log(value);
     $.post("/ajax/send_message/"+er_id+"/",{"content":value},function(ret){
-        pushOneConversationMessagesElement();
+        var message_id=ret;
+        pushOneConversationMessagesElement(message_id);
     });
 }
 function sendLetter()
@@ -659,16 +660,20 @@ function appendLetterModal()
 
 function appendMessageElement(ret)
 {
+    var user_id=$("#MenuPopover").attr("data-er-id");
     $(".Messages-list").empty();
     for (i in ret)
     {
         var conversation_id=ret[i][0];
-        var conversation_update=ret[i][1];
-        var er_id=ret[i][2];
-        var er_name=ret[i][3];
-        var er_avatar=ret[i][4];
-        var message_content=ret[i][5];
+        var conversation_delete_id=ret[i][1];
+        var conversation_update=ret[i][2].split('.')[0];
+        var er_id=ret[i][3];
+        var er_name=ret[i][4];
+        var er_avatar=ret[i][5];
+        var message_content=ret[i][6];
         
+        if (conversation_delete_id==user_id) //user have delete this message
+            continue;
         var data='<a href="/conversation/?i='+conversation_id+'" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="'+er_avatar+'" srcset="'+er_avatar+'" alt="'+er_name+'"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink">'+er_name+'</span></div><div class="Messages-itemContent">'+message_content+'</div></div></a>';
         $(".Messages-list").append(data);
     }

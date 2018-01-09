@@ -23,4 +23,6 @@ urlpatterns= [
     url(r'^send_message/(?P<receiver_id>[0-9]+)/$',views.send_message,name='sendmessage'),
     url(r'^conversations/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.get_conversations,name='getconversations'),
     url(r'^conversation_messages/(?P<conversation_id>[0-9]+)/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.get_conversation_messages,name='getconversationmessages'),
+    url(r'^delete_conversation/(?P<conversation_id>[0-9]+)/$',views.delete_conversation,name='deleteconversation'),
+    url(r'^delete_conversation_message/(?P<message_id>[0-9]+)/$',views.delete_conversation_message,name='deleteconversationmessage'),
 ]

@@ -83,6 +83,7 @@ class Notification(models.Model):
 class Conversation(models.Model):
     initator=models.ForeignKey(User,related_name='init_conversations')
     parter=models.ForeignKey(User,related_name='join_conversations')
+    delete_id=models.IntegerField(default=-1)
     update_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):
         return str(self.id)
@@ -92,6 +93,7 @@ class Message(models.Model):
     content=models.CharField(max_length=1000)
     sender=models.ForeignKey(User,related_name='message_sends')
     receiver=models.ForeignKey(User,related_name='message_receives')
+    delete_id=models.IntegerField(default=-1)
     #active_id=models.PositiveIntegerField(default=0)# question_id,answer_id,comment_id,user_id
     status=models.PositiveIntegerField(default=0)
     pub_date=models.DateTimeField('date published',default=timezone.now)
