@@ -26,8 +26,8 @@
 })( jQuery );
 function checkValid()
 {
-    alert("yyyyyyyyyyyyyyyy");
-    return false;
+    alert("need checkValid");
+    return true;
 }
 
 $('#topics_select').on('show.bs.select', function (e) {
@@ -89,7 +89,10 @@ function getIndexImg(content){
 
 function removeImg(content){
     var imgReg=/<img.*?(?:>|\/>)/gi;
-    return content.replace(imgReg,"").replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,150);
+    var temp=content.replace(imgReg,"").replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,150);
+    for(var i=0;i<100;i++)
+        temp=temp+"&nbsp;";
+    return temp;
     //return content.replace(imgReg,"").replace(/<p>/gi,"").replace(/<\/p>/gi,"").replace(/(^\s*)|(\s*$)/g,"");
 }
 function updateValue(type,value)

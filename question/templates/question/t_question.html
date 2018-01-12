@@ -497,7 +497,7 @@ function appendMoreAnswerListElement(ret)
     for(i in ret)
     {
         var answer_id=ret[i][0];
-        var answer_content=ret[i][1];
+        var answer_content=ret[i][1]+"<p>&nbsp;</p><p>&nbsp;</p>";
         var answer_like_nums=ret[i][2];
         var answer_comment_nums=ret[i][3];
         var answer_pub_date=ret[i][4];
@@ -505,6 +505,7 @@ function appendMoreAnswerListElement(ret)
         var author_name=ret[i][6];
         var author_avatar=ret[i][7];
         var author_mood=ret[i][8];
+        
         
         var data='<div class="List-item">\
         <div class="ContentItem AnswerItem">\
@@ -564,14 +565,14 @@ function appendNormalAnswerListElement(ret) //"type_list"
     for(i in ret)
     {
         var answer_id=ret[i][0];
-        var answer_content=ret[i][1];
+        var answer_content=ret[i][1]+"<p>&nbsp;</p><p>&nbsp;</p>";
         var answer_like_nums=ret[i][2];
         var answer_comment_nums=ret[i][3];
         var answer_pub_date=ret[i][4];
         var author_id=ret[i][5];
         var author_name=ret[i][6];
         var author_avatar=ret[i][7];
-        var author_mood=ret[i][8];
+        var author_mood=ret[i][8];       
         
         var data='<div class="List-item">\
         <div class="ContentItem AnswerItem">\

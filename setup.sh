@@ -1,7 +1,7 @@
 #!/bin/bash
 
 killall -9 uwsgi
-killall -9 nginx
+sudo killall -9 nginx
 sudo rm -rf /etc/nginx_conf
 sudo mkdir /etc/nginx_conf
 sudo ln -s /home/wudy/study/web/dnl/dnl_nginx.conf /etc/nginx_conf/
