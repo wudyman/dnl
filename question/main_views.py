@@ -31,6 +31,8 @@ class SigninupView(generic.ListView):
             userprofile.intro='i m the king'
             userprofile.user=user
             userprofile.save()
+            
+            login(request,user)
             return HttpResponseRedirect('/')
         else:
             name=request.POST.get('email_phone')
@@ -69,9 +71,7 @@ class ConversationView(LoginRequiredMixin,generic.ListView):
         # Topic.objects.order_by('-pub_date')
     def get(self,request,*args,**kwargs):
         conversation_id=request.GET.get('i')
-        print("ooooooooo")
         if conversation_id:
-            print("not none")
             conversation=get_object_or_404(Conversation,pk=conversation_id)
             if conversation:
                 user=request.user
@@ -82,7 +82,6 @@ class ConversationView(LoginRequiredMixin,generic.ListView):
             else:
                 return render(request,self.template_name,{'type':self.type,'conversation_id':'null'})               
         else:
-            print("none")
             return render(request,self.template_name,{'type':self.type,'conversation_id':'null'})
         #user=request.user #get_object_or_404(User,username=request.user)
         #conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)

@@ -17,15 +17,15 @@ from django.db import connection
 def get_questions(request,order,start,end):
     to_json=json.dumps('fail')
     questions=Question.objects.order_by('-pub_date')[int(start):int(end)]
-    question_list=[]
     if questions:
+        question_list=[]
         for question in questions:
             temp=[]
             temp.append(question.id) #0
             temp.append(question.title) #1
             temp.append(question.prima_topic_id) #2
             temp.append(question.prima_topic_name) #3
-            if question.push_answer_id!=0:
+            if question.push_answer_id!=-1:
                 temp.append(question.push_answer_id) #4
                 answer=get_object_or_404(Answer,pk=question.push_answer_id)
                 if answer:

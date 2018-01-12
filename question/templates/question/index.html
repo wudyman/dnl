@@ -67,7 +67,7 @@
 
 <div class="AppHeader-profile">
 <div class="1Popover AppHeader-menu">
-<img class="Avatar AppHeader-profileAvatar" id="MenuPopover" data-er-id="{{user.id}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="/media/img/default.jpg" srcset="/media/img/default.jpg 2x">
+<img class="Avatar AppHeader-profileAvatar" id="MenuPopover" data-er-id="{{user.id}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="{{user.userprofile.avatar}}" srcset="{{user.userprofile.avatar}} 2x">
 </div>
 </div>
 
@@ -191,6 +191,9 @@ function appendFeedElement(ret)
     var anthor_mood=ret[i][8];
     var answer_content=ret[i][9];
     var answer_like_nums=ret[i][10];
+    
+    for(var i=0;i<100;i++)
+        answer_content=answer_content+"&nbsp;";
     var index_img_url=getIndexImg(answer_content);
     var dataStart='<div class="QuestionFrame Card">\
                         <div class="Feed">\

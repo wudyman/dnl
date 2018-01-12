@@ -79,7 +79,7 @@ DATABASES = {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',  # 或者使用 mysql.connector.django
-        'NAME': 'dnlDB',
+        'NAME': 'dnl',
         'USER': 'root',
         'PASSWORD': 'mad',
         'HOST':'localhost',
@@ -111,6 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+#LANGUAGE_CODE = 'zh-cn'
 
 TIME_ZONE = 'Asia/Shanghai' #'UTC'
 
