@@ -32,17 +32,20 @@ function checkValid()
 
 $('#topics_select').on('show.bs.select', function (e) {
   // do something...
-  $.post("/ajax/topics/", function(ret){
-  $('#topics_select').empty();
-  for (var i in ret)
-  {
-    $('#topics_select').append("<option value=" + ret[i][0] + ":" + ret[i][1] + ">" + ret[i][1] + "</option>");
-  }
-    
-  $('.selectpicker').selectpicker('refresh');
-  
-  })
-
+    var bIsGetAll="1";
+    $.post("/ajax/topics/"+bIsGetAll+"/0/0/", function(ret){
+        if("fail"!=ret)
+        {
+            $('#topics_select').empty();
+            for (var i in ret)
+            {
+                var topic_id=ret[i][0];
+                var topic_name=ret[i][1];
+                $('#topics_select').append("<option value=" + topic_id + ":" + topic_name + ">" + topic_name + "</option>");
+            }   
+            $('.selectpicker').selectpicker('refresh');
+        }  
+    })
 });
 
 //获取滚动条当前的位置 
@@ -108,17 +111,23 @@ function followPeople(button){
     if("true"==button.attr("data-followed"))
     {
         $.post("/ajax/er_follow/0/"+er_id+"/",function(ret){
-            button.removeClass("Button--grey").addClass("Button--green").text("关注");
-            button.attr("data-followed","false");
-            updateValue("people-followed",ret);
+            if("fail"!=ret)
+            {
+                button.removeClass("Button--grey").addClass("Button--green").text("关注");
+                button.attr("data-followed","false");
+                updateValue("people-followed",ret);
+            }
         }); 
     }
     else
     {
         $.post("/ajax/er_follow/1/"+er_id+"/",function(ret){
-            button.removeClass("Button--green").addClass("Button--grey").text("已关注");
-            button.attr("data-followed","true");
-            updateValue("people-followed",ret);
+            if("fail"!=ret)
+            {
+                button.removeClass("Button--green").addClass("Button--grey").text("已关注");
+                button.attr("data-followed","true");
+                updateValue("people-followed",ret);
+            }
         });  
     }
 } 
@@ -128,17 +137,23 @@ function followTopic(button){
     if("true"==button.attr("data-followed"))
     {
         $.post("/ajax/topic_follow/0/"+topic_id+"/",function(ret){
-            button.removeClass("Button--grey").addClass("Button--green").text("关注");
-            button.attr("data-followed","false");
-            updateValue("topic-followed",ret);
+            if("fail"!=ret)
+            {
+                button.removeClass("Button--grey").addClass("Button--green").text("关注");
+                button.attr("data-followed","false");
+                updateValue("topic-followed",ret);
+            }
         }); 
     }
     else
     {
         $.post("/ajax/topic_follow/1/"+topic_id+"/",function(ret){
-            button.removeClass("Button--green").addClass("Button--grey").text("已关注");
-            button.attr("data-followed","true");
-            update_value("topic-followed",ret);
+            if("fail"!=ret)
+            {
+                button.removeClass("Button--green").addClass("Button--grey").text("已关注");
+                button.attr("data-followed","true");
+                update_value("topic-followed",ret);
+            }
         });  
     }
 } 
@@ -148,17 +163,23 @@ function followQuestion(button){
     if("true"==button.attr("data-followed"))
     {
         $.post("/ajax/question_follow/0/"+question_id+"/",function(ret){
-            button.removeClass("Button--grey").addClass("Button--green").text("关注");
-            button.attr("data-followed","false");
-            updateValue("question-followed",ret);
+            if("fail"!=ret)
+            {
+                button.removeClass("Button--grey").addClass("Button--green").text("关注");
+                button.attr("data-followed","false");
+                updateValue("question-followed",ret);
+            }
         }); 
     }
     else
     {
         $.post("/ajax/question_follow/1/"+question_id+"/",function(ret){
-            button.removeClass("Button--green").addClass("Button--grey").text("已关注");
-            button.attr("data-followed","true");
-            updateValue("question-followed",ret);
+            if("fail"!=ret)
+            {
+                button.removeClass("Button--green").addClass("Button--grey").text("已关注");
+                button.attr("data-followed","true");
+                updateValue("question-followed",ret);
+            }
         });  
     }
 }  
@@ -263,7 +284,10 @@ function checkAnswerLike(){
             var element=$(this);
             answer_id=$(this).attr("data-answer-id");
             $.get("/ajax/answer_like/"+answer_id+"/",function(ret){
-                element.text(ret);
+                if("fail"!=ret)
+                {
+                    element.text(ret);
+                }
             });
         });
     });
@@ -280,27 +304,30 @@ function checkPopoverShow(){
                 var element=$(this);//.children(".PeoplePopover");
                 var author_id=element.attr("data-author-id");
                 $.get("/ajax/er/"+author_id+"/",function(ret){
-                    er_id=ret[0];
-                    er_name=ret[1];
-                    er_avatar=ret[2];
-                    er_mood=ret[3];
-                    er_answer_nums=ret[4];
-                    er_follower_nums=ret[5];
-                    er_followed=ret[6];
-                    
-                    var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+er_avatar+'" srcset="'+er_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><span><a href="/er/'+er_id+'">'+er_name+'</a></span></div><div class="HoverCard-subtitle"><span class="RichText">'+er_mood+'</span></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+er_answer_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">0</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="people-followed">'+er_follower_nums+'</div></a></div>';
-                    if(er_followed)
-                        var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="true">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
-                    else
-                        var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="false">关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
-                    var data=data1+data2;
-                    element.attr("data-content",data);
-                    element.popover('show');                    
-                    setLetterReceiver(er_id,er_name);
-                    checkFollow(); 
-                    $(".popover").on("mouseleave",function(){
-                        element.popover('hide'); 
-                    });
+                    if("fail"!=ret)
+                    {
+                        er_id=ret[0];
+                        er_name=ret[1];
+                        er_avatar=ret[2];
+                        er_mood=ret[3];
+                        er_answer_nums=ret[4];
+                        er_follower_nums=ret[5];
+                        er_followed=ret[6];
+                        
+                        var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+er_avatar+'" srcset="'+er_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><span><a href="/er/'+er_id+'">'+er_name+'</a></span></div><div class="HoverCard-subtitle"><span class="RichText">'+er_mood+'</span></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+er_answer_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">0</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="people-followed">'+er_follower_nums+'</div></a></div>';
+                        if(er_followed)
+                            var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="true">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
+                        else
+                            var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="false">关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
+                        var data=data1+data2;
+                        element.attr("data-content",data);
+                        element.popover('show');                    
+                        setLetterReceiver(er_id,er_name);
+                        checkFollow(); 
+                        $(".popover").on("mouseleave",function(){
+                            element.popover('hide'); 
+                        });
+                    }
                 });
         }
         else if(event.type=="mouseleave"){
@@ -356,25 +383,28 @@ function checkPopoverShow(){
                 var element=$(this);//.children(".TopicPopover");
                 var topic_id=element.attr("data-topic-id");
                 $.get("/ajax/topic/"+topic_id+"/",function(ret){
-                    topic_id=ret[0];
-                    topic_name=ret[1];
-                    topic_avatar=ret[2];
-                    topic_question_nums=ret[3];
-                    topic_follower_nums=ret[4];
-                    topic_followed=ret[5];
+                    if("fail"!=ret)
+                    {
+                        topic_id=ret[0];
+                        topic_name=ret[1];
+                        topic_avatar=ret[2];
+                        topic_question_nums=ret[3];
+                        topic_follower_nums=ret[4];
+                        topic_followed=ret[5];
 
-                    var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+topic_avatar+'" srcset="'+topic_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><a target="_blank" href="/topic/'+topic_id+'">'+topic_name+'</a></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" href="/topic/'+topic_id+'/questions" type="button"><div class="NumberBoard-name">问题&nbsp;</div><div class="NumberBoard-value">'+topic_question_nums+'</div></a><a class="Button NumberBoard-item Button--plain" href="/topic/'+topic_id+'/followers" type="button"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="topic-followed">'+topic_follower_nums+'</div></a></div>';
-                    if(topic_followed)
-                        var data2='<div class="HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-topic-id="'+topic_id+'" data-follow-type="topic" data-followed="true">已关注</button></div></div>';
-                    else
-                        var data2='<div class="HoverCard-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-topic-id="'+topic_id+'" data-follow-type="topic" data-followed="false">关注</button></div></div>';
-                    var data=data1+data2;
-                    element.attr("data-content",data);
-                    element.popover('show');
-                    checkFollow(); 
-                    $(".popover").on("mouseleave",function(){
-                        element.popover('hide'); 
-                    });
+                        var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+topic_avatar+'" srcset="'+topic_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><a target="_blank" href="/topic/'+topic_id+'">'+topic_name+'</a></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" href="/topic/'+topic_id+'/questions" type="button"><div class="NumberBoard-name">问题&nbsp;</div><div class="NumberBoard-value">'+topic_question_nums+'</div></a><a class="Button NumberBoard-item Button--plain" href="/topic/'+topic_id+'/followers" type="button"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="topic-followed">'+topic_follower_nums+'</div></a></div>';
+                        if(topic_followed)
+                            var data2='<div class="HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-topic-id="'+topic_id+'" data-follow-type="topic" data-followed="true">已关注</button></div></div>';
+                        else
+                            var data2='<div class="HoverCard-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-topic-id="'+topic_id+'" data-follow-type="topic" data-followed="false">关注</button></div></div>';
+                        var data=data1+data2;
+                        element.attr("data-content",data);
+                        element.popover('show');
+                        checkFollow(); 
+                        $(".popover").on("mouseleave",function(){
+                            element.popover('hide'); 
+                        });
+                    }
                 });
         }
         else if(event.type=="mouseleave"){
@@ -545,7 +575,10 @@ function sendFileQuestion(file){
         contentType:false,
         processData:false,
         success:function(url){
-            $("#summernote_question").summernote('insertImage', url, 'image name'); // the insertImage API
+            if("fail"!=ret)
+            {
+                $("#summernote_question").summernote('insertImage', url, 'image name'); // the insertImage API
+            }
         }
     });
 }
@@ -562,7 +595,10 @@ function sendFileAnswer(file){
         contentType:false,
         processData:false,
         success:function(url){
-            $("#summernote_answer").summernote('insertImage', url, 'image name'); // the insertImage API
+            if("fail"!=ret)
+            {
+                $("#summernote_answer").summernote('insertImage', url, 'image name'); // the insertImage API
+            }
         }
     });
 }
@@ -606,8 +642,11 @@ function sendLetter2()
     var er_id=$("#letterText2").attr("data-receiver-id");
     console.log(value);
     $.post("/ajax/send_message/"+er_id+"/",{"content":value},function(ret){
-        var message_id=ret;
-        pushOneConversationMessagesElement(message_id);
+        if("fail"!=ret)
+        {
+            var message_id=ret;
+            pushOneConversationMessagesElement(message_id);
+        }
     });
 }
 function sendLetter()
@@ -618,7 +657,10 @@ function sendLetter()
     //$("#letterModal").modal("hide");
     $('#letterModal').modal('toggle');
     $.post("/ajax/send_message/"+er_id+"/",{"content":value},function(ret){
-        console.log(ret);
+        if("fail"!=ret)
+        {
+            console.log(ret);
+        }
     });
 }
 function setLetterReceiver(id,name)

@@ -90,15 +90,23 @@ def answer_question(request,question_id):
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
-def get_topics(request):
+def get_topics(request,bIsGetAll,start,end):
     to_json=json.dumps('fail')
-    topics=Topic.objects.all()
+    if '1'==bIsGetAll:
+        topics=Topic.objects.all()
+    else:
+        topics=Topic.objects.order_by('pub_date')[int(start):int(end)]
     topic_list=[]
     if topics:
         for topic in topics:
             temp=[]
-            temp.append(topic.id)
-            temp.append(topic.name)
+            temp.append(topic.id)#0
+            temp.append(topic.name)#1
+            temp.append(topic.avatar)#2
+            temp.append(topic.detail)#3
+            temp.append(topic.question_nums)#4
+            temp.append(topic.follower_nums)#5
+            temp.append(str(topic.pub_date))#6
             topic_list.append(temp)
         to_json=json.dumps(topic_list)
     return HttpResponse(to_json,content_type='application/json')
