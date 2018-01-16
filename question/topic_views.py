@@ -17,7 +17,10 @@ class MyTopicView(LoginRequiredMixin,generic.ListView):
     def get(self,request,*args,**kwargs):
         user=request.user #get_object_or_404(User,username=request.user)
         mytopic_list=user.followtopics.all()
-        return render(request,self.template_name,{'mytopic_list':mytopic_list})            
+        if mytopic_list:
+            return render(request,self.template_name,{'mytopic_list':mytopic_list}) 
+        else:
+            return HttpResponseRedirect('/topics/')           
 
 class TopicView(generic.ListView):
     template_name='question/t_topic.html'
