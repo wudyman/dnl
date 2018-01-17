@@ -1,13 +1,420 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    {%load static %}
-    <meta charset="utf-8"> 
-    <link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
-    <link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
+{%load static %}
+<meta charset="utf-8"> 
+<link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
+<link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
+    
+<script src="{%static 'common/jquery.js' %}"></script>
+<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
+<script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
+<script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
+<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
+<script src="{% static 'common/main.js' %}"></script>
+    
+<script>
+function appendMoreAnswerListElement(ret)
+{
+    for(i in ret)
+    {
+        var answer_id=ret[i][0];
+        var answer_content=ret[i][1]+"<p>&nbsp;</p><p>&nbsp;</p>";
+        var answer_like_nums=ret[i][2];
+        var answer_comment_nums=ret[i][3];
+        var answer_pub_date=ret[i][4];
+        var author_id=ret[i][5];
+        var author_name=ret[i][6];
+        var author_avatar=ret[i][7];
+        var author_mood=ret[i][8];
+        
+        
+        var data='<div class="List-item">\
+        <div class="ContentItem AnswerItem">\
+        <div class="ContentItem-meta">\
+        <div class="AnswerItem-meta AnswerItem-meta--related">\
+        <div class="AuthorInfo">\
+        <span class="UserLink AuthorInfo-avatarWrapper">\
+        <a class="UserLink-link PeoplePopover" href="/er/'+author_id+'" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">\
+        <img class="Avatar AuthorInfo-avatar" width="40" height="40" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'">\
+        </a>\
+        </span>\
+        <div class="AuthorInfo-content">\
+        <div class="AuthorInfo-head">\
+        <span class="UserLink AuthorInfo-name">\
+        <a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a>\
+        </span>\
+        </div>\
+        <div class="AuthorInfo-detail">\
+        <div class="AuthorInfo-badge">\
+        <div class="RichText AuthorInfo-badgeText">'+author_mood+'</div>\
+        </div>\
+        </div>\
+        </div>\
+        </div>\
+        <div class="AnswerItem-extraInfo">\
+        <span class="Voters">\
+        <button class="Button Button--plain" type="button">'+answer_like_nums+' 人赞同了该回答</button>\
+        </span>\
+        </div>\
+        </div>\
+        </div>\
+        <div class="RichContent RichContent--unescapable is-collapsed">\
+        <div class="RichContent-inner" style="max-height:400px">\
+            <span class="RichText CopyrightRichText-richText">'+answer_content+'</span>\
+        </div>\
+        <button class="Button ContentItem-more NC-RichContent-type2 ContentItem-rightButton Button--plain" type="button">展开阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
+        <div class="ContentItem-actions">\
+            <span>\
+                <button class="AnswerLike Button LikeButton ContentItem-action" type="button" data-answer-id="'+answer_id+'"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'</button>\
+            </span>\
+            <button class="Button ContentItem-less NC-RichContent-type2 ContentItem-rightButton Button--plain  is-hide" type="button">\
+                <span class="RichContent-collapsedText">收起</span>\
+                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
+            </button>\
+        </div>\
+        </div>\
+        </div>\
+        </div>\
+        ';
+        
+        $("#AnswerItems .List").append(data);
+    }
+}
+
+function appendNormalAnswerListElement(ret) //"type_list"
+{
+    for(i in ret)
+    {
+        var answer_id=ret[i][0];
+        var answer_content=ret[i][1]+"<p>&nbsp;</p><p>&nbsp;</p>";
+        var answer_like_nums=ret[i][2];
+        var answer_comment_nums=ret[i][3];
+        var answer_pub_date=ret[i][4];
+        var author_id=ret[i][5];
+        var author_name=ret[i][6];
+        var author_avatar=ret[i][7];
+        var author_mood=ret[i][8];       
+        
+        var data='<div class="List-item">\
+        <div class="ContentItem AnswerItem">\
+        <div class="ContentItem-meta">\
+        <div class="AnswerItem-meta AnswerItem-meta--related">\
+        <div class="AuthorInfo">\
+        <span class="UserLink AuthorInfo-avatarWrapper">\
+        <a class="UserLink-link PeoplePopover" href="/er/'+author_id+'"  data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">\
+        <img class="Avatar AuthorInfo-avatar" width="40" height="40" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'">\
+        </a>\
+        </span>\
+        <div class="AuthorInfo-content">\
+        <div class="AuthorInfo-head">\
+        <span class="UserLink AuthorInfo-name">\
+        <a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a>\
+        </span>\
+        </div>\
+        <div class="AuthorInfo-detail">\
+        <div class="AuthorInfo-badge">\
+        <div class="RichText AuthorInfo-badgeText">'+author_mood+'</div>\
+        </div>\
+        </div>\
+        </div>\
+        </div>\
+        <div class="AnswerItem-extraInfo">\
+        <span class="Voters">\
+        <button class="Button Button--plain" type="button">'+answer_like_nums+' 人赞同了该回答</button>\
+        </span>\
+        </div>\
+        </div>\
+        </div>\
+        <div class="RichContent RichContent--unescapable">\
+        <div class="RichContent-inner">\
+            <span class="RichText CopyrightRichText-richText">'+answer_content+'</span>\
+        </div>\
+        <button class="Button ContentItem-more NC-RichContent-type2 ContentItem-rightButton Button--plain is-hide" type="button">展开阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
+        <div class="ContentItem-actions">\
+            <span>\
+                <button class="AnswerLike Button LikeButton ContentItem-action" type="button" data-answer-id="'+answer_id+'"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'</button>\
+            </span>\
+            <button class="Button ContentItem-less NC-RichContent-type2 ContentItem-rightButton Button--plain" type="button">\
+                <span class="RichContent-collapsedText">收起</span>\
+                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
+            </button>\
+        </div>\
+        </div>\
+        </div>\
+        </div>\
+        ';
+        
+        $("#AnswerItems .List").append(data);
+    }
+}
+
+
+
+function invite()
+{
+    $(".Invite").each(function(index,element){
+        $(element).click(function(){
+            var question_id=$(".QuestionPage").attr("data-question-id");
+            //inviter=$(element).attr("data-from");
+            receiver=$(element).attr("data-receiver");
+            //$.get('/ajax/invite/?question='+question_id+'&from='+inviter+'&to='+invitee,function(ret){
+            $.get('/ajax/invite/?question='+question_id+'&to='+receiver,function(ret){
+                alert(ret);
+            });
+        });
+    });
+}
+function appendInviteElement(ret)
+{
+    for( i in ret)
+    {
+        var adept_id=ret[i][0];
+        var adept_name=ret[i][1];
+        var adept_avatar=ret[i][2];
+        var adept_mood=ret[i][3];
+        
+        var data='<div class="List-item">\
+                    <div class="ContentItem">\
+                    <div class="ContentItem-main">\
+                    <div class="ContentItem-image">\
+                    <span class="UserLink UserItem-avatar">\
+                    <a class="UserLink-link" target="_blank" href="/er/'+adept_id+'">\
+                    <img class="Avatar Avatar--large UserLink-avatar PeoplePopover" width="60" height="60" src="'+adept_avatar+'" srcset="'+adept_avatar+'" alt="'+adept_name+'" data-author-id="'+adept_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">\
+                    </a>\
+                    </span>\
+                    </div>\
+                    <div class="ContentItem-head">\
+                    <h2 class="ContentItem-title">\
+                    <div class="UserItem-title">\
+                    <span class="UserLink UserItem-name">\
+                    <a class="UserLink-link" target="_blank" href="/er/'+adept_id+'"><span class="RichText">'+adept_name+'</span></a>\
+                    </span>\
+                    </div>\
+                    </h2>\
+                    <div class="ContentItem-meta">\
+                    <div>\
+                    <div class="ContentItem-status">\
+                    <div class="ContentItem-statusItem">'+adept_mood+'</div>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    <div class="ContentItem-extra">\
+                    <button class="Button Button--blue Invite" type="button" data-receiver="'+adept_id+'">邀请回答</button>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    ';
+        $(".QuestionInvitation-content .List").append(data);
+    }
+}
+function showInvite()
+{
+    var topics="";
+    $(".TopicLink").each(function(){
+        topics+=($(this).attr("data-topic-id"))+";";
+    });
+
+    $.post("/ajax/topic_adept/",{"topics":topics},function(ret){
+        if("fail"!=ret)
+        {
+            appendInviteElement(ret);
+            $("#inviteModal").modal('show');
+            checkSets();
+            invite();
+        }
+    })
+    //$("#inviteModal").modal('show');
+}
+
+function appendAuthorCardElement(ret)
+{
+    var author_id=ret[0];
+    var author_name=ret[1];
+    var author_avatar=ret[2];
+    var author_mood=ret[3];
+    var author_answer_nums=ret[4];
+    var author_follower_nums=ret[5];
+    var author_followed=ret[6];
+    
+    
+
+    var data1='\<div class="Card-header AnswerAuthor-title"><div class="Card-headerText">关于作者</div>\</div>\
+    <div class="Card-section">\
+    <div class="AnswerAuthor-user">\
+    <div class="AnswerAuthor-user-avatar">\
+    <span class="UserLink">\
+    <a class="UserLink-link" href="/er/'+author_id+'">\
+    <img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'">\
+    </a>\
+    </span>\
+    </div>\
+    <div class="AnswerAuthor-user-content">\
+    <div class="AnswerAuthor-user-name">\
+    <span class="UserLink">\
+    <a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a>\
+    </span>\
+    </div>\
+    <div class="AnswerAuthor-user-headline">\
+    <div class="RichText">'+author_mood+'</div>\
+    </div>\
+    </div>\
+    </div>\
+    </div>\
+    <div class="Card-section">\
+    <div class="AnswerAuthor-counts">\
+    <div class="NumberBoard">\
+    <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/answers"><div class="NumberBoard-name">回答</div>\
+    <div class="NumberBoard-value">'+author_answer_nums+'</div>\
+    </a>\
+    <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/posts">\
+    <div class="NumberBoard-name">文章</div>\
+    <div class="NumberBoard-value">10</div>\
+    </a>\
+    <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/followers">\
+    <div class="NumberBoard-name">关注者</div>\
+    <div class="NumberBoard-value" data-update-value-type="people-followed">'+author_follower_nums+'</div>\
+    </a>\
+    </div>\
+    </div>\
+    ';
+    if (author_followed)
+        var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="true">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
+    else
+        var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--blue" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="false">关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
+    var data=data1+data2;
+    $(".Card.AnswerAuthor").append(data);
+    setLetterReceiver(author_id,author_name);
+}
+function showAuthorCard()
+{
+    var author_id=$(".AnswerCard").attr("data-author-id");
+    if(null!=author_id)
+    {
+        $.get("/ajax/er/"+author_id+"/",function(ret){
+            if("fail"!=ret)
+            {
+                appendAuthorCardElement(ret);
+                checkSets();
+            }
+        });
+        return "more_answer_list";
+    }
+    else
+    {
+        console.log("author_id is null");
+        
+        return "normal_answer_list";
+    }
+}
+
+function getMoreContent(type)
+{
+    if("more_answer_list"==type)
+    {
+        var order=1;
+        var start=0;
+        var end=2;
+        var question_id=$(".QuestionPage").attr("data-question-id");
+        $.get('/ajax/answers/'+question_id+'/'+order+'/'+start+'/'+end+'/',function(ret){
+            if("fail"!=ret)
+            {
+                appendMoreAnswerListElement(ret);
+                checkSets();
+            }
+        });
+    }
+    else if("normal_answer_list"==type)
+    {
+        var nums=$('#AnswerItems .List-item').length;
+        var order=1;
+        var start=nums;
+        var end=start+5;
+        var question_id=$(".QuestionPage").attr("data-question-id");
+        $.get('/ajax/answers/'+question_id+'/'+order+'/'+start+'/'+end+'/',function(ret){
+            if("fail"!=ret)
+            {
+                appendNormalAnswerListElement(ret);
+                checkSets();
+            }
+        });
+    }
+}
+
+function initAnswerList(type)
+{
+    if("more_answer_list"==type)
+    {
+        console.log("init_more_answer_list");
+    }
+    else if("normal_answer_list"==type)
+    {
+        var answer_nums=$(".QuestionPage").attr("data-question-answer-nums");
+        var data='<div class="Card">\
+            <div class="List">\
+            <div class="List-header">\
+            <h4 class="List-headerText">\
+            <span>'+answer_nums+' 个回答</span>\
+            </h4>\
+            </div>\
+            </div>\
+            </div>\
+            ';
+        $("#AnswerItems").append(data);
+    }
+}
+
+window.onscroll = function () { 
+console.log(getScrollTop());
+console.log(getClientHeight());
+console.log(getScrollHeight());
+if (getScrollTop() + getClientHeight() +1 >= getScrollHeight()) { 
+        if("normal_answer_list"==answer_list_type)
+            getMoreContent(answer_list_type); 
+    } 
+} 
+
+
+function init()
+{
+    answer_list_type=showAuthorCard(); 
+    //prepare_content();
+    initAnswerList(answer_list_type);
+    getMoreContent(answer_list_type);
+    checkSets();
+    
+    $('#summernote_answer').summernote({
+    height:200,
+    lang:'zh-CN',
+    placeholder:'写回答...',
+    callbacks: {
+        onImageUpload: function(files){
+            img=sendFileAnswer(files[0]);
+            console.log(img);
+        }
+    }
+    });
+    
+    $('#summernote_question').summernote({
+    height:120,
+    lang:'zh-CN',
+    placeholder:'问题背景、条件等详细信息',
+    callbacks: {
+        onImageUpload: function(files){
+            img=sendFileQuestion(files[0]);
+            console.log(img);
+        }
+    }
+    });
+    
+    appendLetterModal();
+}
+</script>
 </head>
 <body class="Entry-body">
 
@@ -483,413 +890,6 @@
 </div>
 
 <!--- div other--->
-
-<script src="{%static 'common/jquery.js' %}"></script>
-<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
-<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
-<script src="{% static 'common/main.js' %}"></script>
-    
-<script>
-function appendMoreAnswerListElement(ret)
-{
-    for(i in ret)
-    {
-        var answer_id=ret[i][0];
-        var answer_content=ret[i][1]+"<p>&nbsp;</p><p>&nbsp;</p>";
-        var answer_like_nums=ret[i][2];
-        var answer_comment_nums=ret[i][3];
-        var answer_pub_date=ret[i][4];
-        var author_id=ret[i][5];
-        var author_name=ret[i][6];
-        var author_avatar=ret[i][7];
-        var author_mood=ret[i][8];
-        
-        
-        var data='<div class="List-item">\
-        <div class="ContentItem AnswerItem">\
-        <div class="ContentItem-meta">\
-        <div class="AnswerItem-meta AnswerItem-meta--related">\
-        <div class="AuthorInfo">\
-        <span class="UserLink AuthorInfo-avatarWrapper">\
-        <a class="UserLink-link PeoplePopover" href="/er/'+author_id+'" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">\
-        <img class="Avatar AuthorInfo-avatar" width="40" height="40" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'">\
-        </a>\
-        </span>\
-        <div class="AuthorInfo-content">\
-        <div class="AuthorInfo-head">\
-        <span class="UserLink AuthorInfo-name">\
-        <a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a>\
-        </span>\
-        </div>\
-        <div class="AuthorInfo-detail">\
-        <div class="AuthorInfo-badge">\
-        <div class="RichText AuthorInfo-badgeText">'+author_mood+'</div>\
-        </div>\
-        </div>\
-        </div>\
-        </div>\
-        <div class="AnswerItem-extraInfo">\
-        <span class="Voters">\
-        <button class="Button Button--plain" type="button">'+answer_like_nums+' 人赞同了该回答</button>\
-        </span>\
-        </div>\
-        </div>\
-        </div>\
-        <div class="RichContent RichContent--unescapable is-collapsed">\
-        <div class="RichContent-inner" style="max-height:400px">\
-            <span class="RichText CopyrightRichText-richText">'+answer_content+'</span>\
-        </div>\
-        <button class="Button ContentItem-more NC-RichContent-type2 ContentItem-rightButton Button--plain" type="button">展开阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
-        <div class="ContentItem-actions">\
-            <span>\
-                <button class="AnswerLike Button LikeButton ContentItem-action" type="button" data-answer-id="'+answer_id+'"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'</button>\
-            </span>\
-            <button class="Button ContentItem-less NC-RichContent-type2 ContentItem-rightButton Button--plain  is-hide" type="button">\
-                <span class="RichContent-collapsedText">收起</span>\
-                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
-            </button>\
-        </div>\
-        </div>\
-        </div>\
-        </div>\
-        ';
-        
-        $("#AnswerItems .List").append(data);
-    }
-}
-
-function appendNormalAnswerListElement(ret) //"type_list"
-{
-    for(i in ret)
-    {
-        var answer_id=ret[i][0];
-        var answer_content=ret[i][1]+"<p>&nbsp;</p><p>&nbsp;</p>";
-        var answer_like_nums=ret[i][2];
-        var answer_comment_nums=ret[i][3];
-        var answer_pub_date=ret[i][4];
-        var author_id=ret[i][5];
-        var author_name=ret[i][6];
-        var author_avatar=ret[i][7];
-        var author_mood=ret[i][8];       
-        
-        var data='<div class="List-item">\
-        <div class="ContentItem AnswerItem">\
-        <div class="ContentItem-meta">\
-        <div class="AnswerItem-meta AnswerItem-meta--related">\
-        <div class="AuthorInfo">\
-        <span class="UserLink AuthorInfo-avatarWrapper">\
-        <a class="UserLink-link PeoplePopover" href="/er/'+author_id+'"  data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">\
-        <img class="Avatar AuthorInfo-avatar" width="40" height="40" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'">\
-        </a>\
-        </span>\
-        <div class="AuthorInfo-content">\
-        <div class="AuthorInfo-head">\
-        <span class="UserLink AuthorInfo-name">\
-        <a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a>\
-        </span>\
-        </div>\
-        <div class="AuthorInfo-detail">\
-        <div class="AuthorInfo-badge">\
-        <div class="RichText AuthorInfo-badgeText">'+author_mood+'</div>\
-        </div>\
-        </div>\
-        </div>\
-        </div>\
-        <div class="AnswerItem-extraInfo">\
-        <span class="Voters">\
-        <button class="Button Button--plain" type="button">'+answer_like_nums+' 人赞同了该回答</button>\
-        </span>\
-        </div>\
-        </div>\
-        </div>\
-        <div class="RichContent RichContent--unescapable">\
-        <div class="RichContent-inner">\
-            <span class="RichText CopyrightRichText-richText">'+answer_content+'</span>\
-        </div>\
-        <button class="Button ContentItem-more NC-RichContent-type2 ContentItem-rightButton Button--plain is-hide" type="button">展开阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
-        <div class="ContentItem-actions">\
-            <span>\
-                <button class="AnswerLike Button LikeButton ContentItem-action" type="button" data-answer-id="'+answer_id+'"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'</button>\
-            </span>\
-            <button class="Button ContentItem-less NC-RichContent-type2 ContentItem-rightButton Button--plain" type="button">\
-                <span class="RichContent-collapsedText">收起</span>\
-                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
-            </button>\
-        </div>\
-        </div>\
-        </div>\
-        </div>\
-        ';
-        
-        $("#AnswerItems .List").append(data);
-    }
-}
-
-
-
-function invite()
-{
-    $(".Invite").each(function(index,element){
-        $(element).click(function(){
-            var question_id=$(".QuestionPage").attr("data-question-id");
-            //inviter=$(element).attr("data-from");
-            receiver=$(element).attr("data-receiver");
-            //$.get('/ajax/invite/?question='+question_id+'&from='+inviter+'&to='+invitee,function(ret){
-            $.get('/ajax/invite/?question='+question_id+'&to='+receiver,function(ret){
-                alert(ret);
-            });
-        });
-    });
-}
-function appendInviteElement(ret)
-{
-    for( i in ret)
-    {
-        var adept_id=ret[i][0];
-        var adept_name=ret[i][1];
-        var adept_avatar=ret[i][2];
-        var adept_mood=ret[i][3];
-        
-        var data='<div class="List-item">\
-                    <div class="ContentItem">\
-                    <div class="ContentItem-main">\
-                    <div class="ContentItem-image">\
-                    <span class="UserLink UserItem-avatar">\
-                    <a class="UserLink-link" target="_blank" href="/er/'+adept_id+'">\
-                    <img class="Avatar Avatar--large UserLink-avatar PeoplePopover" width="60" height="60" src="'+adept_avatar+'" srcset="'+adept_avatar+'" alt="'+adept_name+'" data-author-id="'+adept_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">\
-                    </a>\
-                    </span>\
-                    </div>\
-                    <div class="ContentItem-head">\
-                    <h2 class="ContentItem-title">\
-                    <div class="UserItem-title">\
-                    <span class="UserLink UserItem-name">\
-                    <a class="UserLink-link" target="_blank" href="/er/'+adept_id+'"><span class="RichText">'+adept_name+'</span></a>\
-                    </span>\
-                    </div>\
-                    </h2>\
-                    <div class="ContentItem-meta">\
-                    <div>\
-                    <div class="ContentItem-status">\
-                    <div class="ContentItem-statusItem">'+adept_mood+'</div>\
-                    </div>\
-                    </div>\
-                    </div>\
-                    </div>\
-                    <div class="ContentItem-extra">\
-                    <button class="Button Button--blue Invite" type="button" data-receiver="'+adept_id+'">邀请回答</button>\
-                    </div>\
-                    </div>\
-                    </div>\
-                    </div>\
-                    ';
-        $(".QuestionInvitation-content .List").append(data);
-    }
-}
-function showInvite()
-{
-    var topics="";
-    $(".TopicLink").each(function(){
-        topics+=($(this).attr("data-topic-id"))+";";
-    });
-
-    $.post("/ajax/topic_adept/",{"topics":topics},function(ret){
-        if("fail"!=ret)
-        {
-            appendInviteElement(ret);
-            $("#inviteModal").modal('show');
-            checkSets();
-            invite();
-        }
-    })
-    //$("#inviteModal").modal('show');
-}
-
-function appendAuthorCardElement(ret)
-{
-    var author_id=ret[0];
-    var author_name=ret[1];
-    var author_avatar=ret[2];
-    var author_mood=ret[3];
-    var author_answer_nums=ret[4];
-    var author_follower_nums=ret[5];
-    var author_followed=ret[6];
-    
-    
-
-    var data1='\<div class="Card-header AnswerAuthor-title"><div class="Card-headerText">关于作者</div>\</div>\
-    <div class="Card-section">\
-    <div class="AnswerAuthor-user">\
-    <div class="AnswerAuthor-user-avatar">\
-    <span class="UserLink">\
-    <a class="UserLink-link" href="/er/'+author_id+'">\
-    <img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'">\
-    </a>\
-    </span>\
-    </div>\
-    <div class="AnswerAuthor-user-content">\
-    <div class="AnswerAuthor-user-name">\
-    <span class="UserLink">\
-    <a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a>\
-    </span>\
-    </div>\
-    <div class="AnswerAuthor-user-headline">\
-    <div class="RichText">'+author_mood+'</div>\
-    </div>\
-    </div>\
-    </div>\
-    </div>\
-    <div class="Card-section">\
-    <div class="AnswerAuthor-counts">\
-    <div class="NumberBoard">\
-    <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/answers"><div class="NumberBoard-name">回答</div>\
-    <div class="NumberBoard-value">'+author_answer_nums+'</div>\
-    </a>\
-    <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/posts">\
-    <div class="NumberBoard-name">文章</div>\
-    <div class="NumberBoard-value">10</div>\
-    </a>\
-    <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/followers">\
-    <div class="NumberBoard-name">关注者</div>\
-    <div class="NumberBoard-value" data-update-value-type="people-followed">'+author_follower_nums+'</div>\
-    </a>\
-    </div>\
-    </div>\
-    ';
-    if (author_followed)
-        var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="true">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
-    else
-        var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--blue" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="false">关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
-    var data=data1+data2;
-    $(".Card.AnswerAuthor").append(data);
-    setLetterReceiver(author_id,author_name);
-}
-function showAuthorCard()
-{
-    var author_id=$(".AnswerCard").attr("data-author-id");
-    if(null!=author_id)
-    {
-        $.get("/ajax/er/"+author_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                appendAuthorCardElement(ret);
-                checkSets();
-            }
-        });
-        return "more_answer_list";
-    }
-    else
-    {
-        console.log("author_id is null");
-        
-        return "normal_answer_list";
-    }
-}
-
-function getMoreContent(type)
-{
-    if("more_answer_list"==type)
-    {
-        var order=1;
-        var start=0;
-        var end=2;
-        var question_id=$(".QuestionPage").attr("data-question-id");
-        $.get('/ajax/answers/'+question_id+'/'+order+'/'+start+'/'+end+'/',function(ret){
-            if("fail"!=ret)
-            {
-                appendMoreAnswerListElement(ret);
-                checkSets();
-            }
-        });
-    }
-    else if("normal_answer_list"==type)
-    {
-        var nums=$('#AnswerItems .List-item').length;
-        var order=1;
-        var start=nums;
-        var end=start+5;
-        var question_id=$(".QuestionPage").attr("data-question-id");
-        $.get('/ajax/answers/'+question_id+'/'+order+'/'+start+'/'+end+'/',function(ret){
-            if("fail"!=ret)
-            {
-                appendNormalAnswerListElement(ret);
-                checkSets();
-            }
-        });
-    }
-}
-
-function initAnswerList(type)
-{
-    if("more_answer_list"==type)
-    {
-        console.log("init_more_answer_list");
-    }
-    else if("normal_answer_list"==type)
-    {
-        var answer_nums=$(".QuestionPage").attr("data-question-answer-nums");
-        var data='<div class="Card">\
-            <div class="List">\
-            <div class="List-header">\
-            <h4 class="List-headerText">\
-            <span>'+answer_nums+' 个回答</span>\
-            </h4>\
-            </div>\
-            </div>\
-            </div>\
-            ';
-        $("#AnswerItems").append(data);
-    }
-}
-
-window.onscroll = function () { 
-console.log(getScrollTop());
-console.log(getClientHeight());
-console.log(getScrollHeight());
-if (getScrollTop() + getClientHeight() +1 >= getScrollHeight()) { 
-        if("normal_answer_list"==answer_list_type)
-            getMoreContent(answer_list_type); 
-    } 
-} 
-
-
-function init()
-{
-    answer_list_type=showAuthorCard(); 
-    //prepare_content();
-    initAnswerList(answer_list_type);
-    getMoreContent(answer_list_type);
-    checkSets();
-    
-    $('#summernote_answer').summernote({
-    height:200,
-    lang:'zh-CN',
-    placeholder:'写回答...',
-    callbacks: {
-        onImageUpload: function(files){
-            img=sendFileAnswer(files[0]);
-            console.log(img);
-        }
-    }
-    });
-    
-    $('#summernote_question').summernote({
-    height:120,
-    lang:'zh-CN',
-    placeholder:'问题背景、条件等详细信息',
-    callbacks: {
-        onImageUpload: function(files){
-            img=sendFileQuestion(files[0]);
-            console.log(img);
-        }
-    }
-    });
-    
-    appendLetterModal();
-}
-</script>
 </body>
 
 </html>

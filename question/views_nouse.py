@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate,login,logout
 
 class IndexView(LoginRequiredMixin,generic.ListView):
     login_url='/'
-    template_name='question/index.html'
+    template_name='question/t_index.html'
     context_object_name='latest_question_list'
     def get_queryset(self):
         return Question.objects.order_by('-pub_date')[:5]
@@ -41,7 +41,7 @@ class IndexView(LoginRequiredMixin,generic.ListView):
             return HttpResponseRedirect(result)
             
 class SigninupView(generic.ListView):
-    template_name='question/signinup.html'
+    template_name='question/t_signinup.html'
     def get_queryset(self):
         return
     def get(self,request,*args,**kwargs):

@@ -1,13 +1,165 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    {%load static %}
-    <meta charset="utf-8"> 
-    <link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
-    <link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
+{%load static %}
+<meta charset="utf-8"> 
+<link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
+<link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
+
+<script src="{%static 'common/jquery.js' %}"></script>
+<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
+<script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
+<script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
+<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
+<script src="{% static 'common/main.js' %}"></script>
+    
+ <script>
+function appendTopicElement(ret)
+{
+    for(i in ret)
+    {
+    question_id=ret[i][0];
+    question_title=ret[i][1];
+    topic_id=ret[i][2];
+    topic_name=ret[i][3];
+    answer_id=ret[i][4];
+    author_id=ret[i][5];
+    author_name=ret[i][6];
+    anthor_avatar=ret[i][7];
+    anthor_mood=ret[i][8];
+    answer_content=ret[i][9];
+    answer_like_nums=ret[i][10];
+    index_img_url=getIndexImg(answer_content);
+    var dataStart='<div class="QuestionFrame Card">\
+                        <div class="Feed">\
+                  ';
+    var data1= '<div class="Feed-title">\
+                    <div class="Feed-meta">\
+                        <span class="Feed-meta-item">来自话题:<span>\
+                        <a href="/topic/'+topic_id+'/" class="TopicPopover" data-topic-id="'+topic_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+topic_name+'</a>\
+                    </div>\
+                </div>\
+                ';
+                
+    var data2= '<div class="AuthorInfo Feed-meta-author AuthorInfo--plain">\
+                    <span class="UserLink AuthorInfo-avatarWrapper">\
+                        <a class="UserLink-link PeoplePopover" href="/er/'+author_id+'/" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">\
+                            <img src="'+anthor_avatar+'" width="40" height="40">\
+                        </a>\
+                    </span>\
+                    <div class="AuthorInfo-content">\
+                        <div class="AuthorInfo-head">\
+                            <span class="UserLink AuthorInfo-name">\
+                                <a href="/er/'+author_id+'/" class="1PeoplePopover" data-author-id="'+author_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+author_name+'</a>\
+                            </span>\
+                        </div>\
+                        <div class="AuthorInfo-detail">\
+                            <div class="AuthorInfo-badge">\
+                                <div class="RichText AuthorInfo-badgeText">\
+                                    '+anthor_mood+'\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>\
+                ';
+                
+    var data3=' <div class="ContentItem AnswerItem">\
+                    <h2 class="ContentItem-title">\
+                        <a href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a>\
+                    </h2>\
+                    <div class="RichContent is-collapsed">\
+                        <div class="RichContent-cover">\
+                            <div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div>\
+                        </div>\
+                        <div class="RichContent-inner">\
+                            <span class="RichText CopyrightRichText-richText less">'+removeImg(answer_content)+'</span>\
+                            <span class="RichText CopyrightRichText-richText more is-hide">'+answer_content+'</span>\
+                            <button class="Button ContentItem-more NC-RichContent-type1 Button--plain" type="button">\
+                                阅读全文\
+                                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" style="height:16px;width:10px;" width="10" height="16" aria-hidden="true" data-reactid="258"><title data-reactid="259"></title><g data-reactid="260"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
+                            </button>\
+                        </div>\
+                        <div class="ContentItem-actions">\
+                            <span>\
+                                <button class="AnswerLike Button LikeButton 1ContentItem-action" type="button" data-answer-id="'+answer_id+'">\
+                                    <svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'\
+                                </button>\
+                            </span>\
+                            <button class="Button ContentItem-less NC-RichContent-type1 ContentItem-rightButton Button--plain is-hide" type="button">\
+                                <span class="RichContent-collapsedText">收起</span>\
+                                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
+                            </button>\
+                        </div>\
+                    </div>\
+                </div>\
+                ';
+    
+    var dataEnd='</div>\
+                    </div>\
+                  ';  
+    var elementText=dataStart+data2+data3+dataEnd;
+    $("#QuestionItems").append(elementText);
+    }
+}
+
+function getTopicElement(topic_id)
+{
+    order=0;
+    var start=0;
+    var end=5;
+    console.log(topic_id);
+    $.get("/ajax/topic/"+topic_id+"/"+order+"/"+start+"/"+end+"/",function(ret){
+        appendTopicElement(ret);
+        console.log(ret);
+        checkPopoverShow();
+        checkContentExpand();
+        checkContentCollapse();           
+    });
+}
+    
+function hashChange()
+{
+        topic_id=location.hash.replace("#","");
+        $(".FollowedTopic").each(function(){
+            var item=$(this);
+            if(topic_id==item.attr("data-topic-id"))
+                item.addClass("current");
+            else
+                item.removeClass("current");
+                
+        });
+        $('#QuestionItems').empty();
+        console.log(topic_id);
+        getTopicElement(topic_id);      
+}
+    
+function init() 
+{
+    window.onhashchange=hashChange; 
+    if((location.hash!="")&&(location.hash!=undefined))
+    {
+        hashChange();
+    }
+    else
+    {
+        topic_id=$(".FollowedTopic:first").addClass("current").attr("data-topic-id");
+        getTopicElement(topic_id); 
+    }
+            
+    
+    $('#summernote').summernote({
+    lang:'zh-CN',
+    placeholder:'写回答...'
+    });
+    
+    appendLetterModal();
+}
+    
+</script>
 </head>
 
 <body class="Entry-body">
@@ -822,157 +974,7 @@
 	</div>
 </div>
 <!--- div other--->
-<script src="{%static 'common/jquery.js' %}"></script>
-<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
-<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
-<script src="{% static 'common/main.js' %}"></script>
-    
- <script>
-function appendTopicElement(ret)
-{
-    for(i in ret)
-    {
-    question_id=ret[i][0];
-    question_title=ret[i][1];
-    topic_id=ret[i][2];
-    topic_name=ret[i][3];
-    answer_id=ret[i][4];
-    author_id=ret[i][5];
-    author_name=ret[i][6];
-    anthor_avatar=ret[i][7];
-    anthor_mood=ret[i][8];
-    answer_content=ret[i][9];
-    answer_like_nums=ret[i][10];
-    index_img_url=getIndexImg(answer_content);
-    var dataStart='<div class="QuestionFrame Card">\
-                        <div class="Feed">\
-                  ';
-    var data1= '<div class="Feed-title">\
-                    <div class="Feed-meta">\
-                        <span class="Feed-meta-item">来自话题:<span>\
-                        <a href="/topic/'+topic_id+'/" class="TopicPopover" data-topic-id="'+topic_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+topic_name+'</a>\
-                    </div>\
-                </div>\
-                ';
-                
-    var data2= '<div class="AuthorInfo Feed-meta-author AuthorInfo--plain">\
-                    <span class="UserLink AuthorInfo-avatarWrapper">\
-                        <a class="UserLink-link PeoplePopover" href="/er/'+author_id+'/" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">\
-                            <img src="'+anthor_avatar+'" width="40" height="40">\
-                        </a>\
-                    </span>\
-                    <div class="AuthorInfo-content">\
-                        <div class="AuthorInfo-head">\
-                            <span class="UserLink AuthorInfo-name">\
-                                <a href="/er/'+author_id+'/" class="1PeoplePopover" data-author-id="'+author_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+author_name+'</a>\
-                            </span>\
-                        </div>\
-                        <div class="AuthorInfo-detail">\
-                            <div class="AuthorInfo-badge">\
-                                <div class="RichText AuthorInfo-badgeText">\
-                                    '+anthor_mood+'\
-                                </div>\
-                            </div>\
-                        </div>\
-                    </div>\
-                </div>\
-                ';
-                
-    var data3=' <div class="ContentItem AnswerItem">\
-                    <h2 class="ContentItem-title">\
-                        <a href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a>\
-                    </h2>\
-                    <div class="RichContent is-collapsed">\
-                        <div class="RichContent-cover">\
-                            <div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div>\
-                        </div>\
-                        <div class="RichContent-inner">\
-                            <span class="RichText CopyrightRichText-richText less">'+removeImg(answer_content)+'</span>\
-                            <span class="RichText CopyrightRichText-richText more is-hide">'+answer_content+'</span>\
-                            <button class="Button ContentItem-more NC-RichContent-type1 Button--plain" type="button">\
-                                阅读全文\
-                                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" style="height:16px;width:10px;" width="10" height="16" aria-hidden="true" data-reactid="258"><title data-reactid="259"></title><g data-reactid="260"><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
-                            </button>\
-                        </div>\
-                        <div class="ContentItem-actions">\
-                            <span>\
-                                <button class="AnswerLike Button LikeButton 1ContentItem-action" type="button" data-answer-id="'+answer_id+'">\
-                                    <svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'\
-                                </button>\
-                            </span>\
-                            <button class="Button ContentItem-less NC-RichContent-type1 ContentItem-rightButton Button--plain is-hide" type="button">\
-                                <span class="RichContent-collapsedText">收起</span>\
-                                <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>\
-                            </button>\
-                        </div>\
-                    </div>\
-                </div>\
-                ';
-    
-    var dataEnd='</div>\
-                    </div>\
-                  ';  
-    var elementText=dataStart+data2+data3+dataEnd;
-    $("#QuestionItems").append(elementText);
-    }
-}
 
-function getTopicElement(topic_id)
-{
-    order=0;
-    var start=0;
-    var end=5;
-    console.log(topic_id);
-    $.get("/ajax/topic/"+topic_id+"/"+order+"/"+start+"/"+end+"/",function(ret){
-        appendTopicElement(ret);
-        console.log(ret);
-        checkPopoverShow();
-        checkContentExpand();
-        checkContentCollapse();           
-    });
-}
-    
-function hashChange()
-{
-        topic_id=location.hash.replace("#","");
-        $(".FollowedTopic").each(function(){
-            var item=$(this);
-            if(topic_id==item.attr("data-topic-id"))
-                item.addClass("current");
-            else
-                item.removeClass("current");
-                
-        });
-        $('#QuestionItems').empty();
-        console.log(topic_id);
-        getTopicElement(topic_id);      
-}
-    
-function init() 
-{
-    window.onhashchange=hashChange; 
-    if((location.hash!="")&&(location.hash!=undefined))
-    {
-        hashChange();
-    }
-    else
-    {
-        topic_id=$(".FollowedTopic:first").addClass("current").attr("data-topic-id");
-        getTopicElement(topic_id); 
-    }
-            
-    
-    $('#summernote').summernote({
-    lang:'zh-CN',
-    placeholder:'写回答...'
-    });
-    
-    appendLetterModal();
-}
-    
-  </script>
 </body>
 
 </html>
