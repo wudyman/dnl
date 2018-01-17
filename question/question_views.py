@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate,login,logout
 
 class IndexView(LoginRequiredMixin,generic.ListView):
     login_url='/signinup/'
-    template_name='question/index.html'
+    template_name='question/t_index.html'
     #context_object_name='latest_question_list'
     def get_queryset(self):
         pass

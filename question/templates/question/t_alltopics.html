@@ -1,14 +1,81 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    {%load static %}
-    <meta charset="utf-8"> 
-    <link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
-    <link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'common/z_2.css' %}">
+{%load static %}
+<meta charset="utf-8"> 
+<link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
+<link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'common/z_2.css' %}">
+
+<script src="{%static 'common/jquery.js' %}"></script>
+<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
+<script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
+<script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
+<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
+<script src="{% static 'common/main.js' %}"></script>
+
+<script>
+function appendTopicElement(ret)
+{
+    for( var i in ret)
+    {
+        var topic_id=ret[i][0];
+        var topic_name=ret[i][1];
+        var topic_avatar=ret[i][2];
+        var topic_detail=ret[i][3];
+        var topic_question_nums=ret[i][4];
+        var topic_follower_nums=ret[i][5];
+        var topic_pub_date=ret[i][5];
+        
+        if(topiclist_item_nums%2!=0)//odd
+        {
+            var data='<div class="item"><div class="blk">\
+                        <a target="_blank" href="/topic/'+topic_id+'">\
+                        <img src="'+topic_avatar+'" alt="'+topic_name+'">\
+                        <strong>'+topic_name+'</strong>\
+                        </a>\
+                        <p>'+topic_detail+'</p>\
+                        <a id="t::-253" href="javascript:;" class="follow meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>\
+                        </div></div>';
+        }
+        else//even
+        {
+            var data='<div class="item even"><div class="blk">\
+                        <a target="_blank" href="/topic/'+topic_id+'">\
+                        <img src="'+topic_avatar+'" alt="'+topic_name+'">\
+                        <strong>'+topic_name+'</strong>\
+                        </a>\
+                        <p>'+topic_detail+'</p>\
+                        <a id="t::-1172" href="javascript:;" class="follow meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>\
+                        </div></div>';
+        }
+        $("#topiclist").append(data);
+        topiclist_item_nums++;
+    }
+} 
+function getMoreData(step) { 
+    var nums=$('.item.even').length;
+    var bIsGetAll="0";//pub_date
+    var start=nums;
+    var end=start+step;
+    $.get('/ajax/topics/'+bIsGetAll+'/'+start+'/'+end+'/',function(ret){
+        if("fail"!=ret)
+        {
+            appendTopicElement(ret);  
+            checkSets();
+        }
+    });
+} 
+function init()
+{
+    topiclist_item_nums=0;
+    getMoreData(20);
+    appendLetterModal();
+}
+</script>
 </head>
 
 <body class="Entry-body">
@@ -152,73 +219,6 @@
 	</div><!-- /.modal -->
 </div>
 <!--- div other--->
-<script src="{%static 'common/jquery.js' %}"></script>
-<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
-<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
-<script src="{% static 'common/main.js' %}"></script>
-
-<script>
-function appendTopicElement(ret)
-{
-    for( var i in ret)
-    {
-        var topic_id=ret[i][0];
-        var topic_name=ret[i][1];
-        var topic_avatar=ret[i][2];
-        var topic_detail=ret[i][3];
-        var topic_question_nums=ret[i][4];
-        var topic_follower_nums=ret[i][5];
-        var topic_pub_date=ret[i][5];
-        
-        if(topiclist_item_nums%2!=0)//odd
-        {
-            var data='<div class="item"><div class="blk">\
-                        <a target="_blank" href="/topic/'+topic_id+'">\
-                        <img src="'+topic_avatar+'" alt="'+topic_name+'">\
-                        <strong>'+topic_name+'</strong>\
-                        </a>\
-                        <p>'+topic_detail+'</p>\
-                        <a id="t::-253" href="javascript:;" class="follow meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>\
-                        </div></div>';
-        }
-        else//even
-        {
-            var data='<div class="item even"><div class="blk">\
-                        <a target="_blank" href="/topic/'+topic_id+'">\
-                        <img src="'+topic_avatar+'" alt="'+topic_name+'">\
-                        <strong>'+topic_name+'</strong>\
-                        </a>\
-                        <p>'+topic_detail+'</p>\
-                        <a id="t::-1172" href="javascript:;" class="follow meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>\
-                        </div></div>';
-        }
-        $("#topiclist").append(data);
-        topiclist_item_nums++;
-    }
-} 
-function getMoreData(step) { 
-    var nums=$('.item.even').length;
-    var bIsGetAll="0";//pub_date
-    var start=nums;
-    var end=start+step;
-    $.get('/ajax/topics/'+bIsGetAll+'/'+start+'/'+end+'/',function(ret){
-        if("fail"!=ret)
-        {
-            appendTopicElement(ret);  
-            checkSets();
-        }
-    });
-} 
-function init()
-{
-    topiclist_item_nums=0;
-    getMoreData(20);
-    appendLetterModal();
-}
-
-</script>
 
 </body>
 
