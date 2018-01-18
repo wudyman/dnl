@@ -96,8 +96,9 @@ def get_topics(request,bIsGetAll,start,end):
         topics=Topic.objects.all()
     else:
         topics=Topic.objects.order_by('pub_date')[int(start):int(end)]
-    topic_list=[]
     if topics:
+        user=request.user
+        topic_list=[]
         for topic in topics:
             temp=[]
             temp.append(topic.id)#0
@@ -107,6 +108,13 @@ def get_topics(request,bIsGetAll,start,end):
             temp.append(topic.question_nums)#4
             temp.append(topic.follower_nums)#5
             temp.append(str(topic.pub_date))#6
+            if user:
+                if user.followtopics.filter(pk=topic.pk).exists():
+                    temp.append(1)#7
+                else:
+                    temp.append(0)#7
+            else:
+                temp.append(0)#7
             topic_list.append(temp)
         to_json=json.dumps(topic_list)
     return HttpResponse(to_json,content_type='application/json')
