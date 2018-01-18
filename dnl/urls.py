@@ -17,7 +17,7 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from django.contrib import auth
 from django.contrib.auth import views
-from . import index_view 
+#from . import index_view 
 import question.main_views as main_views
 
 urlpatterns = [
