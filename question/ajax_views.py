@@ -439,10 +439,10 @@ def invite(request):
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
-def get_notifications(request):
+def get_notifications(request,order,start,end):
     to_json=json.dumps('fail')
     user=request.user
-    notifications=user.receives.all()
+    notifications=user.receives.order_by('-pub_date')[int(start):int(end)]
     if notifications:
         notification_list=[]
         for notification in notifications:

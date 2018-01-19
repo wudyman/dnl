@@ -60,6 +60,21 @@ class AllTopicsView(LoginRequiredMixin,generic.ListView):
         user=request.user #get_object_or_404(User,username=request.user)
         followtopics_list=user.followtopics.all()
         return render(request,self.template_name,{'topics_list':topics_list,'followtopics_list':followtopics_list})
+
+class NotificationView(LoginRequiredMixin,generic.ListView):
+    login_url='/'
+    template_name='question/t_setting.html'
+    type='notifications'
+    #context_object_name='latest_topics_list'
+    def get_queryset(self):
+        return
+        # Topic.objects.order_by('-pub_date')
+    def get(self,request,*args,**kwargs):
+        user=request.user
+        if user:
+            return render(request,self.template_name,{'type':self.type})
+        else:
+            return HttpResponseRedirect('/')
         
 class ConversationView(LoginRequiredMixin,generic.ListView):
     login_url='/'
@@ -70,19 +85,46 @@ class ConversationView(LoginRequiredMixin,generic.ListView):
         return
         # Topic.objects.order_by('-pub_date')
     def get(self,request,*args,**kwargs):
-        conversation_id=request.GET.get('i')
-        if conversation_id:
-            conversation=get_object_or_404(Conversation,pk=conversation_id)
-            if conversation:
-                user=request.user
-                parter=conversation.initator
-                if parter.id==user.id:
-                    parter=conversation.parter
-                return render(request,self.template_name,{'type':self.type,'conversation_id':conversation_id,'parter':parter})
+        user=request.user
+        if user:
+            conversation_id=request.GET.get('i')
+            if conversation_id:
+                conversation=get_object_or_404(Conversation,pk=conversation_id)
+                if conversation:
+                    user=request.user
+                    parter=conversation.initator
+                    if parter.id==user.id:
+                        parter=conversation.parter
+                    return render(request,self.template_name,{'type':self.type,'conversation_id':conversation_id,'parter':parter})
+                else:
+                    return render(request,self.template_name,{'type':self.type,'conversation_id':'null'})               
             else:
-                return render(request,self.template_name,{'type':self.type,'conversation_id':'null'})               
+                return render(request,self.template_name,{'type':self.type,'conversation_id':'null'})
         else:
-            return render(request,self.template_name,{'type':self.type,'conversation_id':'null'})
+            return HttpResponseRedirect('/')
+        #user=request.user #get_object_or_404(User,username=request.user)
+        #conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
+        #conversation_list=conversations.order_by('-update_date')[:10]
+        #return render(request,self.template_name,{'conversation_list':conversation_list})
+        
+class SettingsView(LoginRequiredMixin,generic.ListView):
+    login_url='/'
+    template_name='question/t_setting.html'
+    type='settings'
+    sub_type='profile'
+    #context_object_name='latest_topics_list'
+    def get_queryset(self):
+        return
+        # Topic.objects.order_by('-pub_date')
+    def get(self,request,*args,**kwargs):
+        user=request.user
+        if user:
+            self.sub_type=request.GET.get('sub')
+            if not self.sub_type:
+                self.sub_type='profile'
+            return render(request,self.template_name,{'type':self.type,'sub_type':self.sub_type})
+        else:
+            return HttpResponseRedirect('/')
         #user=request.user #get_object_or_404(User,username=request.user)
         #conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
         #conversation_list=conversations.order_by('-update_date')[:10]
