@@ -4,6 +4,8 @@
     {%load static %}
     <!-- Basic Page Needs
   ================================================== -->
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=11" />-->
+    <meta http-equiv="X-UA-Compatible" content="IE=11">
     <meta charset="utf-8">
     <title>大大大 登陆</title>
     <meta name="description" content="">
@@ -15,13 +17,12 @@
 
     <!-- CSS
   ================================================== -->
+    <script class="cssdeck" src="{%static 'common/jquery.js' %}"></script>
+    <!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="{% static 'common/reset.css' %}">
     <link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
-    <!--<link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">-->
+    <link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
-
-    <!--[if lt IE 9]>
-		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
 </head>
 <body>
 
@@ -91,10 +92,15 @@
 
     </div>
     
-    <script class="cssdeck" src="{%static 'common/jquery.js' %}"></script>
     <script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-    <!--<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script-->
+    <script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
 	<script src="{% static 'common/main.js' %}"></script>
+    <script>
+    function init()
+    {
+        console.log("init");
+    }
+    </script>
 </body>
 </html>
 
