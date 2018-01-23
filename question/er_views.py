@@ -25,6 +25,23 @@ class ActiveView(generic.ListView):
         er=get_object_or_404(User,pk=erid)
         if user.id==er.id:
             who='me'
-        #if er.sex=femal:
-        #    who='she'
-        return render(request,self.template_name,{'er':er,'user':user,'who':who,'command':command,'subcmd':subcmd})
+        elif er.userprofile.sexual=='f':
+            who='she'
+        elif er.userprofile.sexual=='m':
+            who='he'
+            
+        if user.followto.filter(id=er.id).exists():
+            followed='true'
+        else:
+            followed='false'
+            
+        questions_num=er.selfquestions.count()
+        answers_num=er.answers.count()
+        followtos_num=er.followto.count()
+        followers_num=er.userprofile.follower.count()
+        followtopics_num=er.followtopics.count()
+        followquestions_num=er.followquestions.count()
+        
+        ext_info={'questions_num':questions_num,'answers_num':answers_num,'followtos_num':followtos_num,'followers_num':followers_num,'followtopics_num':followtopics_num,'followquestions_num':followquestions_num}       
+        
+        return render(request,self.template_name,{'er':er,'user':user,'who':who,'followed':followed,'command':command,'subcmd':subcmd,'ext_info':ext_info})

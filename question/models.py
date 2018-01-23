@@ -59,6 +59,7 @@ class UserProfile(models.Model):
     intro=models.CharField(default='brief introduce myself',max_length=200)
     follower=models.ManyToManyField(User,related_name='followto',blank=True)
     follower_nums=models.IntegerField(default=0)
+    sexual=models.CharField(default='f',max_length=1)
     def __str__(self):
         return self.user.username
 
