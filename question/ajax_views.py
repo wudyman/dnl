@@ -272,6 +272,8 @@ def get_erinfo(request,erid):
                 temp.append(0)#6
         else:
             temp.append(0)#6
+            
+        temp.append(er.userprofile.sexual)#7
         to_json=json.dumps(temp)
     return HttpResponse(to_json,content_type='application/json')
         
@@ -359,8 +361,31 @@ def get_er_following_all(request,erid,subcmd):
                     temp.append(0)#7
                 temp_list.append(temp)
             to_json=json.dumps(temp_list)
-    #elif 'topics'==subcmd:
-    #elif 'questions'==subcmd:
+    elif 'topics'==subcmd:
+        topics=er.followtopics.all()
+        if topics:
+            temp_list=[]
+            for topic in topics:
+                temp=[]
+                temp.append(topic.id)#0
+                temp.append(topic.name)#1
+                temp.append(topic.avatar)#2
+                temp.append(topic.detail)#3
+                temp_list.append(temp)
+            to_json=json.dumps(temp_list)
+    elif 'questions'==subcmd:
+        questions=er.followquestions.all()
+        if questions:
+            temp_list=[]
+            for question in questions:
+                temp=[]
+                temp.append(question.id)#0
+                temp.append(question.title)#1
+                temp.append(str(question.pub_date))#2
+                temp.append(question.be_answers.count())#2
+                temp.append(question.follower_nums)#2
+                temp_list.append(temp)
+            to_json=json.dumps(temp_list)
     return HttpResponse(to_json,content_type='application/json')
         
 @csrf_exempt

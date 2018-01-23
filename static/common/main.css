@@ -309,6 +309,14 @@ form input[type=password] {
 .popover{
     max-width: 100%;
 }
+.ProfileHeader{width:1032px} /* or width=1000px;box-sizing=content-box*/
+.Profile-main{width:1032px}  /* or width=1000px;box-sizing=content-box*/
+.ProfileHeader-main {
+    position: relative;
+    margin: 0 20px 4px;
+}
+.ProfileHeader-content{padding-bottom:16px;}
+
 .keep-topic-feed-title{font-size:14px;font-weight:700;color:#666;border-bottom:1px solid #ccc;padding-bottom:8px}
 .keep-topic-feed-title a{margin-top:3px}
 .keep-zg-link-gray{color:#999;font-weight:400;font-size:12px}
