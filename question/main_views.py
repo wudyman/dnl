@@ -129,3 +129,19 @@ class SettingsView(LoginRequiredMixin,generic.ListView):
         #conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
         #conversation_list=conversations.order_by('-update_date')[:10]
         #return render(request,self.template_name,{'conversation_list':conversation_list})
+        
+class WriteView(LoginRequiredMixin,generic.ListView):
+    login_url='/'
+    template_name='question/t_no_feature.html'
+    def get_queryset(self):
+        return
+    def get(self,request,*args,**kwargs):
+        return render(request,self.template_name)
+        
+class TradeView(LoginRequiredMixin,generic.ListView):
+    login_url='/'
+    template_name='question/t_no_feature.html'
+    def get_queryset(self):
+        return
+    def get(self,request,*args,**kwargs):
+        return render(request,self.template_name)

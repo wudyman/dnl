@@ -30,6 +30,8 @@ urlpatterns = [
     url(r'^notifications/$',main_views.NotificationView.as_view()),
     url(r'^conversations/$',main_views.ConversationView.as_view()),
     url(r'^settings/$',main_views.SettingsView.as_view()),
+    url(r'^write/$',main_views.WriteView.as_view()),
+    url(r'^trade/$',main_views.TradeView.as_view()),
 	#url(r'^form/',index_view.FormView.form1,name='form1'),
 	#url(r'^form/',index_view.FormView.as_view(),name='form'),
 	#url(r'^myView/',index_view.myView),

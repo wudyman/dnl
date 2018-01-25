@@ -178,7 +178,7 @@ function init()
 </div>
 <nav role="navigation" class="col-md-3">
 <a class="AppHeader-navItem" href="/">首页</a>
-<a class="AppHeader-navItem" href="/maimai">买卖</a>
+<a class="AppHeader-navItem" href="/trade">买卖</a>
 <a class="AppHeader-navItem is-active" href="/topic">话题</a>
 </nav>
 
@@ -220,7 +220,7 @@ function init()
 
 <div class="AppHeader-profile">
 <div class="1Popover AppHeader-menu">
-<img class="Avatar AppHeader-profileAvatar" id="MenuPopover" data-er-id="{{user.id}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="/media/img/default.jpg" srcset="/media/img/default.jpg 2x">
+<img class="Avatar AppHeader-profileAvatar" id="MenuPopover" data-er-id="{{user.id}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="{{user.userprofile.avatar}}" srcset="{{user.userprofile.avatar}} 2x">
 </div>
 </div>
 
