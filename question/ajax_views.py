@@ -506,6 +506,7 @@ def send_message(request,receiver_id):
         message=Message(conversation=conversation,content=content,sender=sender,receiver=receiver,delete_id=-1)
         message.save()
         conversation.update_date=message.pub_date
+        conversation.delete_id=-1
         conversation.save()
         to_json=json.dumps(message.id) 
     return HttpResponse(to_json,content_type='application/json')
@@ -570,7 +571,7 @@ def delete_conversation_message(request,message_id):
             if message.delete_id==-1: #delete one side
                 message.delete_id=user.id
                 message.save()
-            else:# delete both side,real delete.
+            elif message.delete_id!=user.id:# delete both side,real delete.
                 message.delete()
             to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
@@ -584,9 +585,17 @@ def delete_conversation(request,conversation_id):
         if user.id==conversation.initator.id or user.id==conversation.parter.id:
             #Conversation.objects.filter(id=message_id).delete()
             if conversation.delete_id==-1: #delete one side
+                messages=conversation.messages.all()
+                if messages:
+                    for message in messages: #delete all messages
+                        if message.delete_id==-1: #delete one side
+                            message.delete_id=user.id
+                            message.save()
+                        elif message.delete_id!=user.id: #delete both side
+                            message.delete()
                 conversation.delete_id=user.id
                 conversation.save()
-            else:# delete both side,real delete.
+            elif conversation.delete_id!=user.id:# delete both side,real delete.
                 conversation.delete()
             to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')

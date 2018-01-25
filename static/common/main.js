@@ -697,7 +697,6 @@ function appendLetterModal()
         <div class="Messages-newDialog">\
         <div class="Messages-receiver">\
         <span class="Messages-receiverInfo" data-receiver-id="">who</span>\
-        <a href="/inbox/5587284910" class="Messages-records">查看私信记录</a>\
         </div>\
         <div class="Messages-sendContent Input-wrapper Input-wrapper--spread Input-wrapper--multiline">\
         <textarea id="letterText" rows="5" class="Input" placeholder="私信内容"></textarea>\
