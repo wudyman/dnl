@@ -17,6 +17,7 @@ urlpatterns= [
     url(r'^er/(?P<erid>[0-9]+)/following/(?P<subcmd>[a-z]+)/$',views.get_er_following_all,name='geterfollowingall'),
     url(r'^er_follow/(?P<follow>[0-9]+)/(?P<er_id>[0-9]+)/$',views.follow_er,name='follow_er'),
     url(r'^upload/avatar/$',views.upload_avatar,name='uploadavatar'),
+    url(r'^upload/topic_avatar/(?P<topic_id>[0-9]+)/$',views.upload_topic_avatar,name='uploadtopicavatar'),
     url(r'^upload/img/$',views.upload_img,name='uploadimage'),
     url(r'^invite/$',views.invite,name='invite'),
     url(r'^notifications/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.get_notifications,name='getnotifications'),

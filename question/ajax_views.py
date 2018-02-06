@@ -427,6 +427,26 @@ def upload_avatar(request):
         temp=request.user.userprofile.avatar
         to_json=json.dumps(temp)
     return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def upload_topic_avatar(request,topic_id):
+    to_json=json.dumps('fail')
+    imgfile=request.FILES.get('imgfile')
+    if imgfile: 
+        print(str(time.time()))
+        posttime=request.user.username+str(time.time()).split('.')[0]
+        postfix=str(imgfile).split('.')[-1]
+        name='media'+'/avatar/%s.%s'%(posttime,postfix)
+        img=Image.open(imgfile)
+        img.save(name)
+        #print(img.items)
+        topic=get_object_or_404(Topic,pk=topic_id)
+        if topic:
+            topic.avatar='/'+name
+            topic.save()        
+            temp=topic.avatar
+            to_json=json.dumps(temp)
+    return HttpResponse(to_json,content_type='application/json')
 
 @csrf_exempt
 def upload_img(request):
