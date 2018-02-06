@@ -22,18 +22,18 @@ function appendTopicElement(ret)
 {
     for(i in ret)
     {
-    question_id=ret[i][0];
-    question_title=ret[i][1];
-    topic_id=ret[i][2];
-    topic_name=ret[i][3];
-    answer_id=ret[i][4];
-    author_id=ret[i][5];
-    author_name=ret[i][6];
-    anthor_avatar=ret[i][7];
-    anthor_mood=ret[i][8];
-    answer_content=ret[i][9];
-    answer_like_nums=ret[i][10];
-    index_img_url=getIndexImg(answer_content);
+    var question_id=ret[i][0];
+    var question_title=ret[i][1];
+    var topic_id=ret[i][2];
+    var topic_name=ret[i][3];
+    var answer_id=ret[i][4];
+    var author_id=ret[i][5];
+    var author_name=ret[i][6];
+    var anthor_avatar=ret[i][7];
+    var anthor_mood=ret[i][8];
+    var answer_content=ret[i][9];
+    var answer_like_nums=ret[i][10];
+    var index_img_url=getIndexImg(answer_content);
     var dataStart='<div class="QuestionFrame Card">\
                         <div class="Feed">\
                   ';
@@ -109,7 +109,7 @@ function appendTopicElement(ret)
 
 function getTopicElement(topic_id)
 {
-    order=0;
+    var order=0;
     var start=0;
     var end=5;
     console.log(topic_id);
@@ -121,12 +121,205 @@ function getTopicElement(topic_id)
         checkContentCollapse();           
     });
 }
+
+function adjustChooseBox()
+{
+    var width=200;
+    var height=200;
+    var left=$("#preview_avatar").position().left+50;
+    var top=$("#preview_avatar").position().top+50;
    
+    var refLeft=$("#preview_avatar").position().left;
+    var refTop=$("#preview_avatar").position().top;
+    console.log(refLeft);
+    console.log(refTop);
+    /* 
+    console.log($("#preview_avatar").offset().left);
+    console.log($("#preview_avatar").offset().top);
+    console.log($("#preview_avatar").position().left);
+    console.log($("#preview_avatar").position().top);
+    console.log($("#chooseBox").offset().left);
+    console.log($("#chooseBox").offset().top);
+    console.log($("#chooseBox").position().left);
+    console.log($("#chooseBox").position().top);
+    */
+    
+    var adjust=$("#adjust_choosebox").val();
+    width=width+(adjust-50)*2;
+    height=height+(adjust-50)*2;
+    left=left-adjust+50;
+    top=top-adjust+50;
+    
+    $('#chooseBox').css({
+                    width:width+'px',
+                    height:height+'px',
+                    left:left+'px',
+                    top:top+'px'
+    });
+    
+    
+    $('#chooseBox').mousedown(function (e) {
+            var originX= e.offsetX;
+            var originY= e.offsetY;
+            left=$("#chooseBox").position().left;
+            top=$("#chooseBox").position().top;
+            console.log("mousedown");
+            window.onmousemove=function (e) {
+                //console.log("x=",originX,e.offsetX);
+                //console.log("y=",originY,e.offsetY);
+                //console.log($("#chooseBox").position().left);
+                //console.log($("#chooseBox").position().top);
+                $('#chooseBox').css({
+                    position:'absolute',
+                    left:left+e.offsetX-originX+'px',
+                    top: top+e.offsetY-originY+'px'
+                });              
+                
+                if($('#chooseBox').position().left<=refLeft){
+                    $('#chooseBox').css({
+                        left:refLeft+'px'
+                    });
+                }
+                if($('#chooseBox').position().left>=refLeft+300-width){
+                    $('#chooseBox').css({
+                        left:refLeft+300-width+'px'
+                    });
+                }
+                if($('#chooseBox').position().top<=refTop){
+                    $('#chooseBox').css({
+                        top:refTop+'px'
+                    });
+                }
+                if($('#chooseBox').position().top>=refTop+300-height){
+                    $('#chooseBox').css({
+                        top:refTop+300-height+'px'
+                    });
+                }
+                
+                $('#chooseBox').mouseout(function () {
+                    console.log("mouseout");
+                    window.onmousemove=null;
+                    return
+                })
+            };
+            window.onmouseup= function () {
+                console.log("onmouseup");
+                window.onmousemove=null;
+                return
+            }
+        });
+}
+//$(function(){
+function checkAvatar(){
+    $(".TopicCard-image-editor").hover(
+        function(){
+            $(".Mask").removeClass("Mask-hidden");
+        },
+        function(){
+            $(".Mask").addClass("Mask-hidden");
+        }
+    );
+    
+    $(".Mask-content").click(function(){
+            $("#id_avatar_input").click();
+            $("#id_avatar_input").on("change",function(){
+               $("#upAvatarModal").modal('show');
+                var objUrl = getObjectURL(this.files[0]) ; //获取图片的路径，该路径不是图片在本地的路径
+                if (objUrl) {
+                    //var image = new Image();
+                    //image.src="/media/avatar/wudy1512464583.jpg";//objUrl;
+                    //var cvs=document.getElementById("avatar_canvas");
+                    //var ctx = cvs.getContext('2d');
+                    //ctx.drawImage(image, 100, 100, 240, 240);  
+                    $("#preview_avatar").attr("src", objUrl) ; //将图片路径存入src中，显示出图片
+                    $("#adjust_choosebox").val(50);                    
+                    
+                    setTimeout(adjustChooseBox,1*1000);
+                }
+            });
+    });
+}
+//});
+
+//建立一個可存取到該file的url
+function getObjectURL(file) {
+var url = null ;
+if (window.createObjectURL!=undefined) { // basic
+url = window.createObjectURL(file) ;
+} else if (window.URL!=undefined) { // mozilla(firefox)
+url = window.URL.createObjectURL(file) ;
+} else if (window.webkitURL!=undefined) { // webkit or chrome
+url = window.webkitURL.createObjectURL(file) ;
+}
+return url ;
+}
+
+/*
+function dataURLtoBlob(dataurl) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], {type:mime});
+}
+*/
+
+function saveFile()
+{
+    var img=document.getElementById("preview_avatar");
+    imgWidth=img.naturalWidth;
+    var can=document.getElementById("avatar_canvas");
+        //var btn=document.getElementById("btn");
+        //var returnImg=document.getElementById("returnImg");
+    var ctx=can.getContext("2d");
+    var newX=($('#chooseBox').position().left-$('#preview_avatar').position().left)*(img.naturalWidth/300);
+    var newY=($('#chooseBox').position().top-$('#preview_avatar').position().top)*(img.naturalHeight/300);
+    var newWidth=newHeight=(200+($("#adjust_choosebox").val()-50)*2)*(img.naturalWidth/300);
+    var newHeight=(200+($("#adjust_choosebox").val()-50)*2)*(img.naturalHeight/300);
+    //console.log(img.naturalWidth);
+    //console.log(img.naturalHeight);
+    //console.log(newX,newY);
+    //ctx.drawImage(img,newX,newY,200*3.45,200*2.6,0,0,200,200);
+    ctx.drawImage(img,newX,newY,newWidth,newHeight,0,0,200,200);
+    //var data=can.toDataURL("image/jpeg");
+    //var blob = dataURLtoBlob(data);
+    //console.log(blob);
+    can.toBlob(function(blobUrl){
+        console.log(blobUrl);
+        fileUpload(blobUrl);
+    },"image/jpeg");   
+}
+//   上传附件到方法
+function fileUpload(file_info) {
+var form_data = new FormData();
+//var file_info = $('#id_avatar_input')[0].files[0];
+form_data.append('imgfile',file_info,"image.jpg");
+//if(file_info==undefined)暂且不许要判断是否有附件
+//alert('你没有选择任何文件');
+//return false
+//}
+
+// 提交ajax的请求
+$.ajax({
+url:"/ajax/upload/topic_avatar/"+topic_id+"/",
+type:'POST',
+data: form_data,
+processData: false,  // tell jquery not to process the data
+contentType: false, // tell jquery not to set contentType
+success: function(ret) {
+$("#upAvatarModal").modal('hide');
+$("#id_avatar").attr("src",ret);
+$("#id_avatar").attr("srcset",ret);
+console.log("success");
+}
+}); // end ajax
+}  
     
 function init() 
 {
-
-    var topic_id=$(".TopicCard").attr("data-topic-id");
+    checkAvatar();
+    topic_id=$(".TopicCard").attr("data-topic-id");
     getTopicElement(topic_id); 
     appendLetterModal();
     checkSets();
@@ -220,9 +413,27 @@ function init()
 <div class="ContentItem TopicCard-content">
 <div class="ContentItem-main">
 <div class="ContentItem-image">
+{% if user.is_staff %}
+<div class="ImageWrapper TopicCard-image TopicCard-image-editor">
+{% else %}
 <div class="ImageWrapper TopicCard-image">
-<img alt="{{context_topic.name}}" src="{{context_topic.avatar}}" style="width:100px;height:100px;">
+{% endif %}
+<img id="id_avatar" alt="{{context_topic.name}}" src="{{context_topic.avatar}}" style="width:100px;height:100px;">
+
+<div class="Mask UserAvatarEditor-mask Mask-hidden">
+<div class="Mask-mask Mask-mask--black UserAvatarEditor-maskInner">
 </div>
+<div class="Mask-content">
+<svg class="Zi Zi--Camera UserAvatarEditor-cameraIcon" fill="currentColor" viewBox="0 0 24 24" width="36" height="36"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill-rule="evenodd"></path></svg>
+<div class="1UserAvatarEditor-maskInnerText">修改图片</div>
+</div>
+</div>
+<input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/>
+
+</div>
+
+
+
 </div>
 <div class="ContentItem-head">
 <h2 class="ContentItem-title">
@@ -250,6 +461,7 @@ function init()
 </div>
 <div class="Sticky" style=""></div>
 </div>
+
         
 
   
@@ -269,8 +481,8 @@ function init()
 </div>
         <div class="ContentLayout-sideColumn col-md-3">
         <div class="TopstorySideBar 1col-md-3">
-            <!--<div class="Card" data-reactid="612"><div class="NumberBoard NumberBoard--divider" data-reactid="613"><button class="Button NumberBoard-item TopicNumberBoard-item" type="button" data-reactid="614"><div class="NumberBoard-itemInner" data-reactid="615"><div class="NumberBoard-itemName" data-reactid="616">关注者</div><strong class="NumberBoard-itemValue" title="373493" data-reactid="617">373,493</strong></div></button><a class="NumberBoard-item TopicNumberBoard-item" href="/topic/19554945/questions" data-reactid="618"><div class="NumberBoard-itemInner" data-reactid="619"><div class="NumberBoard-itemName" data-reactid="620">问题数</div><strong class="NumberBoard-itemValue" title="692604" data-reactid="621">692,604</strong></div></a></div></div>-->
-            <div class="Card"><ul class="TopstorySideBar-categoryList"><li class="TopstorySideBar-categoryItem"><a class="Button Button--plain" href="/lives" target="_blank" title="Live" style="color:#ffcf00;" type="button" data-reactid="1249"><span class="TopstorySideBar-categoryIcon" data-reactid="1250"><svg class="Zi Zi--Live" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1251"><path d="M13.693 10.354l1.634-7.542c.195-.901-.16-1.083-.798-.39l-9.18 9.97c-.638.693-.377 1.254.582 1.254h5.376l-1.634 7.542c-.195.901.16 1.083.798.39l9.18-9.97c.638-.693.377-1.254-.582-1.254h-5.376z" data-reactid="1252"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1253">Live</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1254"><a class="Button Button--plain" href="/pub/" target="_blank" title="书店" style="color:#43d480;" type="button" data-reactid="1255"><span class="TopstorySideBar-categoryIcon" data-reactid="1256"><svg class="Zi Zi--Ebook" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1257"><path d="M16 17.649V2.931a.921.921 0 0 0-.045-.283.943.943 0 0 0-1.182-.604L4.655 5.235A.932.932 0 0 0 4 6.122v14.947c0 .514.421.931.941.931H19.06c.52 0 .941-.417.941-.93V7.292a.936.936 0 0 0-.941-.931h-.773v12.834a.934.934 0 0 1-.83.924L6.464 21.416c-.02.002 2.94-.958 8.883-2.881a.932.932 0 0 0 .653-.886z" fill-rule="evenodd" data-reactid="1258"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1259">书店</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1260"><a class="Button Button--plain" href="/roundtable" target="_blank" title="圆桌" style="color:#0084ff;" type="button" data-reactid="1261"><span class="TopstorySideBar-categoryIcon" data-reactid="1262"><svg class="Zi Zi--Org" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1263"><path d="M10.786 8.41a8.938 8.938 0 0 0-3.968-2.528c-.305-1.719.814-3.337 2.442-3.741 1.221-.405 2.646.101 3.46 1.011 1.045 1.38.915 3.64.814 4.348-.102 1.315-1.221 3.034-1.323 3.135-.305-.809-.814-1.517-1.425-2.225zm-2.442 2.832c-1.526.202-3.052 1.01-4.171 2.123-1.12-.404-1.934-1.314-2.137-2.427-.316-2.427 1.526-3.64 2.849-3.842 1.628-.371 2.849.505 4.07 1.415 1.146 1.012 2.035 2.63 2.035 2.73-.916-.202-1.832-.1-2.646 0zm4.986.303c.509-.607.931-1.586 1.12-2.225.318-1.039.61-3.134.203-4.651 1.323-1.011 3.154-1.011 4.477.303 1.235 1.146 1.017 2.933.814 3.438-.663 1.581-1.933 2.326-3.256 2.832-1.221.404-3.256.303-3.358.303zm-2.645 1.011c-.51.607-.916 1.416-1.221 2.326-.407 1.314-.643 3.06-.102 4.55-1.323 1.011-3.256 1.011-4.477-.202-1.198-1.124-1.018-2.932-.814-3.438.599-1.605 1.933-2.326 3.256-2.831.916-.304 3.256-.405 3.358-.405zm9.259-1.82c1.017.404 1.933 1.315 2.035 2.427.233 2.57-1.526 3.64-2.849 3.842-1.526 0-2.85-.505-4.07-1.415-1.018-.81-2.035-2.528-2.035-2.63.916.203 1.831.102 2.645 0 1.628-.404 3.053-1.112 4.274-2.224zm-6.716 4.854c1.065 1.08 2.442 2.022 4.07 2.528.306 1.719-.814 3.235-2.442 3.741-1.22.405-2.645-.101-3.46-1.011-1.1-1.481-1.017-3.54-.915-4.247.102-1.315 1.221-3.034 1.323-3.135.305.708.721 1.44 1.424 2.124z" data-reactid="1264"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1265">圆桌</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1266"><a class="Button Button--plain" href="//zhuanlan.zhihu.com" target="_blank" title="专栏" style="color:#0f88eb;" type="button" data-reactid="1267"><span class="TopstorySideBar-categoryIcon" data-reactid="1268"><svg class="Zi Zi--Edit" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1269"><path d="M4.076 16.966a4.19 4.19 0 0 1 1.05-1.76l8.568-8.569a.524.524 0 0 1 .741 0l2.928 2.927a.524.524 0 0 1 0 .74l-8.568 8.57c-.49.49-1.096.852-1.761 1.051l-3.528 1.058a.394.394 0 0 1-.49-.488l1.06-3.53zM20.558 4.83c.59.59.59 1.546 0 2.136l-1.693 1.692a.503.503 0 0 1-.712 0l-2.812-2.812a.504.504 0 0 1 0-.712l1.693-1.693a1.51 1.51 0 0 1 2.135 0l1.389 1.389z" data-reactid="1270"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1271">专栏</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1272"><a class="Button Button--plain" href="/zhi" target="_blank" title="付费咨询" style="color:#5478f0;" type="button" data-reactid="1273"><span class="TopstorySideBar-categoryIcon" data-reactid="1274"><svg class="Zi Zi--Infinity" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1275"><path d="M11.267 10.188h-2.69a.26.26 0 0 0-.261.26v.508c0 .149.117.26.262.26h2.896v1.54H8.578a.26.26 0 0 0-.262.259v.508c0 .15.117.26.262.26h2.896v2.31c0 .139.119.257.265.257h.522a.258.258 0 0 0 .265-.257v-2.31h2.896a.26.26 0 0 0 .262-.26v-.508a.257.257 0 0 0-.262-.26h-2.896v-1.54h2.896a.26.26 0 0 0 .262-.26v-.507a.257.257 0 0 0-.262-.26h-2.69l2.51-2.636a.26.26 0 0 0-.004-.366l-.423-.413a.253.253 0 0 0-.36.01L12 9.418 9.545 6.784a.248.248 0 0 0-.36-.011l-.423.413a.264.264 0 0 0-.004.366l2.509 2.636zM12 19.973c-1.101 0-2.16-.15-3.152-.43-.532.18-5.27 2.177-4.743 1.179.527-.998 1.58-2.746.806-3.25C3.11 15.936 2 13.822 2 11.486 2 6.8 6.477 3 12 3s10 3.8 10 8.487-4.477 8.486-10 8.486z" data-reactid="1276"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1277">付费咨询</span></a></li></ul></div>
+            <div class="Card" data-reactid="612"><div class="NumberBoard NumberBoard--divider" data-reactid="613"><button class="Button NumberBoard-item TopicNumberBoard-item" type="button" data-reactid="614"><div class="NumberBoard-itemInner" data-reactid="615"><div class="NumberBoard-itemName" data-reactid="616">关注者</div><strong class="NumberBoard-itemValue" title="373493" data-reactid="617">373,493</strong></div></button><a class="NumberBoard-item TopicNumberBoard-item" href="/topic/19554945/questions" data-reactid="618"><div class="NumberBoard-itemInner" data-reactid="619"><div class="NumberBoard-itemName" data-reactid="620">问题数</div><strong class="NumberBoard-itemValue" title="692604" data-reactid="621">692,604</strong></div></a></div></div>
+            <!--<div class="Card"><ul class="TopstorySideBar-categoryList"><li class="TopstorySideBar-categoryItem"><a class="Button Button--plain" href="/lives" target="_blank" title="Live" style="color:#ffcf00;" type="button" data-reactid="1249"><span class="TopstorySideBar-categoryIcon" data-reactid="1250"><svg class="Zi Zi--Live" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1251"><path d="M13.693 10.354l1.634-7.542c.195-.901-.16-1.083-.798-.39l-9.18 9.97c-.638.693-.377 1.254.582 1.254h5.376l-1.634 7.542c-.195.901.16 1.083.798.39l9.18-9.97c.638-.693.377-1.254-.582-1.254h-5.376z" data-reactid="1252"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1253">Live</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1254"><a class="Button Button--plain" href="/pub/" target="_blank" title="书店" style="color:#43d480;" type="button" data-reactid="1255"><span class="TopstorySideBar-categoryIcon" data-reactid="1256"><svg class="Zi Zi--Ebook" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1257"><path d="M16 17.649V2.931a.921.921 0 0 0-.045-.283.943.943 0 0 0-1.182-.604L4.655 5.235A.932.932 0 0 0 4 6.122v14.947c0 .514.421.931.941.931H19.06c.52 0 .941-.417.941-.93V7.292a.936.936 0 0 0-.941-.931h-.773v12.834a.934.934 0 0 1-.83.924L6.464 21.416c-.02.002 2.94-.958 8.883-2.881a.932.932 0 0 0 .653-.886z" fill-rule="evenodd" data-reactid="1258"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1259">书店</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1260"><a class="Button Button--plain" href="/roundtable" target="_blank" title="圆桌" style="color:#0084ff;" type="button" data-reactid="1261"><span class="TopstorySideBar-categoryIcon" data-reactid="1262"><svg class="Zi Zi--Org" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1263"><path d="M10.786 8.41a8.938 8.938 0 0 0-3.968-2.528c-.305-1.719.814-3.337 2.442-3.741 1.221-.405 2.646.101 3.46 1.011 1.045 1.38.915 3.64.814 4.348-.102 1.315-1.221 3.034-1.323 3.135-.305-.809-.814-1.517-1.425-2.225zm-2.442 2.832c-1.526.202-3.052 1.01-4.171 2.123-1.12-.404-1.934-1.314-2.137-2.427-.316-2.427 1.526-3.64 2.849-3.842 1.628-.371 2.849.505 4.07 1.415 1.146 1.012 2.035 2.63 2.035 2.73-.916-.202-1.832-.1-2.646 0zm4.986.303c.509-.607.931-1.586 1.12-2.225.318-1.039.61-3.134.203-4.651 1.323-1.011 3.154-1.011 4.477.303 1.235 1.146 1.017 2.933.814 3.438-.663 1.581-1.933 2.326-3.256 2.832-1.221.404-3.256.303-3.358.303zm-2.645 1.011c-.51.607-.916 1.416-1.221 2.326-.407 1.314-.643 3.06-.102 4.55-1.323 1.011-3.256 1.011-4.477-.202-1.198-1.124-1.018-2.932-.814-3.438.599-1.605 1.933-2.326 3.256-2.831.916-.304 3.256-.405 3.358-.405zm9.259-1.82c1.017.404 1.933 1.315 2.035 2.427.233 2.57-1.526 3.64-2.849 3.842-1.526 0-2.85-.505-4.07-1.415-1.018-.81-2.035-2.528-2.035-2.63.916.203 1.831.102 2.645 0 1.628-.404 3.053-1.112 4.274-2.224zm-6.716 4.854c1.065 1.08 2.442 2.022 4.07 2.528.306 1.719-.814 3.235-2.442 3.741-1.22.405-2.645-.101-3.46-1.011-1.1-1.481-1.017-3.54-.915-4.247.102-1.315 1.221-3.034 1.323-3.135.305.708.721 1.44 1.424 2.124z" data-reactid="1264"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1265">圆桌</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1266"><a class="Button Button--plain" href="//zhuanlan.zhihu.com" target="_blank" title="专栏" style="color:#0f88eb;" type="button" data-reactid="1267"><span class="TopstorySideBar-categoryIcon" data-reactid="1268"><svg class="Zi Zi--Edit" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1269"><path d="M4.076 16.966a4.19 4.19 0 0 1 1.05-1.76l8.568-8.569a.524.524 0 0 1 .741 0l2.928 2.927a.524.524 0 0 1 0 .74l-8.568 8.57c-.49.49-1.096.852-1.761 1.051l-3.528 1.058a.394.394 0 0 1-.49-.488l1.06-3.53zM20.558 4.83c.59.59.59 1.546 0 2.136l-1.693 1.692a.503.503 0 0 1-.712 0l-2.812-2.812a.504.504 0 0 1 0-.712l1.693-1.693a1.51 1.51 0 0 1 2.135 0l1.389 1.389z" data-reactid="1270"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1271">专栏</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1272"><a class="Button Button--plain" href="/zhi" target="_blank" title="付费咨询" style="color:#5478f0;" type="button" data-reactid="1273"><span class="TopstorySideBar-categoryIcon" data-reactid="1274"><svg class="Zi Zi--Infinity" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1275"><path d="M11.267 10.188h-2.69a.26.26 0 0 0-.261.26v.508c0 .149.117.26.262.26h2.896v1.54H8.578a.26.26 0 0 0-.262.259v.508c0 .15.117.26.262.26h2.896v2.31c0 .139.119.257.265.257h.522a.258.258 0 0 0 .265-.257v-2.31h2.896a.26.26 0 0 0 .262-.26v-.508a.257.257 0 0 0-.262-.26h-2.896v-1.54h2.896a.26.26 0 0 0 .262-.26v-.507a.257.257 0 0 0-.262-.26h-2.69l2.51-2.636a.26.26 0 0 0-.004-.366l-.423-.413a.253.253 0 0 0-.36.01L12 9.418 9.545 6.784a.248.248 0 0 0-.36-.011l-.423.413a.264.264 0 0 0-.004.366l2.509 2.636zM12 19.973c-1.101 0-2.16-.15-3.152-.43-.532.18-5.27 2.177-4.743 1.179.527-.998 1.58-2.746.806-3.25C3.11 15.936 2 13.822 2 11.486 2 6.8 6.477 3 12 3s10 3.8 10 8.487-4.477 8.486-10 8.486z" data-reactid="1276"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1277">付费咨询</span></a></li></ul></div>-->
             <div class="Card Banner" data-za-module="ExternalAdItem" data-za-detail-view-path-is_ad="true" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;ExternalAd&quot;,&quot;ad_info&quot;:{&quot;category&quot;:&quot;2&quot;,&quot;timestamp&quot;:1511837158,&quot;ad_zone_id&quot;:1,&quot;ad_id&quot;:9368}}}}"><a class="Button Banner-link Button--plain" target="_blank" href="https://sugar.zhihu.com/track?pr=0&amp;ci=9831&amp;ai=9368&amp;lo=new_home_up&amp;tu=aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMTQ1NjQ3Mg%3D%3D&amp;ts=1511837158&amp;lu=109597428&amp;si=7bbe68a0c31840489e35ccf57925e804&amp;vs=2&amp;au=182&amp;at=click&amp;ut=fb2d63dd0f534be99bffadfa67950732&amp;hn=ad-engine.ad-engine.9c800212&amp;pf=Windows&amp;az=1&amp;sg=da65d3d6db0a3d4c5e07be95a0571b07" type="button"><img class="Banner-image" src="https://pic3.zhimg.com/v2-96f061e37797b50680eb5106f7e5779e_294x245|adx4.jpg" srcset="https://pic3.zhimg.com/v2-96f061e37797b50680eb5106f7e5779e_540x450|adx4.jpg 2x" alt="广告"></a><button class="Button Banner-close Button--plain" data-tooltip="不再显示" data-tooltip-position="bottom" type="button"><svg width="14" height="16" viewBox="0 0 12 12" class="Icon Icon--boldRemove" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path fill-rule="evenodd" d="M3 2L2 3l3 3-3 3 1 1 3-3 3 3 1-1-3-3 3-3-1-1-3 3"></path></g></svg></button>
             </div>
             <div class="Card" data-reactid="1279"><ul class="TopstorySideBar-navList" data-reactid="1280"><li class="TopstorySideBar-navItem TopstorySideBar-starItem" data-reactid="1281"><a class="Button TopstorySideBar-navLink Button--plain" href="/collections" target="_blank" type="button" data-reactid="1282"><svg class="Zi Zi--Star TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" data-reactid="1283"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd" data-reactid="1284"></path></svg><span class="TopstorySideBar-navText" data-reactid="1285">我的收藏</span></a></li><li class="TopstorySideBar-navItem TopstorySideBar-questionListItem" data-reactid="1286"><a class="Button TopstorySideBar-navLink Button--plain" target="_blank" type="button" data-reactid="1287" href="/people/verna-18-5/following/questions"><svg class="Zi Zi--HelpBubble TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" data-reactid="1288"><path d="M5.74 4h12.52c.961 0 1.74.775 1.74 1.73V16.27c0 .955-.779 1.73-1.74 1.73h-3.825l-1.658 2.044a1 1 0 0 1-1.554 0l-1.658-2.044H5.74C4.78 18 4 17.224 4 16.27V5.73C4 4.775 4.778 4 5.74 4zM12 16a.976.976 0 0 0 .705-.287.951.951 0 0 0 .295-.712.954.954 0 0 0-.295-.714A.976.976 0 0 0 12 14a.962.962 0 0 0-.705.295A.961.961 0 0 0 11 15c0 .284.098.522.295.713A.975.975 0 0 0 12 16zm1.278-4.924a36.81 36.81 0 0 0 1.023-.975c.19-.193.354-.422.492-.688.138-.266.207-.575.207-.928 0-.448-.12-.864-.363-1.246a2.517 2.517 0 0 0-1.029-.906C13.164 6.111 12.652 6 12.072 6c-.624 0-1.17.133-1.638.399-.468.265-.824.6-1.068 1.005-.244.405-.366.804-.366 1.2 0 .19.077.368.231.531a.747.747 0 0 0 .567.246c.38 0 .638-.234.774-.703.144-.449.32-.788.528-1.019.208-.23.532-.345.972-.345.376 0 .683.114.921.342.238.229.357.51.357.841 0 .17-.039.328-.117.473a1.782 1.782 0 0 1-.288.396c-.114.118-.3.294-.555.526a9.71 9.71 0 0 0-.696.688c-.172.194-.31.418-.414.673a2.391 2.391 0 0 0-.156.906c0 .278.071.488.213.63a.716.716 0 0 0 .525.211c.4 0 .638-.216.714-.648.044-.203.077-.345.099-.426.022-.081.053-.162.093-.243.04-.081.101-.17.183-.268.082-.098.191-.21.327-.34z" fill-rule="evenodd" data-reactid="1289"></path></svg><span class="TopstorySideBar-navText" data-reactid="1290">我关注的问题</span></a></li><li class="TopstorySideBar-navItem TopstorySideBar-inviteItem" data-reactid="1291"><a class="Button TopstorySideBar-navLink Button--plain" href="/question/invited" target="_blank" type="button" data-reactid="1292"><svg class="Zi Zi--Invite TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" data-reactid="1293"><path d="M17.53 21c-2.47 0-4.471-2.035-4.471-4.545s2.001-4.544 4.47-4.544C20 11.911 22 13.946 22 16.455 22 18.965 19.998 21 17.53 21zm.555-5.116s-.005-2.04 0-2.272c-.014-.753-1.13-.753-1.117 0-.014.724 0 2.272 0 2.272h-2.233c-.745.003-.745 1.14 0 1.14s2.233-.004 2.233-.004v2.272c0 .765 1.12.765 1.117 0-.004-.764 0-2.272 0-2.272s1.488.004 2.237.004c.748 0 .748-1.137-.004-1.14h-2.233zm-5.778-3.074a5.692 5.692 0 0 0-.561 6.936H8.408c-4.514 0-5.32-.154-5.408-1.57 0-2.45 2.42-5.407 5.408-5.407h3.49c.14 0 .271.031.409.041zm-2.33-1.437a4.187 4.187 0 1 1 0-8.373 4.187 4.187 0 0 1 0 8.373z" fill-rule="evenodd" data-reactid="1294"></path></svg><span class="TopstorySideBar-navText" data-reactid="1295">我的邀请</span></a></li><li class="TopstorySideBar-navItem TopstorySideBar-serviceItem" data-reactid="1296"><a class="Button TopstorySideBar-navLink Button--plain" href="/community" target="_blank" type="button" data-reactid="1297"><svg class="Zi Zi--Community TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" data-reactid="1298"><path d="M5.74 4h12.52c.961 0 1.74.775 1.74 1.73V16.27c0 .955-.779 1.73-1.74 1.73h-3.825l-1.658 2.044a1 1 0 0 1-1.554 0l-1.658-2.044H5.74C4.78 18 4 17.224 4 16.27V5.73C4 4.775 4.778 4 5.74 4zM7 8.98c0 .554.449.996 1.003.996h4.994A.992.992 0 0 0 14 8.981a.997.997 0 0 0-1.003-.995H8.003A.992.992 0 0 0 7 8.98zm0 4c0 .554.446.996.995.996h8.01a.993.993 0 0 0 .995-.995.993.993 0 0 0-.995-.995h-8.01A.993.993 0 0 0 7 12.98z" fill-rule="evenodd" data-reactid="1299"></path></svg><span class="TopstorySideBar-navText" data-reactid="1300">社区服务中心</span></a></li><li class="TopstorySideBar-navItem TopstorySideBar-copyrightItem" data-reactid="1301"><a class="Button TopstorySideBar-navLink Button--plain" href="/copyright" target="_blank" type="button" data-reactid="1302"><svg class="Zi Zi--Copyright TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" data-reactid="1303"><path d="M16.517 15.815a5.871 5.871 0 0 1-4.481 2.078 5.865 5.865 0 0 1-5.859-5.857 5.865 5.865 0 0 1 5.859-5.859c1.63 0 3.204.7 4.319 1.919.085.093.24.432.209.797a1.086 1.086 0 0 1-.436.779c-.248.193-.516.29-.797.29-.402 0-.7-.198-.814-.314A3.473 3.473 0 0 0 12 8.575a3.464 3.464 0 0 0-3.46 3.461 3.464 3.464 0 0 0 3.46 3.46 3.63 3.63 0 0 0 2.654-1.181c.136-.152.458-.306.806-.306.274 0 .542.095.773.274.35.269.45.588.473.809.032.308-.072.585-.188.723m4.686-7.699C20.67 6.883 19.96 5.82 19.07 4.929c-.891-.89-1.954-1.601-3.188-2.133A9.728 9.728 0 0 0 12 2a9.733 9.733 0 0 0-3.883.796c-1.234.532-2.297 1.243-3.186 2.133-.891.891-1.602 1.954-2.134 3.187A9.713 9.713 0 0 0 2 12a9.752 9.752 0 0 0 .797 3.883c.531 1.233 1.242 2.296 2.134 3.186.89.891 1.953 1.602 3.186 2.134A9.725 9.725 0 0 0 12 22a9.72 9.72 0 0 0 3.883-.797c1.233-.532 2.296-1.243 3.188-2.134.89-.89 1.601-1.953 2.132-3.186A9.73 9.73 0 0 0 22 12a9.69 9.69 0 0 0-.797-3.884" fill-rule="evenodd" data-reactid="1304"></path></svg><span class="TopstorySideBar-navText" data-reactid="1305">版权服务中心</span></a></li><li class="TopstorySideBar-navItem TopstorySideBar-publicEditItem" data-reactid="1306"><a class="Button TopstorySideBar-navLink Button--plain" href="/watch" target="_blank" type="button" data-reactid="1307"><svg class="Zi Zi--EditRounded TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18" data-reactid="1308"><path d="M16.886 3A4.114 4.114 0 0 1 21 7.114v9.772A4.114 4.114 0 0 1 16.886 21H7.114A4.114 4.114 0 0 1 3 16.886V7.114A4.114 4.114 0 0 1 7.114 3h9.772zM7.542 14.793l-.595 1.985a.22.22 0 0 0 .275.275l1.984-.595a2.36 2.36 0 0 0 .991-.592l4.82-4.82a.295.295 0 0 0 0-.416L13.37 8.983a.295.295 0 0 0-.417 0l-4.82 4.82c-.275.277-.478.617-.59.99zm9.272-6.826l-.781-.78a.849.849 0 0 0-1.202 0l-.952.951c-.11.11-.11.29 0 .4l1.582 1.583a.283.283 0 0 0 .4 0l.953-.952a.85.85 0 0 0 0-1.202z" data-reactid="1309"></path></svg><span class="TopstorySideBar-navText" data-reactid="1310">公共编辑动态</span></a></li></ul>
@@ -965,6 +1177,38 @@ function init()
 	</div>
 </div>
 <!--- div other--->
+<div id="upAvatarModal" class="modal fade 1Modal 1Modal--default 1UploadImageModal-modal" tabindex="-1" role="dialog" 1aria-labelledby="upAvatarModalLabel" 1aria-hidden="true">
+<div class="modal-dialog" style="#width:200px;">
+
+<div class="Modal-inner">
+<h3 class="Modal-title">编辑图片</h3>
+<div class="Modal-subtitle">调整图片尺寸和位置</div>
+<div class="Modal-content">
+<div>
+<div class="UploadImageModal-container">
+<div style="text-align:center">
+<img id="preview_avatar" width="300px" height="300px" alt="" >
+</div>
+<div  id="chooseBox" style="width: 200px;height: 200px;border: 1px solid #4fb8e3;position: absolute;left: 200px;top: 163px;z-index: 1000"></div>
+<canvas id="avatar_canvas" width="200" height="200" style="width: 200px; height: 200px;display:none"></canvas>
+</div>
+<div style="text-align:center">
+<svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
+<input id="adjust_choosebox"type="range" step="1" min="0" max="100" class="RangeInput" value="50" style="display:inline" oninput="adjustChooseBox()">
+<svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="22" height="22"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
+</div>
+<div class="ModalButtonGroup ModalButtonGroup--vertical">
+<button class="Button Button--primary Button--blue" type="button" onclick="saveFile()">保存</button>
+</div>
+</div>
+</div>
+</div>
+<button data-dismiss="modal" class="Button Modal-closeButton Button--plain" aria-label="关闭" type="button">
+<svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+
 </body>
 
 </html>
