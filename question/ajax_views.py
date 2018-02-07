@@ -619,3 +619,19 @@ def delete_conversation(request,conversation_id):
                 conversation.delete()
             to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def search(request,keyword):
+    to_json=json.dumps('fail')
+    if keyword:
+        questions=Question.objects.filter(title__contains=keyword)[0:5]
+        if questions:
+            question_list=[]
+            for question in questions:
+                temp=[]
+                temp.append(question.id) #0
+                temp.append(question.title) #1
+                temp.append(question.answer_nums) #2 
+                question_list.append(temp)
+            to_json=json.dumps(question_list)
+    return HttpResponse(to_json,content_type='application/json')
