@@ -130,6 +130,29 @@ class SettingsView(LoginRequiredMixin,generic.ListView):
         #conversation_list=conversations.order_by('-update_date')[:10]
         #return render(request,self.template_name,{'conversation_list':conversation_list})
         
+class SearchView(LoginRequiredMixin,generic.ListView):
+    login_url='/'
+    template_name='question/t_search.html'
+    keyword=''
+    type='content'
+    #context_object_name='latest_topics_list'
+    def get_queryset(self):
+        return
+        # Topic.objects.order_by('-pub_date')
+    def get(self,request,*args,**kwargs):
+        user=request.user
+        if user:
+            self.keyword=request.GET.get('q')
+            print(self.keyword)
+            self.type=request.GET.get('type')
+            return render(request,self.template_name,{'keyword':self.keyword})
+        else:
+            return HttpResponseRedirect('/')
+        #user=request.user #get_object_or_404(User,username=request.user)
+        #conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
+        #conversation_list=conversations.order_by('-update_date')[:10]
+        #return render(request,self.template_name,{'conversation_list':conversation_list})
+        
 class WriteView(LoginRequiredMixin,generic.ListView):
     login_url='/'
     template_name='question/t_no_feature.html'
