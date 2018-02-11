@@ -29,24 +29,26 @@ function checkValid()
     alert("need checkValid");
     return true;
 }
-
-$('#topics_select').on('show.bs.select', function (e) {
-  // do something...
-    var bIsGetAll="1";
-    $.post("/ajax/topics/"+bIsGetAll+"/0/0/", function(ret){
-        if("fail"!=ret)
-        {
-            $('#topics_select').empty();
-            for (var i in ret)
+function checkSelectOption()
+{
+    $('#topics_select').on('show.bs.select', function (e) {
+    // do something...
+        var bIsGetAll="1";
+        $.post("/ajax/topics/"+bIsGetAll+"/0/0/", function(ret){
+            if("fail"!=ret)
             {
-                var topic_id=ret[i][0];
-                var topic_name=ret[i][1];
-                $('#topics_select').append("<option value=" + topic_id + ":" + topic_name + ">" + topic_name + "</option>");
-            }   
-            $('.selectpicker').selectpicker('refresh');
-        }  
-    })
-});
+                $('#topics_select').empty();
+                for (var i in ret)
+                {
+                    var topic_id=ret[i][0];
+                    var topic_name=ret[i][1];
+                    $('#topics_select').append("<option value=" + topic_id + ":" + topic_name + ">" + topic_name + "</option>");
+                }   
+                $('.selectpicker').selectpicker('refresh');
+            }  
+        })
+    });
+}
 
 //获取滚动条当前的位置 
 function getScrollTop() { 
@@ -833,16 +835,18 @@ function initCommon()
     notifications="null";
     messages="null";
     $('#summernote_question').summernote({
-    height:120,
-    lang:'zh-CN',
-    placeholder:'问题背景、条件等详细信息',
-    callbacks: {
-        onImageUpload: function(files){
-            img=sendFileQuestion(files[0]);
-            console.log(img);
+        height:120,
+        lang:'zh-CN',
+        placeholder:'问题背景、条件等详细信息',
+        callbacks: {
+            onImageUpload: function(files){
+                img=sendFileQuestion(files[0]);
+                console.log(img);
+            }
         }
-    }
     });
+    
+    checkSelectOption();
 }
 
 $(document).ready(function() {
