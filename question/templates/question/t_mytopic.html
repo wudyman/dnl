@@ -114,11 +114,14 @@ function getTopicElement(topic_id)
     var end=5;
     console.log(topic_id);
     $.get("/ajax/topic/"+topic_id+"/"+order+"/"+start+"/"+end+"/",function(ret){
+        if("fail"!=ret)
+        {
         appendTopicElement(ret);
         console.log(ret);
         checkPopoverShow();
         checkContentExpand();
-        checkContentCollapse();           
+        checkContentCollapse();  
+        }
     });
 }
     
