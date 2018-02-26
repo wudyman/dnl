@@ -145,7 +145,7 @@ class SearchView(LoginRequiredMixin,generic.ListView):
             self.keyword=request.GET.get('q')
             print(self.keyword)
             self.type=request.GET.get('type')
-            return render(request,self.template_name,{'keyword':self.keyword})
+            return render(request,self.template_name,{'keyword':self.keyword,'type':self.type})
         else:
             return HttpResponseRedirect('/')
         #user=request.user #get_object_or_404(User,username=request.user)

@@ -149,15 +149,17 @@ def get_topic_questions(request,topic_id,order,start,end):
     questions=topic.question.order_by('-pub_date')[int(start):int(end)]
     if questions:
         for question in questions:
+            print(question.title)
             temp=[]
             temp.append(question.id) #0
             temp.append(question.title) #1
             temp.append(question.prima_topic_id) #2
             temp.append(question.prima_topic_name) #3
-            if question.push_answer_id!=0:
+            if question.push_answer_id!=-1:
                 temp.append(question.push_answer_id) #4
                 answer=get_object_or_404(Answer,pk=question.push_answer_id)
                 if answer:
+                    print('has push answer')
                     temp.append(answer.author.id) #5
                     temp.append(answer.author.first_name) #6
                     temp.append(answer.author.userprofile.avatar) #7
@@ -621,17 +623,22 @@ def delete_conversation(request,conversation_id):
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
-def search(request,keyword):
+def search(request,keyword,type,order,start,end):
     to_json=json.dumps('fail')
     if keyword:
-        questions=Question.objects.filter(title__contains=keyword)[0:5]
-        if questions:
-            question_list=[]
-            for question in questions:
-                temp=[]
-                temp.append(question.id) #0
-                temp.append(question.title) #1
-                temp.append(question.answer_nums) #2 
-                question_list.append(temp)
-            to_json=json.dumps(question_list)
+        if type=='all' or type=='question':
+            questions=Question.objects.filter(title__contains=keyword)[int(start):int(end)]
+            if questions:
+                question_list=[]
+                for question in questions:
+                    temp=[]
+                    temp.append(question.id) #0
+                    temp.append(question.title) #1
+                    temp.append(question.answer_nums) #2 
+                    question_list.append(temp)
+                to_json=json.dumps(question_list)
+        elif type=='people':
+            print(type)
+        elif type=='topic':
+            print(type)
     return HttpResponse(to_json,content_type='application/json')
