@@ -839,6 +839,19 @@ function initCommon()
     notifications="null";
     messages="null";
     $('#summernote_question').summernote({
+        toolbar: [
+        // [groupName, [list of button]]
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['strikethrough', 'superscript', 'subscript']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['paragraph']],
+        ['table', ['table']],
+        ['link', ['link']],
+        ['picture', ['picture']],
+        ['video', ['video']],
+        ['fullscreen', ['fullscreen']]
+        ],
         height:120,
         lang:'zh-CN',
         placeholder:'问题背景、条件等详细信息',

@@ -306,8 +306,8 @@ def get_er_all(request,erid,command):
                 temp.append(question.id)#0
                 temp.append(question.title)#1
                 temp.append(str(question.pub_date))#2
-                temp.append(question.be_answers.count())#2
-                temp.append(question.follower_nums)#2
+                temp.append(question.be_answers.count())#3
+                temp.append(question.follower_nums)#4
                 temp_list.append(temp)
             to_json=json.dumps(temp_list)
     return HttpResponse(to_json,content_type='application/json')
@@ -641,4 +641,58 @@ def search(request,keyword,type,order,start,end):
             print(type)
         elif type=='topic':
             print(type)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def answer_page(request,type,order,start,end):
+    to_json=json.dumps('fail')
+    if request.user:
+        user=request.user
+        if type=='recommend':
+            questions=Question.objects.order_by('-pub_date')[int(start):int(end)]
+            if questions:
+                question_list=[]
+                for question in questions:
+                    temp=[]
+                    temp.append(question.id)#0
+                    temp.append(question.title)#1
+                    temp.append(str(question.pub_date))#2
+                    temp.append(question.be_answers.count())#3
+                    temp.append(question.follower_nums)#4
+                    question_list.append(temp)
+                to_json=json.dumps(question_list)
+        elif type=='all':
+            questions=Question.objects.order_by('-pub_date')[int(start):int(end)]
+            if questions:
+                question_list=[]
+                for question in questions:
+                    temp=[]
+                    temp.append(question.id)#0
+                    temp.append(question.title)#1
+                    temp.append(str(question.pub_date))#2
+                    temp.append(question.be_answers.count())#3
+                    temp.append(question.follower_nums)#4
+                    temp.append(question.prima_topic_id)#5
+                    temp.append(question.prima_topic_name)#6
+                    question_list.append(temp)
+                to_json=json.dumps(question_list)
+        elif type=='invited':
+            notifications=user.receives.filter(type='invite').order_by('-pub_date')[int(start):int(end)]
+            if notifications:
+                notification_list=[]
+                for notification in notifications:
+                    temp=[]
+                    temp.append(notification.id)#0
+                    temp.append(notification.type)#1
+                    temp.append(notification.active_id)#2
+                    temp.append(notification.status)#3
+                    temp.append(str(notification.pub_date))#4
+                    temp.append(notification.sender.id)#5
+                    temp.append(notification.sender.first_name)#6
+                    question=get_object_or_404(Question,pk=notification.active_id)
+                    temp.append(question.title)#7
+                    temp.append(question.be_answers.count())#8
+                    temp.append(question.follower_nums)#9
+                    notification_list.append(temp)
+                to_json=json.dumps(notification_list)
     return HttpResponse(to_json,content_type='application/json')
