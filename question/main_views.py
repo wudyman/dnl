@@ -130,6 +130,22 @@ class SettingsView(LoginRequiredMixin,generic.ListView):
         #conversation_list=conversations.order_by('-update_date')[:10]
         #return render(request,self.template_name,{'conversation_list':conversation_list})
         
+class AnswerView(LoginRequiredMixin,generic.ListView):
+    login_url='/'
+    template_name='question/t_answer.html'
+    type='recommend'
+    def get_queryset(self):
+        return
+    def get(self,request,*args,**kwargs):
+        user=request.user
+        if user:
+            self.type=request.GET.get('type')
+            if not self.type:
+                self.type='recommend'
+            return render(request,self.template_name,{'type':self.type})
+        else:
+            return HttpResponseRedirect('/')
+        
 class SearchView(LoginRequiredMixin,generic.ListView):
     login_url='/'
     template_name='question/t_search.html'
