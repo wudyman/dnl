@@ -15,7 +15,11 @@ class IndexView(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         pass
     def get(self,request):
-        print(request.META['HTTP_USER_AGENT'])
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print(is_mobile)
+        if is_mobile:
+            self.template_name='question/t_index_mobile.html'
         return render(request,self.template_name,{'user':request.user})
         '''
         questions=Question.objects.order_by('-pub_date')[0:10]
