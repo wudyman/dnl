@@ -15,6 +15,7 @@ class IndexView(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         pass
     def get(self,request):
+        print(request.META['HTTP_USER_AGENT'])
         return render(request,self.template_name,{'user':request.user})
         '''
         questions=Question.objects.order_by('-pub_date')[0:10]
