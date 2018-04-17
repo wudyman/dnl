@@ -100,6 +100,13 @@ function removeImg(content){
     return temp;
     //return content.replace(imgReg,"").replace(/<p>/gi,"").replace(/<\/p>/gi,"").replace(/(^\s*)|(\s*$)/g,"");
 }
+
+function addClassImg(content,classStr)
+{
+    var temp=content.replace(/<img/gi,"<img "+classStr);
+    return temp;
+}
+
 function updateValue(type,value)
 {
     $(".NumberBoard-value").each(function(){
@@ -209,13 +216,13 @@ function checkFollow()
 }
 
 function checkContentCollapse(){
-    $(".ContentItem-less.NC-RichContent-type1").off("click");
-    $(".ContentItem-less.NC-RichContent-type1").each(function(){
+    $(".ContentItem-less").off("click");
+    $(".ContentItem-less").each(function(){
         $(this).click(function(){
             $(this).addClass("is-hide");
             $(this).parent().siblings(".RichContent-inner").children(".less").removeClass("is-hide");
             $(this).parent().siblings(".RichContent-inner").children(".more").addClass("is-hide");
-            $(this).parent().siblings(".RichContent-inner").children(".ContentItem-more.NC-RichContent-type1").removeClass("is-hide");
+            $(this).parent().siblings(".RichContent-inner").children(".ContentItem-more").removeClass("is-hide");
             $(this).parents(".RichContent").addClass("is-collapsed");
             var index_img_url=$(this).parent().siblings(".RichContent-cover").find(".RichContent-cover-inner").attr("data-index-img-url");
             if("null"!=index_img_url)
@@ -223,6 +230,10 @@ function checkContentCollapse(){
                 $(this).parent().siblings(".RichContent-cover").find(".RichContent-cover-inner").empty();
                 $(this).parent().siblings(".RichContent-cover").find(".RichContent-cover-inner").append('<img src="'+index_img_url+'">');
                 $(this).parent().siblings(".RichContent-cover").removeClass("is-hide");
+                
+                var id=$(this).parents(".Feed").attr("id");
+                document.getElementById(id).scrollIntoView();
+                $(this).parents(".Feed").removeAttr("id");
             }
         });
     });
@@ -244,10 +255,14 @@ function checkContentExpand(){
             console.log("checkContentExpand");
             $(this).children(".less").addClass("is-hide");
             $(this).children(".more").removeClass("is-hide");
-            $(this).children(".ContentItem-more.NC-RichContent-type1").addClass("is-hide");
-            $(this).siblings(".ContentItem-actions").children(".ContentItem-less.NC-RichContent-type1").removeClass("is-hide");
+            $(this).children(".ContentItem-more").addClass("is-hide");
+            $(this).siblings(".ContentItem-actions").children(".ContentItem-less").removeClass("is-hide");
             $(this).parent().removeClass("is-collapsed");
             $(this).siblings(".RichContent-cover").addClass("is-hide");
+            //$(this).siblings(".ContentItem-actions").addClass("Sticky RichContent-actions is-fixed is-bottom").css({"width": "455.2px", "bottom": "0px", "left": "0px"});
+            
+            var timestamp=new Date().getTime();
+            $(this).parents(".Feed").attr("id",timestamp);
         });
     });
 }
