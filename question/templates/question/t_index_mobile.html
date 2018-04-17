@@ -55,6 +55,64 @@ function appendFeedElement(ret)
         for(var j=0;j<100;j++)
             answer_content=answer_content+"&nbsp;";
         var index_img_url=getIndexImg(answer_content);
+
+            var data='<div class="Card TopstoryItem TopstoryItem--experimentExpand">\
+                        <div class="Feed">\
+                        <div class="FeedSource">\
+                        <div class="FeedSource-firstline">来自话题: <span><a class="TopicLink" href="/topic/'+topic_id+'/" target="_blank">'+topic_name+'</a></span></div>\
+                        <div class="AuthorInfo FeedSource-byline AuthorInfo--plain">\
+                        <span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/"><img class="Avatar AuthorInfo-avatar" width="24" height="24" src="'+anthor_avatar+'" srcset="'+anthor_avatar+'" alt="'+author_name+'"></a></span>\
+                        <div class="AuthorInfo-content">\
+                        <div class="AuthorInfo-head">\
+                        <span class="UserLink AuthorInfo-name">\
+                        <a class="UserLink-link" target="_blank" href="/er/'+author_id+'/">'+author_name+'</a>\
+                        <a class="UserLink-badge" 111data-tooltip="优秀回答者" href="/er/'+author_id+'/" target="_blank"><svg viewBox="0 0 20 20" class="Icon Icon--badgeGlorious" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title>用户标识</title><g><g fill="none" fill-rule="evenodd">     <path d="M.64 11.39c1.068.895 1.808 2.733 1.66 4.113l.022-.196c-.147 1.384.856 2.4 2.24 2.278l-.198.016c1.387-.12 3.21.656 4.083 1.735l-.125-.154c.876 1.085 2.304 1.093 3.195.028l-.127.152c.895-1.068 2.733-1.808 4.113-1.66l-.198-.022c1.386.147 2.402-.856 2.28-2.238l.016.197c-.12-1.388.656-3.212 1.735-4.084l-.154.125c1.084-.876 1.093-2.304.028-3.195l.152.127c-1.068-.895-1.808-2.732-1.66-4.113l-.022.198c.147-1.386-.856-2.4-2.24-2.28l.198-.016c-1.387.122-3.21-.655-4.083-1.734l.125.153C10.802-.265 9.374-.274 8.483.79L8.61.64c-.895 1.068-2.733 1.808-4.113 1.662l.198.02c-1.386-.147-2.4.857-2.28 2.24L2.4 4.363c.12 1.387-.656 3.21-1.735 4.084l.154-.126C-.265 9.2-.274 10.626.79 11.517L.64 11.39z" fill="#FF9500"></path>     <path d="M10.034 12.96L7.38 14.58c-.47.286-.747.09-.618-.45l.72-3.024-2.36-2.024c-.418-.357-.318-.68.235-.725l3.1-.25 1.195-2.87c.21-.508.55-.513.763 0l1.195 2.87 3.1.25c.547.043.657.365.236.725l-2.362 2.024.72 3.025c.13.535-.143.74-.616.45l-2.654-1.62z" fill="#FFF"></path>   </g></g></svg></a>\
+                        </span></div>\
+                        <div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+anthor_mood+'</div></div></div></div></div></div>\
+                        <div class="ContentItem AnswerItem"><h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>\
+                        <div class="ContentItem-meta"></div>\
+                        <div class="RichContent is-collapsed RichContent--withMask">\
+                        <div class="RichContent-cover RichContent-cover--mobile">\
+                        <div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div>\
+                        </div>\
+                        <div class="RichContent-inner RichContent-inner--collapsed">\
+                        <span class="RichText CopyrightRichText-richText less">'+removeImg(answer_content)+'</span>\
+                        <span class="RichText CopyrightRichText-richText more">'+addClassImg(answer_content,'class="origin_image"')+'</span>\
+                        <button class="Button ContentItem-more Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
+                        </div>\
+                        <div class="ContentItem-actions">\
+                        <span>\
+                        <button class="Button VoteButton VoteButton--up" aria-label="赞同" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-upIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg>95</button>\
+                        <button class="Button VoteButton VoteButton--down VoteButton--mobileDown" aria-label="反对" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-downIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg></button>\
+                        </span>\
+                        <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>评论 21</button>\
+                        <button class="Button ContentItem-action Button--plain Button--withIcon Button--iconOnly" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span></button>\
+                        <div class="Popover ContentItem-action"><button class="Button Button--plain Button--withIcon Button--iconOnly" aria-label="更多" type="button" id="Popover-50076-45697-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-50076-45697-content"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Dots Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill-rule="evenodd"></path></svg></span></button></div>\
+                        <button class="Button ContentItem-action ContentItem-less ContentItem-rightButton Button--plain is-hide" type="button"><span class="RichContent-collapsedText">收起</span><svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
+                        </div></div></div></div>\
+                        </div>';
+            $("#topstory-items").append(data);
+    }
+}
+function appendFeedElementNotLogin(ret)
+{
+    console.log(ret);
+    for (i in ret)
+    {
+        var question_id=ret[i][0];
+        var question_title=ret[i][1];
+        var topic_id=ret[i][2];
+        var topic_name=ret[i][3];
+        var answer_id=ret[i][4];
+        var author_id=ret[i][5];
+        var author_name=ret[i][6];
+        var anthor_avatar=ret[i][7];
+        var anthor_mood=ret[i][8];
+        var answer_content=ret[i][9];
+        var answer_like_nums=ret[i][10];
+        for(var j=0;j<100;j++)
+            answer_content=answer_content+"&nbsp;";
+        var index_img_url=getIndexImg(answer_content);
         if (0==i)
         {   
             var data='<div class="Feed">\
@@ -71,11 +129,11 @@ function appendFeedElement(ret)
                     <div class="ContentItem-meta"></div>\
                     <div class="RichContent is-collapsed RichContent--withMask">\
                     <div class="RichContent-cover RichContent-cover--mobile">\
-                    <div class="RichContent-cover-inner"><img width="388" src="'+index_img_url+'" alt="cover"></div>\
+                    <div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div>\
                     </div>\
                     <div class="RichContent-inner RichContent-inner--collapsed">\
                     <span class="RichText CopyrightRichText-richText less">'+removeImg(answer_content)+'</span>\
-                    <span class="RichText CopyrightRichText-richText more is-hide">'+answer_content+'</span>\
+                    <span class="RichText CopyrightRichText-richText more is-hide">'+addClassImg(answer_content,'class="origin_image"')+'</span>\
                     <button class="Button ContentItem-more Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" style="height:16px;width:10px;" width="10" height="16" aria-hidden="true"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button></div>\
                     <div class="ContentItem-actions">\
                     <span><button class="Button VoteButton VoteButton--up" aria-label="赞同" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-upIcon Icon--triangle" style="height:16px;width:9px;" width="9" height="16" aria-hidden="true"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg>'+answer_like_nums+'</button>\
@@ -83,6 +141,7 @@ function appendFeedElement(ret)
                     </span>\
                     <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display:inline-flex;align-items:center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>评论 8</button>\
                     <button class="Button ContentItem-action Button--plain Button--withIcon Button--iconOnly" type="button"><span style="display:inline-flex;align-items:center;">&#8203;<svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span></button>\
+                    <button class="Button ContentItem-action ContentItem-less ContentItem-rightButton Button--plain is-hide" type="button"><span class="RichContent-collapsedText">收起</span><svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
                     </div>\
                     </div>\
                     </div>\
@@ -107,9 +166,10 @@ function appendFeedElement(ret)
                         <h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>\
                         <div class="ContentItem-meta"></div>\
                         <div class="RichContent is-collapsed RichContent--withMask">\
-                        <div class="RichContent-cover RichContent-cover--mobile"><div class="RichContent-cover-inner"><img width="388" src="'+index_img_url+'" alt="cover"></div></div>\
+                        <div class="RichContent-cover RichContent-cover--mobile"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div></div>\
                         <div class="RichContent-inner RichContent-inner--collapsed">\
-                        <span class="RichText CopyrightRichText-richText">'+answer_content+'</span>\
+                        <span class="RichText CopyrightRichText-richText less">'+removeImg(answer_content)+'</span>\
+                        <span class="RichText CopyrightRichText-richText more is-hide">'+addClassImg(answer_content,'class="origin_image"')+'</span>\
                         <button class="Button ContentItem-more Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" style="height:16px;width:10px;" width="10" height="16" aria-hidden="true"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
                         </div>\
                         <div class="ContentItem-actions">\
@@ -119,6 +179,7 @@ function appendFeedElement(ret)
                         </span>\
                         <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display:inline-flex;align-items:center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>评论 11</button>\
                         <button class="Button ContentItem-action Button--plain Button--withIcon Button--iconOnly" type="button"><span style="display:inline-flex;align-items:center;">&#8203;<svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span></button>\
+                        <button class="Button ContentItem-action ContentItem-less ContentItem-rightButton Button--plain is-hide" type="button"><span class="RichContent-collapsedText">收起</span><svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
                         </div>\
                         </div>\
                         </div>\
@@ -133,7 +194,7 @@ function getMoreData() {
     var order=1;//pub_date
     var start=nums;
     var end=start+5;
-    console.log("get moredata");
+    console.log("getMoreData");
     $.get('/ajax/questions/'+order+'/'+start+'/'+end+'/',function(ret){
         if("fail"!=ret)
         {
@@ -142,9 +203,27 @@ function getMoreData() {
         }
     });
 } 
+function getMoreDataNotLogin() { 
+    var nums=0;//$('.QuestionFrame').length;
+    var order=1;//pub_date
+    var start=nums;
+    var end=start+5;
+    console.log("getMoreDataNotLogin");
+    $.get('/ajax/questions/'+order+'/'+start+'/'+end+'/',function(ret){
+        if("fail"!=ret)
+        {
+            appendFeedElementNotLogin(ret);  
+            checkSets();
+        }
+    });
+} 
 function init()
 {
-    getMoreData();
+    var login=$("#topstory").attr("data-login");
+    if("true"==login)
+        getMoreData();
+    else
+        getMoreDataNotLogin();
     //appendLetterModal();
 }
 </script>
@@ -155,22 +234,148 @@ function init()
 <div id="root">
 <div class="App">
 <div class="LoadingBar"></div>
+{% if user %}
+<div>
+<header class="Sticky MobileAppHeader is-fixed" style="line-height: 50px; width: 455.2px; top: 0px; left: 0px;">
+<div class="MobileAppHeader-inner">
+<a class="MobileAppHeader-logo" href="//www.danongling.com/" aria-label="大农令"><svg viewBox="0 0 200 91" width="56" height="28" fill="#0f88eb"><title></title><g><path d="M53.29 80.035l7.32.002 2.41 8.24 13.128-8.24h15.477v-67.98H53.29v67.978zm7.79-60.598h22.756v53.22h-8.73l-8.718 5.473-1.587-5.46-3.72-.012v-53.22zM46.818 43.162h-16.35c.545-8.467.687-16.12.687-22.955h15.987s.615-7.05-2.68-6.97H16.807c1.09-4.1 2.46-8.332 4.1-12.708 0 0-7.523 0-10.085 6.74-1.06 2.78-4.128 13.48-9.592 24.41 1.84-.2 7.927-.37 11.512-6.94.66-1.84.785-2.08 1.605-4.54h9.02c0 3.28-.374 20.9-.526 22.95H6.51c-3.67 0-4.863 7.38-4.863 7.38H22.14C20.765 66.11 13.385 79.24 0 89.62c6.403 1.828 12.784-.29 15.937-3.094 0 0 7.182-6.53 11.12-21.64L43.92 85.18s2.473-8.402-.388-12.496c-2.37-2.788-8.768-10.33-11.496-13.064l-4.57 3.627c1.363-4.368 2.183-8.61 2.46-12.71H49.19s-.027-7.38-2.372-7.38zm128.752-.502c6.51-8.013 14.054-18.302 14.054-18.302s-5.827-4.625-8.556-1.27c-1.874 2.548-11.51 15.063-11.51 15.063l6.012 4.51zm-46.903-18.462c-2.814-2.577-8.096.667-8.096.667s12.35 17.2 12.85 17.953l6.08-4.29s-8.02-11.752-10.83-14.33zM199.99 46.5c-6.18 0-40.908.292-40.953.292v-31.56c1.503 0 3.882-.124 7.14-.376 12.773-.753 21.914-1.25 27.427-1.504 0 0 3.817-8.496-.185-10.45-.96-.37-7.24 1.43-7.24 1.43s-51.63 5.153-72.61 5.64c.5 2.756 2.38 5.336 4.93 6.11 4.16 1.087 7.09.53 15.36.277 7.76-.5 13.65-.76 17.66-.76v31.19h-41.71s.88 6.97 7.97 7.14h33.73v22.16c0 4.364-3.498 6.87-7.65 6.6-4.4.034-8.15-.36-13.027-.566.623 1.24 1.977 4.496 6.035 6.824 3.087 1.502 5.054 2.053 8.13 2.053 9.237 0 14.27-5.4 14.027-14.16V53.93h38.235c3.026 0 2.72-7.432 2.72-7.432z" fill-rule="evenodd"></path></g></svg></a>
+<div class="MobileAppHeader-actions">
+<a class="MobileAppHeader-downloadLink" href="https://www.danongling.com/app?auto_download=true&amp;utm_source=zhihu&amp;utm_campaign=guest_feed&amp;utm_content=guide">下载 App</a>
+<div class="MobileAppHeader-navItem MobileAppHeader-moreIconWrapper">
+<span class="MobileAppHeader-expandBtn"><svg class="Zi Zi--More" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M3.5 5h16a1.5 1.5 0 0 1 0 3h-16a1.5 1.5 0 0 1 0-3zm0 6h16a1.5 1.5 0 0 1 0 3h-16a1.5 1.5 0 0 1 0-3zm0 6h16a1.5 1.5 0 0 1 0 3h-16a1.5 1.5 0 0 1 0-3z" fill-rule="evenodd"></path></svg></span>
+</div>
+</div>
+</div>
+</header>
+<div class="Sticky--holder" style="position: static; top: auto; right: auto; bottom: auto; left: auto; display: block; float: none; margin: 0px; height: 53px;"></div>
+</div>
+{% else %}
 <div>
 <header class="Sticky MobileAppHeader" style="line-height: 50px;">
 <div class="MobileAppHeader-inner">
-<a class="MobileAppHeader-logo" href="//www.zhihu.com/"><svg viewBox="0 0 200 91" width="56" height="28" fill="#0f88eb"><title></title><g><path d="M53.29 80.035l7.32.002 2.41 8.24 13.128-8.24h15.477v-67.98H53.29v67.978zm7.79-60.598h22.756v53.22h-8.73l-8.718 5.473-1.587-5.46-3.72-.012v-53.22zM46.818 43.162h-16.35c.545-8.467.687-16.12.687-22.955h15.987s.615-7.05-2.68-6.97H16.807c1.09-4.1 2.46-8.332 4.1-12.708 0 0-7.523 0-10.085 6.74-1.06 2.78-4.128 13.48-9.592 24.41 1.84-.2 7.927-.37 11.512-6.94.66-1.84.785-2.08 1.605-4.54h9.02c0 3.28-.374 20.9-.526 22.95H6.51c-3.67 0-4.863 7.38-4.863 7.38H22.14C20.765 66.11 13.385 79.24 0 89.62c6.403 1.828 12.784-.29 15.937-3.094 0 0 7.182-6.53 11.12-21.64L43.92 85.18s2.473-8.402-.388-12.496c-2.37-2.788-8.768-10.33-11.496-13.064l-4.57 3.627c1.363-4.368 2.183-8.61 2.46-12.71H49.19s-.027-7.38-2.372-7.38zm128.752-.502c6.51-8.013 14.054-18.302 14.054-18.302s-5.827-4.625-8.556-1.27c-1.874 2.548-11.51 15.063-11.51 15.063l6.012 4.51zm-46.903-18.462c-2.814-2.577-8.096.667-8.096.667s12.35 17.2 12.85 17.953l6.08-4.29s-8.02-11.752-10.83-14.33zM199.99 46.5c-6.18 0-40.908.292-40.953.292v-31.56c1.503 0 3.882-.124 7.14-.376 12.773-.753 21.914-1.25 27.427-1.504 0 0 3.817-8.496-.185-10.45-.96-.37-7.24 1.43-7.24 1.43s-51.63 5.153-72.61 5.64c.5 2.756 2.38 5.336 4.93 6.11 4.16 1.087 7.09.53 15.36.277 7.76-.5 13.65-.76 17.66-.76v31.19h-41.71s.88 6.97 7.97 7.14h33.73v22.16c0 4.364-3.498 6.87-7.65 6.6-4.4.034-8.15-.36-13.027-.566.623 1.24 1.977 4.496 6.035 6.824 3.087 1.502 5.054 2.053 8.13 2.053 9.237 0 14.27-5.4 14.027-14.16V53.93h38.235c3.026 0 2.72-7.432 2.72-7.432z" fill-rule="evenodd"></path></g></svg></a>
+<a class="MobileAppHeader-logo" href="//www.danongling.com/"><svg viewBox="0 0 200 91" width="56" height="28" fill="#0f88eb"><title></title><g><path d="M53.29 80.035l7.32.002 2.41 8.24 13.128-8.24h15.477v-67.98H53.29v67.978zm7.79-60.598h22.756v53.22h-8.73l-8.718 5.473-1.587-5.46-3.72-.012v-53.22zM46.818 43.162h-16.35c.545-8.467.687-16.12.687-22.955h15.987s.615-7.05-2.68-6.97H16.807c1.09-4.1 2.46-8.332 4.1-12.708 0 0-7.523 0-10.085 6.74-1.06 2.78-4.128 13.48-9.592 24.41 1.84-.2 7.927-.37 11.512-6.94.66-1.84.785-2.08 1.605-4.54h9.02c0 3.28-.374 20.9-.526 22.95H6.51c-3.67 0-4.863 7.38-4.863 7.38H22.14C20.765 66.11 13.385 79.24 0 89.62c6.403 1.828 12.784-.29 15.937-3.094 0 0 7.182-6.53 11.12-21.64L43.92 85.18s2.473-8.402-.388-12.496c-2.37-2.788-8.768-10.33-11.496-13.064l-4.57 3.627c1.363-4.368 2.183-8.61 2.46-12.71H49.19s-.027-7.38-2.372-7.38zm128.752-.502c6.51-8.013 14.054-18.302 14.054-18.302s-5.827-4.625-8.556-1.27c-1.874 2.548-11.51 15.063-11.51 15.063l6.012 4.51zm-46.903-18.462c-2.814-2.577-8.096.667-8.096.667s12.35 17.2 12.85 17.953l6.08-4.29s-8.02-11.752-10.83-14.33zM199.99 46.5c-6.18 0-40.908.292-40.953.292v-31.56c1.503 0 3.882-.124 7.14-.376 12.773-.753 21.914-1.25 27.427-1.504 0 0 3.817-8.496-.185-10.45-.96-.37-7.24 1.43-7.24 1.43s-51.63 5.153-72.61 5.64c.5 2.756 2.38 5.336 4.93 6.11 4.16 1.087 7.09.53 15.36.277 7.76-.5 13.65-.76 17.66-.76v31.19h-41.71s.88 6.97 7.97 7.14h33.73v22.16c0 4.364-3.498 6.87-7.65 6.6-4.4.034-8.15-.36-13.027-.566.623 1.24 1.977 4.496 6.035 6.824 3.087 1.502 5.054 2.053 8.13 2.053 9.237 0 14.27-5.4 14.027-14.16V53.93h38.235c3.026 0 2.72-7.432 2.72-7.432z" fill-rule="evenodd"></path></g></svg></a>
 <div class="MobileAppHeader-inner"><div class="MobileAppHeader-actions"><a class="MobileAppHeader-downloadLink" href="https://www.zhihu.com/app?auto_download=true&amp;utm_source=zhihu&amp;utm_campaign=guest_feed&amp;utm_content=guide">下载 App</a>
-<a class="MobileAppHeader-authLink" href="https://www.zhihu.com/signin?next=https://www.zhihu.com/">注册或登录</a></div>
+<a class="MobileAppHeader-authLink" href="https://www.danongling.com/signin?next=https://www.danongling.com/">注册或登录</a></div>
 </div>
 </div>
 </header>
 </div>
+{% endif %}
 
 <main role="main" class="App-main">
+{% if user %}
+
+<div id="topstory" data-login="true">
+<div class="TopstoryMain">
+<div id="topstory-items" class="">
+
+<!--
+<div class="Card TopstoryItem TopstoryItem--experimentExpand">
+<div class="Feed">
+<div class="FeedSource">
+<div class="FeedSource-firstline">热门内容, 来自: <span><a class="TopicLink" href="" target="_blank">小米手机</a></span>
+</div>
+<div class="AuthorInfo FeedSource-byline AuthorInfo--plain">
+<span class="UserLink AuthorInfo-avatarWrapper">
+<a class="UserLink-link" target="_blank" href="">
+<img class="Avatar AuthorInfo-avatar" width="24" height="24" src="" srcset="" alt="">
+</a>
+</span>
+<div class="AuthorInfo-content">
+<div class="AuthorInfo-head">
+<span class="UserLink AuthorInfo-name">
+<a class="UserLink-link" target="_blank" href="">亓纪的想法</a>
+</span>
+</div>
+<div class="AuthorInfo-detail">
+<div class="AuthorInfo-badge">
+<div class="RichText AuthorInfo-badgeText">亓纪的想法就是和你分享最好的自己</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="ContentItem ArticleItem">
+<h2 class="ContentItem-title"><a href="" target="_blank">为什么说小米7是2018年网友最值得期待的小米手机，没有之一</a></h2>
+<div class="RichContent is-collapsed RichContent--withMask">
+<div class="RichContent-cover RichContent-cover--mobile">
+<div class="RichContent-cover-inner">
+<img width="415" src="" alt="cover">
+</div>
+</div>
+<div class="RichContent-inner RichContent-inner--collapsed">
+<span class="RichText CopyrightRichText-richText">虽然目前小米mix2S是小米公司最新和关注度很高的一部旗舰手机。但是更多的网友都在小米公司微博用自己的方式套问小米7的消息，不论是在小米MIX2S发布前，发布中和发布后。那么小米7为何会有如此的魅力来…</span>
+<button class="Button ContentItem-more Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
+</div>
+<div class="ContentItem-actions">
+<button class="Button LikeButton ContentItem-action" type="button"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>57</button>
+<button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>评论 30</button>
+<button class="Button ContentItem-action Button--plain Button--withIcon Button--iconOnly" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+-->
+
+
+<!--
+<div class="Card TopstoryItem TopstoryItem--experimentExpand">
+<div class="Feed">
+<div class="FeedSource">
+<div class="FeedSource-firstline">来自话题: <span><a class="TopicLink" href="" target="_blank">金融</a></span></div>
+<div class="AuthorInfo FeedSource-byline AuthorInfo--plain">
+<span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href=""><img class="Avatar AuthorInfo-avatar" width="24" height="24" src="" srcset="" alt="NERV"></a></span>
+<div class="AuthorInfo-content">
+<div class="AuthorInfo-head">
+<span class="UserLink AuthorInfo-name">
+<a class="UserLink-link" target="_blank" href="">NERV</a>
+<a class="UserLink-badge" data-tooltip="优秀回答者" href="" target="_blank"><svg viewBox="0 0 20 20" class="Icon Icon--badgeGlorious" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title>用户标识</title><g><g fill="none" fill-rule="evenodd">     <path d="M.64 11.39c1.068.895 1.808 2.733 1.66 4.113l.022-.196c-.147 1.384.856 2.4 2.24 2.278l-.198.016c1.387-.12 3.21.656 4.083 1.735l-.125-.154c.876 1.085 2.304 1.093 3.195.028l-.127.152c.895-1.068 2.733-1.808 4.113-1.66l-.198-.022c1.386.147 2.402-.856 2.28-2.238l.016.197c-.12-1.388.656-3.212 1.735-4.084l-.154.125c1.084-.876 1.093-2.304.028-3.195l.152.127c-1.068-.895-1.808-2.732-1.66-4.113l-.022.198c.147-1.386-.856-2.4-2.24-2.28l.198-.016c-1.387.122-3.21-.655-4.083-1.734l.125.153C10.802-.265 9.374-.274 8.483.79L8.61.64c-.895 1.068-2.733 1.808-4.113 1.662l.198.02c-1.386-.147-2.4.857-2.28 2.24L2.4 4.363c.12 1.387-.656 3.21-1.735 4.084l.154-.126C-.265 9.2-.274 10.626.79 11.517L.64 11.39z" fill="#FF9500"></path>     <path d="M10.034 12.96L7.38 14.58c-.47.286-.747.09-.618-.45l.72-3.024-2.36-2.024c-.418-.357-.318-.68.235-.725l3.1-.25 1.195-2.87c.21-.508.55-.513.763 0l1.195 2.87 3.1.25c.547.043.657.365.236.725l-2.362 2.024.72 3.025c.13.535-.143.74-.616.45l-2.654-1.62z" fill="#FFF"></path>   </g></g></svg></a>
+</span></div>
+<div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">IBD.M&amp;A</div></div></div></div></div></div>
+<div class="ContentItem AnswerItem"><h2 class="ContentItem-title"><div><a target="_blank" href="">为什么这么多庞氏骗局没人管？</a></div></h2>
+<div class="ContentItem-meta"></div>
+<div class="RichContent is-collapsed RichContent--withMask">
+<div class="RichContent-inner RichContent-inner--collapsed">
+<span class="RichText CopyrightRichText-richText">举个例子： 有一个投资保本无收益的概率是99%，亏损50%本金的概率是1%…会有人做吗？不会，因为总体期望为负。 这个模型在现实中有很多， 比如在国有银行…</span>
+<button class="Button ContentItem-more Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
+</div>
+<div class="ContentItem-actions">
+<span>
+<button class="Button VoteButton VoteButton--up" aria-label="赞同" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-upIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg>95</button>
+<button class="Button VoteButton VoteButton--down VoteButton--mobileDown" aria-label="反对" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-downIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg></button>
+</span>
+<button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>评论 21</button>
+<button class="Button ContentItem-action Button--plain Button--withIcon Button--iconOnly" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span></button>
+<div class="Popover ContentItem-action"><button class="Button Button--plain Button--withIcon Button--iconOnly" aria-label="更多" type="button" id="Popover-50076-45697-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-50076-45697-content"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Dots Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill-rule="evenodd"></path></svg></span></button>
+</div></div></div></div></div>
+</div>
+-->
+
 <div>
+</div>
+</div>
+</div>
+
+<!--
+<div class="Card DownloadGuide DownloadGuide-block">
+<div class="DownloadGuide-inner"><svg xmlns="http://www.w3.org/2000/svg" width="76" height="76" viewBox="0 0 76 76" class="DownloadGuide--logo" alt="logo"><title></title><g><g fill="none" fill-rule="evenodd"><path fill="#0F88EB" d="M57.89 0C68.876 0 76 7.125 76 18.11v39.78C76 68.876 68.875 76 57.89 76H18.11C7.124 76 0 68.875 0 57.89V18.11C0 7.124 7.125 0 18.11 0h39.78z"></path><path fill="#FFF" d="M39.753 39c0 .182-.015-3.68-1.243-4h-8.56c.286-4.113.36-8.12.36-11h8.37c0-.698.322-4.39-1.403-4H22.8c.57-2.493 1.287-4.71 2.145-7 0 0-3.938 0-5.28 3.53-.554 1.46-2.16 7.06-5.02 12.78.963-.102 4.15-.19 6.026-3.632.35-.96.416-1.09.84-1.678h4.727c0 1.018-.196 10.243-.275 11h-8.554c-1.92.32-2.546 4.182-2.546 4h10.73c-.72 8.337-4.58 15.208-11.59 20.643 3.352.956 6.693-.153 8.344-1.62 0 0 3.76-3.417 5.82-11.33l8.83 10.624s1.294-4.398-.204-6.54c-1.24-1.46-4.59-5.41-6.018-6.84l-2.393 1.898c.71-2.286 1.14-4.507 1.285-6.835H39.75zm2.305-19.96v35.237h3.844l1.265 4.692 6.893-4.697H62V19.04H42.058zm15.977 31.763h-4.6l-4.592 3-.836-3h-1.96V23.01h11.988v27.793z"></path></g></g></svg>
+<div class="DownloadGuide--slogan">知乎，发现更大的世界</div><span>· 继续阅读更多个性化内容</span><span>· 体验「知乎热榜」新功能</span><button class="DownloadGuide-download">下载 App</button><button class="DownloadGuide-open">打开 App</button>
+<div class="DownloadGuide-blockBg">
+</div>
+</div>
+</div>
+-->
+
+</div>
+
+
+
+{% else %}
+<div id="topstory" data-login="false">
 <div class="NotLoggedInTopstory">
 
-<div id="topstory_item" class="Card NotLoggedInTopstoryItem">
+<div class="Card NotLoggedInTopstoryItem">
 
 <!--
 <div class="Feed">
@@ -198,6 +403,7 @@ function init()
 </div>
 </div>
 -->
+
 
 </div>
 
@@ -284,6 +490,7 @@ function init()
 -->
 </div>
 </div>
+{% endif %}
 </main>
 </div>
 </div>
