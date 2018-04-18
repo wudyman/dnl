@@ -223,6 +223,9 @@ function checkContentCollapse(){
             $(this).parent().siblings(".RichContent-inner").children(".less").removeClass("is-hide");
             $(this).parent().siblings(".RichContent-inner").children(".more").addClass("is-hide");
             $(this).parent().siblings(".RichContent-inner").children(".ContentItem-more").removeClass("is-hide");
+            $(this).parent().siblings(".ContentItem-more").removeClass("is-hide");
+            if($(this).parent().siblings(".RichContent-cover").length<=0)//no this element
+                $(this).parent().siblings(".RichContent-inner").css("max-height","400px");
             $(this).parents(".RichContent").addClass("is-collapsed");
             var index_img_url=$(this).parent().siblings(".RichContent-cover").find(".RichContent-cover-inner").attr("data-index-img-url");
             if("null"!=index_img_url)
@@ -231,9 +234,12 @@ function checkContentCollapse(){
                 $(this).parent().siblings(".RichContent-cover").find(".RichContent-cover-inner").append('<img src="'+index_img_url+'">');
                 $(this).parent().siblings(".RichContent-cover").removeClass("is-hide");
                 
-                var id=$(this).parents(".Feed").attr("id");
-                document.getElementById(id).scrollIntoView();
-                $(this).parents(".Feed").removeAttr("id");
+                if($(this).parents(".Feed").length>0)
+                {
+                    var id=$(this).parents(".Feed").attr("id");
+                    document.getElementById(id).scrollIntoView();
+                    $(this).parents(".Feed").removeAttr("id");
+                }
             }
         });
     });
@@ -252,21 +258,56 @@ function checkContentExpand(){
             $(this).siblings(".RichContent-cover").find(".RichContent-cover-inner").append('<img src="'+index_img_url+'">');
         }
         $(this).click(function(){
-            console.log("checkContentExpand");
+            console.log("checkContentExpand 1");
             $(this).children(".less").addClass("is-hide");
             $(this).children(".more").removeClass("is-hide");
             $(this).children(".ContentItem-more").addClass("is-hide");
+            $(this).siblings(".ContentItem-more").addClass("is-hide");
             $(this).siblings(".ContentItem-actions").children(".ContentItem-less").removeClass("is-hide");
             $(this).parent().removeClass("is-collapsed");
             $(this).siblings(".RichContent-cover").addClass("is-hide");
+            if($(this).siblings(".RichContent-cover").length<=0)//no this element
+            {
+                $(this).css("max-height","");
+            }
             //$(this).siblings(".ContentItem-actions").addClass("Sticky RichContent-actions is-fixed is-bottom").css({"width": "455.2px", "bottom": "0px", "left": "0px"});
-            
-            var timestamp=new Date().getTime();
-            $(this).parents(".Feed").attr("id",timestamp);
+            if($(this).parents(".Feed").length>0)
+            {
+                var timestamp=new Date().getTime();
+                $(this).parents(".Feed").attr("id",timestamp);
+            }
         });
     });
+    
+    $(".ContentItem-more").off("click");
+    $(".ContentItem-more").each(function(){
+        $(this).click(function(e){
+            console.log("checkContentExpand 2");
+            $(this).siblings(".less").addClass("is-hide");
+            $(this).siblings(".more").removeClass("is-hide");
+            $(this).addClass("is-hide");
+            $(this).parent().siblings(".ContentItem-actions").children(".ContentItem-less").removeClass("is-hide");
+            $(this).siblings(".ContentItem-actions").children(".ContentItem-less").removeClass("is-hide");
+            $(this).parent().removeClass("is-collapsed");
+            $(this).parent().parent().removeClass("is-collapsed");
+            $(this).parent().siblings(".RichContent-cover").addClass("is-hide");
+            if($(this).siblings(".RichContent-cover").length<=0)//no this element
+            {
+                $(this).siblings(".RichContent-inner").css("max-height","");
+            }
+            //$(this).siblings(".ContentItem-actions").addClass("Sticky RichContent-actions is-fixed is-bottom").css({"width": "455.2px", "bottom": "0px", "left": "0px"});
+            if($(this).parents(".Feed").length>0)
+            {
+                var timestamp=new Date().getTime();
+                $(this).parents(".Feed").attr("id",timestamp);
+            }
+            e.stopPropagation();
+        });
+    });
+    
 }
 
+/*
 function checkContentCollapse2(){
     $(".ContentItem-less.NC-RichContent-type2").off("click");
     $(".ContentItem-less.NC-RichContent-type2").each(function(){
@@ -299,6 +340,7 @@ function checkContentExpand2(){
         });
     });
 }
+*/
 
 function checkAnswerLike(){
     $(".AnswerLike").off("click");
@@ -377,39 +419,6 @@ function checkPopoverShow(){
     
     });
 
-    /*
-    $('.PeoplePopover').each(function(){
-            $(this).parent().hover(function(){
-                var element=$(this).children(".PeoplePopover");
-                var author_id=element.attr("data-author-id");
-                console.log("popover");
-                $.get("/ajax/er/"+author_id+"/",function(ret){
-                    er_id=ret[0];
-                    er_name=ret[1];
-                    er_avatar=ret[2];
-                    er_mood=ret[3];
-                    er_answer_nums=ret[4];
-                    er_follower_nums=ret[5];
-                    er_followed=ret[6];
-                    
-                    var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+er_avatar+'" srcset="'+er_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><span><a href="/er/'+er_id+'">'+er_name+'</a></span></div><div class="HoverCard-subtitle"><span class="RichText">'+er_mood+'</span></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+er_answer_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">0</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="people-followed">'+er_follower_nums+'</div></a></div>';
-                    if(er_followed)
-                        var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="true">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
-                    else
-                        var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="false">关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
-                    var data=data1+data2;
-                    element.attr("data-content",data);
-                    element.popover('show'); 
-                    setLetterReceiver(er_id,er_name);
-                    checkFollow();                     
-                    //element.siblings(".popover").attr("in",true);
-                    //element.siblings(".popover").children().attr("in",true);
-                });
-            },function(){
-                    $(this).children(".PeoplePopover").popover('hide');
-            });
-    });
-    */
     $('.TopicPopover').off("mouseenter mouseleave");
     $('.TopicPopover').on("mouseenter mouseleave",function(event){
         if(event.type=="mouseenter")
@@ -453,36 +462,7 @@ function checkPopoverShow(){
         }
     
     }); 
-    /*
-    $('.TopicPopover').each(function(){
-            $(this).parent().hover(function(){
-                console.log("TopicPopover show");
-                var element=$(this).children(".TopicPopover");
-                var topic_id=element.attr("data-topic-id");
-                $.get("/ajax/topic/"+topic_id+"/",function(ret){
-                    topic_id=ret[0];
-                    topic_name=ret[1];
-                    topic_avatar=ret[2];
-                    topic_question_nums=ret[3];
-                    topic_follower_nums=ret[4];
-                    topic_followed=ret[5];
 
-                    var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+topic_avatar+'" srcset="'+topic_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><a target="_blank" href="/topic/'+topic_id+'">'+topic_name+'</a></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" href="/topic/'+topic_id+'/questions" type="button"><div class="NumberBoard-name">问题&nbsp;</div><div class="NumberBoard-value">'+topic_question_nums+'</div></a><a class="Button NumberBoard-item Button--plain" href="/topic/'+topic_id+'/followers" type="button"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="topic-followed">'+topic_follower_nums+'</div></a></div>';
-                    if(topic_followed)
-                        var data2='<div class="HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-topic-id="'+topic_id+'" data-follow-type="topic" data-followed="true">已关注</button></div></div>';
-                    else
-                        var data2='<div class="HoverCard-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-topic-id="'+topic_id+'" data-follow-type="topic" data-followed="false">关注</button></div></div>';
-                    var data=data1+data2;
-                    element.attr("data-content",data);
-                    element.popover('show');
-                    checkFollow(); 
-                });
-            },function(){
-                    console.log("TopicPopover hide");
-                    $(this).children(".TopicPopover").popover('hide');
-            });
-    });
-    */
     $('#NotificationPopover').off("click");
     $('#NotificationPopover').click(function(e){
         console.log("NotificationPopover click");
@@ -587,15 +567,44 @@ function checkPopoverShow(){
     
 }
 
+function checkExpandBtn(){
+    $('.MobileAppHeader-expandBtn').off("click");
+    $('.MobileAppHeader-expandBtn').click(function(e){
+        console.log("MobileAppHeader-expandBtn click");
+        if($('.MobileAppHeader-expandBtn').children('svg').hasClass('Zi--More'))
+        {
+            var svg='<svg class="Zi Zi--Close" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg>';
+            $('.MobileAppHeader-expandBtn').empty().append(svg);
+            var data='<div><div class="MobileAppHeader-expandContainer"><span><div class="MobileAppHeader-expand">\
+                        <a href="//www.danongling.com/"><svg class="Zi Zi--Home" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M3 3.99C3 2.892 3.893 2 4.995 2h14.01C20.107 2 21 2.898 21 3.99v16.02c0 1.099-.893 1.99-1.995 1.99H4.995A1.997 1.997 0 0 1 3 20.01V3.99zM6 7c0 .556.449 1 1.002 1h9.996a.999.999 0 1 0 0-2H7.002C6.456 6 6 6.448 6 7zm0 5c0 .556.449 1 1.002 1h9.996a.999.999 0 1 0 0-2H7.002C6.456 11 6 11.448 6 12zm0 5c0 .556.446 1 .997 1h6.006c.544 0 .997-.448.997-1 0-.556-.446-1-.997-1H6.997C6.453 16 6 16.448 6 17z"></path></svg>首页</a>\
+                        <a href="//www.danongling.com/search"><svg class="Zi Zi--Search" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M17.068 15.58a8.377 8.377 0 0 0 1.774-5.159 8.421 8.421 0 1 0-8.42 8.421 8.38 8.38 0 0 0 5.158-1.774l3.879 3.88c.957.573 2.131-.464 1.488-1.49l-3.879-3.878zm-6.647 1.157a6.323 6.323 0 0 1-6.316-6.316 6.323 6.323 0 0 1 6.316-6.316 6.323 6.323 0 0 1 6.316 6.316 6.323 6.323 0 0 1-6.316 6.316z" fill-rule="evenodd"></path></svg>搜索</a>\
+                        <a href="//www.danongling.com/people/wudy-67"><svg class="Zi Zi--Profile" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M15.417 12.923c-.376.653-.837 1.281-.763 1.863.292 2.273 5.562 1.77 6.78 3.048.566.595.566.664.566 4.164-6.611-.07-13.363 0-20 0 .027-3.5 0-3.478.62-4.164 1.303-1.44 6.581-.715 6.78-3.133.045-.545-.38-1.114-.763-1.778C6.511 9.233 5.697 2 12 2s5.422 7.443 3.417 10.923z" fill-rule="evenodd"></path></svg>我的主页</a>\
+                        <a href="//www.danongling.com/logout?next=https://www.zhihu.com/"><svg class="Zi Zi--Logout" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M2 11.999c0-2.756 1.154-5.417 3.167-7.3a1.266 1.266 0 0 1 1.73 1.847 7.396 7.396 0 0 0-2.367 5.453c0 4.119 3.35 7.47 7.47 7.47 4.119 0 7.47-3.351 7.47-7.47a7.41 7.41 0 0 0-2.279-5.37 1.266 1.266 0 0 1 1.76-1.819A9.923 9.923 0 0 1 22 12c0 5.513-4.486 10-10 10s-10-4.487-10-10zm8.699-.482V3.26a1.26 1.26 0 1 1 2.52 0v8.257a1.26 1.26 0 1 1-2.52 0z" fill-rule="evenodd"></path></svg>退出帐号</a>\
+                        <div class="MobileAppHeader-expandBackdrop"></div></div></span></div></div>';
+            $(".Mobile-body").addClass("MobileAppHeader-noScrollBody").append(data);
+            
+        }
+        else if($('.MobileAppHeader-expandBtn').children('svg').hasClass('Zi--Close'))
+        {
+            var svg='<svg class="Zi Zi--More" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M3.5 5h16a1.5 1.5 0 0 1 0 3h-16a1.5 1.5 0 0 1 0-3zm0 6h16a1.5 1.5 0 0 1 0 3h-16a1.5 1.5 0 0 1 0-3zm0 6h16a1.5 1.5 0 0 1 0 3h-16a1.5 1.5 0 0 1 0-3z" fill-rule="evenodd"></path></svg>';
+            $('.MobileAppHeader-expandBtn').empty().append(svg);
+            $(".Mobile-body").removeClass("MobileAppHeader-noScrollBody");
+            $(".MobileAppHeader-expandContainer").parent().remove();
+            
+        }
+    });
+}
+
 function checkSets()
 {
     checkFollow();
     checkContentExpand();
     checkContentCollapse();
-    checkContentExpand2();
-    checkContentCollapse2();
+    //checkContentExpand2();
+    //checkContentCollapse2();
     checkPopoverShow();
     checkAnswerLike();
+    checkExpandBtn();
 }
 
 function sendFileQuestion(file){
