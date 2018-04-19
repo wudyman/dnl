@@ -27,6 +27,11 @@ class TopicView(generic.ListView):
     def get_queryset(self):
         pass
     def get(self,request,*args,**kwargs):
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print(is_mobile)
+        if is_mobile:
+            self.template_name='question/t_topic_mobile.html'
         topic_id=self.kwargs.get('topic_id')
         topic=get_object_or_404(Topic,pk=topic_id)
         user=request.user

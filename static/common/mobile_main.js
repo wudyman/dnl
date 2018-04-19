@@ -167,7 +167,7 @@ function followTopic(button){
             {
                 button.removeClass("Button--green").addClass("Button--grey").text("已关注");
                 button.attr("data-followed","true");
-                update_value("topic-followed",ret);
+                updateValue("topic-followed",ret);
             }
         });  
     }
@@ -201,6 +201,7 @@ function followQuestion(button){
 
 function checkFollow()
 {
+    $(".FollowButton").off("click");
     $(".FollowButton").each(function(){
         var button=$(this);
         button.click(function(){
@@ -234,11 +235,11 @@ function checkContentCollapse(){
                 $(this).parent().siblings(".RichContent-cover").find(".RichContent-cover-inner").append('<img src="'+index_img_url+'">');
                 $(this).parent().siblings(".RichContent-cover").removeClass("is-hide");
                 
-                if($(this).parents(".Feed").length>0)
+                if($(this).parents(".ScrollIntoMark").length>0)
                 {
-                    var id=$(this).parents(".Feed").attr("id");
+                    var id=$(this).parents(".ScrollIntoMark").attr("id");
                     document.getElementById(id).scrollIntoView();
-                    $(this).parents(".Feed").removeAttr("id");
+                    $(this).parents(".ScrollIntoMark").removeAttr("id");
                 }
             }
         });
@@ -271,10 +272,10 @@ function checkContentExpand(){
                 $(this).css("max-height","");
             }
             //$(this).siblings(".ContentItem-actions").addClass("Sticky RichContent-actions is-fixed is-bottom").css({"width": "455.2px", "bottom": "0px", "left": "0px"});
-            if($(this).parents(".Feed").length>0)
+            if($(this).parents(".ScrollIntoMark").length>0)
             {
                 var timestamp=new Date().getTime();
-                $(this).parents(".Feed").attr("id",timestamp);
+                $(this).parents(".ScrollIntoMark").attr("id",timestamp);
             }
         });
     });
@@ -296,10 +297,10 @@ function checkContentExpand(){
                 $(this).siblings(".RichContent-inner").css("max-height","");
             }
             //$(this).siblings(".ContentItem-actions").addClass("Sticky RichContent-actions is-fixed is-bottom").css({"width": "455.2px", "bottom": "0px", "left": "0px"});
-            if($(this).parents(".Feed").length>0)
+            if($(this).parents(".ScrollIntoMark").length>0)
             {
                 var timestamp=new Date().getTime();
-                $(this).parents(".Feed").attr("id",timestamp);
+                $(this).parents(".ScrollIntoMark").attr("id",timestamp);
             }
             e.stopPropagation();
         });
