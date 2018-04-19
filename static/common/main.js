@@ -160,7 +160,7 @@ function followTopic(button){
             {
                 button.removeClass("Button--green").addClass("Button--grey").text("已关注");
                 button.attr("data-followed","true");
-                update_value("topic-followed",ret);
+                updateValue("topic-followed",ret);
             }
         });  
     }
@@ -194,6 +194,7 @@ function followQuestion(button){
 
 function checkFollow()
 {
+    $(".FollowButton").off("click");
     $(".FollowButton").each(function(){
         var button=$(this);
         button.click(function(){
