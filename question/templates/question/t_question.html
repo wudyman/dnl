@@ -314,20 +314,17 @@ function showAuthorCard()
                 checkSets();
             }
         });
-        return "more_answer_list";
+        return "more";
     }
     else
     {
         console.log("author_id is null");
         
-        return "normal_answer_list";
+        return "all";
     }
 }
-
-function getMoreContent(type)
+function getMoreAnswerData()
 {
-    if("more_answer_list"==type)
-    {
         var order=1;
         var start=0;
         var end=2;
@@ -338,14 +335,15 @@ function getMoreContent(type)
                 appendMoreAnswerListElement(ret);
                 checkSets();
             }
+            setLockScrollMoreData("false");
         });
-    }
-    else if("normal_answer_list"==type)
-    {
+}
+function getAllAnswerData()
+{
         var nums=$('#AnswerItems .List-item').length;
         var order=1;
         var start=nums;
-        var end=start+5;
+        var end=start+STEP;
         var question_id=$(".QuestionPage").attr("data-question-id");
         $.get('/ajax/answers/'+question_id+'/'+order+'/'+start+'/'+end+'/',function(ret){
             if("fail"!=ret)
@@ -353,18 +351,19 @@ function getMoreContent(type)
                 appendNormalAnswerListElement(ret);
                 checkSets();
             }
+            setLockScrollMoreData("false");
         });
+}
+function getMoreData()
+{
+    if("all"==g_list_type)
+    {
+        getAllAnswerData();
     }
 }
 
-function initAnswerList(type)
+function initAllAnswerList()
 {
-    if("more_answer_list"==type)
-    {
-        console.log("init_more_answer_list");
-    }
-    else if("normal_answer_list"==type)
-    {
         var answer_nums=$(".QuestionPage").attr("data-question-answer-nums");
         var data='<div class="Card">\
             <div class="List">\
@@ -377,26 +376,21 @@ function initAnswerList(type)
             </div>\
             ';
         $("#AnswerItems").append(data);
-    }
 }
-
-window.onscroll = function () { 
-console.log(getScrollTop());
-console.log(getClientHeight());
-console.log(getScrollHeight());
-if (getScrollTop() + getClientHeight() +1 >= getScrollHeight()) { 
-        if("normal_answer_list"==answer_list_type)
-            getMoreContent(answer_list_type); 
-    } 
-} 
-
 
 function init()
 {
-    answer_list_type=showAuthorCard(); 
+    g_list_type=showAuthorCard();
+    if("more"==g_list_type)
+    {
+        getMoreAnswerData();
+    }
+    else
+    {
+        initAllAnswerList();
+        getMoreData();
+    }    
     //prepare_content();
-    initAnswerList(answer_list_type);
-    getMoreContent(answer_list_type);
     checkSets();
     
     $('#summernote_answer').summernote({

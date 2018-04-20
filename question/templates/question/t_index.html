@@ -113,36 +113,21 @@ function appendFeedElement(ret)
 }
 
 
-//获取文档完整的高度 
+
 function getMoreData() { 
     var nums=$('.QuestionFrame').length;
     var order=1;//pub_date
     var start=nums;
-    var end=start+5;
+    var end=start+STEP;
     $.get('/ajax/questions/'+order+'/'+start+'/'+end+'/',function(ret){
         if("fail"!=ret)
         {
             appendFeedElement(ret);  
             checkSets();
         }
+        setLockScrollMoreData("false");
     });
 } 
-
-
-window.onscroll = function () { 
-console.log(getScrollTop());
-console.log(getClientHeight());
-console.log(getScrollHeight());
-if (getScrollTop() + getClientHeight() +1 >= getScrollHeight()) { 
-        getMoreData(); 
-    } 
-} 
-
-/*
-$(function() {
-    getMoreData();
-});
-*/
 
 function init()
 {

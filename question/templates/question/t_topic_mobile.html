@@ -81,26 +81,26 @@ function appendTopicElement(ret)
     }
 }
 
-function getTopicElement(topic_id)
+function getMoreData()
 {
-    var order=0;
-    var start=0;
-    var end=5;
-    console.log(topic_id);
-    $.get("/ajax/topic/"+topic_id+"/"+order+"/"+start+"/"+end+"/",function(ret){
-        appendTopicElement(ret);
-        console.log(ret);
-        //checkPopoverShow();
-        //checkContentExpand();
-        //checkContentCollapse();
-        checkSets();
+    var nums=$('.List-item.TopicFeedItem').length;
+    var order=1;
+    var start=nums;
+    var end=start+STEP;
+    $.get("/ajax/topic/"+g_topic_id+"/"+order+"/"+start+"/"+end+"/",function(ret){
+        if("fail"!=ret)
+        {
+            appendTopicElement(ret);
+            checkSets();
+        }
+        setLockScrollMoreData("false");
     });
 }
 
 function init()
 {
-    topic_id=$(".TopicCard").attr("data-topic-id");
-    getTopicElement(topic_id);
+    g_topic_id=$(".TopicCard").attr("data-topic-id");
+    getMoreData();
     checkSets();
 }
 </script>

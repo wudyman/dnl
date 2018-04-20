@@ -866,7 +866,28 @@ function initCommon()
     
     checkSelectOption();
 }
-
+STEP=5;
+LOCK_SCROLL_MOREDATA="true";
+function isLockScrollMoreData()
+{
+    return LOCK_SCROLL_MOREDATA;
+}
+function setLockScrollMoreData(val)
+{
+    LOCK_SCROLL_MOREDATA=val;
+}
+window.onscroll = function () { 
+//console.log(getScrollTop());
+//console.log(getClientHeight());
+//console.log(getScrollHeight());
+if (getScrollTop() + getClientHeight() +1 >= getScrollHeight()) {
+        if("false"==isLockScrollMoreData())
+        {
+            setLockScrollMoreData("true");
+            getMoreData();
+        }
+    } 
+}
 $(document).ready(function() {
     initCommon();
     init();
