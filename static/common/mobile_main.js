@@ -249,6 +249,15 @@ function checkContentCollapse(){
 function checkContentExpand(){
     $(".RichContent-inner").off("click");
     $(".RichContent-inner").each(function(){
+        
+        if($(this).siblings(".ContentItem-more").hasClass("is-hide"))
+        {
+            if($(this).parents(".ScrollIntoMark").length>0)
+            {
+                var timestamp=new Date().getTime();
+                $(this).parents(".ScrollIntoMark").attr("id",timestamp);
+            }
+        }
         var index_img_url=$(this).siblings(".RichContent-cover").find(".RichContent-cover-inner").attr("data-index-img-url")
         if("null"==index_img_url)
         {
@@ -891,7 +900,29 @@ function initCommon()
     checkSelectOption();
 }
 
-$(document).ready(function() {
+STEP=5;
+LOCK_SCROLL_MOREDATA="true";
+function isLockScrollMoreData()
+{
+    return LOCK_SCROLL_MOREDATA;
+}
+function setLockScrollMoreData(val)
+{
+    LOCK_SCROLL_MOREDATA=val;
+}
+window.onscroll = function () { 
+//console.log(getScrollTop());
+//console.log(getClientHeight());
+//console.log(getScrollHeight());
+if (getScrollTop() + getClientHeight() +1 >= getScrollHeight()) {
+        if("false"==isLockScrollMoreData())
+        {
+            setLockScrollMoreData("true");
+            getMoreData();
+        }
+    } 
+}
+$(document).ready(function(){
     initCommon();
     init();
 });
