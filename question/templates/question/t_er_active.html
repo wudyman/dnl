@@ -239,6 +239,71 @@ function appendQuestionElement()
     });
 }
 
+function profileEdit()
+{
+    $("main").empty();
+	var data='\
+			<div class="ProfileEdit">\
+			<div class="Card">\
+			<div class="ProfileHeader-header">\
+			<div class="UserCoverEditor">\
+			<div>\
+			<div class="UserCoverGuide">\
+			<div class="UserCoverGuide-inner">\
+			<div class="UserCoverGuide-buttonContainer">\
+			<button class="Button DynamicColorButton" type="button"><svg viewBox="0 0 20 16" class="Icon Icon--camera Icon--left" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M18.094 2H15s-1-2-2-2H7C6 0 5 2 5 2H2C0 2 0 3.967 0 3.967V14c0 2 2.036 2 2.036 2H17c3 0 3-1.983 3-1.983V4c0-2-1.906-2-1.906-2zM10 12c-1.933 0-3.5-1.567-3.5-3.5S8.067 5 10 5s3.5 1.567 3.5 3.5S11.933 12 10 12zm0 1.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm7.5-8c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1z" fill-rule="evenodd"></path></g></svg>上传封面图片</button>\
+			</div>\
+			<div class="UserCoverGuide-dialog">\
+			<h4 class="UserCoverGuide-dialogHead">上传一张图片，展示在这里</h4>\
+			<div class="UserCoverGuide-dialogContent">\
+			<p class="UserCoverGuide-dialogDescription">你可以使用自己的摄影作品、你喜欢的照片，或是任何能展现你特质的图片。</p>\
+			<a href="https://www.danongling.com/question/21757507" target="_blank" rel="noopener noreferrer">哪里能找到可免费使用的优质图片？</a>\
+			</div>\
+			</div>\
+			</div>\
+			<ul class="UserCoverGuide-items">\
+			</ul>\
+			</div>\
+			<div class="UserCover"></div>\
+			</div>\
+			<input type="file" accept="image/png,image/jpeg" style="display: none;">\
+			</div></div>\
+			<div class="ProfileHeader-main"><div>\
+			<div class="UserAvatarEditor ProfileHeader-avatar">\
+			<div class="UserAvatar">\
+			<img id="id_avatar" class="Avatar Avatar--large UserAvatar-inner" width="160" height="160" src="{{user.userprofile.avatar}}" srcset="{{user.userprofile.avatar}}">\
+			</div>\
+			<div class="Mask UserAvatarEditor-mask">\
+			<div class="Mask-mask Mask-mask--black UserAvatarEditor-maskInner">\
+			</div>\
+			<div class="Mask-content">\
+			<svg class="Zi Zi--Camera UserAvatarEditor-cameraIcon" fill="currentColor" viewBox="0 0 24 24" width="36" height="36"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill-rule="evenodd"></path></svg>\
+			<div class="UserAvatarEditor-maskInnerText">修改我的头像</div>\
+			</div>\
+			</div>\
+			<input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;">\
+			</div>\
+			</div>\
+			<div class="ProfileHeader-content">\
+			<div class="ProfileHeader-contentHead">\
+			<h1 class="ProfileHeader-title"><span class="ProfileHeader-name">{{user.first_name}}</span></h1>\
+			<div class="ProfileHeader-expandActions ProfileEdit-expandActions">\
+			<a class="Button Button--plain" type="button" href="/er/{{user.id}}">返回我的主页<svg viewBox="0 0 10 6" class="Icon ProfileEdit-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></a>\
+			</div>\
+			</div>\
+			<div class="ProfileEdit-fields">\
+			<form class="Field"><h3 class="Field-label">性别</h3><div class="Field-content"><div><span class="Field-text">{{user.userprofile.sexual}}</span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></form>\
+			<form class="Field"><h3 class="Field-label">一句话介绍</h3><div class="Field-content"><div><span class="Field-text"><span class="RichText">{{user.userprofile.mood}}</span></span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></form>\
+			<form class="Field"><h3 class="Field-label">居住地</h3><div class="Field-content"><div class="AddButton"><button class="Button Button--link" type="button"><svg viewBox="0 0 18 18" class="Icon AddButton-icon Icon--add Icon--left" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><g fill-rule="evenodd"><path d="M6.035 16.433c-.875-.35-1.678-.848-2.383-1.482-.205-.184-.52-.167-.707.04-.185.204-.167.52.038.705.794.714 1.696 1.274 2.682 1.668.06.023.123.035.185.035.198 0 .386-.12.464-.314.103-.258-.022-.55-.28-.65zM1.097 10.247C1.054 9.975.8 9.79.525 9.83c-.273.043-.46.3-.417.57.154.98.467 1.925.93 2.803.09.17.264.267.443.267.08 0 .16-.02.234-.058.244-.13.338-.432.208-.676-.41-.78-.69-1.618-.825-2.49zM9.106 1c.95.014 1.878.19 2.76.528.058.022.118.033.178.033.2 0 .39-.12.467-.32.1-.258-.03-.547-.287-.646C11.233.214 10.19.014 9.12 0h-.007c-.273 0-.496.22-.5.493-.003.278.218.504.493.508zM3.73 2.83c.108 0 .218-.034.31-.107.693-.55 1.465-.976 2.295-1.27.26-.09.397-.377.305-.637C6.548.556 6.263.42 6.002.51 5.068.84 4.2 1.323 3.42 1.94c-.217.17-.254.485-.083.702.1.124.245.19.393.19zM2.01 4.136c-.236-.144-.544-.07-.688.165-.557.91-.945 1.9-1.15 2.944-.055.27.12.534.392.587.033.008.065.01.098.01.234 0 .443-.164.49-.402.184-.927.528-1.807 1.023-2.614.144-.236.07-.543-.165-.688zM14.927 2.228c-.207-.183-.523-.162-.705.047-.182.208-.16.523.047.706.664.583 1.224 1.265 1.665 2.028.092.16.26.25.433.25.085 0 .17-.02.25-.067.24-.137.32-.443.183-.682-.495-.86-1.125-1.626-1.873-2.28zM17.294 7.07c-.27.047-.454.306-.408.578.076.44.114.896.114 1.35 0 .493-.046.984-.133 1.46-.05.27.13.532.402.582.03.005.06.008.09.008.236 0 .446-.17.49-.41.1-.534.148-1.085.15-1.638 0-.513-.044-1.025-.13-1.52-.045-.273-.303-.457-.576-.41zM16.566 12.91c-.235-.14-.544-.065-.686.174-.452.76-1.02 1.434-1.692 2.005-.21.18-.235.494-.057.704.1.116.24.176.382.176.115 0 .23-.04.324-.12.754-.643 1.395-1.4 1.903-2.254.142-.238.064-.544-.174-.686zM11.766 16.51c-.884.325-1.814.49-2.772.49l-.208-.002c-.283-.02-.505.21-.513.487-.007.275.21.506.487.513L9 18c1.07 0 2.116-.186 3.11-.553.26-.095.393-.383.297-.642-.095-.26-.385-.392-.64-.295zM9.8 8.2V6.3c0-.442-.358-.8-.8-.8-.442 0-.8.358-.8.8v1.9H6.3c-.442 0-.8.358-.8.8 0 .442.358.8.8.8h1.9v1.9c0 .442.358.8.8.8.442 0 .8-.358.8-.8V9.8h1.9c.442 0 .8-.358.8-.8 0-.442-.358-.8-.8-.8H9.8z"></path></g></g></svg>添加居住地</button></div><div class="Field-list"><div class="Field-card" draggable="true"><img class="Avatar Field-avatar" width="20" height="20" src="https://pic4.zhimg.com/e82bab09c_s.jpg" srcset="https://pic4.zhimg.com/e82bab09c_xs.jpg 2x"><span>{{user.userprofile.residence}}</span></div></div></div></form>\
+			<form class="Field"><h3 class="Field-label">所在行业</h3><div class="Field-content"><div><span class="Field-text">{{user.userprofile.job}}</span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></form>\
+			<form class="Field"><h3 class="Field-label">个人简介</h3><div class="Field-content"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">{{user.userprofile.intro}}</span></span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></form>\
+			</div>\
+			</div>\
+			</div>\
+			</div>\
+			</div>';
+    $("main").append(data);
+}
 function adjustChooseBox()
 {
     var width=200;
@@ -433,17 +498,49 @@ console.log("success");
 }); // end ajax
 }
 
+function initElement()
+{
+	$("#MenuPopover").attr({"src":user_avatar,"srcset":user_avatar});
+	$(".ProfileHeader-name").text(er_name);
+}
+
+function initData()
+{
+	var str_main_data=$("main").attr("data-dfs-main");
+	//console.log(str_main_data);
+	var main_data=JSON.parse(str_main_data);//str_main_data.parseJSON();
+	//console.log(main_data.user_name);
+	var str_ext_data=$("main").attr("data-dfs-ext");
+	//console.log(str_ext_data);
+	var ext_data=JSON.parse(str_ext_data);
+	//console.log(ext_data.questions_num);
+	
+	user_id=main_data.user_id;
+	user_name=main_data.user_name;
+	user_avatar=main_data.user_avatar;
+	
+	er_id=main_data.er_id;
+    er_name=main_data.er_name;
+    er_avatar=main_data.er_avatar;
+    er_mood=main_data.er_mood;
+    who=main_data.who;
+	followed=main_data.followed;
+	command=main_data.command;
+    subcmd=main_data.subcmd;
+	
+	questions_num=ext_data.questions_num;
+	answers_num=ext_data.answers_num;
+	followtos_num=ext_data.followtos_num;
+	followers_num=ext_data.followers_num;
+	followtopics_num=ext_data.followtopics_num;
+	followquestions_num=ext_data.followquestions_num;
+}
 function init()
 {
     checkAvatar();
-    er_id=$(".ProfileMain-header").attr("data-er-id");
-    er_name=$(".ProfileMain-header").attr("data-er-name");
-    er_avatar=$(".ProfileMain-header").attr("data-er-avatar");
-    er_mood=$(".ProfileMain-header").attr("data-er-mood");
-    command=$(".ProfileMain-header").attr("data-command");
-    subcmd=$(".ProfileMain-header").attr("data-subcmd");
+	initData();
+	initElement();
     who_han="他";
-    var who=$(".ProfileMain-header").attr("data-who");
     if ("me"==who)
         who_han="我";
     else if("she"==who)
@@ -534,7 +631,7 @@ function init()
 
 <div class="AppHeader-profile">
 <div class="1Popover AppHeader-menu">
-<img class="Avatar AppHeader-profileAvatar" id="MenuPopover" data-er-id="{{user.id}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="{{user.userprofile.avatar}}" srcset="{{user.userprofile.avatar}} 2x">
+<img class="Avatar AppHeader-profileAvatar" id="MenuPopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="/media/avatar/default.jpg" srcset="/media/avatar/default.jpg">
 </div>
 </div>
 
@@ -546,49 +643,30 @@ function init()
 </header>
 
 </div>
-<main role="main" class="App-main" data-reactid="47">
-<div><!-- react-empty: 2694 -->
-<div itemprop="people" itemtype="http://schema.org/Person" itemscope="">
-
-<!-- react-empty: 2834 -->
-<div id="ProfileHeader" class="ProfileHeader" data-za-module="Unknown" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;User&quot;,&quot;token&quot;:&quot;verna-18-5&quot;}}}">
+<main role="main" class="App-main" data-dfs-main='{ "user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","er_id":"{{er.id}}","er_name":"{{er.first_name}}"
+,"who":"{{who}}","followed":"{{followed}}","command":"{{command}}","subcmd":"{{subcmd}}"}'   data-dfs-ext='{"questions_num":"{{ext_info.questions_num}}","answers_num":"{{ext_info.answers_num}}"
+,"followtos_num":"{{ext_info.followtos_num}}","followers_num":"{{ext_info.followers_num}}","followtopics_num":"{{ext_info.followtopics_num}}","followquestions_num":"{{ext_info.followquestions_num}}"}'>
+<div>
+<div>
+<div id="ProfileHeader" class="ProfileHeader">
 <div class="Card">
+
 <div class="ProfileHeader-userCover">
 <div class="UserCoverEditor">
 <div>
-<div class="UserCoverGuide">
-<div class="UserCoverGuide-inner">
-<div class="UserCoverGuide-buttonContainer">
-<button class="Button DynamicColorButton" type="button"><svg viewBox="0 0 20 16" class="Icon Icon--camera Icon--left" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M18.094 2H15s-1-2-2-2H7C6 0 5 2 5 2H2C0 2 0 3.967 0 3.967V14c0 2 2.036 2 2.036 2H17c3 0 3-1.983 3-1.983V4c0-2-1.906-2-1.906-2zM10 12c-1.933 0-3.5-1.567-3.5-3.5S8.067 5 10 5s3.5 1.567 3.5 3.5S11.933 12 10 12zm0 1.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm7.5-8c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1z" fill-rule="evenodd"></path></g></svg><!-- react-text: 2717 -->上传封面图片<!-- /react-text --></button>
-</div>
-<div class="UserCoverGuide-dialog">
-<h4 class="UserCoverGuide-dialogHead">上传一张图片，展示在这里</h4>
-<div class="UserCoverGuide-dialogContent">
-<p class="UserCoverGuide-dialogDescription">你可以使用自己的摄影作品、你喜欢的照片，或是任何能展现你特质的图片。</p>
-<a href="https://www.zhihu.com/question/21757507" target="_blank">哪里能找到可免费使用的优质图片？</a>
-</div>
-</div>
-</div>
-<ul class="UserCoverGuide-items">
-<li class="UserCoverGuide-item" style="background-image: url(&quot;https://static.zhihu.com/heifetz/guide-cover-1.4423ce0fcec2132f058c.jpg&quot;);"></li>
-<li class="UserCoverGuide-item" style="background-image: url(&quot;https://static.zhihu.com/heifetz/guide-cover-2.4c5018526e42872a056b.jpg&quot;);"></li>
-<li class="UserCoverGuide-item" style="background-image: url(&quot;https://static.zhihu.com/heifetz/guide-cover-3.d59ac68c89726deb3a26.jpg&quot;);"></li>
-<li class="UserCoverGuide-item" style="background-image: url(&quot;https://static.zhihu.com/heifetz/guide-cover-4.5518ba1a1aeb013b4c5c.jpg&quot;);"></li>
-<li class="UserCoverGuide-item" style="background-image: url(&quot;https://static.zhihu.com/heifetz/guide-cover-5.2b2adaebc37bf48bacae.jpg&quot;);"></li>
-</ul>
-</div>
 <div class="UserCover UserCover--colorBlock">
 </div>
 </div>
 <input type="file" accept="image/png,image/jpeg" style="display: none;">
 </div>
 </div>
+
 <div class="ProfileHeader-wrapper">
 <div class="ProfileHeader-main">
 
 <div class="UserAvatarEditor ProfileHeader-avatar" style="top: -74px;">
 <div class="UserAvatar">
-<img id="id_avatar" class="Avatar Avatar--large UserAvatar-inner" width="160" height="160" src="{{ er.userprofile.avatar }}" srcset="{{ user.userprofile.avatar }}">
+<img id="1id_avatar" class="Avatar Avatar--large UserAvatar-inner" width="160" height="160" src="{{ er.userprofile.avatar }}" srcset="{{ user.userprofile.avatar }}">
 </div>
 <div class="Mask UserAvatarEditor-mask Mask-hidden">
 <div class="Mask-mask Mask-mask--black UserAvatarEditor-maskInner">
@@ -598,20 +676,28 @@ function init()
 <div class="UserAvatarEditor-maskInnerText">修改我的头像</div>
 </div>
 </div>
-<input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/>
+<input id="1id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/>
 </div>
 
 <div class="ProfileHeader-content">
 <div class="ProfileHeader-contentHead">
 <h1 class="ProfileHeader-title">
-<span class="ProfileHeader-name">{{er.first_name}}</span>
+<span class="ProfileHeader-name"></span>
 <span class="RichText ProfileHeader-headline">{{er.userprofile.mood}}</span>
 </h1>
 </div>
-<span class="ProfileHeader-tips">暂无个人资料</span>
+<div class="ProfileHeader-contentBody" style="overflow: hidden; transition: height 300ms ease-out; height: 50px;">
+<div>
+<div class="ProfileHeader-info">
+<div class="ProfileHeader-infoItem"><div class="ProfileHeader-iconWrapper"><svg viewBox="0 0 20 18" class="Icon Icon--company" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></div>高新科技</div>
+<div class="ProfileHeader-infoItem"><div class="ProfileHeader-iconWrapper"><svg width="14" height="16" viewBox="0 0 14 14" class="Icon Icon--male" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M3.025 10.64c-1.367-1.366-1.367-3.582 0-4.95 1.367-1.366 3.583-1.366 4.95 0 1.367 1.368 1.367 3.584 0 4.95-1.367 1.368-3.583 1.368-4.95 0zm10.122-9.368c-.002-.414-.34-.75-.753-.753L8.322 0c-.413-.002-.746.33-.744.744.002.413.338.75.75.752l2.128.313c-.95.953-1.832 1.828-1.832 1.828-2.14-1.482-5.104-1.27-7.013.64-2.147 2.147-2.147 5.63 0 7.777 2.15 2.148 5.63 2.148 7.78 0 1.908-1.91 2.12-4.873.636-7.016l1.842-1.82.303 2.116c.003.414.34.75.753.753.413.002.746-.332.744-.745l-.52-4.073z" fill-rule="evenodd"></path></g></svg></div></div>
+</div>
+</div>
+</div>
 <div class="ProfileHeader-contentFooter">
 
 {% ifnotequal user.id er.id %}
+<button class="Button ProfileHeader-expandButton Button--plain" type="button"><svg viewBox="0 0 10 6" class="Icon ProfileHeader-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>查看详细资料</button>
 <div class="MemberButtonGroup ProfileButtonGroup ProfileHeader-buttons">
 {% ifequal followed "true" %}
     <button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="{{er.id}}" data-follow-type="people" data-followed="true" data-who="{{who}}">已关注</button>
@@ -624,6 +710,9 @@ function init()
 {% endifequal %}
 <button class="Button Button--grey Button--withIcon Button--withLabel" type="button" data-toggle="modal" data-target="#letterModal"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comments Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M11 2c5.571 0 9 4.335 9 8 0 6-6.475 9.764-11.481 8.022-.315-.07-.379-.124-.78.078-1.455.54-2.413.921-3.525 1.122-.483.087-.916-.25-.588-.581 0 0 .677-.417.842-1.904.064-.351-.14-.879-.454-1.171A8.833 8.833 0 0 1 2 10c0-3.87 3.394-8 9-8zm10.14 9.628c.758.988.86 2.009.86 3.15 0 1.195-.619 3.11-1.368 3.938-.209.23-.354.467-.308.722.12 1.073.614 1.501.614 1.501.237.239-.188.562-.537.5-.803-.146-1.495-.42-2.546-.811-.29-.146-.336-.106-.563-.057-2.043.711-4.398.475-6.083-.927 5.965-.524 8.727-3.03 9.93-8.016z" fill-rule="evenodd"></path></svg></span>发私信</button>
 </div>
+{% else %}
+<button class="Button ProfileHeader-expandButton Button--plain" type="button"><svg viewBox="0 0 10 6" class="Icon ProfileHeader-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>查看详细资料</button>
+<div class="ProfileButtonGroup ProfileHeader-buttons"><button class="Button Button--blue" type="button" onclick="profileEdit()">编辑个人资料</button></div>
 {% endifnotequal %}
 
 </div>
@@ -685,101 +774,6 @@ function init()
 </div>
 
 
-
-<!--
-<div class="List Profile-answers" id="11Profile-answers" data-zop-feedlistfather="1">
-<div class="List-header">
-<h4 class="List-headerText"><span>他的回答</span></h4>
-
-<div class="List-headerOptions">
-<div class="Popover">
-<button class="Button Select-button Select-plainButton Button--plain" role="combobox" aria-expanded="false" type="button" id="Popover-94547-77643-toggle" aria-haspopup="true" aria-owns="Popover-94547-77643-content">按时间排序<span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Select Select-arrow" fill="#9fadc7" viewBox="0 0 24 24" width="24" height="24"><path d="M12 16.183l2.716-2.966a.757.757 0 0 1 1.064.001.738.738 0 0 1 0 1.052l-3.247 3.512a.758.758 0 0 1-1.064 0L8.22 14.27a.738.738 0 0 1 0-1.052.758.758 0 0 1 1.063 0L12 16.183zm0-9.365L9.284 9.782a.758.758 0 0 1-1.064 0 .738.738 0 0 1 0-1.052l3.248-3.512a.758.758 0 0 1 1.065 0L15.78 8.73a.738.738 0 0 1 0 1.052.757.757 0 0 1-1.063.001L12 6.818z" fill-rule="evenodd"></path></svg></span></button>
-</div>
-</div>
-
-</div>
-
-<div id="Append-element">
-
-<div class="List-item">
-<div class="ContentItem AnswerItem" data-zop="{&quot;authorName&quot;:&quot;CloudEdogawa&quot;,&quot;itemId&quot;:269059485,&quot;title&quot;:&quot;普通人跟职业运动员到底有多大差距？&quot;,&quot;type&quot;:&quot;answer&quot;}" name="269059485" itemprop="zhihu:answer" itemtype="http://schema.org/Answer" itemscope="" data-za-module="AnswerItem" data-za-module-info="{&quot;card&quot;:{&quot;has_image&quot;:false,&quot;has_video&quot;:true,&quot;content&quot;:{&quot;type&quot;:&quot;Answer&quot;,&quot;token&quot;:&quot;269059485&quot;,&quot;upvote_num&quot;:4882,&quot;comment_num&quot;:696,&quot;publish_timestamp&quot;:null,&quot;parent_token&quot;:&quot;29888808&quot;,&quot;author_member_hash_id&quot;:&quot;fbe03534280441c1d0fb448b4acb4e81&quot;,&quot;video_id&quot;:&quot;919946920011665408&quot;}}}">
-<h2 class="ContentItem-title">
-<div itemprop="zhihu:question" itemtype="http://schema.org/Question" itemscope="">
-<a target="_blank" data-za-detail-view-element_name="Title" href="/question/29888808/answer/269059485">普通人跟职业运动员到底有多大差距？</a>
-</div>
-</h2>
-<div class="ContentItem-meta">
-<div class="AnswerItem-meta">
-<div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-<span class="UserLink AuthorInfo-avatarWrapper">
-<div class="Popover">
-<div id="Popover-94547-45049-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94547-45049-content">
-<a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/cloudedogawa">
-<img class="Avatar AuthorInfo-avatar" width="38" height="38" src="https://pic3.zhimg.com/50/v2-8ebaa9535a928f7ab36e6a8d745749fa_xs.jpg" srcset="https://pic3.zhimg.com/50/v2-8ebaa9535a928f7ab36e6a8d745749fa_l.jpg 2x" alt="CloudEdogawa"></a>
-</div>
-</div>
-</span>
-<div class="AuthorInfo-content">
-<div class="AuthorInfo-head">
-<span class="UserLink AuthorInfo-name">
-<div class="Popover">
-<div id="Popover-94547-29920-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94547-29920-content">
-<a class="UserLink-link" data-za-detail-view-element_name="User" href="/people/cloudedogawa">CloudEdogawa</a>
-</div>
-</div>
-</span>
-</div>
-<div class="AuthorInfo-detail">
-<div class="AuthorInfo-badge">
-<div class="RichText AuthorInfo-badgeText">公众号「生涯旋转」创始人、职业转笔者</div>
-</div>
-</div>
-</div>
-</div>
-<div class="AnswerItem-extraInfo">
-<span class="Voters">
-<button class="Button Button--plain" type="button">4882 人赞同了该回答</button>
-</span>
-</div>
-</div>
-</div>
-<div class="RichContent is-collapsed">
-<div class="RichContent-cover">
-<div class="RichContent-cover-inner">
-<img width="190" src="https://pic1.zhimg.com/v2-d19dbfffbe58fb893815ff810027e4e8_400x224.jpg" alt="cover">
-</div>
-<div class="RichContent-cover-play"><svg viewBox="0 0 64 64" class="Icon Icon--play" width="50" height="50" aria-hidden="true" style="height: 50px; width: 50px;"><title></title><g><path fill-opacity="0.9" fill="#fff" d="M32,64 C14.326888,64 0,49.673112 0,32 C0,14.326888 14.326888,0 32,0 C49.673112,0 64,14.326888 64,32 C64,49.673112 49.673112,64 32,64 Z M32.2363929,61.6 C48.5840215,61.6 61.8363929,48.3476286 61.8363929,32 C61.8363929,15.6523714 48.5840215,2.4 32.2363929,2.4 C15.8887643,2.4 2.63639293,15.6523714 2.63639293,32 C2.63639293,48.3476286 15.8887643,61.6 32.2363929,61.6 Z"></path>   <circle fill-opacity="0.3" fill="#000" cx="32" cy="32" r="29.6"></circle>   <path fill-opacity="0.9" fill="#fff" d="M43.5634409,30.7271505 C44.6882014,31.4301259 44.6868607,32.5707121 43.5634409,33.2728495 L28.4365591,42.7271505 C27.3117986,43.4301259 26.4,42.9221451 26.4,41.5999847 L26.4,22.4000153 C26.4,21.0745235 27.3131393,20.5707121 28.4365591,21.2728495 L43.5634409,30.7271505 Z"></path></g></svg></div>
-</div>
-<div class="RichContent-inner">
-<span class="RichText CopyrightRichText-richText" itemprop="text">以前在知乎看过一句话“不要拿你们的业余爱好挑战我们的吃饭本事”。 就拿转笔来讲吧。转笔这项运动大家应该都不陌生，来源课堂的一个随手动作。但如今已经发展成一项世界性的竞技运动，虽然还是很小众。现在中国目前…</span>
-<button class="Button ContentItem-more Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
-</div>
-<div class="ContentItem-actions">
-<span>
-<button class="Button VoteButton VoteButton--up" aria-label="赞同" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-upIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg>4.9K</button>
-<button class="Button VoteButton VoteButton--down" aria-label="反对" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-downIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg></button>
-</span>
-<button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button">
-<span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>696 条评论</button>
-<div class="Popover ShareMenu ContentItem-action">
-<div class="" id="Popover-94553-53870-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94553-53870-content">
-<img class="ShareMenu-fakeQRCode" src="https://www.zhihu.com/qrcode?url=https%3A%2F%2Fwww.zhihu.com%2Fanswer%2F269059485%23showWechatShareTip" alt="微信二维码">
-<button class="Button Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button>
-</div>
-</div>
-<button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span>收藏</button>
-<button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Heart Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2 8.437C2 5.505 4.294 3.094 7.207 3 9.243 3 11.092 4.19 12 6c.823-1.758 2.649-3 4.651-3C19.545 3 22 5.507 22 8.432 22 16.24 13.842 21 12 21 10.158 21 2 16.24 2 8.437z" fill-rule="evenodd"></path></svg></span>感谢</button>
-<div class="Popover ContentItem-action"><button class="Button Button--plain Button--withIcon Button--iconOnly" aria-label="更多" type="button" id="Popover-94553-60105-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-94553-60105-content"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Dots Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill-rule="evenodd"></path></svg></span></button>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-</div>
--->
-
 </div>
 </div>
 
@@ -804,8 +798,24 @@ function init()
 </footer>
 </div>
 </div>
-</div></div></main><!-- react-empty: 1335 --><!-- react-empty: 2683 --><!-- react-empty: 1337 --><div class="CornerButtons">
-<div class="CornerAnimayedFlex"><button class="Button CornerButton Button--plain" data-tooltip="建议反馈" data-tooltip-position="left" aria-label="建议反馈" type="button"><svg class="Zi Zi--Feedback" title="建议反馈" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M19.99 6.99L18 5s-1-1-2-1H8C7 4 6 5 6 5L4 7S3 8 3 9v9s0 2 2.002 2H19c2 0 2-2 2-2V9c0-1-1.01-2.01-1.01-2.01zM16.5 5.5L19 8H5l2.5-2.5h9zm-2 5.5s.5 0 .5.5-.5.5-.5.5h-5s-.5 0-.5-.5.5-.5.5-.5h5z"></path></svg></button></div><div class="CornerAnimayedFlex CornerAnimayedFlex--hidden"><button class="Button CornerButton Button--plain" data-tooltip="回到顶部" data-tooltip-position="left" aria-label="回到顶部" type="button"><svg class="Zi Zi--BackToTop" title="回到顶部" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M16.036 19.59a1 1 0 0 1-.997.995H9.032a.996.996 0 0 1-.997-.996v-7.005H5.03c-1.1 0-1.36-.633-.578-1.416L11.33 4.29a1.003 1.003 0 0 1 1.412 0l6.878 6.88c.782.78.523 1.415-.58 1.415h-3.004v7.005z"></path></svg></button></div></div></div></div><script src="https://static.zhihu.com/heifetz/vendor.72d10fe31301a0517a94.js"></script><script src="https://static.zhihu.com/heifetz/main.raven.a31320181616684830a2.js" async=""></script><script src="https://static.zhihu.com/heifetz/main.app.35c8ff3a88b940af11b0.js"></script><script></script><div><div data-reactroot="" style="display: none;">想来知乎工作？请发送邮件到 jobs@zhihu.com</div></div>
+</div>
+</div>
+</main>
+
+
+<div class="CornerButtons">
+<div class="CornerAnimayedFlex">
+<button class="Button CornerButton Button--plain" data-tooltip="建议反馈" data-tooltip-position="left" aria-label="建议反馈" type="button"><svg class="Zi Zi--Feedback" title="建议反馈" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M19.99 6.99L18 5s-1-1-2-1H8C7 4 6 5 6 5L4 7S3 8 3 9v9s0 2 2.002 2H19c2 0 2-2 2-2V9c0-1-1.01-2.01-1.01-2.01zM16.5 5.5L19 8H5l2.5-2.5h9zm-2 5.5s.5 0 .5.5-.5.5-.5.5h-5s-.5 0-.5-.5.5-.5.5-.5h5z"></path></svg></button>
+</div>
+<div class="CornerAnimayedFlex CornerAnimayedFlex--hidden">
+<button class="Button CornerButton Button--plain" data-tooltip="回到顶部" data-tooltip-position="left" aria-label="回到顶部" type="button"><svg class="Zi Zi--BackToTop" title="回到顶部" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M16.036 19.59a1 1 0 0 1-.997.995H9.032a.996.996 0 0 1-.997-.996v-7.005H5.03c-1.1 0-1.36-.633-.578-1.416L11.33 4.29a1.003 1.003 0 0 1 1.412 0l6.878 6.88c.782.78.523 1.415-.58 1.415h-3.004v7.005z"></path></svg></button>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div data-reactroot="" style="display: none;">想来知乎工作？请发送邮件到 jobs@zhihu.com</div>
+</div>
 <span><div></div></span>
 
 <!--

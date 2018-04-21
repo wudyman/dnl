@@ -60,6 +60,8 @@ class UserProfile(models.Model):
     follower=models.ManyToManyField(User,related_name='followto',blank=True)
     follower_nums=models.IntegerField(default=0)
     sexual=models.CharField(default='f',max_length=1)
+    residence=models.CharField(default='',max_length=100)
+    job=models.CharField(default='',max_length=50)
     def __str__(self):
         return self.user.username
 
