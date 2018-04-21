@@ -13,6 +13,11 @@ class ActiveView(generic.ListView):
     def get_queryset(self): 
         pass
     def get(self,request,*args,**kwargs):
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print(is_mobile)
+        if is_mobile:
+            self.template_name='question/t_er_active_mobile.html'
         command=self.kwargs.get('command')
         subcmd=self.kwargs.get('subcmd')
         who='he'
@@ -43,5 +48,4 @@ class ActiveView(generic.ListView):
         followquestions_num=er.followquestions.count()
         
         ext_info={'questions_num':questions_num,'answers_num':answers_num,'followtos_num':followtos_num,'followers_num':followers_num,'followtopics_num':followtopics_num,'followquestions_num':followquestions_num}       
-        
         return render(request,self.template_name,{'er':er,'user':user,'who':who,'followed':followed,'command':command,'subcmd':subcmd,'ext_info':ext_info})
