@@ -696,3 +696,24 @@ def answer_page(request,type,order,start,end):
                     notification_list.append(temp)
                 to_json=json.dumps(notification_list)
     return HttpResponse(to_json,content_type='application/json')
+	
+@csrf_exempt
+def profile_edit(request,type):
+    to_json=json.dumps('fail')
+    if request.user:
+        user=request.user
+        content=request.POST.get('content')
+        if content:
+            if type=='sexual':
+                user.userprofile.sexual=content
+            elif type=='mood':
+                user.userprofile.mood=content
+            elif type=='residence':
+                user.userprofile.residence=content
+            elif type=='job':
+                user.userprofile.job=content
+            elif type=='intro':
+                user.userprofile.intro=content
+            user.userprofile.save()
+            to_json=json.dumps(content)
+    return HttpResponse(to_json,content_type='application/json')

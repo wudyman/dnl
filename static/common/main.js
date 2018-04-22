@@ -117,11 +117,11 @@ function followPeople(button){
             if("fail"!=ret)
             {
                 if ("she"==who)
-                    button.removeClass("Button--grey").addClass("Button--green").text("关注她");
+                    button.removeClass("Button--grey").addClass("Button--blue").text("关注她");
                 else if ("he"==who)
-                    button.removeClass("Button--grey").addClass("Button--green").text("关注他");
+                    button.removeClass("Button--grey").addClass("Button--blue").text("关注他");
                 else
-                    button.removeClass("Button--grey").addClass("Button--green").text("关注");
+                    button.removeClass("Button--grey").addClass("Button--blue").text("关注");
                 button.attr("data-followed","false");
                 updateValue("people-followed",ret);
             }
@@ -866,8 +866,14 @@ function initCommon()
     
     checkSelectOption();
 }
+ENABLE_CONSOLE_LOG="true";//"false"
 STEP=5;
 LOCK_SCROLL_MOREDATA="true";
+
+logDisable=Function();
+dlog=("true"==ENABLE_CONSOLE_LOG)?console.log:logDisable;
+
+
 function isLockScrollMoreData()
 {
     return LOCK_SCROLL_MOREDATA;
@@ -888,6 +894,7 @@ if (getScrollTop() + getClientHeight() +1 >= getScrollHeight()) {
         }
     } 
 }
+
 $(document).ready(function() {
     initCommon();
     init();

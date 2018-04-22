@@ -20,7 +20,6 @@ class ActiveView(generic.ListView):
             self.template_name='question/t_er_active_mobile.html'
         command=self.kwargs.get('command')
         subcmd=self.kwargs.get('subcmd')
-        who='he'
         if not command:
             command='answers'
         if not subcmd:
@@ -28,12 +27,6 @@ class ActiveView(generic.ListView):
         user=request.user
         erid=self.kwargs.get('erid')
         er=get_object_or_404(User,pk=erid)
-        if user.id==er.id:
-            who='me'
-        elif er.userprofile.sexual=='f':
-            who='she'
-        elif er.userprofile.sexual=='m':
-            who='he'
             
         if user.followto.filter(id=er.id).exists():
             followed='true'
@@ -48,4 +41,4 @@ class ActiveView(generic.ListView):
         followquestions_num=er.followquestions.count()
         
         ext_info={'questions_num':questions_num,'answers_num':answers_num,'followtos_num':followtos_num,'followers_num':followers_num,'followtopics_num':followtopics_num,'followquestions_num':followquestions_num}       
-        return render(request,self.template_name,{'er':er,'user':user,'who':who,'followed':followed,'command':command,'subcmd':subcmd,'ext_info':ext_info})
+        return render(request,self.template_name,{'er':er,'user':user,'followed':followed,'command':command,'subcmd':subcmd,'ext_info':ext_info})
