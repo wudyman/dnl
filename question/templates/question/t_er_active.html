@@ -185,14 +185,7 @@ function appendAnswerElementSub(ret)
 }
 function appendAnswerElement()
 {
-    var data='<div class="List Profile-answers">\
-            <div class="List-header">\
-            <h4 class="List-headerText"><span>'+who_han+'的回答</span></h4>\
-            </div>\
-            <div id="Append-element">\
-            </div>\
-            </div>\
-            ';
+    var data='<div class="List Profile-answers"><div class="List-header"><h4 class="List-headerText"><span>'+who_han+'的回答</span></h4></div><div id="Append-element"></div></div>';
     $("#ProfileMain").append(data);
     $.get("/ajax/er/"+er_id+"/"+command+"/",function(ret){
         if("fail"!=ret)
@@ -210,24 +203,12 @@ function appendQuestionElementSub(ret)
     var question_pubdate=ret[2];
     var question_answer_nums=ret[3];
     var question_follower_nums=ret[4];
-    var data='\
-            <div class="List-item">\
-            <div class="ContentItem" ><h2 class="ContentItem-title"><div class="QuestionItem-title">\
-            <a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2>\
-            <div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>\
-            ';
+    var data='<div class="List-item"><div class="ContentItem" ><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
     $("#Append-element").append(data);
 }
 function appendQuestionElement()
 {
-    data='<div class="List Profile-answers">\
-            <div class="List-header">\
-            <h4 class="List-headerText"><span>'+who_han+'的问题</span></h4>\
-            </div>\
-            <div id="Append-element">\
-            </div>\
-            </div>\
-            ';
+    data='<div class="List Profile-answers"><div class="List-header"><h4 class="List-headerText"><span>'+who_han+'的问题</span></h4></div><div id="Append-element"></div></div>';
     $("#ProfileMain").append(data);
     $.get("/ajax/er/"+er_id+"/"+command+"/",function(ret){
         if("fail"!=ret)
@@ -243,7 +224,6 @@ function checkProfileSave()
 {
 	$(".save").off("click");
 	$(".save").click(function(){
-		dlog("save click");
         var _this=$(this);
 		var field_type=$(this).parents(".Field-content").attr("data-field-type")
 		dlog(field_type);
@@ -267,6 +247,7 @@ function checkProfileSave()
                 }
                 var data='<div><span class="Field-text">'+er_sexual_han+'</span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                 _this.parents(".Field-content").empty().append(data);
+                checkProfileModify();
 			});
 		}
 		else if("mood"==field_type)
@@ -279,6 +260,7 @@ function checkProfileSave()
                 }
                 var data='<div><span class="Field-text"><span class="RichText">'+er_mood+'</span></span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                 _this.parents(".Field-content").empty().append(data);
+                checkProfileModify();
             });
 
 		}
@@ -292,6 +274,7 @@ function checkProfileSave()
                 }
                 var data='<div><span class="Field-text"><span class="RichText">'+er_residence+'</span></span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                 _this.parents(".Field-content").empty().append(data);
+                checkProfileModify();
             });
 		}
 		else if("job"==field_type)
@@ -317,6 +300,7 @@ function checkProfileSave()
                 }
                 var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+er_intro+'</span></span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                 _this.parents(".Field-content").empty().append(data);
+                checkProfileModify();
             });
 		}
 		checkProfileModify();
@@ -569,14 +553,14 @@ function checkAvatar(){
             $("#id_avatar_input").click();
             $("#id_avatar_input").on("change",function(){
                $("#upAvatarModal").modal('show');
-                var objUrl = getObjectURL(this.files[0]) ; //获取图片的路径，该路径不是图片在本地的路径
+                var objUrl = getObjectURL(this.files[0]);
                 if (objUrl) {
                     //var image = new Image();
                     //image.src="/media/avatar/wudy1512464583.jpg";//objUrl;
                     //var cvs=document.getElementById("avatar_canvas");
                     //var ctx = cvs.getContext('2d');
                     //ctx.drawImage(image, 100, 100, 240, 240);  
-                    $("#preview_avatar").attr("src", objUrl) ; //将图片路径存入src中，显示出图片
+                    $("#preview_avatar").attr("src", objUrl);
                     $("#adjust_choosebox").val(50);                    
                     
                     setTimeout(adjustChooseBox,1*1000);
@@ -586,17 +570,16 @@ function checkAvatar(){
 }
 //});
 
-//建立一個可存取到該file的url
 function getObjectURL(file) {
-var url = null ;
-if (window.createObjectURL!=undefined) { // basic
-url = window.createObjectURL(file) ;
-} else if (window.URL!=undefined) { // mozilla(firefox)
-url = window.URL.createObjectURL(file) ;
-} else if (window.webkitURL!=undefined) { // webkit or chrome
-url = window.webkitURL.createObjectURL(file) ;
-}
-return url ;
+    var url = null ;
+    if (window.createObjectURL!=undefined) { // basic
+        url = window.createObjectURL(file) ;
+    } else if (window.URL!=undefined) { // mozilla(firefox)
+        url = window.URL.createObjectURL(file) ;
+    } else if (window.webkitURL!=undefined) { // webkit or chrome
+        url = window.webkitURL.createObjectURL(file) ;
+    }
+    return url ;
 }
 
 /*
@@ -635,30 +618,35 @@ function saveFile()
         fileUpload(blobUrl);
     },"image/jpeg");   
 }
-//   上传附件到方法
-function fileUpload(file_info) {
-var form_data = new FormData();
-//var file_info = $('#id_avatar_input')[0].files[0];
-form_data.append('imgfile',file_info,"image.jpg");
-//if(file_info==undefined)暂且不许要判断是否有附件
-//alert('你没有选择任何文件');
-//return false
-//}
 
-// 提交ajax的请求
-$.ajax({
-url:"/ajax/upload/avatar/",
-type:'POST',
-data: form_data,
-processData: false,  // tell jquery not to process the data
-contentType: false, // tell jquery not to set contentType
-success: function(ret) {
-$("#upAvatarModal").modal('hide');
-$("#id_avatar").attr("src",ret);
-$("#id_avatar").attr("srcset",ret);
-console.log("success");
-}
-}); // end ajax
+function fileUpload(file_info)
+{
+    var form_data = new FormData();
+    //var file_info = $('#id_avatar_input')[0].files[0];
+    form_data.append('imgfile',file_info,"image.jpg");
+    //if(file_info==undefined)
+    //alert('can`t select file');
+    //return false
+    //}
+    $.ajax({
+    url:"/ajax/upload/avatar/",
+    type:'POST',
+    data: form_data,
+    processData: false,  // tell jquery not to process the data
+    contentType: false, // tell jquery not to set contentType
+    success: function(ret) {
+            if("fail"!=ret)
+            {
+                $("#upAvatarModal").modal('hide');
+                $("#id_avatar").attr("src",ret).attr("srcset",ret);
+                dlog("fileupload success");
+            }
+            else
+            {
+                dlog("fileupload ail");
+            }
+        }
+    }); // end ajax
 }
 function showProfileDetail()
 {
@@ -886,7 +874,7 @@ function init()
 
 <div class="AppHeader-profile">
 <div class="1Popover AppHeader-menu">
-<img class="Avatar AppHeader-profileAvatar" id="MenuPopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="" srcset="">
+<img class="Avatar AppHeader-profileAvatar" id="MenuPopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="" srcset="" alt="">
 </div>
 </div>
 
@@ -922,7 +910,7 @@ function init()
 
 <div class="UserAvatarEditor ProfileHeader-avatar" style="top: -25px;">
 <div class="UserAvatar">
-<img id="id_avatar" class="Avatar Avatar--large UserAvatar-inner" width="160" height="160" src="" srcset="">
+<img id="id_avatar" class="Avatar Avatar--large UserAvatar-inner" width="160" height="160" src="" srcset="" alt="">
 </div>
 <div class="Mask UserAvatarEditor-mask Mask-hidden">
 <div class="Mask-mask Mask-mask--black UserAvatarEditor-maskInner">
