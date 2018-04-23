@@ -887,7 +887,7 @@ function isLockScrollMoreData()
 function setLockScrollMoreData(val)
 {
     LOCK_SCROLL_MOREDATA=val;
-    dlog("LOCK_SCROLL_MOREDATA="+LOCK_SCROLL_MOREDATA);
+    console.log("LOCK_SCROLL_MOREDATA="+LOCK_SCROLL_MOREDATA);
 }
 window.onscroll = function () { 
 //console.log(getScrollTop());
