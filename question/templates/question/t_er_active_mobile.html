@@ -437,7 +437,9 @@ function initData()
 function init()
 {
     initData();
-	initElement(); 
+    slog("initData done");
+	initElement();
+    slog("initElement done");    
 	checkSets();
     if("#edit"==location.hash)
         profileEdit();
@@ -469,7 +471,7 @@ function init()
 </div>
 </header>
 </div>
-
+<div id="debug"></div>
 <main role="main" class="App-main" data-dfs-main='{ "user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","er_id":"{{er.id}}","er_name":"{{er.first_name}}"
 ,"er_avatar":"{{er.userprofile.avatar}}","er_mood":"{{er.userprofile.mood}}","er_intro":"{{er.userprofile.intro}}","er_sexual":"{{er.userprofile.sexual}}","er_residence":"{{er.userprofile.residence}}"
 ,"er_job":"{{er.userprofile.job}}","followed":"{{followed}}","command":"{{command}}","subcmd":"{{subcmd}}"}'   data-dfs-ext='{"questions_num":"{{ext_info.questions_num}}","answers_num":"{{ext_info.answers_num}}"
