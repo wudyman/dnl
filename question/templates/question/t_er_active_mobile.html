@@ -108,7 +108,7 @@ function checkProfileSave()
 	$(".save").click(function(){
         var _this=$(this);
 		var field_type=$(this).parents(".Field-content").attr("data-field-type")
-		dlog(field_type);
+		console.log(field_type);
         if("nickname"==field_type)
 		{
             var value=$("input[name='nickname']").val();
@@ -129,7 +129,7 @@ function checkProfileSave()
 			$.post("/ajax/profile_edit/sexual/",{content:value},function(ret){
                 if("fail"!=ret)
                 {
-                    dlog(ret);
+                    console.log(ret);
                     if("f"==ret)
                     {
                         er_sexual="she";
@@ -205,7 +205,7 @@ function checkProfileSave()
 	//$(".cancle").each(function(){
 	$(".cancle").click(function(){
 		var field_type=$(this).parents(".Field-content").attr("data-field-type")
-		dlog(field_type);
+		console.log(field_type);
         if("nickname"==field_type)
 		{
 			var data='<div><span class="Field-text"><span class="RichText">'+er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
@@ -240,7 +240,7 @@ function checkProfileModify()
 	$(".Field").find(".ModifyButton").off("click");
 	$(".Field").find(".ModifyButton").click(function(){
 		var field_type=$(this).parents(".Field-content").attr("data-field-type");
-		dlog(field_type);
+		console.log(field_type);
         if("nickname"==field_type)
 		{
 			var data='<div><div class="HeadlineField-input Input-wrapper"><input name="nickname" class="Input" value="'+er_name+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
@@ -288,11 +288,11 @@ function fileUpload() {
             if("fail"!=ret)
             {
                 $("#id_avatar").attr("src",ret).attr("srcset",ret);
-                dlog("fileUpload success");
+                console.log("fileUpload success");
             }
             else
             {
-                dlog("fileUpload fail");
+                console.log("fileUpload fail");
             }
         }
     }); // end ajax
@@ -394,7 +394,7 @@ function initElement()
         //appendFollowElement(subcmd);
 	}
     else 
-        dlog("false");
+        console.log("false");
     
     var ul_list='<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities"><a class="Tabs-link '+answers_active+'" href="/er/'+er_id+'/answers/">回答</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-answers"><a class="Tabs-link '+asks_active+'" href="/er/'+er_id+'/asks/">提问</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-articals"><a class="Tabs-link '+posts_active+'" href="/er/'+er_id+'/posts/">文章</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-questions"><a class="Tabs-link '+following_active+'" href="/er/'+er_id+'/following/">关注</a></li>'
     $(".Tabs.ProfileBar").append(ul_list);
@@ -404,10 +404,10 @@ function initData()
     show_detailed="false";
     
 	var str_main_data=$("main").attr("data-dfs-main");
-	dlog(str_main_data);
+	console.log(str_main_data);
 	var main_data=JSON.parse(str_main_data);//str_main_data.parseJSON();
 	var str_ext_data=$("main").attr("data-dfs-ext");
-	dlog(str_ext_data);
+	console.log(str_ext_data);
 	var ext_data=JSON.parse(str_ext_data);
 	
 	user_id=main_data.user_id;

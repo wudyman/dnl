@@ -900,17 +900,15 @@ function initCommon()
     checkSelectOption();
 }
 
-logDisable=Function();
-function screenLog(arg)
-{
-    var data='<div>'+arg+'</div>';
-    $("#debug").append(data);
-}
-ENABLE_CONSOLE_LOG="true";//"false"
-dlog=("true"==ENABLE_CONSOLE_LOG)?console.log:logDisable;
-
 ENABLE_SCREEN_LOG="true";//"false"
-slog=("true"==ENABLE_SCREEN_LOG)?screenLog:logDisable;
+function slog(arg)
+{
+    if("true"==ENABLE_SCREEN_LOG)
+    {
+        var data='<div>'+arg+'</div>';
+        $("#debug").append(data);
+    }
+}
 
 STEP=5;
 LOCK_SCROLL_MOREDATA="true";
