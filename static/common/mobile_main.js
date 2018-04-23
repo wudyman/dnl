@@ -900,9 +900,17 @@ function initCommon()
     checkSelectOption();
 }
 
-ENABLE_CONSOLE_LOG="true";//"false"
 logDisable=Function();
+function screenLog(arg)
+{
+    var data='<div>'+arg+'</div>';
+    $("#debug").append(data);
+}
+ENABLE_CONSOLE_LOG="true";//"false"
 dlog=("true"==ENABLE_CONSOLE_LOG)?console.log:logDisable;
+
+ENABLE_SCREEN_LOG="true";//"false"
+slog=("true"==ENABLE_SCREEN_LOG)?screenLog:logDisable;
 
 STEP=5;
 LOCK_SCROLL_MOREDATA="true";
@@ -914,15 +922,17 @@ function isLockScrollMoreData()
 function setLockScrollMoreData(val)
 {
     LOCK_SCROLL_MOREDATA=val;
+    dlog("LOCK_SCROLL_MOREDATA="+LOCK_SCROLL_MOREDATA);
 }
 window.onscroll = function () { 
 //console.log(getScrollTop());
 //console.log(getClientHeight());
 //console.log(getScrollHeight());
-if (getScrollTop() + getClientHeight() +1 >= getScrollHeight()) {
+if (getScrollTop() + getClientHeight() +10 >= getScrollHeight()) {
         if("false"==isLockScrollMoreData())
         {
             setLockScrollMoreData("true");
+            setTimeout(function(){setLockScrollMoreData("false");},15*1000);
             getMoreData();
         }
     } 
