@@ -866,13 +866,13 @@ function initCommon()
     
     checkSelectOption();
 }
-ENABLE_CONSOLE_LOG="true";//"false"
-STEP=5;
-LOCK_SCROLL_MOREDATA="true";
 
+ENABLE_CONSOLE_LOG="true";//"false"
 logDisable=Function();
 dlog=("true"==ENABLE_CONSOLE_LOG)?console.log:logDisable;
 
+STEP=5;
+LOCK_SCROLL_MOREDATA="true";
 
 function isLockScrollMoreData()
 {

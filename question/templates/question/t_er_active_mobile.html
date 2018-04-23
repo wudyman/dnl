@@ -24,15 +24,426 @@
 <script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
 <script src="{% static 'common/mobile_main.js' %}"></script>
 <script>
+function appendQuestionElementSub(ret)
+{
+    var question_id=ret[0];
+    var question_title=ret[1];
+    var question_pubdate=ret[2].split(" ")[0];
+    var question_answer_nums=ret[3];
+    var question_follower_nums=ret[4];
+    
+    var data='<div class="List-item"><div class="ContentItem"><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
+    $("#feedArea").append(data);
+}
+function appendQuestionElement()
+{
+    $.get("/ajax/er/"+er_id+"/asks/",function(ret){
+        if("fail"!=ret)
+        {
+            for(i in ret)
+                appendQuestionElementSub(ret[i]);
+            checkSets();
+        }
+    });
+}
+function appendAnswerElementSub(ret)
+{
+    var author_id=er_id;
+    var author_name=er_name;
+    var author_mood=er_mood;
+    var author_avatar=er_avatar;
+    
+    var answer_id=ret[0];
+    var question_id=ret[1];
+    var question_title=ret[2];
+    var answer_content=ret[3];
+    var answer_like_nums=ret[4];
+    var index_img_url=getIndexImg(answer_content);
+    var data='<div class="ScrollIntoMark"><div class="List-item">\
+                    <div class="ContentItem AnswerItem">\
+                    <h2 class="ContentItem-title"><div><a target="_blank" href="">'+question_title+'</a></div></h2>\
+                    <div class="ContentItem-meta">\
+                    <div class="AuthorInfo AnswerItem-authorInfo">\
+                    <span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href=""><img class="Avatar AuthorInfo-avatar" width="38" height="38" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span>\
+                    <div class="AuthorInfo-content">\
+                    <div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" target="_blank" href="">'+author_name+'</a></span></div>\
+                    <div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    <div class="RichContent is-collapsed RichContent--withMask">\
+                    <div class="RichContent-cover RichContent-cover--mobile"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"><img width="334" src="" alt=""></div></div>\
+                    <div class="RichContent-inner RichContent-inner--collapsed">\
+                    <span class="RichText CopyrightRichText-richText less">'+removeImg(answer_content)+'</span>\
+                    <span class="RichText CopyrightRichText-richText more">'+addClassImg(answer_content,'class="origin_image"')+'</span>\
+                    <button class="Button ContentItem-more Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
+                    </div>\
+                    <div class="ContentItem-actions">\
+                    <span>\
+                    <button class="Button VoteButton VoteButton--up" aria-label="赞同" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-upIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg>1</button>\
+                    <button class="Button VoteButton VoteButton--down VoteButton--mobileDown" aria-label="反对" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-downIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg></button>\
+                    </span>\
+                    <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>评论</button>\
+                    <button class="Button ContentItem-action Button--plain Button--withIcon Button--iconOnly" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span></button>\
+                    <button class="Button ContentItem-action ContentItem-less ContentItem-rightButton Button--plain is-hide" type="button"><span class="RichContent-collapsedText">收起</span><svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
+                    </div>\</div>\</div>\</div></div>';
+    
+    $("#feedArea").append(data);
+}
+
+function appendAnswerElement()
+{
+    $.get("/ajax/er/"+er_id+"/answers/",function(ret){
+        if("fail"!=ret)
+        {
+            for(i in ret)
+                appendAnswerElementSub(ret[i]);
+            checkSets();
+        }
+    });
+}
+function checkProfileSave()
+{
+	$(".save").off("click");
+	$(".save").click(function(){
+        var _this=$(this);
+		var field_type=$(this).parents(".Field-content").attr("data-field-type")
+		dlog(field_type);
+        if("nickname"==field_type)
+		{
+            var value=$("input[name='nickname']").val();
+			$.post("/ajax/profile_edit/nickname/",{content:value},function(ret){
+                if("fail"!=ret)
+                {
+                    er_name=ret;                 
+                }
+                var data='<div><span class="Field-text"><span class="RichText">'+er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                _this.parents(".Field-content").empty().append(data);
+                checkProfileModify();
+            });
+
+		}
+		if("sexual"==field_type)
+		{	
+			var value=$("input[name='sexual']:checked").val();
+			$.post("/ajax/profile_edit/sexual/",{content:value},function(ret){
+                if("fail"!=ret)
+                {
+                    dlog(ret);
+                    if("f"==ret)
+                    {
+                        er_sexual="she";
+                        er_sexual_han="女";
+                    }
+                    else if("m"==ret)
+                    {
+                        er_sexual="he";
+                        er_sexual_han="男";
+                    }                    
+                }
+                var data='<div><span class="Field-text">'+er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                _this.parents(".Field-content").empty().append(data);
+                checkProfileModify();
+			});
+		}
+		else if("mood"==field_type)
+		{
+            var value=$("input[name='mood']").val();
+			$.post("/ajax/profile_edit/mood/",{content:value},function(ret){
+                if("fail"!=ret)
+                {
+                    er_mood=ret;                 
+                }
+                var data='<div><span class="Field-text"><span class="RichText">'+er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                _this.parents(".Field-content").empty().append(data);
+                checkProfileModify();
+            });
+
+		}
+		else if("residence"==field_type)
+		{
+            var value=$("input[name='residence']").val();
+			$.post("/ajax/profile_edit/residence/",{content:value},function(ret){
+                if("fail"!=ret)
+                {
+                    er_residence=ret;                     
+                }
+                var data='<div><span class="Field-text"><span class="RichText">'+er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                _this.parents(".Field-content").empty().append(data);
+                checkProfileModify();
+            });
+		}
+		else if("job"==field_type)
+		{
+            var value=$("input[name='job']").val();
+			$.post("/ajax/profile_edit/job/",{content:value},function(ret){
+                if("fail"!=ret)
+                {
+                    er_job=ret;
+                }
+                var data='<div><span class="Field-text">'+er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                _this.parents(".Field-content").empty().append(data);
+                checkProfileModify();
+            });
+		}
+		else if("intro"==field_type)
+		{
+            var value=$("textarea[name='intro']").val();
+			$.post("/ajax/profile_edit/intro/",{content:value},function(ret){
+                if("fail"!=ret)
+                {
+                    er_intro=ret;
+                }
+                var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                _this.parents(".Field-content").empty().append(data);
+                checkProfileModify();
+            });
+		}
+		checkProfileModify();
+	});
+	$(".cancle").off("click");
+	//$(".cancle").each(function(){
+	$(".cancle").click(function(){
+		var field_type=$(this).parents(".Field-content").attr("data-field-type")
+		dlog(field_type);
+        if("nickname"==field_type)
+		{
+			var data='<div><span class="Field-text"><span class="RichText">'+er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+		}
+		else if("sexual"==field_type)
+		{			
+			var data='<div><span class="Field-text">'+er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+		}
+		else if("mood"==field_type)
+		{
+			var data='<div><span class="Field-text"><span class="RichText">'+er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+		}
+		else if("residence"==field_type)
+		{
+			var data='<div><span class="Field-text"><span class="RichText">'+er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+		}
+		else if("job"==field_type)
+		{
+			var data='<div><span class="Field-text">'+er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+		}
+		else if("intro"==field_type)
+		{
+			var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+		}
+		$(this).parents(".Field-content").empty().append(data);
+		checkProfileModify();
+	});
+	//});
+}
+function checkProfileModify()
+{
+	$(".Field").find(".ModifyButton").off("click");
+	$(".Field").find(".ModifyButton").click(function(){
+		var field_type=$(this).parents(".Field-content").attr("data-field-type");
+		dlog(field_type);
+        if("nickname"==field_type)
+		{
+			var data='<div><div class="HeadlineField-input Input-wrapper"><input name="nickname" class="Input" value="'+er_name+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+		}
+		else if("sexual"==field_type)
+		{
+			if("f"==er_sexual)
+				var data='<div><input type="radio" name="sexual" value="m"> 男<input type="radio" name="sexual" value="f" checked style="margin-left: 30px;"> 女<div class="ButtonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div></div>';
+			else
+				var data='<div><input type="radio" name="sexual" value="m" checked> 男<input type="radio" name="sexual" value="f" style="margin-left: 30px;"> 女<div class="ButtonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div></div>';
+		}
+		else if("mood"==field_type)
+		{
+			var data='<div><div class="HeadlineField-input Input-wrapper"><input name="mood" class="Input" value="'+er_mood+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+		}
+		else if("residence"==field_type)
+		{
+		    var data='<div><div class="HeadlineField-input Input-wrapper"><input name="residence" class="Input" value="'+er_residence+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+			$(this).parents(".Field-content").empty().append(data);
+		}
+		else if("job"==field_type)
+		{
+			var data='<div><div class="HeadlineField-input Input-wrapper"><input name="job" class="Input" value="'+er_job+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+		}
+		else if("intro"==field_type)
+		{
+			var data='<div><textarea name="intro" rows="3" class="DescriptionField-input TextArea">'+er_intro+'</textarea><div class="DescriptionField-actions"><div class="ButtonGroup DescriptionField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+		}
+		$(this).parents(".Field-content").empty().append(data);
+		checkProfileSave();
+	});
+		//ata-field-type="sexual"
+}
+function fileUpload() {
+    var form_data = new FormData();
+    var file_info = $('#id_avatar_input')[0].files[0];
+    form_data.append('imgfile',file_info,"image.jpg");
+    $.ajax({
+    url:"/ajax/upload/avatar/",
+    type:'POST',
+    data: form_data,
+    processData: false,  // tell jquery not to process the data
+    contentType: false, // tell jquery not to set contentType
+    success: function(ret) {
+            if("fail"!=ret)
+            {
+                $("#id_avatar").attr("src",ret).attr("srcset",ret);
+                dlog("fileUpload success");
+            }
+            else
+            {
+                dlog("fileUpload fail");
+            }
+        }
+    }); // end ajax
+}
+function checkAvatarModify()
+{
+    $(".Profile-avatar.Modify-avatar").click(function(){
+        $("#id_avatar_input").click();
+        $("#id_avatar_input").on("change",function(){
+            fileUpload();
+        });
+    });
+}
+function profileEdit()
+{
+    $("main").empty();
+	var data='\
+			<div class="Card">\
+            <div class="ProfileHeader-expandActions ProfileEdit-expandActions">\
+			<a class="Button Button--plain" type="button" href="/er/'+er_id+'">&nbsp;返回我的主页<span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--ArrowRight" fill="#8590a6" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z" fill-rule="evenodd"></path></svg></span></a>\
+			</div>\
+            <div class="Profile-intro">\
+            <img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+er_avatar+'"alt="">\
+            <input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/>\
+            </div>\
+            <div class="Profile-data">\
+            <div class="Profile-datalist">\
+			<div class="Field List-item"><h6>昵称</h6><div class="Field-content" data-field-type="nickname"><div><span class="Field-text"><span class="RichText">'+er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+			<div class="Field List-item"><h6>性别</h6><div class="Field-content" data-field-type="sexual"><div><span class="Field-text">'+er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+			<div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content" data-field-type="mood"><div><span class="Field-text"><span class="RichText">'+er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+			<div class="Field List-item"><h6>居住地</h6><div class="Field-content" data-field-type="residence"><div><span class="Field-text"><span class="RichText">'+er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+			<div class="Field List-item"><h6>所在行业</h6><div class="Field-content" data-field-type="job"><div><span class="Field-text">'+er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+			<div class="Field List-item"><h6>个人简介</h6><div class="Field-content" data-field-type="intro"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+            </div></div>\
+			</div>';
+    $("main").append(data);
+	window.location.href="#edit";
+    checkAvatarModify();
+	checkProfileModify();
+}
+function initElement()
+{
+    $(".Profile-avatar").attr("src",er_avatar);
+    $(".Profile-name").text(er_name);
+    $(".Profile-headline").text(er_mood);
+    $("#residence").text(er_residence);
+    $("#job").text(er_job);
+    $("#followers").text(followers_num);
+    $("#followtos").text(followtos_num);
+    if("f"==er_sexual)
+    {
+        who="she";
+        who_han="她";
+        er_sexual_han="女";
+    }
+    else
+    {
+        who="he";
+        who_han="他";
+        er_sexual_han="男";
+    }
+    if(user_id==er_id)
+    {
+        who="me";
+        who_han="我";
+        $(".Profile-followButton").text("编辑个人资料").attr("onclick","profileEdit()");
+    }
+    else
+    {
+        $(".Profile-followButton").text("关注"+who_han);
+    }
+    $(".who").text(who_han);
+    
+    
+    
+    answers_active="";
+	asks_active="";
+	posts_active="";
+	following_active="";
+	
+	if ("answers"==command)
+	{
+	    answers_active="is-active";
+        appendAnswerElement();
+	}
+    else if("asks"==command)
+	{
+		asks_active="is-active";
+        appendQuestionElement();
+	}
+	else if("posts"==command)
+	{
+		posts_active="is-active";
+        //appendQuestionElement();
+	}
+    else if("following"==command)
+	{
+		following_active="is-active";
+        //appendFollowElement(subcmd);
+	}
+    else 
+        dlog("false");
+    
+    var ul_list='<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities"><a class="Tabs-link '+answers_active+'" href="/er/'+er_id+'/answers/">回答</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-answers"><a class="Tabs-link '+asks_active+'" href="/er/'+er_id+'/asks/">提问</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-articals"><a class="Tabs-link '+posts_active+'" href="/er/'+er_id+'/posts/">文章</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-questions"><a class="Tabs-link '+following_active+'" href="/er/'+er_id+'/following/">关注</a></li>'
+    $(".Tabs.ProfileBar").append(ul_list);
+}
+function initData()
+{
+    show_detailed="false";
+    
+	var str_main_data=$("main").attr("data-dfs-main");
+	dlog(str_main_data);
+	var main_data=JSON.parse(str_main_data);//str_main_data.parseJSON();
+	var str_ext_data=$("main").attr("data-dfs-ext");
+	dlog(str_ext_data);
+	var ext_data=JSON.parse(str_ext_data);
+	
+	user_id=main_data.user_id;
+	user_name=main_data.user_name;
+	user_avatar=main_data.user_avatar;
+	
+	er_id=main_data.er_id;
+    er_name=main_data.er_name;
+    er_avatar=main_data.er_avatar;
+    er_mood=main_data.er_mood;
+	er_sexual=main_data.er_sexual;
+	er_residence=main_data.er_residence;
+	er_job=main_data.er_job;
+	er_intro=main_data.er_intro;
+	
+	followed=main_data.followed;
+	command=main_data.command;
+    subcmd=main_data.subcmd;
+	
+	questions_num=ext_data.questions_num;
+	answers_num=ext_data.answers_num;
+	followtos_num=ext_data.followtos_num;
+	followers_num=ext_data.followers_num;
+	followtopics_num=ext_data.followtopics_num;
+	followquestions_num=ext_data.followquestions_num;
+}
 function init()
 {
+    initData();
+	initElement(); 
 	checkSets();
+    if("#edit"==location.hash)
+        profileEdit();
 }
 </script>
 </head>
-
-
-
 <body class="Mobile-body">
 <div id="root">
 <div class="App">
@@ -52,42 +463,42 @@ function init()
 <div class="PageHeader">
 <div class="Profile-tabs">
 <ul role="tablist" class="Tabs ProfileBar">
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities"><a class="Tabs-link is-active" href="/er/{{er.id}}/answers/">回答</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-answers"><a class="Tabs-link" href="/er/{{er.id}}/asks/">提问</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-articals"><a class="Tabs-link" href="/er/{{er.id}}/posts/">文章</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-questions"><a class="Tabs-link" href="/er/{{er.id}}/following/">关注</a></li>
+<!-------------ul_list---------------->
 </ul>
 </div>
 </div>
 </header>
 </div>
 
-<main role="main" class="App-main">
+<main role="main" class="App-main" data-dfs-main='{ "user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","er_id":"{{er.id}}","er_name":"{{er.first_name}}"
+,"er_avatar":"{{er.userprofile.avatar}}","er_mood":"{{er.userprofile.mood}}","er_intro":"{{er.userprofile.intro}}","er_sexual":"{{er.userprofile.sexual}}","er_residence":"{{er.userprofile.residence}}"
+,"er_job":"{{er.userprofile.job}}","followed":"{{followed}}","command":"{{command}}","subcmd":"{{subcmd}}"}'   data-dfs-ext='{"questions_num":"{{ext_info.questions_num}}","answers_num":"{{ext_info.answers_num}}"
+,"followtos_num":"{{ext_info.followtos_num}}","followers_num":"{{ext_info.followers_num}}","followtopics_num":"{{ext_info.followtopics_num}}","followquestions_num":"{{ext_info.followquestions_num}}"}'>
 <div class="Profile">
 <div class="Card">
 <div class="Profile-intro">
-<img class="Profile-avatar" src="{{er.userprofile.avatar}}" alt="头像">
-<div class="Profile-name">{{er.first_name}}</div>
-<div class="RichText Profile-headline">工程师</div>
-<button class="Profile-followButton">打开 App 编辑资料</button>
+<img class="Profile-avatar" src="" alt="">
+<div class="Profile-name"></div>
+<div class="RichText Profile-headline"></div>
+<button class="Profile-followButton" onClick="checkProfileEdit()">编辑个人资料</button>
 <div class="Profile-infos">
 <div class="Profile-infosDes Profile-infosDesEllipsis">
 <span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Education" fill="#999" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M12 4L1 7.94v.588l4.153 2.73v5.166C5.158 16.758 8.028 20 12 20c3.972 0 6.808-3.116 6.85-3.576l.006-5.163 4.129-2.733.015-.586L12 4z" fill-rule="evenodd"></path></svg></span>
-<span>安徽省宿州市</span>
+<span id="residence"></span>
 <div class="ProfileHeader-infosDivider"></div>
-<span>高新科技</span>
+<span id="job"></span>
 </div>
 <button class="Profile-infosOia">详细资料 <span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--ArrowRight" fill="#8590a6" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z" fill-rule="evenodd"></path></svg></span></button>
 </div>
 <div class="Profile-badges">
 <div class="Profile-badgeItem">
-<span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Like" fill="#0f88eb" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.718 10.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.649.718.649h1.45c.916 0 .847-.649.847-.649v-9.554c-.09-.879-.854-.791-.847-.791l-2.446.022zm11.727-.05s.756-1.577 1.156-4.083c.163-2.861-2.052-3.491-3.037-2.362-1.014 1.233 0 2.057-4.45 5.83C7.336 9.966 7 11.011 7 11.998v6.998c-.016 1.104.491 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.911c1.047-3.515-1.95-3.703-1.95-3.703l-5.387.007z" fill-rule="evenodd"></path></svg></span>0 赞同 · 0 感谢 · 0 收藏</div>
+<span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Like" fill="#0f88eb" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.718 10.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.649.718.649h1.45c.916 0 .847-.649.847-.649v-9.554c-.09-.879-.854-.791-.847-.791l-2.446.022zm11.727-.05s.756-1.577 1.156-4.083c.163-2.861-2.052-3.491-3.037-2.362-1.014 1.233 0 2.057-4.45 5.83C7.336 9.966 7 11.011 7 11.998v6.998c-.016 1.104.491 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.911c1.047-3.515-1.95-3.703-1.95-3.703l-5.387.007z" fill-rule="evenodd"></path></svg></span>0 赞同 · 0 感谢</div>
 </div>
-<div class="Profile-follows"><span>1 关注我的人</span><div class="ProfileHeader-infosDivider"></div><span>3 我关注的人</span></div>
+<div class="Profile-follows"><span><span id="followers"></span> 关注<span class="who"></span>的人</span><div class="ProfileHeader-infosDivider"></div><span><span id="followtos"></span> <span class="who"></span>关注的人</span></div>
 </div>
 </div>
 <ul role="tablist" class="Tabs ProfileBar">
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities"><a class="Tabs-link is-active" href="/er/{{er.id}}/answers/">回答</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-answers"><a class="Tabs-link" href="/er/{{er.id}}/asks/">提问</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-articals"><a class="Tabs-link" href="/er/{{er.id}}/posts/">文章</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-questions"><a class="Tabs-link" href="/er/{{er.id}}/following/">关注</a></li>
+<!-------------ul_list---------------->
 </ul>
 </ul>
 <div>
@@ -97,29 +508,8 @@ function init()
 </div>
 <div class="Profile-data">
 <div class="Card Profile-datalist" id="Profile-datalist">
-<div class="">
-
-<div class="List-item">
-<div class="List-itemMeta">
-<div class="ActivityItem-meta">
-<span class="ActivityItem-metaTitle">关注了话题</span>
-<span>2 天前</span>
-</div>
-</div>
-<div class="ContentItem">
-<div class="ContentItem-main">
-<div class="ContentItem-image">
-<a class="TopicLink" href="//www.zhihu.com/topic/19550422" target="_blank">
-<img class="Avatar Avatar--large TopicLink-avatar" width="60" height="60" src="https://pic4.zhimg.com/50/1784ca238_im.jpg" srcset="https://pic4.zhimg.com/50/1784ca238_xl.jpg 2x" alt="风险投资（VC）">
-</a>
-</div>
-<div class="ContentItem-head"><h2 class="ContentItem-title"><a class="TopicLink" href="//www.zhihu.com/topic/19550422" target="_blank">风险投资（VC）</a></h2></div>
-</div>
-</div>
-</div>
-
-
-<div></div>
+<div id="feedArea" class="">
+<!---------<div class="List-item">--->
 </div>
 </div>
 </div>
