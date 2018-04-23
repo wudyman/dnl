@@ -26,7 +26,7 @@ urlpatterns= [
     url(r'^conversation_messages/(?P<conversation_id>[0-9]+)/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.get_conversation_messages,name='getconversationmessages'),
     url(r'^delete_conversation/(?P<conversation_id>[0-9]+)/$',views.delete_conversation,name='deleteconversation'),
     url(r'^delete_conversation_message/(?P<message_id>[0-9]+)/$',views.delete_conversation_message,name='deleteconversationmessage'),
-    url(r'^search/(?P<keyword>[a-zA-Z0-9\u4e00-\u9fa5]+)/(?P<type>[a-z]+)/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.search,name='search'),
+    url(r'^search/(?P<type>[a-z]+)/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.search,name='search'),
     url(r'^answer_page/(?P<type>[a-z]+)/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.answer_page,name='answer_page'),
     url(r'^profile_edit/(?P<type>[a-z]+)/$',views.profile_edit,name='profile_edit'),
 ]

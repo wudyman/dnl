@@ -809,12 +809,14 @@ function checkSearch(e)
     keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
     if (keyword!="")
     {
+        console.log(keyword);
         var type="all";
         var order=1;
         var start=0;
         var end=5;
-        $.get('/ajax/search/'+keyword+'/'+type+'/'+order+'/'+start+'/'+end+'/',function(ret)
+        $.post('/ajax/search/'+type+'/'+order+'/'+start+'/'+end+'/',{keyword:keyword},function(ret)
         {
+            console.log(ret);
             if("fail"!=ret)
             {
                 appendSearchElement(ret,keyword);
@@ -870,7 +872,7 @@ function initCommon()
 ENABLE_SCREEN_LOG="true";//"false"
 function slog(arg)
 {
-    if(("true"==ENABLE_SCREEN_LOG)
+    if("true"==ENABLE_SCREEN_LOG)
     {
         var data='<div>'+arg+'</div>';
         $("#debug").append(data);

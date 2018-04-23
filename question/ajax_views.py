@@ -623,9 +623,11 @@ def delete_conversation(request,conversation_id):
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
-def search(request,keyword,type,order,start,end):
+def search(request,type,order,start,end):
     to_json=json.dumps('fail')
+    keyword=request.POST.get('keyword')
     if keyword:
+        print(keyword)
         if type=='all' or type=='question':
             questions=Question.objects.filter(title__contains=keyword)[int(start):int(end)]
             if questions:
