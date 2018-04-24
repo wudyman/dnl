@@ -96,10 +96,35 @@ function getMoreData()
         setLockScrollMoreData("false");
     });
 }
-
+function initElement()
+{
+    $(".Tabs.Topic-tabs").append('<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-hot"><a class="Tabs-link is-active" href="/topic/'+g_topic_id+'/hot">讨论</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-top"><a class="Tabs-link" href="/topic/'+g_topic_id+'/top-answers">精华</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-wait"><a class="Tabs-link" href="/topic/'+g_topic_id+'/unanswered">等待回答</a></li>');
+    $(".TopicCard-image").empty().append('<img alt="'+g_topic_name+'" src="'+g_topic_avatar+'">');
+    $(".TopicCard-title").append(g_topic_name);
+    $(".TopicCard-description").append(g_topic_detail);
+    $(".NumberBoard-value").append(g_topic_follower_nums);
+    if("true"==g_topic_followed)
+        $(".FollowButton.TopicCard-followButton").removeClass("Button--blue").addClass("Button--grey").attr("data-topic-id",g_topic_id).attr("data-followed","true").text("已关注");
+    else
+        $(".FollowButton.TopicCard-followButton").removeClass("Button--grey").addClass("Button--blue").attr("data-topic-id",g_topic_id).attr("data-followed","false").text("关注话题");
+        
+}
+function initData()
+{
+    var str_main_data=$("main").attr("data-dfs-main");
+	var main_data=JSON.parse(str_main_data);
+    g_user_id=main_data.user_id;
+    g_topic_id=main_data.topic_id;
+    g_topic_name=main_data.topic_name;
+    g_topic_avatar=main_data.topic_avatar;
+    g_topic_detail=main_data.topic_detail;
+    g_topic_follower_nums=main_data.topic_follower_nums;
+    g_topic_followed=main_data.topic_followed;
+}
 function init()
 {
-    g_topic_id=$(".TopicCard").attr("data-topic-id");
+    initData();
+    initElement();
     getMoreData();
     checkSets();
 }
@@ -126,9 +151,7 @@ function init()
 <div class="Topic-mobilePageHeader">
 <div class="Topic-bar">
 <ul role="tablist" class="Tabs Topic-tabs">
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-hot"><a class="Tabs-link is-active" href="/topic/{{context_topic.id}}/hot">讨论</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-top"><a class="Tabs-link" href="/topic/{{context_topic.id}}/top-answers">精华</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-wait"><a class="Tabs-link" href="/topic/{{context_topic.id}}/unanswered">等待回答</a></li>
+<!--append-->
 </ul>
 </div>
 </div>
@@ -137,31 +160,26 @@ function init()
 
 </div>
 
-<main role="main" class="App-main">
+<main role="main" class="App-main" data-dfs-main='{"user_id":"{{user.id}}","topic_id":"{{context_topic.id}}","topic_name":"{{context_topic.name}}","topic_avatar":"{{context_topic.avatar}}","topic_detail":"{{context_topic.detail}}","topic_follower_nums":"{{context_topic.follower_nums}}","topic_followed":"{{followed}}"}'>
 <div class="Topic">
 <div class="Card">
-<div class="TopicCard" data-topic-id="{{context_topic.id}}">
+<div class="TopicCard">
 <div class="ContentItem TopicCard-content">
 <div class="ContentItem-main">
 <div class="ContentItem-image">
-<div class="ImageWrapper TopicCard-image"><img alt="{{context_topic.name}}" src="{{context_topic.avatar}}">
-</div>
+<div class="ImageWrapper TopicCard-image"><img alt="" src=""></div>
 </div>
 <div class="ContentItem-head">
 <div class="ContentItem-meta">
 <div class="TopicCard-meta">
-<h1 class="TopicCard-title">{{context_topic.name}}</h1>
-<span class="RichText TopicCard-description">{{context_topic.detail}}</span>
-<div class="TopicCard-followerCount"><span class="NumberBoard-value" data-update-value-type="topic-followed">{{context_topic.follower_nums}} 关注<span></div>
+<h1 class="TopicCard-title"></h1>
+<span class="RichText TopicCard-description"></span>
+<div class="TopicCard-followerCount"><span class="NumberBoard-value" data-update-value-type="topic-followed"></span> 关注</div>
 </div>
 </div>
 </div>
 </div>
-{% ifequal followed "true" %}
-<button class="Button FollowButton TopicCard-followButton Button--primary Button--grey" type="button" data-topic-id="{{context_topic.id}}" data-follow-type="topic" data-followed="true">已关注</button>
-{% else %}
-<button class="Button FollowButton TopicCard-followButton Button--primary Button--blue" type="button" data-topic-id="{{context_topic.id}}" data-follow-type="topic" data-followed="false">关注话题</button>
-{% endifequal %}
+<button class="Button FollowButton TopicCard-followButton Button--primary" type="button" data-follow-type="topic"></button>
 </div>
 </div>
 <div>
@@ -171,9 +189,7 @@ function init()
 </div>
 <div class="Topic-bar">
 <ul role="tablist" class="Tabs Topic-tabs">
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-hot"><a class="Tabs-link is-active" href="/topic/{{context_topic.id}}/hot">讨论</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-top"><a class="Tabs-link" href="/topic/{{context_topic.id}}/top-answers">精华</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-wait"><a class="Tabs-link" href="/topic/{{context_topic.id}}/unanswered">等待回答</a></li>
+<!--append-->
 </ul>
 </div>
 </div>
@@ -181,15 +197,16 @@ function init()
 <div class="Card">
 <div class="List">
 
+<!--
 <div class="List-item TopicFeedList-header is-hide">
 <div class="TopicFeedList-sort">热门排序</div>
 <a class="TopicFeedList-sortSwitch" href="/topic/{{context_topic.id}}/newest">切换为时间排序</a>
 </div>
-
 <div class="List-item TopicFeedList-header">
 <div class="TopicFeedList-sort">时间排序</div>
 <a class="TopicFeedList-sortSwitch" href="/topic/{{context_topic.id}}/hot">切换为热门排序</a>
 </div>
+-->
 
 <div id="feedArea" class="">
 

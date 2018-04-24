@@ -156,6 +156,11 @@ class SearchView(LoginRequiredMixin,generic.ListView):
         return
         # Topic.objects.order_by('-pub_date')
     def get(self,request,*args,**kwargs):
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print(is_mobile)
+        if is_mobile:
+            self.template_name='question/t_search_mobile.html'
         user=request.user
         if user:
             self.keyword=request.GET.get('q')
