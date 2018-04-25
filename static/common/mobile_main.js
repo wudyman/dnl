@@ -588,7 +588,7 @@ function checkExpandBtn(){
             var data='<div><div class="MobileAppHeader-expandContainer"><span><div class="MobileAppHeader-expand">\
                         <a href="/"><svg class="Zi Zi--Home" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M3 3.99C3 2.892 3.893 2 4.995 2h14.01C20.107 2 21 2.898 21 3.99v16.02c0 1.099-.893 1.99-1.995 1.99H4.995A1.997 1.997 0 0 1 3 20.01V3.99zM6 7c0 .556.449 1 1.002 1h9.996a.999.999 0 1 0 0-2H7.002C6.456 6 6 6.448 6 7zm0 5c0 .556.449 1 1.002 1h9.996a.999.999 0 1 0 0-2H7.002C6.456 11 6 11.448 6 12zm0 5c0 .556.446 1 .997 1h6.006c.544 0 .997-.448.997-1 0-.556-.446-1-.997-1H6.997C6.453 16 6 16.448 6 17z"></path></svg>首页</a>\
                         <a href="/search/"><svg class="Zi Zi--Search" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M17.068 15.58a8.377 8.377 0 0 0 1.774-5.159 8.421 8.421 0 1 0-8.42 8.421 8.38 8.38 0 0 0 5.158-1.774l3.879 3.88c.957.573 2.131-.464 1.488-1.49l-3.879-3.878zm-6.647 1.157a6.323 6.323 0 0 1-6.316-6.316 6.323 6.323 0 0 1 6.316-6.316 6.323 6.323 0 0 1 6.316 6.316 6.323 6.323 0 0 1-6.316 6.316z" fill-rule="evenodd"></path></svg>搜索</a>\
-                        <a href="/er/'+user_id+'"><svg class="Zi Zi--Profile" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M15.417 12.923c-.376.653-.837 1.281-.763 1.863.292 2.273 5.562 1.77 6.78 3.048.566.595.566.664.566 4.164-6.611-.07-13.363 0-20 0 .027-3.5 0-3.478.62-4.164 1.303-1.44 6.581-.715 6.78-3.133.045-.545-.38-1.114-.763-1.778C6.511 9.233 5.697 2 12 2s5.422 7.443 3.417 10.923z" fill-rule="evenodd"></path></svg>我的主页</a>\
+                        <a href="/er/'+g_user_id+'"><svg class="Zi Zi--Profile" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M15.417 12.923c-.376.653-.837 1.281-.763 1.863.292 2.273 5.562 1.77 6.78 3.048.566.595.566.664.566 4.164-6.611-.07-13.363 0-20 0 .027-3.5 0-3.478.62-4.164 1.303-1.44 6.581-.715 6.78-3.133.045-.545-.38-1.114-.763-1.778C6.511 9.233 5.697 2 12 2s5.422 7.443 3.417 10.923z" fill-rule="evenodd"></path></svg>我的主页</a>\
                         <a href="/exit/"><svg class="Zi Zi--Logout" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M2 11.999c0-2.756 1.154-5.417 3.167-7.3a1.266 1.266 0 0 1 1.73 1.847 7.396 7.396 0 0 0-2.367 5.453c0 4.119 3.35 7.47 7.47 7.47 4.119 0 7.47-3.351 7.47-7.47a7.41 7.41 0 0 0-2.279-5.37 1.266 1.266 0 0 1 1.76-1.819A9.923 9.923 0 0 1 22 12c0 5.513-4.486 10-10 10s-10-4.487-10-10zm8.699-.482V3.26a1.26 1.26 0 1 1 2.52 0v8.257a1.26 1.26 0 1 1-2.52 0z" fill-rule="evenodd"></path></svg>退出帐号</a>\
                         <div class="MobileAppHeader-expandBackdrop"></div></div></span></div></div>';
             $(".Mobile-body").addClass("MobileAppHeader-noScrollBody").append(data);
@@ -839,13 +839,13 @@ function checkSearchSelect()
 function checkSearchSubmit(e)
 {
     console.log(e);
-    if(("None"!=search_keyword)&&("None"!=search_keyword)&&("None"!=search_type)&&(""!=search_type))
+    if(("None"!=g_search_keyword)&&("None"!=g_search_keyword)&&("None"!=g_search_type)&&(""!=g_search_type))
     {
         var nums=$('.List-item').length;
         var order=1;//pub_date
         var start=nums;
         var end=start+10;
-        $.post('/ajax/search/'+search_type+'/'+order+'/'+start+'/'+end+'/',{keyword:search_keyword},function(ret){
+        $.post('/ajax/search/'+g_search_type+'/'+order+'/'+start+'/'+end+'/',{keyword:g_search_keyword},function(ret){
             if("fail"!=ret)
             {
                 appendSearchPageElement(ret);  
@@ -857,15 +857,17 @@ function checkSearchSubmit(e)
 function checkSearch(e)
 {
     var keyword=$(e).val();
-    search_keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
-    console.log(search_keyword);
-    if (keyword!="")
+    g_search_keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
+    console.log(g_search_keyword);
+    if (g_search_keyword!="")
     {
         console.log("can search");
+        $(".Icon.Icon--search").css({"fill":"#0084ff"});
     }
     else
     {
         console.log("can`t search");
+        $(".Icon.Icon--search").css({"fill":"#afbdcf"});
     }
     /*
     if (keyword!="")
