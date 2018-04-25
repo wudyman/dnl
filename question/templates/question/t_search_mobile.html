@@ -33,21 +33,21 @@ function appendSearchPageElement(ret)
         var question_id=ret[i][0];
         var question_title=ret[i][1];
         var question_answer_nums=ret[i][2];
-        question_title=question_title.replace(search_keyword,"<em>"+search_keyword+"</em>");
+        question_title=question_title.replace(g_search_keyword,"<em>"+g_search_keyword+"</em>");
         console.log(question_title);
-        var data='<div class="List-item"><div class="ContentItem AnswerItem" itemprop="answer" itemtype="http://schema.org/Answer" itemscope=""><h2 class="ContentItem-title"><div itemprop="zhihu:question" itemtype="http://schema.org/Question" itemscope=""><meta itemprop="url" content="/question/'+question_id+'"><meta itemprop="name" content="'+question_title+'"><a target="_blank" href="/question/'+question_id+'"><span class="Highlight">'+question_title+'</span></a></div></h2></div></div>';
+        var data='<div class="List-item"><div class="ContentItem AnswerItem"><h2 class="ContentItem-title"><div><meta itemprop="url" content="/question/'+question_id+'"><a target="_blank" href="/question/'+question_id+'"><span class="Highlight">'+question_title+'</span></a></div></h2></div></div>';
         $("#feedArea").append(data);
     }
 }
 
 function getMoreData() {
-    if(("None"!=search_keyword)&&("None"!=search_keyword)&&("None"!=search_type)&&(""!=search_type))
+    if(("None"!=g_search_keyword)&&("None"!=g_search_keyword)&&("None"!=g_search_type)&&(""!=g_search_type))
     {
         var nums=$('.List-item').length;
         var order=1;//pub_date
         var start=nums;
         var end=start+10;
-        $.post('/ajax/search/'+search_type+'/'+order+'/'+start+'/'+end+'/',{keyword:search_keyword},function(ret){
+        $.post('/ajax/search/'+g_search_type+'/'+order+'/'+start+'/'+end+'/',{keyword:g_search_keyword},function(ret){
             if("fail"!=ret)
             {
                 appendSearchPageElement(ret);  
@@ -61,20 +61,24 @@ function init()
 {
     var str_main_data=$("main").attr("data-dfs-main");
 	var main_data=JSON.parse(str_main_data);
-    search_keyword=main_data.search_keyword;
-    search_type=main_data.search_type;
-    if(("None"!=search_type)&&(""!=search_type))
+    console.log(main_data);
+    g_search_keyword=main_data.search_keyword;
+    g_search_type=main_data.search_type;
+    g_user_id=main_data.user_id;
+    console.log(g_search_type);
+    if(("None"==g_search_type)||(""==g_search_type))
     {
-        $(".Tabs-link").removeClass("is-active");
-        $(".Tabs-link").each(function(){
-            if($(this).attr("href"))
-            {
-                if($(this).attr("href").indexOf(search_type)>-1)
-                    $(this).addClass("is-active");
-            }
-        });
-        getMoreData();
+        g_search_type="question";
     }
+    $(".Tabs-link").removeClass("is-active");
+    $(".Tabs-link").each(function(){
+        if($(this).attr("href"))
+        {
+            if($(this).attr("href").indexOf(g_search_type)>-1)
+                $(this).addClass("is-active");
+        }
+    });
+    getMoreData();
     checkSets();
     //appendLetterModal();
 }
@@ -101,7 +105,7 @@ function init()
 
 </div>
 
-<main role="main" class="App-main" data-dfs-main='{"search_keyword":"{{keyword}}","search_type":"{{type}}"}'>
+<main role="main" class="App-main" data-dfs-main='{"user_id":"{{user.id}}","search_keyword":"{{keyword}}","search_type":"{{type}}"}'>
 
 <div id="search">
 
@@ -115,7 +119,7 @@ function init()
 <input type="text" style="position:absolute;padding:7px 50px 7px 10px;width:100%;font-size:14px;line-height:17px;background-color:#e1eaf2;border:1px solid;border-radius:4px;box-sizing:border-box;" id="q" name="q" autocomplete="off" value="" maxlength="100" placeholder="搜索你感兴趣的内容..." role="combobox" aria-autocomplete="list" oninput="checkSearch(this)">
 <button id="search_button" type="button" onclick="checkSearchSubmit(this)" style="position:absolute; top:0;right:0;background:0 0;border:0;width:30px;height:100%;">
 <!--<span class="hide-text">搜索</span>-->
-<span><svg viewBox="0 0 16 16" style="height:16px;width:16px;fill:#afbdcf" width="16" height="16" aria-hidden="true"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg></span>
+<span><svg viewBox="0 0 16 16" class="Icon Icon--search" style="height:16px;width:16px;fill:#afbdcf" width="16" height="16" aria-hidden="true"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg></span>
 </button>
 </div>
 </div>

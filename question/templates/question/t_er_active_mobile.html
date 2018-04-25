@@ -37,7 +37,7 @@ function appendQuestionElementSub(ret)
 }
 function appendQuestionElement()
 {
-    $.get("/ajax/er/"+er_id+"/asks/",function(ret){
+    $.get("/ajax/er/"+g_er_id+"/asks/",function(ret){
         if("fail"!=ret)
         {
             for(i in ret)
@@ -48,10 +48,10 @@ function appendQuestionElement()
 }
 function appendAnswerElementSub(ret)
 {
-    var author_id=er_id;
-    var author_name=er_name;
-    var author_mood=er_mood;
-    var author_avatar=er_avatar;
+    var author_id=g_er_id;
+    var author_name=g_er_name;
+    var author_mood=g_er_mood;
+    var author_avatar=g_er_avatar;
     
     var answer_id=ret[0];
     var question_id=ret[1];
@@ -93,7 +93,7 @@ function appendAnswerElementSub(ret)
 
 function appendAnswerElement()
 {
-    $.get("/ajax/er/"+er_id+"/answers/",function(ret){
+    $.get("/ajax/er/"+g_er_id+"/answers/",function(ret){
         if("fail"!=ret)
         {
             for(i in ret)
@@ -115,9 +115,9 @@ function checkProfileSave()
 			$.post("/ajax/profile_edit/nickname/",{content:value},function(ret){
                 if("fail"!=ret)
                 {
-                    er_name=ret;                 
+                    g_er_name=ret;                 
                 }
-                var data='<div><span class="Field-text"><span class="RichText">'+er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                var data='<div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                 _this.parents(".Field-content").empty().append(data);
                 checkProfileModify();
             });
@@ -132,16 +132,16 @@ function checkProfileSave()
                     console.log(ret);
                     if("f"==ret)
                     {
-                        er_sexual="she";
-                        er_sexual_han="女";
+                        g_er_sexual="she";
+                        g_er_sexual_han="女";
                     }
                     else if("m"==ret)
                     {
-                        er_sexual="he";
-                        er_sexual_han="男";
+                        g_er_sexual="he";
+                        g_er_sexual_han="男";
                     }                    
                 }
-                var data='<div><span class="Field-text">'+er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                var data='<div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                 _this.parents(".Field-content").empty().append(data);
                 checkProfileModify();
 			});
@@ -152,9 +152,9 @@ function checkProfileSave()
 			$.post("/ajax/profile_edit/mood/",{content:value},function(ret){
                 if("fail"!=ret)
                 {
-                    er_mood=ret;                 
+                    g_er_mood=ret;                 
                 }
-                var data='<div><span class="Field-text"><span class="RichText">'+er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                var data='<div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                 _this.parents(".Field-content").empty().append(data);
                 checkProfileModify();
             });
@@ -166,9 +166,9 @@ function checkProfileSave()
 			$.post("/ajax/profile_edit/residence/",{content:value},function(ret){
                 if("fail"!=ret)
                 {
-                    er_residence=ret;                     
+                    g_er_residence=ret;                     
                 }
-                var data='<div><span class="Field-text"><span class="RichText">'+er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                var data='<div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                 _this.parents(".Field-content").empty().append(data);
                 checkProfileModify();
             });
@@ -179,9 +179,9 @@ function checkProfileSave()
 			$.post("/ajax/profile_edit/job/",{content:value},function(ret){
                 if("fail"!=ret)
                 {
-                    er_job=ret;
+                    g_er_job=ret;
                 }
-                var data='<div><span class="Field-text">'+er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                var data='<div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                 _this.parents(".Field-content").empty().append(data);
                 checkProfileModify();
             });
@@ -192,9 +192,9 @@ function checkProfileSave()
 			$.post("/ajax/profile_edit/intro/",{content:value},function(ret){
                 if("fail"!=ret)
                 {
-                    er_intro=ret;
+                    g_er_intro=ret;
                 }
-                var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                 _this.parents(".Field-content").empty().append(data);
                 checkProfileModify();
             });
@@ -208,27 +208,27 @@ function checkProfileSave()
 		console.log(field_type);
         if("nickname"==field_type)
 		{
-			var data='<div><span class="Field-text"><span class="RichText">'+er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+			var data='<div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
 		}
 		else if("sexual"==field_type)
 		{			
-			var data='<div><span class="Field-text">'+er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+			var data='<div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
 		}
 		else if("mood"==field_type)
 		{
-			var data='<div><span class="Field-text"><span class="RichText">'+er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+			var data='<div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
 		}
 		else if("residence"==field_type)
 		{
-			var data='<div><span class="Field-text"><span class="RichText">'+er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+			var data='<div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
 		}
 		else if("job"==field_type)
 		{
-			var data='<div><span class="Field-text">'+er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+			var data='<div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
 		}
 		else if("intro"==field_type)
 		{
-			var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+			var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
 		}
 		$(this).parents(".Field-content").empty().append(data);
 		checkProfileModify();
@@ -243,31 +243,31 @@ function checkProfileModify()
 		console.log(field_type);
         if("nickname"==field_type)
 		{
-			var data='<div><div class="HeadlineField-input Input-wrapper"><input name="nickname" class="Input" value="'+er_name+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+			var data='<div><div class="HeadlineField-input Input-wrapper"><input name="nickname" class="Input" value="'+g_er_name+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
 		}
 		else if("sexual"==field_type)
 		{
-			if("f"==er_sexual)
+			if("f"==g_er_sexual)
 				var data='<div><input type="radio" name="sexual" value="m"> 男<input type="radio" name="sexual" value="f" checked style="margin-left: 30px;"> 女<div class="ButtonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div></div>';
 			else
 				var data='<div><input type="radio" name="sexual" value="m" checked> 男<input type="radio" name="sexual" value="f" style="margin-left: 30px;"> 女<div class="ButtonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div></div>';
 		}
 		else if("mood"==field_type)
 		{
-			var data='<div><div class="HeadlineField-input Input-wrapper"><input name="mood" class="Input" value="'+er_mood+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+			var data='<div><div class="HeadlineField-input Input-wrapper"><input name="mood" class="Input" value="'+g_er_mood+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
 		}
 		else if("residence"==field_type)
 		{
-		    var data='<div><div class="HeadlineField-input Input-wrapper"><input name="residence" class="Input" value="'+er_residence+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+		    var data='<div><div class="HeadlineField-input Input-wrapper"><input name="residence" class="Input" value="'+g_er_residence+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
 			$(this).parents(".Field-content").empty().append(data);
 		}
 		else if("job"==field_type)
 		{
-			var data='<div><div class="HeadlineField-input Input-wrapper"><input name="job" class="Input" value="'+er_job+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+			var data='<div><div class="HeadlineField-input Input-wrapper"><input name="job" class="Input" value="'+g_er_job+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
 		}
 		else if("intro"==field_type)
 		{
-			var data='<div><textarea name="intro" rows="3" class="DescriptionField-input TextArea">'+er_intro+'</textarea><div class="DescriptionField-actions"><div class="ButtonGroup DescriptionField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+			var data='<div><textarea name="intro" rows="3" class="DescriptionField-input TextArea">'+g_er_intro+'</textarea><div class="DescriptionField-actions"><div class="ButtonGroup DescriptionField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
 		}
 		$(this).parents(".Field-content").empty().append(data);
 		checkProfileSave();
@@ -312,20 +312,20 @@ function profileEdit()
 	var data='\
 			<div class="Card">\
             <div class="ProfileHeader-expandActions ProfileEdit-expandActions">\
-			<a class="Button Button--plain" type="button" href="/er/'+er_id+'">&nbsp;返回我的主页<span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--ArrowRight" fill="#8590a6" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z" fill-rule="evenodd"></path></svg></span></a>\
+			<a class="Button Button--plain" type="button" href="/er/'+g_er_id+'">&nbsp;返回我的主页<span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--ArrowRight" fill="#8590a6" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z" fill-rule="evenodd"></path></svg></span></a>\
 			</div>\
             <div class="Profile-intro">\
-            <img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+er_avatar+'"alt="">\
+            <img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt="">\
             <input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/>\
             </div>\
             <div class="Profile-data">\
             <div class="Profile-datalist">\
-			<div class="Field List-item"><h6>昵称</h6><div class="Field-content" data-field-type="nickname"><div><span class="Field-text"><span class="RichText">'+er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>性别</h6><div class="Field-content" data-field-type="sexual"><div><span class="Field-text">'+er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content" data-field-type="mood"><div><span class="Field-text"><span class="RichText">'+er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>居住地</h6><div class="Field-content" data-field-type="residence"><div><span class="Field-text"><span class="RichText">'+er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>所在行业</h6><div class="Field-content" data-field-type="job"><div><span class="Field-text">'+er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>个人简介</h6><div class="Field-content" data-field-type="intro"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+			<div class="Field List-item"><h6>昵称</h6><div class="Field-content" data-field-type="nickname"><div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+			<div class="Field List-item"><h6>性别</h6><div class="Field-content" data-field-type="sexual"><div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+			<div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content" data-field-type="mood"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+			<div class="Field List-item"><h6>居住地</h6><div class="Field-content" data-field-type="residence"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+			<div class="Field List-item"><h6>所在行业</h6><div class="Field-content" data-field-type="job"><div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+			<div class="Field List-item"><h6>个人简介</h6><div class="Field-content" data-field-type="intro"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
             </div></div>\
 			</div>';
     $("main").append(data);
@@ -335,29 +335,29 @@ function profileEdit()
 }
 function initElement()
 {
-    $(".Profile-avatar").attr("src",er_avatar);
-    $(".Profile-name").text(er_name);
-    $(".Profile-headline").text(er_mood);
-    $("#residence").text(er_residence);
-    $("#job").text(er_job);
-    $("#followers").text(followers_num);
-    $("#followtos").text(followtos_num);
-    if("f"==er_sexual)
+    $(".Profile-avatar").attr("src",g_er_avatar);
+    $(".Profile-name").text(g_er_name);
+    $(".Profile-headline").text(g_er_mood);
+    $("#residence").text(g_er_residence);
+    $("#job").text(g_er_job);
+    $("#followers").text(g_followers_num);
+    $("#followtos").text(g_followtos_num);
+    if("f"==g_er_sexual)
     {
-        who="she";
-        who_han="她";
-        er_sexual_han="女";
+        var who="she";
+        var who_han="她";
+        g_er_sexual_han="女";
     }
     else
     {
-        who="he";
-        who_han="他";
-        er_sexual_han="男";
+        var who="he";
+        var who_han="他";
+        g_er_sexual_han="男";
     }
-    if(user_id==er_id)
+    if(g_user_id==g_er_id)
     {
-        who="me";
-        who_han="我";
+        var who="me";
+        var who_han="我";
         $(".Profile-followButton").text("编辑个人资料").attr("onclick","profileEdit()");
     }
     else
@@ -368,27 +368,27 @@ function initElement()
     
     
     
-    answers_active="";
-	asks_active="";
-	posts_active="";
-	following_active="";
+    var answers_active="";
+	var asks_active="";
+	var posts_active="";
+	var following_active="";
 	
-	if ("answers"==command)
+	if ("answers"==g_command)
 	{
 	    answers_active="is-active";
         appendAnswerElement();
 	}
-    else if("asks"==command)
+    else if("asks"==g_command)
 	{
 		asks_active="is-active";
         appendQuestionElement();
 	}
-	else if("posts"==command)
+	else if("posts"==g_command)
 	{
 		posts_active="is-active";
         //appendQuestionElement();
 	}
-    else if("following"==command)
+    else if("following"==g_command)
 	{
 		following_active="is-active";
         //appendFollowElement(subcmd);
@@ -396,7 +396,7 @@ function initElement()
     else 
         console.log("false");
     
-    var ul_list='<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities"><a class="Tabs-link '+answers_active+'" href="/er/'+er_id+'/answers/">回答</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-answers"><a class="Tabs-link '+asks_active+'" href="/er/'+er_id+'/asks/">提问</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-articals"><a class="Tabs-link '+posts_active+'" href="/er/'+er_id+'/posts/">文章</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-questions"><a class="Tabs-link '+following_active+'" href="/er/'+er_id+'/following/">关注</a></li>'
+    var ul_list='<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-answers"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-articals"><a class="Tabs-link '+posts_active+'" href="/er/'+g_er_id+'/posts/">文章</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-questions"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注</a></li>'
     $(".Tabs.ProfileBar").append(ul_list);
 }
 function initData()
@@ -410,29 +410,29 @@ function initData()
 	console.log(str_ext_data);
 	var ext_data=JSON.parse(str_ext_data);
 	
-	user_id=main_data.user_id;
-	user_name=main_data.user_name;
-	user_avatar=main_data.user_avatar;
+	g_user_id=main_data.user_id;
+	g_user_name=main_data.user_name;
+	g_user_avatar=main_data.user_avatar;
 	
-	er_id=main_data.er_id;
-    er_name=main_data.er_name;
-    er_avatar=main_data.er_avatar;
-    er_mood=main_data.er_mood;
-	er_sexual=main_data.er_sexual;
-	er_residence=main_data.er_residence;
-	er_job=main_data.er_job;
-	er_intro=main_data.er_intro;
+	g_er_id=main_data.er_id;
+    g_er_name=main_data.er_name;
+    g_er_avatar=main_data.er_avatar;
+    g_er_mood=main_data.er_mood;
+	g_er_sexual=main_data.er_sexual;
+	g_er_residence=main_data.er_residence;
+	g_er_job=main_data.er_job;
+	g_er_intro=main_data.er_intro;
 	
-	followed=main_data.followed;
-	command=main_data.command;
-    subcmd=main_data.subcmd;
+	g_followed=main_data.followed;
+	g_command=main_data.command;
+    g_subcmd=main_data.subcmd;
 	
-	questions_num=ext_data.questions_num;
-	answers_num=ext_data.answers_num;
-	followtos_num=ext_data.followtos_num;
-	followers_num=ext_data.followers_num;
-	followtopics_num=ext_data.followtopics_num;
-	followquestions_num=ext_data.followquestions_num;
+	g_questions_num=ext_data.questions_num;
+	g_answers_num=ext_data.answers_num;
+	g_followtos_num=ext_data.followtos_num;
+	g_followers_num=ext_data.followers_num;
+	g_followtopics_num=ext_data.followtopics_num;
+	g_followquestions_num=ext_data.followquestions_num;
 }
 function init()
 {
