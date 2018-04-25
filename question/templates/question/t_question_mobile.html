@@ -27,6 +27,7 @@
 <script>
 function appendPushAnswerElement()
 {   
+    var m_answer_content=g_answer_content+"<p>&nbsp;</p>";
     var data='<div class="ScrollIntoMark"><div class="ContentItem AnswerItem">\
                 <div class="ContentItem-meta">\
                 <div class="AuthorInfo AnswerItem-authorInfo AnswerItem-authorInfo--related">\
@@ -44,7 +45,7 @@ function appendPushAnswerElement()
                 </div>\
                 <div class="RichContent is-collapsed RichContent--unescapable RichContent--withMask">\
                 <div class="RichContent-inner RichContent-inner--collapsed" style="max-height:400px;">\
-                <span class="RichText CopyrightRichText-richText">'+addClassImg(g_answer_content,'class="origin_image"')+'</span></div>\
+                <span class="RichText CopyrightRichText-richText">'+addClassImg(m_answer_content,'class="origin_image"')+'</span></div>\
                 <button class="Button ContentItem-more ContentItem-rightButton Button--plain" type="button">展开阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" style="height:16px;width:10px;" width="10" height="16" aria-hidden="true"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
                 <div class="ContentItem-actions">\
                 <span>\
@@ -110,7 +111,7 @@ function appendMoreAnswerListElement(ret)
             </div>';
 
         
-        $(".List").append(data);
+        $(".MoreAnswerContent.List").append(data);
     }
 }
 function appendAllAnswerListElement(ret)
@@ -164,7 +165,7 @@ function appendAllAnswerListElement(ret)
                     </div>';
 
         
-        $(".List").append(data);
+        $(".AllAnswerContent.List").append(data);
     }
 }
 function getMoreAnswerData()
@@ -197,6 +198,83 @@ function getAllAnswerData()
         setLockScrollMoreData("false");
     });
 }
+function invite()
+{
+    $(".Invite").each(function(index,element){
+        $(element).click(function(){
+            var question_id=$(".QuestionPage").attr("data-question-id");
+            //inviter=$(element).attr("data-from");
+            receiver=$(element).attr("data-receiver");
+            //$.get('/ajax/invite/?question='+question_id+'&from='+inviter+'&to='+invitee,function(ret){
+            $.get('/ajax/invite/?question='+question_id+'&to='+receiver,function(ret){
+                alert(ret);
+            });
+        });
+    });
+}
+function appendInviteElement(ret)
+{
+    for( i in ret)
+    {
+        var adept_id=ret[i][0];
+        var adept_name=ret[i][1];
+        var adept_avatar=ret[i][2];
+        var adept_mood=ret[i][3];
+        
+        var data='<div class="List-item">\
+                    <div class="ContentItem">\
+                    <div class="ContentItem-main">\
+                    <div class="ContentItem-image">\
+                    <span class="UserLink UserItem-avatar">\
+                    <a class="UserLink-link" target="_blank" href="/er/'+adept_id+'">\
+                    <img class="Avatar Avatar--large UserLink-avatar PeoplePopover" width="60" height="60" src="'+adept_avatar+'" srcset="'+adept_avatar+'" alt="'+adept_name+'" data-author-id="'+adept_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">\
+                    </a>\
+                    </span>\
+                    </div>\
+                    <div class="ContentItem-head">\
+                    <h2 class="ContentItem-title">\
+                    <div class="UserItem-title">\
+                    <span class="UserLink UserItem-name">\
+                    <a class="UserLink-link" target="_blank" href="/er/'+adept_id+'"><span class="RichText">'+adept_name+'</span></a>\
+                    </span>\
+                    </div>\
+                    </h2>\
+                    <div class="ContentItem-meta">\
+                    <div>\
+                    <div class="ContentItem-status">\
+                    <div class="ContentItem-statusItem">'+adept_mood+'</div>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    <div class="ContentItem-extra">\
+                    <button class="Button Button--blue Invite" type="button" data-receiver="'+adept_id+'">邀请回答</button>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    </div>\
+                    ';
+        $(".QuestionInvitation-content.List").append(data);
+    }
+}
+function showInvite()
+{
+    var topics="";
+    $(".TopicLink").each(function(){
+        topics+=($(this).attr("data-topic-id"))+";";
+    });
+
+    $.post("/ajax/topic_adept/",{"topics":topics},function(ret){
+        if("fail"!=ret)
+        {
+            appendInviteElement(ret);
+            $("#inviteModal").modal('show');
+            checkSets();
+            invite();
+        }
+    })
+    //$("#inviteModal").modal('show');
+}
 
 function getMoreData()
 {
@@ -209,6 +287,8 @@ function initElement()
 {
     $('title').text(g_question_title+" - 大大大");
     $(".QuestionHeader-title").append('<a href="/question/'+g_question_id+'">'+g_question_title+'</a>');
+    $(".AuthorInfo-avatar").attr("src",g_user_avatar);
+    $(".AuthorInfo-name").empty().append(g_user_name);
     if("true"==g_question_followed)
     {
         $(".FollowButton").removeClass("Button--blue").addClass("Button--grey").attr("data-question-id",g_question_id).attr("data-followed","true").text("已关注");
@@ -219,11 +299,11 @@ function initElement()
     }
     if("all"==g_list_type)
     {
-        var data='<div class="Card"><div class="Card-header"><div class="Card-headerText"><h4 class="List-headerText"><span>'+g_question_answer_nums+' 个回答</span></h4></div></div><div class="List" data-list-type="all"><!--<div class="List-item"><div class="ContentItem AnswerItem"></div></div>--></div></div>'
+        var data='<div class="Card"><div class="Card-header"><div class="Card-headerText"><h4 class="List-headerText"><span>'+g_question_answer_nums+' 个回答</span></h4></div></div><div class="AllAnswerContent List" data-list-type="all"></div></div>'
     }
     else
     {
-        var data='<div class="Card AnswerCard"><div class="QuestionAnswer-content"><!-------------ContentItem AnswerItem---------------------></div></div><div style="margin-bottom: 10px;"></div><div class="Card"><div class="Card-header"><div class="Card-headerText">更多回答</div></div><div class="List" data-list-type="more"><!--<div class="List-item"><div class="ContentItem AnswerItem"></div></div>--></div></div><div class="Card ViewAllInappCard"><a class="QuestionMainAction" href="/question/'+g_question_id+'">查看全部 '+g_question_answer_nums+' 个回答</a></div>';
+        var data='<div class="Card AnswerCard"><div class="QuestionAnswer-content"></div></div><div style="margin-bottom: 10px;"></div><div class="Card"><div class="Card-header"><div class="Card-headerText">更多回答</div></div><div class="MoreAnswerContent List" data-list-type="more"></div></div><div class="Card ViewAllInappCard"><a class="QuestionMainAction" href="/question/'+g_question_id+'">查看全部 '+g_question_answer_nums+' 个回答</a></div>';
     }
     $(".Question-main").append(data);
 }
@@ -233,6 +313,8 @@ function initData()
 	var main_data=JSON.parse(str_main_data);
     
     g_user_id=main_data.user_id;
+    g_user_name=main_data.user_name;
+    g_user_avatar=main_data.user_avatar;
     g_question_id=main_data.question_id;
     g_question_title=main_data.question_title;
     g_question_answer_nums=main_data.question_answer_nums;
@@ -265,6 +347,31 @@ function init()
         getMoreData();
     }
     checkSets();
+    
+    $('#summernote_answer').summernote({
+    toolbar: [
+    // [groupName, [list of button]]
+    ['style', ['bold', 'italic', 'underline', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['paragraph']],
+    ['table', ['table']],
+    ['link', ['link']],
+    ['picture', ['picture']],
+    ['video', ['video']],
+    ['fullscreen', ['fullscreen']]
+    ],
+    height:200,
+    lang:'zh-CN',
+    placeholder:'写回答...',
+    callbacks: {
+        onImageUpload: function(files){
+            img=sendFileAnswer(files[0]);
+            console.log(img);
+        }
+    }
+    });
 }
 </script>
 </head>
@@ -289,8 +396,7 @@ function init()
 </div>
 </header>
 </div>
-<!--<main role="main" class="App-main"  data-moudle="question" data-dfs-main='{"question_id":"{{context_question.id}}","question_title":"{{context_question.title}}","answer_id":"{{push_answer.id}}","answer_like_nums":"{{push_answer.like_nums}}","answer_content":"{{push_answer.content}}","author_id":"{{push_answer.author.id}}","author_name":"{{push_answer.author.first_name}}","author_avatar":"{{push_answer.author.userprofile.avatar}}","author_mood","{{push_answer.author.userprofile.mood}}"}'>-->
-<main role="main" class="App-main"  data-moudle="question" data-dfs-main='{"user_id":"{{user.id}}","question_id":"{{context_question.id}}","question_title":"{{context_question.title}}","question_answer_nums":{{context_question.answer_nums}},"question_followed":"{{followed}}","answer_id":"{{push_answer.id}}","answer_like_nums":"{{push_answer.like_nums}}","answer_content":"{{push_answer.content}}","author_id":"{{push_answer.author.id}}","author_name":"{{push_answer.author.first_name}}","author_avatar":"{{push_answer.author.userprofile.avatar}}","author_mood":"{{push_answer.author.userprofile.mood}}"}'>
+<main role="main" class="App-main"  data-moudle="question" data-dfs-main='{"user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","question_id":"{{context_question.id}}","question_title":"{{context_question.title}}","question_answer_nums":{{context_question.answer_nums}},"question_followed":"{{followed}}","answer_id":"{{push_answer.id}}","answer_like_nums":"{{push_answer.like_nums}}","answer_content":"{{push_answer.content}}","author_id":"{{push_answer.author.id}}","author_name":"{{push_answer.author.first_name}}","author_avatar":"{{push_answer.author.userprofile.avatar}}","author_mood":"{{push_answer.author.userprofile.mood}}"}'>
 <div>
 
 
@@ -306,7 +412,8 @@ function init()
 <div class="ContentItem-actions">
 <div class="MobileQuestionButtonGroup">
 <button class="Button FollowButton Button--primary Button--blue" type="button" data-follow-type="question"></button>
-<button class="Button Button--blue" type="button">写回答</button>
+<button class="Button Button--blue" type="button" onclick="showAnswerToolbar()">写回答</button>
+<button class="Button Button--blue" type="button" onclick="showInvite()">邀请回答</button>
 </div>
 </div>
 </div>
@@ -314,7 +421,41 @@ function init()
 </div>
 </div>
 
-
+<div id="answertoolbar">
+<div class="Card QuestionAnswers-answerAdd AnswerToolbar is-hide">
+<div class="AnswerAdd">
+<div class="AnswerAdd-header" style="padding:5px 1px;">
+<div class="AuthorInfo AnswerAdd-info">
+<span class="UserLink AuthorInfo-avatarWrapper">
+<img class="Avatar AuthorInfo-avatar" width="38" height="38" src="" alt="">
+</span>
+<div class="AuthorInfo-content">
+<div class="AuthorInfo-head">
+<span class="UserLink AuthorInfo-name"></span>
+</div>   
+</div>       
+<div>
+<button  class="Button Button--plain" type="button" onclick="hideAnswerToolbar()">
+<svg class="Zi Zi--Close " fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>
+</div>       
+</div>       
+</div>       
+<div>
+<textarea id="summernote_answer" name="content" 1rows="5" 1cols="70" 1maxlength="160" 1placeholder="写回答..."></textarea>
+<div>
+<div class="Sticky AnswerForm-footer is-bottom">
+<div class="AnswerForm-footerContent AnswerForm-container">
+<div class="AnswerForm-status"></div>
+<div class="AnswerForm-footerRight">
+<button class="AnswerForm-submit  btn btn-success" type="button" onclick="submitAnswer()">提交回答</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
 
 <div class="Question-main">
@@ -329,6 +470,37 @@ function init()
 </main>
 </div>
 </div>
+
+<!--- div other for invite--->
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="inviteModalLabel" aria-hidden="true">
+<div class="modal-dialog inviteModal">
+<div class="Modal-inner">
+<div class="Modal-content Modal-content--spread">
+<div class="QuestionInvitation">
+<div class="Topbar">
+<div class="Topbar-title">
+<h2 class="QuestionInvitation-title">你可以邀请下面用户，快速获得回答</h2>
+</div>
+<div class="Topbar-options">
+<div class="QuestionInvitation-input Input-wrapper">
+<input data-tooltip="也可以搜索职业、公司等资料" data-tooltip-position="bottom" class="Input" placeholder="搜索你想邀请的人">
+<div class="Input-after">
+<svg viewBox="0 0 16 16" class="Icon Icon--search" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg>
+</div>
+</div>
+</div>
+</div>
+<div class="QuestionInvitation-content List">
+</div>
+</div>
+</div>
+<button data-dismiss="modal" aria-hidden="true" class="Button Modal-closeButton Button--plain 1close" aria-label="关闭" type="button"><svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>
+</div>
+</div>
+</div>
+<!--- div other for invite--->
+
 </body>
 
 
