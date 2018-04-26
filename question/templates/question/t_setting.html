@@ -251,12 +251,12 @@ function appendSettingsElement(sub_type)
 }
 
 //获取文档完整的高度 
-function getMoreData(step) { 
+function getMoreData() { 
     var type=$("#setting-items").attr("data-type");
     if("conversations"==type)
     {
         var conversation_id=$("#setting-items").attr("data-conversation-id");
-        if("null"!=conversation_id)
+        if(""!=conversation_id)
         {
             type="conversation_messages/"+conversation_id;
         }
@@ -264,7 +264,7 @@ function getMoreData(step) {
     var nums=$('.Setting-item').length;
     var order=1;//pub_date
     var start=nums;
-    var end=start+step;
+    var end=start+STEP;
     $.get('/ajax/'+type+'/'+order+'/'+start+'/'+end+'/',function(ret){
         if("fail"!=ret)
         {
@@ -277,30 +277,16 @@ function getMoreData(step) {
             checkSets();
             //alert(ret);
         }
+        setLockScrollMoreData("false");
     });
 } 
 
-
-window.onscroll = function () { 
-console.log(getScrollTop());
-console.log(getClientHeight());
-console.log(getScrollHeight());
-if (getScrollTop() + getClientHeight() +1 >= getScrollHeight()) { 
-        getMoreData(5); 
-    } 
-} 
-
-/*
-$(function() {
-    getMoreData();
-});
-*/
 function init()
 {
     var type=$("#setting-items").attr("data-type");
     if (("notifications"==type)||("conversations"==type))
     {
-        getMoreData(10);
+        getMoreData();
     }
     else
     {
@@ -402,7 +388,7 @@ function init()
         <div class="zu-main-content">
         <div class="zu-main-content-inner">
         {% if parter %}
-            <div class="zg-section"><a href="/conversation">« 返回</a></div>
+            <div class="zg-section"><a href="/conversations">« 返回</a></div>
             <div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">{{parter.first_name}}</span>：</div>
             <div class="zg-section LetterSend" id="zh-pm-editor-form">
             <div class="zg-editor-simple-wrap zg-form-text-input">

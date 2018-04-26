@@ -41,7 +41,7 @@ function appendSearchPageElement(ret)
 }
 
 function getMoreData() {
-    if(("None"!=g_search_keyword)&&("None"!=g_search_keyword)&&("None"!=g_search_type)&&(""!=g_search_type))
+    if((""!=g_search_keyword)&&(""!=g_search_type))
     {
         var nums=$('.List-item').length;
         var order=1;//pub_date
@@ -53,10 +53,22 @@ function getMoreData() {
                 appendSearchPageElement(ret);  
                 checkSets();
             }
+            setLockScrollMoreData("false");
         });
     }
 } 
-
+function checkSearchType()
+{
+    
+    $(".Tabs-link").off("click");
+    $(".Tabs-link").click(function(){
+        $(".Tabs-link").removeClass("is-active");
+        $(this).addClass("is-active");
+        g_search_type=$(this).attr("data-search-type");
+        $("#feedArea").empty();
+        getMoreData();
+    });
+}
 function init()
 {
     var str_main_data=$("main").attr("data-dfs-main");
@@ -66,20 +78,18 @@ function init()
     g_search_type=main_data.search_type;
     g_user_id=main_data.user_id;
     console.log(g_search_type);
-    if(("None"==g_search_type)||(""==g_search_type))
+    if(""==g_search_type)
     {
         g_search_type="question";
     }
     $(".Tabs-link").removeClass("is-active");
     $(".Tabs-link").each(function(){
-        if($(this).attr("href"))
-        {
-            if($(this).attr("href").indexOf(g_search_type)>-1)
-                $(this).addClass("is-active");
-        }
+        if($(this).attr("data-search-type")==g_search_type)
+            $(this).addClass("is-active");
     });
     getMoreData();
     checkSets();
+    checkSearchType();
     //appendLetterModal();
 }
 </script>
@@ -135,10 +145,10 @@ function init()
 </div>
 <div class="Topic-bar">
 <ul role="tablist" class="Tabs Topic-tabs">
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Search-all"><a class="Tabs-link is-active" href="/search?q={{keyword}}&amp;type=all">综合</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Search-question"><a class="Tabs-link" href="/search?q={{keyword}}&amp;type=question">问题</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Search-people"><a class="Tabs-link" href="/search?q={{keyword}}&amp;type=people">用户</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Search-topic"><a class="Tabs-link" href="/search?q={{keyword}}&amp;type=topic">话题</a></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><div class="Tabs-link" data-search-type="all">综合</div></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><div class="Tabs-link" data-search-type="question">问题</div></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><div class="Tabs-link" data-search-type="people">用户</div></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><div class="Tabs-link" data-search-type="topic">话题</div></li>
 </ul>
 </div>
 </div>

@@ -70,6 +70,11 @@ class NotificationView(LoginRequiredMixin,generic.ListView):
         return
         # Topic.objects.order_by('-pub_date')
     def get(self,request,*args,**kwargs):
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print(is_mobile)
+        if is_mobile:
+            self.template_name='question/t_setting_mobile.html'
         user=request.user
         if user:
             return render(request,self.template_name,{'type':self.type})
@@ -85,6 +90,11 @@ class ConversationView(LoginRequiredMixin,generic.ListView):
         return
         # Topic.objects.order_by('-pub_date')
     def get(self,request,*args,**kwargs):
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print(is_mobile)
+        if is_mobile:
+            self.template_name='question/t_setting_mobile.html'
         user=request.user
         if user:
             conversation_id=request.GET.get('i')
@@ -95,11 +105,11 @@ class ConversationView(LoginRequiredMixin,generic.ListView):
                     parter=conversation.initator
                     if parter.id==user.id:
                         parter=conversation.parter
-                    return render(request,self.template_name,{'type':self.type,'conversation_id':conversation_id,'parter':parter})
+                    return render(request,self.template_name,{'type':self.type,'conversation_id':conversation_id,'parter':parter,'parter_name':parter.first_name})
                 else:
-                    return render(request,self.template_name,{'type':self.type,'conversation_id':'null'})               
+                    return render(request,self.template_name,{'type':self.type,'conversation_id':''})               
             else:
-                return render(request,self.template_name,{'type':self.type,'conversation_id':'null'})
+                return render(request,self.template_name,{'type':self.type,'conversation_id':''})
         else:
             return HttpResponseRedirect('/')
         #user=request.user #get_object_or_404(User,username=request.user)
@@ -117,6 +127,11 @@ class SettingsView(LoginRequiredMixin,generic.ListView):
         return
         # Topic.objects.order_by('-pub_date')
     def get(self,request,*args,**kwargs):
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print(is_mobile)
+        if is_mobile:
+            self.template_name='question/t_setting_mobile.html'
         user=request.user
         if user:
             self.sub_type=request.GET.get('sub')
@@ -158,14 +173,17 @@ class SearchView(LoginRequiredMixin,generic.ListView):
     def get(self,request,*args,**kwargs):
         ua=request.META['HTTP_USER_AGENT']
         is_mobile=ua.upper().find('MOBILE')>=0
-        print(is_mobile)
+        print('is moblie:',is_mobile)
         if is_mobile:
             self.template_name='question/t_search_mobile.html'
         user=request.user
         if user:
             self.keyword=request.GET.get('q')
-            print(self.keyword)
+            if not self.keyword:
+                self.keyword=''
             self.type=request.GET.get('type')
+            if not self.type:
+                self.type=''
             return render(request,self.template_name,{'keyword':self.keyword,'type':self.type})
         else:
             return HttpResponseRedirect('/')
