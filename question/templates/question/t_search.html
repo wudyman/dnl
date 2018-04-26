@@ -46,25 +46,10 @@ function getMoreData() {
                 appendSearchPageElement(ret);  
                 checkSets();
             }
+            setLockScrollMoreData("false");
         });
     }
 } 
-
-
-window.onscroll = function () { 
-console.log(getScrollTop());
-console.log(getClientHeight());
-console.log(getScrollHeight());
-if (getScrollTop() + getClientHeight() +1 >= getScrollHeight()) { 
-        getMoreData(); 
-    } 
-} 
-
-/*
-$(function() {
-    getMoreData();
-});
-*/
 
 function init()
 {

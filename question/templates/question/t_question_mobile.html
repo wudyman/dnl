@@ -119,7 +119,7 @@ function appendAllAnswerListElement(ret)
     for(i in ret)
     {
         var answer_id=ret[i][0];
-        var answer_content=ret[i][1];
+        var answer_content=ret[i][1]+"<p>&nbsp;</p>";
         var answer_like_nums=ret[i][2];
         var answer_comment_nums=ret[i][3];
         var answer_pub_date=ret[i][4].split(" ")[0];
