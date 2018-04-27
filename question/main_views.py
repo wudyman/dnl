@@ -72,7 +72,7 @@ class NotificationView(LoginRequiredMixin,generic.ListView):
     def get(self,request,*args,**kwargs):
         ua=request.META['HTTP_USER_AGENT']
         is_mobile=ua.upper().find('MOBILE')>=0
-        print(is_mobile)
+        print('is moblie:',is_mobile)
         if is_mobile:
             self.template_name='question/t_setting_mobile.html'
         user=request.user
@@ -92,7 +92,7 @@ class ConversationView(LoginRequiredMixin,generic.ListView):
     def get(self,request,*args,**kwargs):
         ua=request.META['HTTP_USER_AGENT']
         is_mobile=ua.upper().find('MOBILE')>=0
-        print(is_mobile)
+        print('is moblie:',is_mobile)
         if is_mobile:
             self.template_name='question/t_setting_mobile.html'
         user=request.user
@@ -129,7 +129,7 @@ class SettingsView(LoginRequiredMixin,generic.ListView):
     def get(self,request,*args,**kwargs):
         ua=request.META['HTTP_USER_AGENT']
         is_mobile=ua.upper().find('MOBILE')>=0
-        print(is_mobile)
+        print('is moblie:',is_mobile)
         if is_mobile:
             self.template_name='question/t_setting_mobile.html'
         user=request.user

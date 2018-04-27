@@ -15,6 +15,11 @@ class MyTopicView(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         pass
     def get(self,request,*args,**kwargs):
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print('is moblie:',is_mobile)
+        if is_mobile:
+            self.template_name='question/t_mytopic_mobile.html'
         user=request.user #get_object_or_404(User,username=request.user)
         mytopic_list=user.followtopics.all()
         if mytopic_list:
@@ -29,7 +34,7 @@ class TopicView(generic.ListView):
     def get(self,request,*args,**kwargs):
         ua=request.META['HTTP_USER_AGENT']
         is_mobile=ua.upper().find('MOBILE')>=0
-        print(is_mobile)
+        print('is moblie:',is_mobile)
         if is_mobile:
             self.template_name='question/t_topic_mobile.html'
         topic_id=self.kwargs.get('topic_id')

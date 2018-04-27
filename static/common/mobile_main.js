@@ -116,6 +116,7 @@ function updateValue(type,value)
     });
 }
 function followPeople(button){
+    console.log("followew success 0");
     var er_id=button.attr("data-er-id");
     var who=button.attr("data-who");
     if("true"==button.attr("data-followed"))
@@ -123,12 +124,13 @@ function followPeople(button){
         $.post("/ajax/er_follow/0/"+er_id+"/",function(ret){
             if("fail"!=ret)
             {
+                console.log("followew success 1");
                 if ("she"==who)
-                    button.removeClass("Button--grey").addClass("Button--green").text("关注她");
+                    button.removeClass("Button--grey").addClass("Button--blue").text("关注她");
                 else if ("he"==who)
-                    button.removeClass("Button--grey").addClass("Button--green").text("关注他");
+                    button.removeClass("Button--grey").addClass("Button--blue").text("关注他");
                 else
-                    button.removeClass("Button--grey").addClass("Button--green").text("关注");
+                    button.removeClass("Button--grey").addClass("Button--blue").text("关注");
                 button.attr("data-followed","false");
                 updateValue("people-followed",ret);
             }
@@ -139,7 +141,8 @@ function followPeople(button){
         $.post("/ajax/er_follow/1/"+er_id+"/",function(ret){
             if("fail"!=ret)
             {
-                button.removeClass("Button--green").addClass("Button--grey").text("已关注");
+                console.log("followew success 2");
+                button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
                 button.attr("data-followed","true");
                 updateValue("people-followed",ret);
             }
@@ -154,7 +157,7 @@ function followTopic(button){
         $.post("/ajax/topic_follow/0/"+topic_id+"/",function(ret){
             if("fail"!=ret)
             {
-                button.removeClass("Button--grey").addClass("Button--green").text("关注");
+                button.removeClass("Button--grey").addClass("Button--blue").text("关注话题");
                 button.attr("data-followed","false");
                 updateValue("topic-followed",ret);
             }
@@ -165,7 +168,7 @@ function followTopic(button){
         $.post("/ajax/topic_follow/1/"+topic_id+"/",function(ret){
             if("fail"!=ret)
             {
-                button.removeClass("Button--green").addClass("Button--grey").text("已关注");
+                button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
                 button.attr("data-followed","true");
                 updateValue("topic-followed",ret);
             }
@@ -180,7 +183,7 @@ function followQuestion(button){
         $.post("/ajax/question_follow/0/"+question_id+"/",function(ret){
             if("fail"!=ret)
             {
-                button.removeClass("Button--grey").addClass("Button--green").text("关注");
+                button.removeClass("Button--grey").addClass("Button--blue").text("关注问题");
                 button.attr("data-followed","false");
                 updateValue("question-followed",ret);
             }
@@ -191,7 +194,7 @@ function followQuestion(button){
         $.post("/ajax/question_follow/1/"+question_id+"/",function(ret){
             if("fail"!=ret)
             {
-                button.removeClass("Button--green").addClass("Button--grey").text("已关注");
+                button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
                 button.attr("data-followed","true");
                 updateValue("question-followed",ret);
             }
@@ -405,7 +408,7 @@ function checkPopoverShow(){
                         if(er_followed)
                             var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="true" data-who="'+who+'">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
                         else
-                            var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="false" data-who="'+who+'">关注'+who_han+'</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
+                            var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--blue" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="false" data-who="'+who+'">关注'+who_han+'</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="Icon Button-icon Icon--comments" width="15" height="16" aria-hidden="true" style="height: 16px; width: 15px;"><title></title><g><g>     <path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path>     <path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path>   </g></g></svg><span>发私信</span></button></div></div>';
                         var data=data1+data2;
                         element.attr("data-content",data);
                         element.popover('show');                    
@@ -450,7 +453,7 @@ function checkPopoverShow(){
                         if(topic_followed)
                             var data2='<div class="HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-topic-id="'+topic_id+'" data-follow-type="topic" data-followed="true">已关注</button></div></div>';
                         else
-                            var data2='<div class="HoverCard-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-topic-id="'+topic_id+'" data-follow-type="topic" data-followed="false">关注</button></div></div>';
+                            var data2='<div class="HoverCard-buttons"><button class="Button FollowButton Button--primary Button--blue" type="button" data-topic-id="'+topic_id+'" data-follow-type="topic" data-followed="false">关注</button></div></div>';
                         var data=data1+data2;
                         element.attr("data-content",data);
                         element.popover('show');

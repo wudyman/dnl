@@ -17,7 +17,7 @@ class IndexView(LoginRequiredMixin,generic.ListView):
     def get(self,request):
         ua=request.META['HTTP_USER_AGENT']
         is_mobile=ua.upper().find('MOBILE')>=0
-        print(is_mobile)
+        print('is moblie:',is_mobile)
         if is_mobile:
             self.template_name='question/t_index_mobile.html'
         return render(request,self.template_name,{'user':request.user})
@@ -83,7 +83,7 @@ class QuestionView(generic.ListView):
     def get(self,request,*args,**kwargs):
         ua=request.META['HTTP_USER_AGENT']
         is_mobile=ua.upper().find('MOBILE')>=0
-        print(is_mobile)
+        print('is moblie:',is_mobile)
         if is_mobile:
             self.template_name='question/t_question_mobile.html'
         question_id=self.kwargs.get('question_id')
