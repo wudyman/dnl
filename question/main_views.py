@@ -13,7 +13,7 @@ def LogOut(request):
 	return HttpResponseRedirect('/signinup/')
     
 class SigninupView(generic.ListView):
-    template_name='question/t_signinup.html'
+    template_name='question/t_sign.html'
     def get_queryset(self):
         return
     def get(self,request,*args,**kwargs):
