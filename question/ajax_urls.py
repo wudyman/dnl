@@ -29,4 +29,5 @@ urlpatterns= [
     url(r'^search/(?P<type>[a-z]+)/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.search,name='search'),
     url(r'^answer_page/(?P<type>[a-z]+)/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.answer_page,name='answer_page'),
     url(r'^profile_edit/(?P<type>[a-z]+)/$',views.profile_edit,name='profile_edit'),
+    url(r'^send_sms/$',views.send_sms,name='send_sms'),
 ]

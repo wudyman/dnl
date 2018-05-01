@@ -19,6 +19,47 @@ class SigninupView(generic.ListView):
     def get(self,request,*args,**kwargs):
         return render(request,self.template_name)
     def post(self,request,*args,**kwargs):
+        if request.POST.get('regPhoneNo'):
+            key=request.POST.get('regPhoneNo')
+            cach_verification_code=request.session.get(key,None)
+            if cach_verification_code:
+                verification_code=request.POST.get('digits')
+                #print(type(verification_code))
+                #print(type(cach_verification_code))
+                if verification_code==cach_verification_code:
+                    name=key
+                    pwd=request.POST.get('regPassword')
+                    print(pwd)
+                    user=User.objects.create_user(username=name,password=pwd)
+                    user.first_name=request.POST.get('nickname')
+                    user.save()
+                    userprofile=UserProfile()
+                    userprofile.user=user
+                    userprofile.phone=name
+                    userprofile.save()
+                    
+                    login(request,user)
+                    return HttpResponseRedirect('/')
+            self.template_name='question/t_misc.html'
+            return render(request,self.template_name,{'error':'verification_code_error'})
+        elif request.POST.get('loginPhoneNo'):
+            name=request.POST.get('loginPhoneNo')
+            pwd=request.POST.get('loginPassword')
+            user=authenticate(username=name,password=pwd)
+            if user is not None:
+                login(request,user)
+                next_to=request.GET.get('next',None)
+                if next_to:
+                    return redirect(next_to)
+                else:
+                    return HttpResponseRedirect('/')
+            self.template_name='question/t_misc.html'
+            return render(request,self.template_name,{'error':'username_password_error'})
+        else:
+            self.template_name='question/t_misc.html'
+            return render(request,self.template_name,{'error':'login_register_error'})
+            
+        '''
         if request.POST.get('nickname'):
             name=request.POST.get('email_phone')
             pwd=request.POST.get('password')
@@ -47,6 +88,7 @@ class SigninupView(generic.ListView):
                     return HttpResponseRedirect('/')
             else:
                 return HttpResponse('signin fail')
+        '''
 
 class AllTopicsView(LoginRequiredMixin,generic.ListView):
     login_url='/'

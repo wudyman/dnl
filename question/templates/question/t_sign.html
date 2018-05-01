@@ -19,6 +19,88 @@
 <script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
 <script src="{% static 'common/main.js' %}"></script>
 <script>
+function setCookie(name,value,secs)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() + secs*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+function getCookie(name)
+{
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+        return (arr[2]);
+    else
+        return null;
+}
+function delCookie(name)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null)
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
+function countDown()
+{
+    if(0==g_countdown_secs)
+    {
+        $(".SignFlow-smsInputButton").removeClass("is-counting").text("获取短信验证码");
+        delCookie("countdown");
+    }
+    else
+    {
+        g_countdown_secs-=1;
+        $("#counting-num").text(g_countdown_secs);
+        setCookie("countdown",g_countdown_secs,g_countdown_secs);
+        setTimeout("countDown()",1000);        
+    }
+}
+function checkSmsSend()
+{
+    $(".SignFlow-smsInputButton").off("click");
+    $(".SignFlow-smsInputButton").click(function(){
+        var is_counting=$(this).hasClass("is-counting");
+        if(is_counting)
+        {
+            console.log("counting,can`t click");
+        }
+        else
+        {
+            var value=$("input[name='regPhoneNo']").val();
+            var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+            var is_phone_no=reg.test(value)
+            if(is_phone_no)
+            {
+                g_countdown_secs=59;
+                $(this).addClass("is-counting").empty().append('<span id="counting-num">59</span>秒后可重发');
+                setTimeout("countDown()",1000);
+                setCookie("countdown",g_countdown_secs,g_countdown_secs);
+                $.post("/ajax/send_sms/",{"phone_no":value,"type":"register"},function(ret){
+                    if("fail"!=ret)
+                    {
+                        if("registered"==ret)
+                            $(".SignFlow-accountInputContainer>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("该手机号已注册");
+                    }
+                });
+            }
+            else
+            {
+                console.log("phone no error");
+                $(".SignFlow-accountInputContainer>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("手机号格式错误");
+            }
+        }
+        
+    });
+}
+function checkErrorMask()
+{
+    $(".SignFlowInput-errorMask").click(function(){
+        console.log("error mask click");
+        $(this).addClass("SignFlowInput-errorMask--hidden");
+        $(this).siblings(".Input-wrapper").children(".Input").val("").focus();
+    });
+}
 function checkSwithPassword()
 {
     $(".SignFlow-switchPassword").off("click");
@@ -77,9 +159,18 @@ function switchRegisterLogin(e)
 }
 function init()
 {
-console.log("init");
-checkLoginType();
-checkSwithPassword();
+    console.log("init");
+    checkLoginType();
+    checkSwithPassword();
+    checkSmsSend();
+    checkErrorMask();
+    var secs=getCookie("countdown");
+    if(null!=secs)
+    {
+        g_countdown_secs=secs;
+        $(".SignFlow-smsInputButton").addClass("is-counting").empty().append('<span id="counting-num">59</span>秒后可重发');
+        setTimeout("countDown()",1000);
+    }
 }
 </script>
 </head>
@@ -97,14 +188,15 @@ checkSwithPassword();
 <div class="SignFlowHeader-slogen">登录知乎，发现更大的世界</div>
 </div>
 <div class="SignContainer-inner">
-<!--
+
 <div class="Register is-hide">
 <div>
 <div class="Register-content">
-<form novalidate="" class="SignFlow">
+<form novalidate="" class="SignFlow" action="" method="post" onsubmit="return checkRegisterValid()">
+{% csrf_token %}
 <div class="SignFlow-account">
 <div class="SignFlowInput SignFlow-accountInputContainer">
-<div class="SignFlow-accountInput Input-wrapper"><input type="tel" value="" name="phoneNo" class="Input" placeholder="手机号"></div>
+<div class="SignFlow-accountInput Input-wrapper"><input type="tel" value="" name="regPhoneNo" class="Input" placeholder="手机号"></div>
 <div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
 </div>
 </div>
@@ -119,13 +211,29 @@ checkSwithPassword();
 </div>
 </div>
 
+<div class="SignFlow-username">
+<div class="SignFlowInput">
+<div class="Input-wrapper"><input name="nickname" type="text" class="Input" placeholder="昵称" value=""></div>
+<div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
+</div>
+</div>
+
+<div class="SignFlow-password">
+<div class="SignFlowInput">
+<div class="Input-wrapper"><input name="regPassword" type="password" class="Input" placeholder="密码(长度为6~18位，必须包含字母和数字)" value=""></div>
+<div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
+</div>
+<button class="Button SignFlow-switchPassword Button--plain" tabindex="-1" type="button"><svg width="24" height="20" viewBox="0 0 24 24" class="Icon SignFlow-switchPasswordIcon Icon--inconspicuous" aria-hidden="true" style="vertical-align: middle; height: 20px; width: 24px;"><title></title><g><title>Inconspicuous</title><path d="M17.007 11.504c0 .65-.13 1.26-.36 1.83l3 3.073S23 14.136 23 11.504C23 8.008 17.255 4 11.995 4c-1.4 0-2.741.25-3.982.701l2.161 2.16c.57-.23 1.18-.36 1.831-.36a5.004 5.004 0 0 1 5.002 5.003zM2.57 4.342l2.067 2.075C3.499 7.258 1 9.119 1 11.504c0 3.336 5.79 7.503 11.005 7.503 1.55 0 3.031-.3 4.382-.84l.42.42 2.125 2.118s.782.571 1.314 0-.074-1.305-.074-1.305L3.955 3.183s-.76-.742-1.385-.19c-.626.554 0 1.35 0 1.35zm4.963 4.96l1.55 1.552c-.05.21-.08.43-.08.65 0 1.66 1.341 3.001 3.002 3.001.22 0 .44-.03.65-.08l1.551 1.551c-.67.33-1.41.53-2.2.53a5.004 5.004 0 0 1-5.003-5.002c0-.79.2-1.53.53-2.201zm4.312-.78l3.151 3.152.02-.16c0-1.66-1.34-3.001-3.001-3.001l-.17.01z" fill-rule="evenodd"></path></g></svg></button>
+</div>
+
 <button class="Button Register-submitButton Button--primary Button--blue" type="submit">注册</button>
 </form>
 </div>
 </div>
 </div>
--->
 
+
+<!--
 <div class="Register is-hide">
 <div>
 <div class="Register-content">
@@ -163,33 +271,35 @@ checkSwithPassword();
 
 <button class="Button Register-submitButton Button--primary Button--blue" type="submit">注册</button>
 </form>
-<!--<div class="Register-footer">
+<div class="Register-footer">
 <span class="Register-declaration">注册即代表同意<a href="https://www.zhihu.com/terms">《知乎协议》</a><a href="https://www.zhihu.com/terms/privacy">《隐私政策》</a></span>
 <a class="Register-org" href="https://www.zhihu.com/org/signup">注册机构号</a>
-</div>-->
 </div>
 </div>
 </div>
+</div>
+-->
 
 <div class="Login-content Login-type-password">
-<form class="SignFlow" action="" method="post">
+<form class="SignFlow" action="" method="post" onsubmit="return checkLoginValid()">
 {% csrf_token %}
 <div class="SignFlow-account">
 <div class="SignFlow-supportedCountriesSelectContainer"></div>
 <div class="SignFlowInput SignFlow-accountInputContainer">
-<div class="SignFlow-accountInput Input-wrapper"><input name="email_phone" type="text" class="Input" placeholder="手机号或邮箱" value=""></div>
+<div class="SignFlow-accountInput Input-wrapper"><input name="loginPhoneNo" type="tel" class="Input" placeholder="手机号" value=""></div>
 <div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
 </div>
 </div>
 <div class="SignFlow-password">
 <div class="SignFlowInput">
-<div class="Input-wrapper"><input name="password" type="password" class="Input" placeholder="密码" value=""></div>
+<div class="Input-wrapper"><input name="loginPassword" type="password" class="Input" placeholder="密码" value=""></div>
 <div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
 </div>
 <button class="Button SignFlow-switchPassword Button--plain" tabindex="-1" type="button"><svg width="24" height="20" viewBox="0 0 24 24" class="Icon SignFlow-switchPasswordIcon Icon--inconspicuous" aria-hidden="true" style="vertical-align: middle; height: 20px; width: 24px;"><title></title><g><title>Inconspicuous</title><path d="M17.007 11.504c0 .65-.13 1.26-.36 1.83l3 3.073S23 14.136 23 11.504C23 8.008 17.255 4 11.995 4c-1.4 0-2.741.25-3.982.701l2.161 2.16c.57-.23 1.18-.36 1.831-.36a5.004 5.004 0 0 1 5.002 5.003zM2.57 4.342l2.067 2.075C3.499 7.258 1 9.119 1 11.504c0 3.336 5.79 7.503 11.005 7.503 1.55 0 3.031-.3 4.382-.84l.42.42 2.125 2.118s.782.571 1.314 0-.074-1.305-.074-1.305L3.955 3.183s-.76-.742-1.385-.19c-.626.554 0 1.35 0 1.35zm4.963 4.96l1.55 1.552c-.05.21-.08.43-.08.65 0 1.66 1.341 3.001 3.002 3.001.22 0 .44-.03.65-.08l1.551 1.551c-.67.33-1.41.53-2.2.53a5.004 5.004 0 0 1-5.003-5.002c0-.79.2-1.53.53-2.201zm4.312-.78l3.151 3.152.02-.16c0-1.66-1.34-3.001-3.001-3.001l-.17.01z" fill-rule="evenodd"></path></g></svg></button>
 </div>
 <div class="Login-options">
-<button class="Button Login-switchType Button--plain" type="button" data-login-type="password">手机验证码登录</button>
+<!--<button class="Button Login-switchType Button--plain" type="button" data-login-type="password">手机验证码登录</button>-->
+<button class="Button Login-switchType Button--plain" type="button" data-login-type="password"></button>
 <button class="Button Login-cannotLogin Button--plain" type="button">忘记密码？</button>
 </div>
 <button class="Button SignFlow-submitButton Button--primary Button--blue" type="submit">登录</button>

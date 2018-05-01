@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate,login,logout
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
-import time
+import time,random
 from PIL import Image
 from django.db import connection
 
@@ -722,4 +722,21 @@ def profile_edit(request,type):
                     user.userprofile.intro=content
                 user.userprofile.save()
             to_json=json.dumps(content)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def send_sms(request):
+    to_json=json.dumps('fail')
+    phone_no=request.POST.get('phone_no')
+    type=request.POST.get('type')
+    if type=='register':
+        if User.objects.filter(username=phone_no):
+            print(phone_no+':have register!')
+            to_json=json.dumps('registered')
+        else:
+            verification_code=random.randint(100000,999999)
+            print(verification_code)
+            print(phone_no)
+            request.session[phone_no]=str(verification_code)
+            to_json=json.dumps(verification_code)
     return HttpResponse(to_json,content_type='application/json')
