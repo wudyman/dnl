@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^',include('question.question_urls')),
     url(r'^admin/', admin.site.urls),
 	url(r'^signinup/$',main_views.SigninupView.as_view(),name='signinup'),
+    url(r'^account/$',main_views.AccountView.as_view(),name='account'),
     url(r'^topics/$',main_views.AllTopicsView.as_view(),name='alltopics'),
     url(r'^exit/',main_views.LogOut),
     url(r'^notifications/$',main_views.NotificationView.as_view()),

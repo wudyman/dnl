@@ -12,6 +12,8 @@ from .models import *
 import time,random
 from PIL import Image
 from django.db import connection
+from . import dysms
+import uuid
 
 @csrf_exempt
 def get_questions(request,order,start,end):
@@ -731,12 +733,14 @@ def send_sms(request):
     type=request.POST.get('type')
     if type=='register':
         if User.objects.filter(username=phone_no):
-            print(phone_no+':have register!')
             to_json=json.dumps('registered')
         else:
-            verification_code=random.randint(100000,999999)
-            print(verification_code)
-            print(phone_no)
-            request.session[phone_no]=str(verification_code)
-            to_json=json.dumps(verification_code)
+            verification_code=str(random.randint(100000,999999))
+            __business_id = uuid.uuid1()
+            params = {'code':verification_code}
+            smsResponse=dysms.send_sms(__business_id, phone_no, "大农令", "SMS_133972103", params)
+            status_code=eval(str(smsResponse,encoding = "utf8"))['Code']
+            if 'OK'==status_code:
+                request.session[phone_no]=verification_code
+                to_json=json.dumps(verification_code)
     return HttpResponse(to_json,content_type='application/json')

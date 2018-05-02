@@ -21,6 +21,9 @@ class SigninupView(generic.ListView):
     def post(self,request,*args,**kwargs):
         if request.POST.get('regPhoneNo'):
             key=request.POST.get('regPhoneNo')
+            if User.objects.filter(username=key):
+                print(key+':have register!')
+                return HttpResponseRedirect('/account/?arg=e_registered')
             cach_verification_code=request.session.get(key,None)
             if cach_verification_code:
                 verification_code=request.POST.get('digits')
@@ -40,8 +43,7 @@ class SigninupView(generic.ListView):
                     
                     login(request,user)
                     return HttpResponseRedirect('/')
-            self.template_name='question/t_misc.html'
-            return render(request,self.template_name,{'error':'verification_code_error'})
+            return HttpResponseRedirect('/account/?arg=e_ver_code')
         elif request.POST.get('loginPhoneNo'):
             name=request.POST.get('loginPhoneNo')
             pwd=request.POST.get('loginPassword')
@@ -53,11 +55,9 @@ class SigninupView(generic.ListView):
                     return redirect(next_to)
                 else:
                     return HttpResponseRedirect('/')
-            self.template_name='question/t_misc.html'
-            return render(request,self.template_name,{'error':'username_password_error'})
+            return HttpResponseRedirect('/account/?arg=e_u_p')
         else:
-            self.template_name='question/t_misc.html'
-            return render(request,self.template_name,{'error':'login_register_error'})
+            return HttpResponseRedirect('/account/?arg=e_l_r')
             
         '''
         if request.POST.get('nickname'):
@@ -89,7 +89,15 @@ class SigninupView(generic.ListView):
             else:
                 return HttpResponse('signin fail')
         '''
-
+class AccountView(generic.ListView):
+    template_name='question/t_misc.html'
+    def get_queryset(self):
+        return
+    def get(self,request,*args,**kwargs):
+        arg=request.GET.get('arg')
+        if arg:
+            return render(request,self.template_name,{'arg':arg})
+        return HttpResponseRedirect('/')
 class AllTopicsView(LoginRequiredMixin,generic.ListView):
     login_url='/'
     template_name='question/t_alltopics.html'
