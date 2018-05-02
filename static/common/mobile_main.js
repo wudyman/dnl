@@ -24,10 +24,78 @@
         .fadeIn( 550 );
   });
 })( jQuery );
-function checkValid()
+function checkRegisterValid()
 {
-    alert("need checkValid");
-    return true;
+    console.log("need checkRegisterValid");
+    var result=true;
+    
+    var value=$("input[name='regPhoneNo']").val();
+    var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+    var is_check=reg.test(value);
+    if(!is_check)
+    {
+        console.log("phone no error");
+        $(".SignFlow-accountInputContainer>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("手机号格式错误");
+        result=false;
+    }
+    
+    var value=$("input[name='digits']").val();
+    var reg = /^[0-9]{6}$/;
+    var is_check=reg.test(value);
+    if(!is_check)
+    {
+        console.log("verification code error");
+        $(".SignFlow-smsInput>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("验证码格式错误");
+        result=false;
+    }
+    
+    var value=$("input[name='nickname']").val();
+    if(value.length>=30)
+    {
+        console.log("nickname too long:"+value.length);
+        $(".SignFlow-username>.SignFlowInput>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("输入的昵称太长");
+        result=false;
+    }
+    
+    var value=$("input[name='regPassword']").val();
+    var reg=/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
+    var is_check=reg.test(value);
+    if(!is_check)
+    {
+        console.log("password error");
+        $(".SignFlow-password>.SignFlowInput>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("长度为6~18位，必须包含字母和数字");
+        result=false;
+    }
+       
+    return result;
+}
+function checkLoginValid()
+{
+    console.log("need checkLoginValid");
+    var result=true;
+    
+    var value=$("input[name='loginPhoneNo']").val();
+    var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+    var is_check=reg.test(value);
+    if(!is_check)
+    {
+        console.log("phone no error");
+        $(".SignFlow-accountInputContainer>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("手机号格式错误");
+        result=false;
+    }
+        
+    var value=$("input[name='loginPassword']").val();
+    console.log(value);
+    var reg=/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
+    var is_check=reg.test(value);
+    if(!is_check)
+    {
+        console.log("password error");
+        $(".SignFlow-password>.SignFlowInput>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("长度为6~18位，必须包含字母和数字");
+        result=false;
+    }
+       
+    return result;
 }
 function checkSelectOption()
 {

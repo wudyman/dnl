@@ -8,19 +8,28 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 
-class IndexView(LoginRequiredMixin,generic.ListView):
-    login_url='/signinup/'
+class IndexView(generic.ListView):
+    login_url='/signinup/?next=/'
     template_name='question/t_index.html'
     #context_object_name='latest_question_list'
     def get_queryset(self):
         pass
     def get(self,request):
+        user=request.user
         ua=request.META['HTTP_USER_AGENT']
         is_mobile=ua.upper().find('MOBILE')>=0
         print('is moblie:',is_mobile)
         if is_mobile:
             self.template_name='question/t_index_mobile.html'
-        return render(request,self.template_name,{'user':request.user})
+            if user.is_authenticated:
+                return render(request,self.template_name,{'login':'true'})
+            else:
+                return render(request,self.template_name)
+        else:
+            if user.is_authenticated:
+                return render(request,self.template_name,{'login':'true'})
+            else:
+                return HttpResponseRedirect(self.login_url)
         '''
         questions=Question.objects.order_by('-pub_date')[0:10]
         question_list=[]
