@@ -311,7 +311,6 @@ function initData()
 {
     var str_main_data=$("main").attr("data-dfs-main");
 	var main_data=JSON.parse(str_main_data);
-    
     g_user_id=main_data.user_id;
     g_user_name=main_data.user_name;
     g_user_avatar=main_data.user_avatar;
@@ -321,7 +320,8 @@ function initData()
     g_question_followed=main_data.question_followed;
     g_answer_id=main_data.answer_id;
     g_answer_like_nums=main_data.answer_like_nums;
-    g_answer_content=main_data.answer_content;
+    //g_answer_content=main_data.answer_content;
+    g_answer_content=$("main").attr("data-answer-content");
     g_author_id=main_data.author_id;
     g_author_name=main_data.author_name;
     g_author_avatar=main_data.author_avatar;
@@ -396,7 +396,7 @@ function init()
 </div>
 </header>
 </div>
-<main role="main" class="App-main"  data-moudle="question" data-dfs-main='{"user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","question_id":"{{context_question.id}}","question_title":"{{context_question.title}}","question_answer_nums":{{context_question.answer_nums}},"question_followed":"{{followed}}","answer_id":"{{push_answer.id}}","answer_like_nums":"{{push_answer.like_nums}}","answer_content":"{{push_answer.content}}","author_id":"{{push_answer.author.id}}","author_name":"{{push_answer.author.first_name}}","author_avatar":"{{push_answer.author.userprofile.avatar}}","author_mood":"{{push_answer.author.userprofile.mood}}"}'>
+<main role="main" class="App-main"  data-moudle="question" data-answer-content="{{push_answer.content}}" data-dfs-main='{"user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","question_id":"{{context_question.id}}","question_title":"{{context_question.title}}","question_answer_nums":"{{context_question.answer_nums}}","question_followed":"{{followed}}","answer_id":"{{push_answer.id}}","answer_like_nums":"{{push_answer.like_nums}}","author_id":"{{push_answer.author.id}}","author_name":"{{push_answer.author.first_name}}","author_avatar":"{{push_answer.author.userprofile.avatar}}","author_mood":"{{push_answer.author.userprofile.mood}}"}'>
 <div>
 
 
