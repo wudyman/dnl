@@ -739,6 +739,7 @@ def send_sms(request):
             __business_id = uuid.uuid1()
             params = {'code':verification_code}
             smsResponse=dysms.send_sms(__business_id, phone_no, "大农令", "SMS_133972103", params)
+            print(smsResponse)
             status_code=eval(str(smsResponse,encoding = "utf8"))['Code']
             if 'OK'==status_code:
                 request.session[phone_no]=verification_code

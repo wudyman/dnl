@@ -125,47 +125,28 @@ function checkSwithPassword()
     });
 
 }
-function checkLoginType()
-{
-    $(".Login-switchType").off("click");
-    $(".Login-switchType").click(function(){
-        var button=$(this);
-        if("sms"==button.attr("data-login-type"))
-        {
-            $(".Login-content.Login-type-password").removeClass("is-hide");
-            $(".Login-content.Login-type-sms").addClass("is-hide");
-        }
-        else
-        {
-            $(".Login-content.Login-type-password").addClass("is-hide");
-            $(".Login-content.Login-type-sms").removeClass("is-hide");
-        }
-    });
-}
+
 function switchRegisterLogin(e)
 {
     var swith_element=$(".SignContainer-switch");
     if("login"==swith_element.attr("data-action"))
     {
         swith_element.attr("data-action","register").empty().append('已有帐号？<span onclick="switchRegisterLogin()">登录</span>');
-        $(".SignFlowHeader-slogen").text("注册知乎，发现更大的世界");
-        $(".Register").removeClass("is-hide");
-        $(".Login-content.Login-type-password").addClass("is-hide");
-        $(".Login-content.Login-type-sms").addClass("is-hide");
+        $(".SignFlowHeader-title").text("注册知乎");
+        $("#register").removeClass("is-hide");
+        $("#login").addClass("is-hide");
     }
     else
     {
         swith_element.attr("data-action","login").empty().append('没有帐号？<span onclick="switchRegisterLogin()">注册</span>');
-        $(".SignFlowHeader-slogen").text("登录知乎，发现更大的世界");
-        $(".Register").addClass("is-hide");
-        $(".Login-content.Login-type-password").removeClass("is-hide");
-        $(".Login-content.Login-type-sms").addClass("is-hide");
+        $(".SignFlowHeader-title").text("登录知乎");
+        $("#register").addClass("is-hide");
+        $("#login").removeClass("is-hide");
     }
 }
 function init()
 {
     console.log("init");
-    checkLoginType();
     checkSwithPassword();
     checkSmsSend();
     checkErrorMask();
@@ -176,6 +157,10 @@ function init()
         $(".SignFlow-smsInputButton").addClass("is-counting").empty().append('<span id="counting-num">59</span>秒后可重发');
         setTimeout("countDown()",1000);
     }
+    $(".Icon.Icon--remove").click(function(){
+        console.log("Icon click");
+        location.href="/";
+    });
 }
 </script>
 </head>
@@ -188,8 +173,8 @@ function init()
 <div class="Login" style="height: 624px;">
 <div class="SignFlowHeader"><svg viewBox="0 0 14 14" class="Icon Icon--remove" style="fill:#fff;height:14px;width:14px" width="14" height="14" aria-hidden="true"><title></title><g><path d="M8.486 7l5.208-5.207c.408-.408.405-1.072-.006-1.483-.413-.413-1.074-.413-1.482-.005L7 5.515 1.793.304C1.385-.103.72-.1.31.31-.103.724-.103 1.385.305 1.793L5.515 7l-5.21 5.207c-.407.408-.404 1.072.007 1.483.413.413 1.074.413 1.482.005L7 8.485l5.207 5.21c.408.407 1.072.404 1.483-.007.413-.413.413-1.074.005-1.482L8.485 7z"></path></g></svg><div class="SignFlowHeader-title">登录知乎</div><div class="SignFlowHeader-subTitle">发现更大的世界</div></div>
 
-<div class="Register is-hide">
-<form novalidate="" class="SignFlow Login-form" action="" method="post" onsubmit="return checkLoginValid()">
+<div id="register" class="is-hide">
+<form novalidate="" class="SignFlow Login-form" action="" method="post" onsubmit="return checkRegisterValid()">
 {% csrf_token %}
 
 
@@ -199,16 +184,6 @@ function init()
 <div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
 </div>
 </div>
-
-
-<!--<div class="SignFlow SignFlow-smsBindPhoneInputContainer">
-<div class="SignFlowInput SignFlow-smsBindPhoneInput">
-<div class="Input-wrapper">
-<input type="number" value="" name="digits" class="Input" placeholder="输入 6 位验证码"></div>
-<div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
-</div>
-<button class="Button CountingDownButton SignFlow-smsBindPhoneInputButton Button--plain" type="button">发送验证码</button>
-</div>-->
 
 <div class="SignFlow-sms">
 <div class="SignFlow SignFlow-smsInputContainer">
@@ -239,7 +214,7 @@ function init()
 </form>
 </div>
 
-<div class="Login">
+<div id="login">
 <form class="SignFlow Login-form" action="" method="post" onsubmit="return checkLoginValid()">
 {% csrf_token %}
 <div class="SignFlow-account">
