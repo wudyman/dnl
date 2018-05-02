@@ -17,6 +17,11 @@ class SigninupView(generic.ListView):
     def get_queryset(self):
         return
     def get(self,request,*args,**kwargs):
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print('is moblie:',is_mobile)
+        if is_mobile:
+            self.template_name='question/t_sign_mobile.html'
         return render(request,self.template_name)
     def post(self,request,*args,**kwargs):
         if request.POST.get('regPhoneNo'):
