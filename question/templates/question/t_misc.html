@@ -23,17 +23,23 @@
 function init()
 {
     g_error_type=$("main").attr("data-error-type");
-    if("verification_code_error"==g_error_type)
+    if("e_ver_code"==g_error_type)
     {
-        $("#errorText").text("验证码错误，注册失败，请尝试点击以下链接返回注册页面重新注册");
+        $("#errorText").text("验证码错误，注册失败，请尝试返回注册页面重新注册");
         $("#returnLink").text("返回重新注册");
-        setTimeout(function(){window.location.href="/";},5*1000);
+        setTimeout(function(){window.location.href="/";},10*1000);
     }
-    else if("username_password_error"==g_error_type)
+    else if("e_u_p"==g_error_type)
     {
-        $("#errorText").text("用户名密码错误，登录失败，请尝试点击以下链接返回登录页面重新登录");
+        $("#errorText").text("用户名密码错误，登录失败，请尝试返回登录页面重新登录");
         $("#returnLink").text("返回重新登录");
-        setTimeout(function(){window.location.href="/";},5*1000);
+        setTimeout(function(){window.location.href="/";},10*1000);
+    }
+    else if("e_registered"==g_error_type)
+    {
+        $("#errorText").text("该手机号已被注册，请尝试找回密码或更换手机号重新注册");
+        $("#returnLink").text("返回重新注册");
+        setTimeout(function(){window.location.href="/";},10*1000);
     }
     //getMoreData();
     //appendLetterModal();
@@ -111,7 +117,7 @@ function init()
 <!--<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 53px;">
 </div>-->
         <!--------------------main---------------------->
-        <main role="main" class="App-main" data-error-type="{{error}}">
+        <main role="main" class="App-main" data-error-type="{{arg}}">
         <div class="" style="position:relative;width:1000px;padding:0 16px;margin:100px auto;">
         <!--<div class="row">
         <div class="Topstory-mainColumn 1col-md-offset-1 col-md-8">-->

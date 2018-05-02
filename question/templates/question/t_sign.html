@@ -177,7 +177,7 @@ function init()
 
 <body class="EntrySign-body">
 <div id="root">
-<div data-zop-usertoken="{}" data-reactroot="">
+<div>
 <div class="LoadingBar"></div>
 
 <main role="main" class="App-main">
@@ -220,10 +220,10 @@ function init()
 
 <div class="SignFlow-password">
 <div class="SignFlowInput">
-<div class="Input-wrapper"><input name="regPassword" type="password" class="Input" placeholder="密码(长度为6~18位，必须包含字母和数字)" value=""></div>
+<div class="Input-wrapper"><input name="regPassword" type="text" class="Input" placeholder="密码(长度为6~18位，必须包含字母和数字)" value=""></div>
 <div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
 </div>
-<button class="Button SignFlow-switchPassword Button--plain" tabindex="-1" type="button"><svg width="24" height="20" viewBox="0 0 24 24" class="Icon SignFlow-switchPasswordIcon Icon--inconspicuous" aria-hidden="true" style="vertical-align: middle; height: 20px; width: 24px;"><title></title><g><title>Inconspicuous</title><path d="M17.007 11.504c0 .65-.13 1.26-.36 1.83l3 3.073S23 14.136 23 11.504C23 8.008 17.255 4 11.995 4c-1.4 0-2.741.25-3.982.701l2.161 2.16c.57-.23 1.18-.36 1.831-.36a5.004 5.004 0 0 1 5.002 5.003zM2.57 4.342l2.067 2.075C3.499 7.258 1 9.119 1 11.504c0 3.336 5.79 7.503 11.005 7.503 1.55 0 3.031-.3 4.382-.84l.42.42 2.125 2.118s.782.571 1.314 0-.074-1.305-.074-1.305L3.955 3.183s-.76-.742-1.385-.19c-.626.554 0 1.35 0 1.35zm4.963 4.96l1.55 1.552c-.05.21-.08.43-.08.65 0 1.66 1.341 3.001 3.002 3.001.22 0 .44-.03.65-.08l1.551 1.551c-.67.33-1.41.53-2.2.53a5.004 5.004 0 0 1-5.003-5.002c0-.79.2-1.53.53-2.201zm4.312-.78l3.151 3.152.02-.16c0-1.66-1.34-3.001-3.001-3.001l-.17.01z" fill-rule="evenodd"></path></g></svg></button>
+<button class="Button SignFlow-switchPassword Button--plain" tabindex="-1" type="button"><svg width="24" height="20" viewBox="0 0 24 24" class="Icon SignFlow-switchPasswordIcon Icon--read" aria-hidden="true" style="vertical-align: middle; height: 20px; width: 24px;"><title></title><g><title>Read</title><path d="M1 11.5C1 15 7 19 12 19s11-4 11-7.5S17 4 12 4 1 8 1 11.5zm11 5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm-3-5c0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3-3 1.34-3 3z" fill-rule="evenodd"></path></g></svg></button>
 </div>
 
 <button class="Button Register-submitButton Button--primary Button--blue" type="submit">注册</button>
@@ -232,53 +232,6 @@ function init()
 </div>
 </div>
 
-
-<!--
-<div class="Register is-hide">
-<div>
-<div class="Register-content">
-<form class="SignFlow" action="" method="post">
-{% csrf_token %}
-<div class="SignFlow-account">
-<div class="SignFlowInput SignFlow-accountInputContainer">
-<div class="SignFlow-accountInput Input-wrapper"><input type="text" value="" name="email_phone" class="Input" placeholder="账号"></div>
-<div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
-</div>
-</div>
-
-<div class="SignFlow-username">
-<div class="SignFlowInput">
-<div class="Input-wrapper"><input name="nickname" type="text" class="Input" placeholder="昵称" value=""></div>
-<div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
-</div>
-</div>
-
-<div class="SignFlow-password">
-<div class="SignFlowInput">
-<div class="Input-wrapper"><input name="password" type="password" class="Input" placeholder="密码" value=""></div>
-<div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
-</div>
-<button class="Button SignFlow-switchPassword Button--plain" tabindex="-1" type="button"><svg width="24" height="20" viewBox="0 0 24 24" class="Icon SignFlow-switchPasswordIcon Icon--inconspicuous" aria-hidden="true" style="vertical-align: middle; height: 20px; width: 24px;"><title></title><g><title>Inconspicuous</title><path d="M17.007 11.504c0 .65-.13 1.26-.36 1.83l3 3.073S23 14.136 23 11.504C23 8.008 17.255 4 11.995 4c-1.4 0-2.741.25-3.982.701l2.161 2.16c.57-.23 1.18-.36 1.831-.36a5.004 5.004 0 0 1 5.002 5.003zM2.57 4.342l2.067 2.075C3.499 7.258 1 9.119 1 11.504c0 3.336 5.79 7.503 11.005 7.503 1.55 0 3.031-.3 4.382-.84l.42.42 2.125 2.118s.782.571 1.314 0-.074-1.305-.074-1.305L3.955 3.183s-.76-.742-1.385-.19c-.626.554 0 1.35 0 1.35zm4.963 4.96l1.55 1.552c-.05.21-.08.43-.08.65 0 1.66 1.341 3.001 3.002 3.001.22 0 .44-.03.65-.08l1.551 1.551c-.67.33-1.41.53-2.2.53a5.004 5.004 0 0 1-5.003-5.002c0-.79.2-1.53.53-2.201zm4.312-.78l3.151 3.152.02-.16c0-1.66-1.34-3.001-3.001-3.001l-.17.01z" fill-rule="evenodd"></path></g></svg></button>
-</div>
-
-<div class="SignFlow-password">
-<div class="SignFlowInput">
-<div class="Input-wrapper"><input name="password" type="password" class="Input" placeholder="确认密码" value=""></div>
-<div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
-</div>
-<button class="Button SignFlow-switchPassword Button--plain" tabindex="-1" type="button"><svg width="24" height="20" viewBox="0 0 24 24" class="Icon SignFlow-switchPasswordIcon Icon--inconspicuous" aria-hidden="true" style="vertical-align: middle; height: 20px; width: 24px;"><title></title><g><title>Inconspicuous</title><path d="M17.007 11.504c0 .65-.13 1.26-.36 1.83l3 3.073S23 14.136 23 11.504C23 8.008 17.255 4 11.995 4c-1.4 0-2.741.25-3.982.701l2.161 2.16c.57-.23 1.18-.36 1.831-.36a5.004 5.004 0 0 1 5.002 5.003zM2.57 4.342l2.067 2.075C3.499 7.258 1 9.119 1 11.504c0 3.336 5.79 7.503 11.005 7.503 1.55 0 3.031-.3 4.382-.84l.42.42 2.125 2.118s.782.571 1.314 0-.074-1.305-.074-1.305L3.955 3.183s-.76-.742-1.385-.19c-.626.554 0 1.35 0 1.35zm4.963 4.96l1.55 1.552c-.05.21-.08.43-.08.65 0 1.66 1.341 3.001 3.002 3.001.22 0 .44-.03.65-.08l1.551 1.551c-.67.33-1.41.53-2.2.53a5.004 5.004 0 0 1-5.003-5.002c0-.79.2-1.53.53-2.201zm4.312-.78l3.151 3.152.02-.16c0-1.66-1.34-3.001-3.001-3.001l-.17.01z" fill-rule="evenodd"></path></g></svg></button>
-</div>
-
-<button class="Button Register-submitButton Button--primary Button--blue" type="submit">注册</button>
-</form>
-<div class="Register-footer">
-<span class="Register-declaration">注册即代表同意<a href="https://www.zhihu.com/terms">《知乎协议》</a><a href="https://www.zhihu.com/terms/privacy">《隐私政策》</a></span>
-<a class="Register-org" href="https://www.zhihu.com/org/signup">注册机构号</a>
-</div>
-</div>
-</div>
-</div>
--->
 
 <div class="Login-content Login-type-password">
 <form class="SignFlow" action="" method="post" onsubmit="return checkLoginValid()">
@@ -306,31 +259,8 @@ function init()
 </form>
 </div>
 
-<div class="Login-content Login-type-sms is-hide">
-<form novalidate="" class="SignFlow" action="" method="post">
-<div class="SignFlow-account">
-<div class="SignFlowInput SignFlow-accountInputContainer">
-<div class="SignFlow-accountInput Input-wrapper"><input name="username" type="tel" class="Input" placeholder="手机号" value=""></div>
-<div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden">请输入手机号</div>
-</div>
-</div>
-<div class="SignFlow SignFlow-smsInputContainer">
-<div class="SignFlowInput SignFlow-smsInput">
-<div class="Input-wrapper">
-<input name="digits" type="number" class="Input" placeholder="输入 6 位短信验证码" value=""></div>
-<div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden">请输入短信验证码</div>
-</div>
-<button class="Button CountingDownButton SignFlow-smsInputButton Button--plain" type="button">获取短信验证码</button>
-</div>
-<div class="Login-options">
-<button class="Button Login-switchType Button--plain" type="button" data-login-type="sms">密码登录（手机号或邮箱）</button>
-</div>
-<button class="Button SignFlow-submitButton Button--primary Button--blue" type="submit">登录</button>
-</form>
-</div>
-
 <div class="SignContainer-switch" data-action="login">没有帐号？<span onclick="switchRegisterLogin(this)">注册</span></div>
-<div class="SignFlowHomepage-qrImage SignFlowHomepage-qrImageHidden"><div></div></div>
+<!--<div class="SignFlowHomepage-qrImage SignFlowHomepage-qrImageHidden"><div></div></div>-->
 </div>
 </div>
 <button class="Button SignFlowHomepage-downloadBtn" type="button">下载知乎 App</button>
