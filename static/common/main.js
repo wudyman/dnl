@@ -651,45 +651,55 @@ function checkSets()
     checkPopoverShow();
     checkAnswerLike();
 }
-
-function sendFileQuestion(file){
+function uploadImage(type,file)
+{
+    if("forAvatar"==type)
+        var url_data="/ajax/upload/avatar/";
+    else
+        var url_data="/ajax/upload/img/";
     var data=new FormData();
-    data.append("imgfile",file);
-    //console.log(data.get("file"));
+    data.append("imgfile",file,"image.jpg");
     $.ajax({
         data:data,
         type:"POST",
-        url:"/ajax/upload/img/",
+        url:url_data,
         cache:false,
         contentType:false,
         processData:false,
         success:function(url){
             if("fail"!=url)
             {
-                $("#summernote_question").summernote('insertImage', url, 'image name'); // the insertImage API
+                if("forQuestion"==type)
+                    $("#summernote_question").summernote('insertImage', url, 'image name'); // the insertImage API
+                else if("forAnswer"==type)
+                    $("#summernote_answer").summernote('insertImage', url, 'image name'); // the insertImage API
+                else if("forAvatar"==type)
+                    $("#id_avatar").attr("src",url).attr("srcset",url);  
             }
         }
     });
 }
-
-function sendFileAnswer(file){
-    var data=new FormData();
-    data.append("imgfile",file);
-    //console.log(data.get("file"));
-    $.ajax({
-        data:data,
-        type:"POST",
-        url:"/ajax/upload/img/",
-        cache:false,
-        contentType:false,
-        processData:false,
-        success:function(url){
-            if("fail"!=url)
-            {
-                $("#summernote_answer").summernote('insertImage', url, 'image name'); // the insertImage API
-            }
-        }
-    });
+function scaleAndUploadImage(type,file,scale_value){
+    var reader = new FileReader(); 
+    reader.readAsDataURL(file);
+    reader.onload = function(e){ 
+        var img=new Image();
+        img.onload=function(){
+            var dst_width=scale_value;
+            var dst_height=(dst_width)/(img.naturalWidth)*(img.naturalHeight);
+            if(dst_height*9>dst_width*16) //16:9 is max
+                dst_height=dst_width*16/9;
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            canvas.width = dst_width;//default is 300
+            canvas.height = dst_height;//default is 150
+            context.drawImage(img,0,0,dst_width,dst_height);
+            canvas.toBlob(function(blobUrl){
+                uploadImage(type,blobUrl);
+            },"image/jpeg"); 
+        };
+        img.src=this.result;              
+    }
 }
 
 function submitAnswer()
@@ -920,16 +930,14 @@ function initCommon()
         ['table', ['table']],
         ['link', ['link']],
         ['picture', ['picture']],
-        ['video', ['video']],
-        ['fullscreen', ['fullscreen']]
+        ['video', ['video']]
         ],
         height:120,
         lang:'zh-CN',
         placeholder:'问题背景、条件等详细信息',
         callbacks: {
             onImageUpload: function(files){
-                img=sendFileQuestion(files[0]);
-                console.log(img);
+                scaleAndUploadImage("forQuestion",files[0],720);
             }
         }
     });

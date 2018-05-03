@@ -412,8 +412,7 @@ function init()
     placeholder:'写回答...',
     callbacks: {
         onImageUpload: function(files){
-            img=sendFileAnswer(files[0]);
-            console.log(img);
+            scaleAndUploadImage("forAnswer",files[0],720);
         }
     }
     });
