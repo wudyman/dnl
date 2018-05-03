@@ -744,4 +744,40 @@ def send_sms(request):
             if 'OK'==status_code:
                 request.session[phone_no]=verification_code
                 to_json=json.dumps(verification_code)
+    elif type=='password_reset':
+        print('aaa')
+        if not User.objects.filter(username=phone_no):
+            print('bbb')
+            to_json=json.dumps('unregistered')
+        else:
+            print('ccc')
+            verification_code=str(random.randint(100000,999999))
+            __business_id = uuid.uuid1()
+            params = {'code':verification_code}
+            smsResponse=dysms.send_sms(__business_id, phone_no, "大农令", "SMS_133972103", params)
+            print(smsResponse)
+            status_code=eval(str(smsResponse,encoding = "utf8"))['Code']
+            if 'OK'==status_code:
+                request.session[phone_no]=verification_code
+                to_json=json.dumps(verification_code)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def check_sms(request):
+    to_json=json.dumps('fail')
+    phone_no=request.POST.get('phone_no')
+    type=request.POST.get('type')
+    ver_code=request.POST.get('ver_code')
+    if type=='password_reset':
+        print('aaa')
+        if not User.objects.filter(username=phone_no):
+            print('bbb')
+            to_json=json.dumps('unregistered')
+        else:
+            print('ccc')
+            to_json=json.dumps('ver_code_error')
+            cach_ver_code=request.session.get(phone_no,None)
+            if cach_ver_code:
+                if cach_ver_code==ver_code:
+                    to_json=json.dumps('ver_code_ok')
     return HttpResponse(to_json,content_type='application/json')

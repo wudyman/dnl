@@ -164,6 +164,9 @@ function init()
     checkSwithPassword();
     checkSmsSend();
     checkErrorMask();
+    $(".Login-cannotLogin").click(function(){
+        location.href="/account/?arg=password_reset";
+    });
     var secs=getCookie("countdown");
     if(null!=secs)
     {

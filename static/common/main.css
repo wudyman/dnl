@@ -671,4 +671,31 @@ label {
 .zu-noti7-all .day a{color:#259}
 
 
+.Step-inner {
+    width: 320px;
+    margin: 0 auto;
+}
+.PasswordReset {
+    margin-top: 90px;
+    position: relative;
+}
+.StepHeader-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+.StepHeader-subtitle {
+    margin: 4px 0 40px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #8590a6;
+}
+.PasswordReset-nextStep {
+    display: block;
+    width: 100%;
+    margin-top: 32px;
+    margin-bottom: 10px;
+}
+
+
 
