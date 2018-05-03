@@ -24,6 +24,17 @@
 <script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
 <script src="{% static 'common/mobile_main.js' %}"></script>
 <script>
+function appendFollowElement(subcmd)
+{
+        var adept_id="1";
+        var adept_name="1";
+        var adept_avatar="1";
+        var adept_mood="1";
+        
+        var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的话题</h2></div><div class="ContentItem-extra">5</div></div></div></div>\
+                    <div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的话题</h2></div><div class="ContentItem-extra">5</div></div></div></div>';
+    $("#feedArea").append(data);
+}
 function appendQuestionElementSub(ret)
 {
     var question_id=ret[0];
@@ -274,29 +285,6 @@ function checkProfileModify()
 	});
 		//ata-field-type="sexual"
 }
-function fileUpload() {
-    var form_data = new FormData();
-    var file_info = $('#id_avatar_input')[0].files[0];
-    form_data.append('imgfile',file_info,"image.jpg");
-    $.ajax({
-    url:"/ajax/upload/avatar/",
-    type:'POST',
-    data: form_data,
-    processData: false,  // tell jquery not to process the data
-    contentType: false, // tell jquery not to set contentType
-    success: function(ret) {
-            if("fail"!=ret)
-            {
-                $("#id_avatar").attr("src",ret).attr("srcset",ret);
-                console.log("fileUpload success");
-            }
-            else
-            {
-                console.log("fileUpload fail");
-            }
-        }
-    }); // end ajax
-}
 function checkAvatarModify()
 {
     $(".Profile-avatar.Modify-avatar").click(function(){
@@ -308,13 +296,41 @@ function checkAvatarModify()
         });
     });
 }
-function profileEdit()
+
+function profileDetailShow()
 {
-    $("main").empty();
+    var cache_page=$("main").html();
 	var data='\
 			<div class="Card">\
             <div class="ProfileHeader-expandActions ProfileEdit-expandActions">\
-			<a class="Button Button--plain" type="button" href="/er/'+g_er_id+'">&nbsp;返回我的主页<span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--ArrowRight" fill="#8590a6" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z" fill-rule="evenodd"></path></svg></span></a>\
+			<button class="Button Button--primary Button--blue ReturnHomePage" style="margin:3px" type="button">返回我的主页</button>\
+			</div>\
+            <div class="Profile-intro">\
+            <img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt="">\
+            </div>\
+            <div class="Profile-data">\
+            <div class="Profile-datalist">\
+			<div class="Field List-item"><h6>昵称</h6><div class="Field-content"><div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span></div></div></div>\
+			<div class="Field List-item"><h6>性别</h6><div class="Field-content"><div><span class="Field-text">'+g_er_sexual_han+'</span></div></div></div>\
+			<div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span></div></div></div>\
+			<div class="Field List-item"><h6>居住地</h6><div class="Field-content"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span></div></div></div>\
+			<div class="Field List-item"><h6>所在行业</h6><div class="Field-content"><div><span class="Field-text">'+g_er_job+'</span></div></div></div>\
+			<div class="Field List-item"><h6>个人简介</h6><div class="Field-content"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span></div></div></div>\
+            </div></div>\
+			</div>';
+    $("main").empty().append(data);
+    
+    $(".ReturnHomePage").click(function(){
+        $("main").empty().append(cache_page);
+    });
+}
+function profileEdit()
+{
+    var cache_page=$("main").html();
+	var data='\
+			<div class="Card">\
+            <div class="ProfileHeader-expandActions ProfileEdit-expandActions">\
+			<button class="Button Button--primary Button--blue ReturnHomePage" style="margin:3px" type="button">返回我的主页</button>\
 			</div>\
             <div class="Profile-intro">\
             <img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt="">\
@@ -330,8 +346,10 @@ function profileEdit()
 			<div class="Field List-item"><h6>个人简介</h6><div class="Field-content" data-field-type="intro"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
             </div></div>\
 			</div>';
-    $("main").append(data);
-	window.location.href="#edit";
+    $("main").empty().append(data);
+    $(".ReturnHomePage").click(function(){
+        $("main").empty().append(cache_page);
+    });
     checkAvatarModify();
 	checkProfileModify();
 }
@@ -400,7 +418,7 @@ function initElement()
     else if("following"==g_command)
 	{
 		following_active="is-active";
-        //appendFollowElement(subcmd);
+        appendFollowElement(g_subcmd);
 	}
     else 
         console.log("false");
@@ -450,8 +468,6 @@ function init()
     appendLetterModal();
     setLetterReceiver(g_er_id,g_er_name);     
 	checkSets();
-    if("#edit"==location.hash)
-        profileEdit();
 }
 </script>
 </head>
@@ -503,7 +519,7 @@ function init()
 <div class="ProfileHeader-infosDivider"></div>
 <span id="job"></span>
 </div>
-<button class="Profile-infosOia">详细资料 <span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--ArrowRight" fill="#8590a6" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z" fill-rule="evenodd"></path></svg></span></button>
+<button class="Profile-infosOia" onClick="profileDetailShow()">详细资料 <span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--ArrowRight" fill="#8590a6" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z" fill-rule="evenodd"></path></svg></span></button>
 </div>
 <div class="Profile-badges">
 <div class="Profile-badgeItem">
