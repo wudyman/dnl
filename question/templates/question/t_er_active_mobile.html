@@ -302,7 +302,9 @@ function checkAvatarModify()
     $(".Profile-avatar.Modify-avatar").click(function(){
         $("#id_avatar_input").click();
         $("#id_avatar_input").on("change",function(){
-            fileUpload();
+            //fileUpload();
+            var file = $('#id_avatar_input')[0].files[0];
+            scaleAndUploadImage("forAvatar",file,200);
         });
     });
 }
@@ -358,7 +360,6 @@ function initElement()
     {
         var who="me";
         var who_han="我";
-        console.log("dddddddd");
         $(".ProfileEditButton").removeClass("is-hide");
         $(".ProfileLetterButton").addClass("is-hide");
         $(".ProfileFollowButton").addClass("is-hide");
