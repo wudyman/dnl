@@ -24,13 +24,18 @@ class ActiveView(generic.ListView):
             command='answers'
         if not subcmd:
             subcmd='followtos'
-        user=request.user
         erid=self.kwargs.get('erid')
         er=get_object_or_404(User,pk=erid)
-            
-        if user.followto.filter(id=er.id).exists():
-            followed='true'
+        
+        user=request.user
+        if user.is_authenticated:
+            logged='true'
+            if user.followto.filter(id=er.id).exists():
+                followed='true'
+            else:
+                followed='false'
         else:
+            logged='false'
             followed='false'
             
         questions_num=er.selfquestions.count()
@@ -41,4 +46,4 @@ class ActiveView(generic.ListView):
         followquestions_num=er.followquestions.count()
         
         ext_info={'questions_num':questions_num,'answers_num':answers_num,'followtos_num':followtos_num,'followers_num':followers_num,'followtopics_num':followtopics_num,'followquestions_num':followquestions_num}       
-        return render(request,self.template_name,{'er':er,'user':user,'followed':followed,'command':command,'subcmd':subcmd,'ext_info':ext_info})
+        return render(request,self.template_name,{'logged':logged,'er':er,'user':user,'followed':followed,'command':command,'subcmd':subcmd,'ext_info':ext_info})

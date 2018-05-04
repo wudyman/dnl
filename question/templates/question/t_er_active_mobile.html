@@ -24,16 +24,102 @@
 <script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
 <script src="{% static 'common/mobile_main.js' %}"></script>
 <script>
-function appendFollowElement(subcmd)
+function appendFollowElementSub(subcmd,ret)
 {
-        var adept_id="1";
-        var adept_name="1";
-        var adept_avatar="1";
-        var adept_mood="1";
+    if(("followtos"==subcmd)||("followers"==subcmd))
+    {
+        var people_id=ret[0];
+        var people_name=ret[1];
+        var people_anwser_nums=ret[2];
+        var people_avatar=ret[3];
+        var people_mood=ret[4];
+        var people_follower_nums=ret[5];
+        var people_followed=ret[6];
+        var people_followed_each=ret[7];
+        if("1"==people_followed)
+            var followed_html='<button class="Button FollowButton Button--primary Button--grey" type="button">已关注</button>';
+        else
+            var followed_html='<button class="Button FollowButton Button--primary Button--green" type="button">关注</button>';
+        if("1"==people_followed_each)
+            var followed_each_html='<span class="FollowStatus">相互关注</span>';
+        else
+            var followed_each_html='';
+        var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><div class="Popover"><div id="Popover-28784-64463-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-64463-content"><a class="UserLink-link" target="_blank" href="/er/'+people_id+'">\
+                <img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+people_avatar+'" srcset="'+people_avatar+'" alt="'+people_name+'"></a></div></div></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><div class="Popover"><div id="Popover-28784-44728-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-44728-content"><a class="UserLink-link" data-za-detail-view-element_name="User" target="_blank" href="/er/'+people_id+'">'+people_name+'</a></div></div></span>'+followed_each_html+'</div></h2><div class="ContentItem-meta"><div><div class="RichText">'+people_mood+'</div>\
+                <div class="ContentItem-status"><span class="ContentItem-statusItem">'+people_anwser_nums+' 回答</span><span class="ContentItem-statusItem">0 文章</span><span class="ContentItem-statusItem">'+people_follower_nums+' 关注者</span></div></div></div></div><div class="ContentItem-extra">'+followed_html+'</div></div></div></div>';
+        $("#feedArea").append(data);
+    }
+    else if("topics"==subcmd)
+    {
+        var topic_id=ret[0];
+        var topic_name=ret[1];
+        var topic_avatar=ret[2];
+        var topic_detail=ret[3];
         
-        var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的话题</h2></div><div class="ContentItem-extra">5</div></div></div></div>\
-                    <div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的话题</h2></div><div class="ContentItem-extra">5</div></div></div></div>';
+        var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><img class="Avatar Avatar--large" width="60" height="60" src="'+topic_avatar+'" srcset="'+topic_avatar+' 2x"></div><div class="ContentItem-head"><h2 class="ContentItem-title"><a class="TopicLink" href="/topic/'+topic_id+'" target="_blank"><div class="Popover"><div id="Popover-92518-2569-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-92518-2569-content">'+topic_name+'</div></div></a></h2><div class="ContentItem-meta"><div class="ContentItem-status">'+topic_detail+'</div></div></div></div></div></div>';
+        $("#feedArea").append(data);
+    }
+    else if("questions"==subcmd)
+    {
+        var question_id=ret[0];
+        var question_title=ret[1];
+        var question_pubdate=ret[2];
+        var question_answer_nums=ret[3];
+        var question_follower_nums=ret[4];
+        var data='\
+                <div class="List-item">\
+                <div class="ContentItem" ><h2 class="ContentItem-title"><div class="QuestionItem-title">\
+                <a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2>\
+                <div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>\
+                ';
+        $("#feedArea").append(data);
+    }
+}
+function checkNextPage()
+{
+    $(".NextPage").off("click");
+    $(".NextPage").on("click",function(){
+        console.log(this);
+        var subcmd=$(this).attr("data-next-page-type");
+        $.get("/ajax/er/"+g_er_id+"/following/"+subcmd+"/",function(ret){
+            if("fail"!=ret)
+            {
+                g_cache_page=$("main").html();
+                var head='<div class="Card Profile-datalist" id="Profile-datalist"><div id="feedArea" class=""><div class="ProfileHeader-expandActions ProfileEdit-expandActions"><button class="Button--blue ReturnHomePage" style="margin:3px" type="button">返回我的主页</button></div></div></div>';
+                $("main").empty().append(head);
+                for(i in ret)
+                {
+                    appendFollowElementSub(subcmd,ret[i]);
+                }               
+                checkReturnHomePage();
+            }
+        });
+    });
+}
+function showNextPage()
+{
+    console.log(this);
+    var subcmd=$(this).attr("data-next-page-type");
+    $.get("/ajax/er/"+g_er_id+"/following/"+subcmd+"/",function(ret){
+        if("fail"!=ret)
+        {
+            g_cache_page=$("main").html();
+            var head='<div class="Card Profile-datalist" id="Profile-datalist"><div id="feedArea" class=""><div class="ProfileHeader-expandActions ProfileEdit-expandActions"><button class="Button--blue ReturnHomePage" style="margin:3px" type="button">返回我的主页</button></div></div></div>';
+            $("main").empty().append(head);
+            for(i in ret)
+            {
+                appendFollowElementSub(subcmd,ret[i]);
+            }               
+            checkReturnHomePage();
+        }
+    });
+}
+function appendFollowElement()
+{       
+    var data='<div class="List-item NextPage" data-next-page-type="questions"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的问题</h2></div><div class="ContentItem-extra">'+g_followquestions_num+'</div></div></div></div>\
+                    <div class="List-item NextPage" data-next-page-type="topics"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的话题</h2></div><div class="ContentItem-extra">'+g_followtopics_num+'</div></div></div></div>';
     $("#feedArea").append(data);
+    checkNextPage();
 }
 function appendQuestionElementSub(ret)
 {
@@ -299,11 +385,11 @@ function checkAvatarModify()
 
 function profileDetailShow()
 {
-    var cache_page=$("main").html();
+    g_cache_page=$("main").html();
 	var data='\
 			<div class="Card">\
             <div class="ProfileHeader-expandActions ProfileEdit-expandActions">\
-			<button class="Button Button--primary Button--blue ReturnHomePage" style="margin:3px" type="button">返回我的主页</button>\
+			<button class="1Button 1Button--primary Button--blue ReturnHomePage" style="margin:3px" type="button">返回我的主页</button>\
 			</div>\
             <div class="Profile-intro">\
             <img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt="">\
@@ -319,18 +405,15 @@ function profileDetailShow()
             </div></div>\
 			</div>';
     $("main").empty().append(data);
-    
-    $(".ReturnHomePage").click(function(){
-        $("main").empty().append(cache_page);
-    });
+    checkReturnHomePage();
 }
 function profileEdit()
 {
-    var cache_page=$("main").html();
+    g_cache_page=$("main").html();
 	var data='\
 			<div class="Card">\
             <div class="ProfileHeader-expandActions ProfileEdit-expandActions">\
-			<button class="Button Button--primary Button--blue ReturnHomePage" style="margin:3px" type="button">返回我的主页</button>\
+			<button class="1Button 1Button--primary Button--blue ReturnHomePage" style="margin:3px" type="button">返回我的主页</button>\
 			</div>\
             <div class="Profile-intro">\
             <img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt="">\
@@ -347,11 +430,17 @@ function profileEdit()
             </div></div>\
 			</div>';
     $("main").empty().append(data);
-    $(".ReturnHomePage").click(function(){
-        $("main").empty().append(cache_page);
-    });
+    checkReturnHomePage();
     checkAvatarModify();
 	checkProfileModify();
+}
+function checkReturnHomePage()
+{
+    $(".ReturnHomePage").off("click");
+    $(".ReturnHomePage").click(function(){
+        $("main").empty().append(g_cache_page);
+        checkNextPage();
+    });
 }
 function initElement()
 {
@@ -386,20 +475,17 @@ function initElement()
     {
         $(".ProfileEditButton").addClass("is-hide");
         $(".ProfileLetterButton").removeClass("is-hide");
-        if(g_followed)
+        if("true"==g_followed)
             $(".ProfileFollowButton").removeClass("is-hide Button--blue").addClass("Button--grey").text("已关注").attr("data-followed","true").attr("data-er-id",g_er_id).attr("data-who",who);
         else
             $(".ProfileFollowButton").removeClass("is-hide Button--grey").addClass("Button--blue").text("关注"+who_han).attr("data-followed","false").attr("data-er-id",g_er_id).attr("data-who",who);
     }
     $(".who").text(who_han);
-    
-    
-    
+       
     var answers_active="";
 	var asks_active="";
 	var posts_active="";
-	var following_active="";
-	
+	var following_active="";	
 	if ("answers"==g_command)
 	{
 	    answers_active="is-active";
@@ -418,7 +504,7 @@ function initElement()
     else if("following"==g_command)
 	{
 		following_active="is-active";
-        appendFollowElement(g_subcmd);
+        appendFollowElement();
 	}
     else 
         console.log("false");
@@ -468,24 +554,31 @@ function init()
     appendLetterModal();
     setLetterReceiver(g_er_id,g_er_name);     
 	checkSets();
+    checkNextPage();
 }
 </script>
 </head>
 <body class="Mobile-body">
 <div id="root">
 <div class="App">
-<div class="LoadingBar">
-</div>
+<div class="LoadingBar"></div>
 <div>
 <header class="Sticky MobileAppHeader" style="line-height:50px">
 <div class="MobileAppHeader-inner">
 <a class="MobileAppHeader-logo" href="//www.danongling.com/" aria-label="知乎" data-za-detail-view-name="知乎"><svg viewBox="0 0 200 91" width="56" height="28" fill="#0f88eb"><title></title><g><path d="M53.29 80.035l7.32.002 2.41 8.24 13.128-8.24h15.477v-67.98H53.29v67.978zm7.79-60.598h22.756v53.22h-8.73l-8.718 5.473-1.587-5.46-3.72-.012v-53.22zM46.818 43.162h-16.35c.545-8.467.687-16.12.687-22.955h15.987s.615-7.05-2.68-6.97H16.807c1.09-4.1 2.46-8.332 4.1-12.708 0 0-7.523 0-10.085 6.74-1.06 2.78-4.128 13.48-9.592 24.41 1.84-.2 7.927-.37 11.512-6.94.66-1.84.785-2.08 1.605-4.54h9.02c0 3.28-.374 20.9-.526 22.95H6.51c-3.67 0-4.863 7.38-4.863 7.38H22.14C20.765 66.11 13.385 79.24 0 89.62c6.403 1.828 12.784-.29 15.937-3.094 0 0 7.182-6.53 11.12-21.64L43.92 85.18s2.473-8.402-.388-12.496c-2.37-2.788-8.768-10.33-11.496-13.064l-4.57 3.627c1.363-4.368 2.183-8.61 2.46-12.71H49.19s-.027-7.38-2.372-7.38zm128.752-.502c6.51-8.013 14.054-18.302 14.054-18.302s-5.827-4.625-8.556-1.27c-1.874 2.548-11.51 15.063-11.51 15.063l6.012 4.51zm-46.903-18.462c-2.814-2.577-8.096.667-8.096.667s12.35 17.2 12.85 17.953l6.08-4.29s-8.02-11.752-10.83-14.33zM199.99 46.5c-6.18 0-40.908.292-40.953.292v-31.56c1.503 0 3.882-.124 7.14-.376 12.773-.753 21.914-1.25 27.427-1.504 0 0 3.817-8.496-.185-10.45-.96-.37-7.24 1.43-7.24 1.43s-51.63 5.153-72.61 5.64c.5 2.756 2.38 5.336 4.93 6.11 4.16 1.087 7.09.53 15.36.277 7.76-.5 13.65-.76 17.66-.76v31.19h-41.71s.88 6.97 7.97 7.14h33.73v22.16c0 4.364-3.498 6.87-7.65 6.6-4.4.034-8.15-.36-13.027-.566.623 1.24 1.977 4.496 6.035 6.824 3.087 1.502 5.054 2.053 8.13 2.053 9.237 0 14.27-5.4 14.027-14.16V53.93h38.235c3.026 0 2.72-7.432 2.72-7.432z" fill-rule="evenodd"></path></g></svg></a>
+{% ifequal logged 'true' %}
 <div class="MobileAppHeader-actions">
 <a class="MobileAppHeader-downloadLink" href="https://www.danongling.com/app?auto_download=true&amp;utm_source=zhihu&amp;utm_campaign=guest_feed&amp;utm_content=guide" data-za-detail-view-name="下载 App">下载 App</a>
 <div class="MobileAppHeader-navItem MobileAppHeader-moreIconWrapper">
 <span class="MobileAppHeader-expandBtn"><svg class="Zi Zi--More" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M3.5 5h16a1.5 1.5 0 0 1 0 3h-16a1.5 1.5 0 0 1 0-3zm0 6h16a1.5 1.5 0 0 1 0 3h-16a1.5 1.5 0 0 1 0-3zm0 6h16a1.5 1.5 0 0 1 0 3h-16a1.5 1.5 0 0 1 0-3z" fill-rule="evenodd"></path></svg></span>
 </div>
 </div>
+{% else %}
+<div class="MobileAppHeader-actions"><a class="MobileAppHeader-downloadLink" href="https://www.danongling.com/app?auto_download=true&amp;utm_source=zhihu&amp;utm_campaign=guest_feed&amp;utm_content=guide">下载 App</a>
+<a class="MobileAppHeader-authLink" href="/signinup/?next=/">注册或登录</a></div>
+{% endifequal %}
+
+
 </div>
 <div class="PageHeader">
 <div class="Profile-tabs">
@@ -525,7 +618,7 @@ function init()
 <div class="Profile-badgeItem">
 <span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Like" fill="#0f88eb" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.718 10.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.649.718.649h1.45c.916 0 .847-.649.847-.649v-9.554c-.09-.879-.854-.791-.847-.791l-2.446.022zm11.727-.05s.756-1.577 1.156-4.083c.163-2.861-2.052-3.491-3.037-2.362-1.014 1.233 0 2.057-4.45 5.83C7.336 9.966 7 11.011 7 11.998v6.998c-.016 1.104.491 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.911c1.047-3.515-1.95-3.703-1.95-3.703l-5.387.007z" fill-rule="evenodd"></path></svg></span>0 赞同 · 0 感谢</div>
 </div>
-<div class="Profile-follows"><span><span id="followers"></span> 关注<span class="who"></span>的人</span><div class="ProfileHeader-infosDivider"></div><span><span id="followtos"></span> <span class="who"></span>关注的人</span></div>
+<div class="Profile-follows"><span class="NextPage" data-next-page-type="followers"><span id="followers"></span> 关注<span class="who"></span>的人</span><div class="ProfileHeader-infosDivider"></div><span class="NextPage" data-next-page-type="followtos"><span id="followtos"></span> <span class="who"></span>关注的人</span></div>
 </div>
 </div>
 <ul role="tablist" class="Tabs ProfileBar">
