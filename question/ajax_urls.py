@@ -31,4 +31,5 @@ urlpatterns= [
     url(r'^profile_edit/(?P<type>[a-z]+)/$',views.profile_edit,name='profile_edit'),
     url(r'^send_sms/$',views.send_sms,name='send_sms'),
     url(r'^check_sms/$',views.check_sms,name='check_sms'),
+    url(r'^reset_pwd/$',views.reset_pwd,name='reset_pwd'),
 ]

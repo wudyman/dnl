@@ -1,29 +1,40 @@
-(function( $ ) {
-  // constants
-  var SHOW_CLASS = 'show',
-      HIDE_CLASS = 'hide',
-      ACTIVE_CLASS = 'active';
-  
-  $( '.tabs' ).on( 'click', 'li a', function(e){
-    e.preventDefault();
-    var $tab = $( this ),
-         href = $tab.attr( 'href' );
-  
-     $( '.active' ).removeClass( ACTIVE_CLASS );
-     $tab.addClass( ACTIVE_CLASS );
-  
-     $( '.show' )
-        .removeClass( SHOW_CLASS )
-        .addClass( HIDE_CLASS )
-        .hide();
-    
-      $(href)
-        .removeClass( HIDE_CLASS )
-        .addClass( SHOW_CLASS )
-        .hide()
-        .fadeIn( 550 );
-  });
-})( jQuery );
+function setCookie(name,value,secs)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() + secs*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+function getCookie(name)
+{
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+        return (arr[2]);
+    else
+        return null;
+}
+function delCookie(name)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null)
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
+function countDown()
+{
+    if(0==g_countdown_secs)
+    {
+        $(".SignFlow-smsInputButton").removeClass("is-counting").text("获取短信验证码");
+        delCookie("countdown");
+    }
+    else
+    {
+        g_countdown_secs-=1;
+        $("#counting-num").text(g_countdown_secs);
+        setCookie("countdown",g_countdown_secs,g_countdown_secs);
+        setTimeout("countDown()",1000);        
+    }
+}
 function checkRegisterValid()
 {
     console.log("need checkRegisterValid");

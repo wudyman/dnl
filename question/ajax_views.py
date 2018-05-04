@@ -790,7 +790,7 @@ def check_sms(request):
     to_json=json.dumps('fail')
     phone_no=request.POST.get('phone_no')
     type=request.POST.get('type')
-    ver_code=request.POST.get('ver_code')
+    veri_code=request.POST.get('veri_code')
     if type=='password_reset':
         print('aaa')
         if not User.objects.filter(username=phone_no):
@@ -798,9 +798,25 @@ def check_sms(request):
             to_json=json.dumps('unregistered')
         else:
             print('ccc')
-            to_json=json.dumps('ver_code_error')
-            cach_ver_code=request.session.get(phone_no,None)
-            if cach_ver_code:
-                if cach_ver_code==ver_code:
-                    to_json=json.dumps('ver_code_ok')
+            to_json=json.dumps('veri_code_error')
+            cach_veri_code=request.session.get(phone_no,None)
+            if cach_veri_code:
+                if cach_veri_code==veri_code:
+                    to_json=json.dumps('veri_code_ok')
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def reset_pwd(request):
+    to_json=json.dumps('fail')
+    phone_no=request.POST.get('phone_no')
+    veri_code=request.POST.get('veri_code')
+    password=request.POST.get('pwd')
+    user=User.objects.get(username=phone_no)
+    if user and phone_no and veri_code and password:
+        cache_veri_code=request.session.get(phone_no,None)
+        if cache_veri_code:
+            if cache_veri_code==veri_code:
+                user.set_password(password)
+                user.save()
+                to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
