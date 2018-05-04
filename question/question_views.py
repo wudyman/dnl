@@ -22,12 +22,12 @@ class IndexView(generic.ListView):
         if is_mobile:
             self.template_name='question/t_index_mobile.html'
             if user.is_authenticated:
-                return render(request,self.template_name,{'login':'true'})
+                return render(request,self.template_name,{'logged':'true'})
             else:
                 return render(request,self.template_name)
         else:
             if user.is_authenticated:
-                return render(request,self.template_name,{'login':'true'})
+                return render(request,self.template_name,{'logged':'true'})
             else:
                 return HttpResponseRedirect(self.login_url)
         '''

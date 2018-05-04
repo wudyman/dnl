@@ -8,24 +8,33 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 
-class MyTopicView(LoginRequiredMixin,generic.ListView):
-    login_url='/'
+class MyTopicView(generic.ListView):
+    #login_url='/'
     template_name='question/t_mytopic.html'
     context_object_name='mytopic_list'
     def get_queryset(self):
         pass
     def get(self,request,*args,**kwargs):
+        user=request.user #get_object_or_404(User,username=request.user)
         ua=request.META['HTTP_USER_AGENT']
         is_mobile=ua.upper().find('MOBILE')>=0
         print('is moblie:',is_mobile)
         if is_mobile:
             self.template_name='question/t_mytopic_mobile.html'
-        user=request.user #get_object_or_404(User,username=request.user)
-        mytopic_list=user.followtopics.all()
-        if mytopic_list:
-            return render(request,self.template_name,{'mytopic_list':mytopic_list}) 
+        if user.is_authenticated:
+            mytopic_list=user.followtopics.all()
+            if mytopic_list:
+                return render(request,self.template_name,{'mytopic_list':mytopic_list,'logged':'true'})
+            else:
+                if is_mobile:
+                    return render(request,self.template_name,{'logged':'true'})
+                else:
+                    return HttpResponseRedirect('/topics/')
         else:
-            return HttpResponseRedirect('/topics/')           
+            if is_mobile:
+                return render(request,self.template_name,{'logged':'false'})
+            else:
+                return HttpResponseRedirect('/topics/')
 
 class TopicView(generic.ListView):
     template_name='question/t_topic.html'
