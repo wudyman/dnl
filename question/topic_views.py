@@ -49,8 +49,13 @@ class TopicView(generic.ListView):
         topic_id=self.kwargs.get('topic_id')
         topic=get_object_or_404(Topic,pk=topic_id)
         user=request.user
-        if topic.follower.filter(pk=user.pk).exists():
-            followed='true'
+        if user.is_authenticated:
+            logged='true'
+            if topic.follower.filter(pk=user.pk).exists():
+                followed='true'
+            else:
+                followed='false'
         else:
+            logged='false'
             followed='false'
-        return render(request,self.template_name,{'context_topic':topic,'followed':followed})
+        return render(request,self.template_name,{'context_topic':topic,'followed':followed,'logged':logged})

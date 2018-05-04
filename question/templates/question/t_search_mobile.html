@@ -43,15 +43,16 @@ function appendSearchPageElement(ret)
 function getMoreData() {
     if((""!=g_search_keyword)&&(""!=g_search_type))
     {
-        var nums=$('.List-item').length;
+        var nums=g_last_getmoredata_index;//$('.List-item').length;
         var order=1;//pub_date
         var start=nums;
-        var end=start+10;
+        var end=start+STEP*2;
         $.post('/ajax/search/'+g_search_type+'/'+order+'/'+start+'/'+end+'/',{keyword:g_search_keyword},function(ret){
             if("fail"!=ret)
             {
                 appendSearchPageElement(ret);  
                 checkSets();
+                g_last_getmoredata_index+=STEP*2;
             }
             setLockScrollMoreData("false");
         });
@@ -69,15 +70,9 @@ function checkSearchType()
         getMoreData();
     });
 }
-function init()
-{
-    var str_main_data=$("main").attr("data-dfs-main");
-	var main_data=JSON.parse(str_main_data);
-    console.log(main_data);
-    g_search_keyword=main_data.search_keyword;
-    g_search_type=main_data.search_type;
-    g_user_id=main_data.user_id;
-    console.log(g_search_type);
+
+function initElement()
+{   
     if(""==g_search_type)
     {
         g_search_type="question";
@@ -87,6 +82,21 @@ function init()
         if($(this).attr("data-search-type")==g_search_type)
             $(this).addClass("is-active");
     });
+}
+function initData()
+{
+    g_last_getmoredata_index=0;
+    var str_main_data=$("main").attr("data-dfs-main");
+	var main_data=JSON.parse(str_main_data);
+    g_search_keyword=main_data.search_keyword;
+    g_search_type=main_data.search_type;
+    g_logged=main_data.logged;
+    g_user_id=main_data.user_id;
+}
+function init()
+{
+    initData();
+    initElement();
     getMoreData();
     checkSets();
     checkSearchType();
@@ -120,7 +130,7 @@ function init()
 
 </div>
 
-<main role="main" class="App-main" data-dfs-main='{"user_id":"{{user.id}}","search_keyword":"{{keyword}}","search_type":"{{type}}"}'>
+<main role="main" class="App-main" data-module="search" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","search_keyword":"{{keyword}}","search_type":"{{type}}"}'>
 
 <div id="search">
 

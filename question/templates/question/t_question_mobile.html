@@ -263,7 +263,7 @@ function getMoreAnswerData()
 
 function getAllAnswerData()
 {
-    var nums=$('.List-item').length;
+    var nums=g_last_getmoredata_index;//$('.List-item').length;
     var order=1;
     var start=nums;
     var end=start+STEP;
@@ -272,6 +272,7 @@ function getAllAnswerData()
         {
             appendAllAnswerListElement(ret);
             checkSets();
+            g_last_getmoredata_index+=STEP;
         }
         setLockScrollMoreData("false");
     });

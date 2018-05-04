@@ -64,36 +64,6 @@ class SigninupView(generic.ListView):
         else:
             return HttpResponseRedirect('/account/?arg=e_l_r')
             
-        '''
-        if request.POST.get('nickname'):
-            name=request.POST.get('email_phone')
-            pwd=request.POST.get('password')
-            email=name
-            user=User.objects.create_user(name,email,pwd)
-            user.first_name=request.POST.get('nickname')
-            user.save()
-
-            userprofile=UserProfile()
-            userprofile.intro='i m the king'
-            userprofile.user=user
-            userprofile.save()
-            
-            login(request,user)
-            return HttpResponseRedirect('/')
-        else:
-            name=request.POST.get('email_phone')
-            pwd=request.POST.get('password')
-            user=authenticate(username=name,password=pwd)
-            if user is not None:
-                login(request,user)
-                next_to=request.GET.get('next',None)
-                if next_to:
-                    return redirect(next_to)
-                else:
-                    return HttpResponseRedirect('/')
-            else:
-                return HttpResponse('signin fail')
-        '''
 class AccountView(generic.ListView):
     template_name='question/t_misc.html'
     def get_queryset(self):
@@ -103,8 +73,8 @@ class AccountView(generic.ListView):
         if arg:
             return render(request,self.template_name,{'arg':arg})
         return HttpResponseRedirect('/')
-class AllTopicsView(LoginRequiredMixin,generic.ListView):
-    login_url='/'
+class AllTopicsView(generic.ListView):
+    #login_url='/'
     template_name='question/t_alltopics.html'
     #context_object_name='latest_topics_list'
     def get_queryset(self):
@@ -113,8 +83,11 @@ class AllTopicsView(LoginRequiredMixin,generic.ListView):
     def get(self,request,*args,**kwargs):
         topics_list=Topic.objects.order_by('-pub_date')
         user=request.user #get_object_or_404(User,username=request.user)
-        followtopics_list=user.followtopics.all()
-        return render(request,self.template_name,{'topics_list':topics_list,'followtopics_list':followtopics_list})
+        if user.is_authenticated:
+            followtopics_list=user.followtopics.all()
+            return render(request,self.template_name,{'topics_list':topics_list,'followtopics_list':followtopics_list,'logged':'true'})
+        else:
+            return render(request,self.template_name,{'topics_list':topics_list,'logged':'true'})
 
 class NotificationView(LoginRequiredMixin,generic.ListView):
     login_url='/'
@@ -131,8 +104,8 @@ class NotificationView(LoginRequiredMixin,generic.ListView):
         if is_mobile:
             self.template_name='question/t_setting_mobile.html'
         user=request.user
-        if user:
-            return render(request,self.template_name,{'type':self.type})
+        if user.is_authenticated:
+            return render(request,self.template_name,{'type':self.type,'logged':'true'})
         else:
             return HttpResponseRedirect('/')
         
@@ -151,7 +124,7 @@ class ConversationView(LoginRequiredMixin,generic.ListView):
         if is_mobile:
             self.template_name='question/t_setting_mobile.html'
         user=request.user
-        if user:
+        if user.is_authenticated:
             conversation_id=request.GET.get('i')
             if conversation_id:
                 conversation=get_object_or_404(Conversation,pk=conversation_id)
@@ -160,11 +133,11 @@ class ConversationView(LoginRequiredMixin,generic.ListView):
                     parter=conversation.initator
                     if parter.id==user.id:
                         parter=conversation.parter
-                    return render(request,self.template_name,{'type':self.type,'conversation_id':conversation_id,'parter':parter,'parter_name':parter.first_name})
+                    return render(request,self.template_name,{'type':self.type,'conversation_id':conversation_id,'parter':parter,'parter_name':parter.first_name,'logged':'true'})
                 else:
-                    return render(request,self.template_name,{'type':self.type,'conversation_id':''})               
+                    return render(request,self.template_name,{'type':self.type,'conversation_id':'','logged':'true'})               
             else:
-                return render(request,self.template_name,{'type':self.type,'conversation_id':''})
+                return render(request,self.template_name,{'type':self.type,'conversation_id':'','logged':'true'})
         else:
             return HttpResponseRedirect('/')
         #user=request.user #get_object_or_404(User,username=request.user)
@@ -188,11 +161,11 @@ class SettingsView(LoginRequiredMixin,generic.ListView):
         if is_mobile:
             self.template_name='question/t_setting_mobile.html'
         user=request.user
-        if user:
+        if user.is_authenticated:
             self.sub_type=request.GET.get('sub')
             if not self.sub_type:
                 self.sub_type='profile'
-            return render(request,self.template_name,{'type':self.type,'sub_type':self.sub_type})
+            return render(request,self.template_name,{'type':self.type,'sub_type':self.sub_type,'logged':'true'})
         else:
             return HttpResponseRedirect('/')
         #user=request.user #get_object_or_404(User,username=request.user)
@@ -216,8 +189,8 @@ class AnswerView(LoginRequiredMixin,generic.ListView):
         else:
             return HttpResponseRedirect('/')
         
-class SearchView(LoginRequiredMixin,generic.ListView):
-    login_url='/'
+class SearchView(generic.ListView):
+    #login_url='/'
     template_name='question/t_search.html'
     keyword=''
     type='content'
@@ -232,20 +205,16 @@ class SearchView(LoginRequiredMixin,generic.ListView):
         if is_mobile:
             self.template_name='question/t_search_mobile.html'
         user=request.user
-        if user:
-            self.keyword=request.GET.get('q')
-            if not self.keyword:
-                self.keyword=''
-            self.type=request.GET.get('type')
-            if not self.type:
-                self.type=''
-            return render(request,self.template_name,{'keyword':self.keyword,'type':self.type})
+        self.keyword=request.GET.get('q')
+        if not self.keyword:
+            self.keyword=''
+        self.type=request.GET.get('type')
+        if not self.type:
+            self.type=''
+        if user.is_authenticated:
+            return render(request,self.template_name,{'keyword':self.keyword,'type':self.type,'logged':'true'})
         else:
-            return HttpResponseRedirect('/')
-        #user=request.user #get_object_or_404(User,username=request.user)
-        #conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
-        #conversation_list=conversations.order_by('-update_date')[:10]
-        #return render(request,self.template_name,{'conversation_list':conversation_list})
+            return render(request,self.template_name,{'keyword':self.keyword,'type':self.type,'logged':'false'})
         
 class WriteView(LoginRequiredMixin,generic.ListView):
     login_url='/'
