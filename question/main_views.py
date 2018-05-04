@@ -29,12 +29,12 @@ class SigninupView(generic.ListView):
             if User.objects.filter(username=key):
                 print(key+':have register!')
                 return HttpResponseRedirect('/account/?arg=e_registered')
-            cach_verification_code=request.session.get(key,None)
-            if cach_verification_code:
-                verification_code=request.POST.get('digits')
-                #print(type(verification_code))
-                #print(type(cach_verification_code))
-                if verification_code==cach_verification_code:
+            cach_veri_code=request.session.get(key,None)
+            if cach_veri_code:
+                veri_code=request.POST.get('digits')
+                #print(type(veri_code))
+                #print(type(cach_veri_code))
+                if veri_code==cach_veri_code:
                     name=key
                     pwd=request.POST.get('regPassword')
                     print(pwd)
@@ -48,7 +48,7 @@ class SigninupView(generic.ListView):
                     
                     login(request,user)
                     return HttpResponseRedirect('/')
-            return HttpResponseRedirect('/account/?arg=e_ver_code')
+            return HttpResponseRedirect('/account/?arg=e_veri_code')
         elif request.POST.get('loginPhoneNo'):
             name=request.POST.get('loginPhoneNo')
             pwd=request.POST.get('loginPassword')
