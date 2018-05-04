@@ -1,29 +1,40 @@
-(function( $ ) {
-  // constants
-  var SHOW_CLASS = 'show',
-      HIDE_CLASS = 'hide',
-      ACTIVE_CLASS = 'active';
-  
-  $( '.tabs' ).on( 'click', 'li a', function(e){
-    e.preventDefault();
-    var $tab = $( this ),
-         href = $tab.attr( 'href' );
-  
-     $( '.active' ).removeClass( ACTIVE_CLASS );
-     $tab.addClass( ACTIVE_CLASS );
-  
-     $( '.show' )
-        .removeClass( SHOW_CLASS )
-        .addClass( HIDE_CLASS )
-        .hide();
-    
-      $(href)
-        .removeClass( HIDE_CLASS )
-        .addClass( SHOW_CLASS )
-        .hide()
-        .fadeIn( 550 );
-  });
-})( jQuery );
+function setCookie(name,value,secs)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() + secs*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+function getCookie(name)
+{
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+        return (arr[2]);
+    else
+        return null;
+}
+function delCookie(name)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null)
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
+function countDown()
+{
+    if(0==g_countdown_secs)
+    {
+        $(".SignFlow-smsInputButton").removeClass("is-counting").text("获取短信验证码");
+        delCookie("countdown");
+    }
+    else
+    {
+        g_countdown_secs-=1;
+        $("#counting-num").text(g_countdown_secs);
+        setCookie("countdown",g_countdown_secs,g_countdown_secs);
+        setTimeout("countDown()",1000);        
+    }
+}
 function checkRegisterValid()
 {
     console.log("need checkRegisterValid");
@@ -118,7 +129,6 @@ function checkSelectOption()
     });
 }
 
-//获取滚动条当前的位置 
 function getScrollTop() { 
 var scrollTop = 0; 
 if (document.documentElement && document.documentElement.scrollTop) { 
@@ -130,7 +140,6 @@ scrollTop = document.body.scrollTop;
 return scrollTop; 
 } 
 
-//获取当前可是范围的高度 
 function getClientHeight() { 
 var clientHeight = 0; 
 if (document.body.clientHeight && document.documentElement.clientHeight) { 
@@ -142,7 +151,6 @@ clientHeight = Math.max(document.body.clientHeight, document.documentElement.cli
 return clientHeight; 
 } 
 
-//获取文档完整的高度 
 function getScrollHeight() { 
 return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); 
 } 
@@ -384,41 +392,6 @@ function checkContentExpand(){
     });
     
 }
-
-/*
-function checkContentCollapse2(){
-    $(".ContentItem-less.NC-RichContent-type2").off("click");
-    $(".ContentItem-less.NC-RichContent-type2").each(function(){
-        $(this).click(function(){
-            $(this).addClass("is-hide");
-            $(this).parent().siblings(".ContentItem-more.NC-RichContent-type2").removeClass("is-hide");
-            $(this).parents(".RichContent").addClass("is-collapsed");
-            $(this).parent().siblings(".RichContent-inner").css("max-height","400px");
-        });
-    });
-}
-
-function checkContentExpand2(){
-    //$(".RichContent-inner").off("click");
-    $(".RichContent-inner").each(function(){
-        $(this).click(function(){
-            $(this).siblings(".ContentItem-more.NC-RichContent-type2").addClass("is-hide");
-            $(this).siblings(".ContentItem-actions").children(".ContentItem-less.NC-RichContent-type2").removeClass("is-hide");
-            $(this).parent().removeClass("is-collapsed");
-            $(this).css("max-height","");
-        });
-    });
-    $(".ContentItem-more.NC-RichContent-type2").off("click");
-    $(".ContentItem-more.NC-RichContent-type2").each(function(){
-        $(this).click(function(){
-            $(this).addClass("is-hide");
-            $(this).siblings(".ContentItem-actions").children(".ContentItem-less.NC-RichContent-type2").removeClass("is-hide");
-            $(this).parent().removeClass("is-collapsed");
-            $(this).siblings(".RichContent-inner").css("max-height","");
-        });
-    });
-}
-*/
 
 function checkAnswerLike(){
     $(".AnswerLike").off("click");
@@ -679,8 +652,6 @@ function checkSets()
     checkFollow();
     checkContentExpand();
     checkContentCollapse();
-    //checkContentExpand2();
-    //checkContentCollapse2();
     checkPopoverShow();
     checkAnswerLike();
     checkExpandBtn();
@@ -880,11 +851,7 @@ function appendNotificationElement(ret)
 
 function appendSearchElement(ret,keyword)
 {
-//<div class="AutoComplete-group"><div class="SearchBar-label">用户</div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="UserItem"><a class="SearchBar-peopleResult" data-za-not-track-link="true" href="/people/fang-jie-9-6-38" target="_blank"><div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="房价"><meta itemprop="image" content="https://pic2.zhimg.com/66162bae6d34b7b0c5a454cd93e90769_s.jpg"><meta itemprop="url" content="https://www.zhihu.com/people/fang-jie-9-6-38"><meta itemprop="zhihu:followerCount"><span class="UserLink AuthorInfo-avatarWrapper"><img class="Avatar Avatar--medium AuthorInfo-avatar" width="40" height="40" src="https://pic2.zhimg.com/66162bae6d34b7b0c5a454cd93e90769_xs.jpg" srcset="https://pic2.zhimg.com/66162bae6d34b7b0c5a454cd93e90769_l.jpg 2x" alt="房价"></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name">房价</span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"></div></div></div></div></a></div></div></div></div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="UserItem" data-za-detail-view-path-index="1"><a class="SearchBar-peopleResult" data-za-not-track-link="true" href="/people/fang-jie-40-53" target="_blank"><div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="房价"><meta itemprop="image" content="https://pic4.zhimg.com/da8e974dc_s.jpg"><meta itemprop="url" content="https://www.zhihu.com/people/fang-jie-40-53"><meta itemprop="zhihu:followerCount"><span class="UserLink AuthorInfo-avatarWrapper"><img class="Avatar Avatar--medium AuthorInfo-avatar" width="40" height="40" src="https://pic4.zhimg.com/da8e974dc_xs.jpg" srcset="https://pic4.zhimg.com/da8e974dc_l.jpg 2x" alt="房价"></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name">房价</span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">经济学在读</div></div></div></div></div></a></div></div></div></div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="UserItem" data-za-detail-view-path-index="2"><a class="SearchBar-peopleResult" data-za-not-track-link="true" href="/people/nu-wang-da-ren-ni-hao" target="_blank"><div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="高是房价太高的高"><meta itemprop="image" content="https://pic2.zhimg.com/v2-2b47db6a78c66355ca13c88909004fcb_s.jpg"><meta itemprop="url" content="https://www.zhihu.com/people/nu-wang-da-ren-ni-hao"><meta itemprop="zhihu:followerCount"><span class="UserLink AuthorInfo-avatarWrapper"><img class="Avatar Avatar--medium AuthorInfo-avatar" width="40" height="40" src="https://pic2.zhimg.com/v2-2b47db6a78c66355ca13c88909004fcb_xs.jpg" srcset="https://pic2.zhimg.com/v2-2b47db6a78c66355ca13c88909004fcb_l.jpg 2x" alt="高是房价太高的高"></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name">高是房价太高的高</span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">举杯邀明月   对影成三人</div></div></div></div></div></a></div></div></div></div></div>\
-//<div class="AutoComplete-group"><div class="SearchBar-label">话题</div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="TopicItem"><a class="SearchBar-topicResult" data-za-not-track-link="true" href="/topic/19554569" target="_blank">房价<span class="SearchBar-topicSuffix">999 个精华回答</span></a></div></div></div></div></div>\
-//<div id="IdQuestion" class="AutoComplete-group"><div class="Menu-item is-active" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/53369195" target="_blank">2018 年房价会涨吗？<span class="SearchBar-contentSuffix">2,188 个回答</span></a></div></div></div></div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="PostItem" data-za-detail-view-path-index="1"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="//zhuanlan.zhihu.com/p/26262058" target="_blank">一苒说：2017年，房价的拐点是不是到了？<span class="SearchBar-contentSuffix">4,774 个赞</span></a></div></div></div></div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-detail-view-path-index="2"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/33412557" target="_blank">深圳的高房价会导致人才流失吗？<span class="SearchBar-contentSuffix">1,021 个回答</span></a></div></div></div></div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-detail-view-path-index="3"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/27605852" target="_blank">2015 年全国房价会呈什么趋势？<span class="SearchBar-contentSuffix">409 个回答</span></a></div></div></div></div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-detail-view-path-index="4"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/22451840" target="_blank">中国人为什么买得起房子？中国房价高吗？为什么？<span class="SearchBar-contentSuffix">701 个回答</span></a></div></div></div></div></div>\
-//var data='<div class="Popover-content Popover-content--bottom Popover-content--fixed Popover-content-enter Popover-content-enter-active" id="Popover-37601-45625-content" aria-labelledby="Popover-37601-45625-toggle" style="left: 212.4px; top: 43px;"><div class="Menu AutoComplete-menu SearchBar-menu" role="listbox"><div class="AutoComplete-group"><div class="Menu-item" id="AutoComplet-37601-58607-content-0" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;53369195&quot;}}}"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/53369195" target="_blank"><!-- react-text: 11 -->2018 年房价会涨吗？<!-- /react-text --><span class="SearchBar-contentSuffix">2,188 个回答</span></a></div></div></div></div><div class="Menu-item" id="AutoComplet-37601-58607-content-1" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="PostItem" data-za-detail-view-path-index="1" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Post&quot;,&quot;token&quot;:&quot;26262058&quot;}}}"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="//zhuanlan.zhihu.com/p/26262058" target="_blank"><!-- react-text: 18 -->一苒说：2017年，房价的拐点是不是到了？<!-- /react-text --><span class="SearchBar-contentSuffix">4,774 个赞</span></a></div></div></div></div><div class="Menu-item" id="AutoComplet-37601-58607-content-2" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-detail-view-path-index="2" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;33412557&quot;}}}"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/33412557" target="_blank"><!-- react-text: 25 -->深圳的高房价会导致人才流失吗？<!-- /react-text --><span class="SearchBar-contentSuffix">1,021 个回答</span></a></div></div></div></div><div class="Menu-item" id="AutoComplet-37601-58607-content-3" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-detail-view-path-index="3" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;27605852&quot;}}}"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/27605852" target="_blank"><!-- react-text: 32 -->2015 年全国房价会呈什么趋势？<!-- /react-text --><span class="SearchBar-contentSuffix">409 个回答</span></a></div></div></div></div><div class="Menu-item" id="AutoComplet-37601-58607-content-4" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-detail-view-path-index="4" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;22451840&quot;}}}"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/22451840" target="_blank"><!-- react-text: 39 -->中国人为什么买得起房子？中国房价高吗？为什么？<!-- /react-text --><span class="SearchBar-contentSuffix">701 个回答</span></a></div></div></div></div></div><div class="AutoComplete-group"><div class="SearchBar-label">用户</div><div class="Menu-item" id="AutoComplet-37601-58607-people-0" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="UserItem" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;User&quot;,&quot;member_hash_id&quot;:&quot;824eb6bfb1b90655582ef22390719cc6&quot;}}}"><a class="SearchBar-peopleResult" data-za-not-track-link="true" href="/people/fang-jie-9-6-38" target="_blank"><div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="房价"><meta itemprop="image" content="https://pic2.zhimg.com/66162bae6d34b7b0c5a454cd93e90769_s.jpg"><meta itemprop="url" content="https://www.zhihu.com/people/fang-jie-9-6-38"><meta itemprop="zhihu:followerCount"><span class="UserLink AuthorInfo-avatarWrapper"><img class="Avatar Avatar--medium AuthorInfo-avatar" width="40" height="40" src="https://pic2.zhimg.com/66162bae6d34b7b0c5a454cd93e90769_xs.jpg" srcset="https://pic2.zhimg.com/66162bae6d34b7b0c5a454cd93e90769_l.jpg 2x" alt="房价"></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><!-- react-text: 58 -->房价<!-- /react-text --><!-- react-empty: 59 --></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><!-- react-empty: 62 --></div></div></div></div></a></div></div></div></div><div class="Menu-item" id="AutoComplet-37601-58607-people-1" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="UserItem" data-za-detail-view-path-index="1" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;User&quot;,&quot;member_hash_id&quot;:&quot;21a23a1730bd47ded60b160e700138a0&quot;}}}"><a class="SearchBar-peopleResult" data-za-not-track-link="true" href="/people/fang-jie-40-53" target="_blank"><div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="房价"><meta itemprop="image" content="https://pic4.zhimg.com/da8e974dc_s.jpg"><meta itemprop="url" content="https://www.zhihu.com/people/fang-jie-40-53"><meta itemprop="zhihu:followerCount"><span class="UserLink AuthorInfo-avatarWrapper"><img class="Avatar Avatar--medium AuthorInfo-avatar" width="40" height="40" src="https://pic4.zhimg.com/da8e974dc_xs.jpg" srcset="https://pic4.zhimg.com/da8e974dc_l.jpg 2x" alt="房价"></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><!-- react-text: 78 -->房价<!-- /react-text --><!-- react-empty: 79 --></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">经济学在读</div></div></div></div></div></a></div></div></div></div><div class="Menu-item" id="AutoComplet-37601-58607-people-2" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="UserItem" data-za-detail-view-path-index="2" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;User&quot;,&quot;member_hash_id&quot;:&quot;058a022782cecaef87c1f271c5445a75&quot;}}}"><a class="SearchBar-peopleResult" data-za-not-track-link="true" href="/people/nu-wang-da-ren-ni-hao" target="_blank"><div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="高是房价太高的高"><meta itemprop="image" content="https://pic2.zhimg.com/v2-2b47db6a78c66355ca13c88909004fcb_s.jpg"><meta itemprop="url" content="https://www.zhihu.com/people/nu-wang-da-ren-ni-hao"><meta itemprop="zhihu:followerCount"><span class="UserLink AuthorInfo-avatarWrapper"><img class="Avatar Avatar--medium AuthorInfo-avatar" width="40" height="40" src="https://pic2.zhimg.com/v2-2b47db6a78c66355ca13c88909004fcb_xs.jpg" srcset="https://pic2.zhimg.com/v2-2b47db6a78c66355ca13c88909004fcb_l.jpg 2x" alt="高是房价太高的高"></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><!-- react-text: 98 -->高是房价太高的高<!-- /react-text --><!-- react-empty: 99 --></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">举杯邀明月   对影成三人</div></div></div></div></div></a></div></div></div></div></div><div class="AutoComplete-group"><div class="SearchBar-label">话题</div><div class="Menu-item" id="AutoComplet-37601-58607-topic-0" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="TopicItem" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Topic&quot;,&quot;token&quot;:&quot;19554569&quot;}}}"><a class="SearchBar-topicResult" data-za-not-track-link="true" href="/topic/19554569" target="_blank"><!-- react-text: 110 -->房价<!-- /react-text --><span class="SearchBar-topicSuffix"><!-- react-text: 112 -->999<!-- /react-text --><!-- react-text: 113 --> 个精华回答<!-- /react-text --></span></a></div></div></div></div></div><div class="AutoComplete-group"><div class="Menu-item" id="AutoComplet-37601-58607-searchLink-0" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div><a class="SearchBar-searchLink" data-za-not-track-link="true" href="/search?type=content&amp;q='+keyword+'" target="_blank">查看全部搜索结果</a></div></div></div></div></div></div></div>';
-    var data='<div class="Popover-content Popover-content--bottom Popover-content--fixed Popover-content-enter Popover-content-enter-active" style="left: 212.4px; top: 43px;"><div class="Menu AutoComplete-menu SearchBar-menu" role="listbox">\
+   var data='<div class="Popover-content Popover-content--bottom Popover-content--fixed Popover-content-enter Popover-content-enter-active" style="left: 212.4px; top: 43px;"><div class="Menu AutoComplete-menu SearchBar-menu" role="listbox">\
         <div id="IdQuestion" class="AutoComplete-group"></div>\
         <div class="AutoComplete-group"><div role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div><a class="SearchBar-searchLink" data-za-not-track-link="true" href="/search?type=all&amp;q='+keyword+'" target="_blank">查看全部搜索结果</a></div></div></div></div></div>\
         </div></div>';
@@ -948,27 +915,6 @@ function checkSearch(e)
         console.log("can`t search");
         $(".Icon.Icon--search").css({"fill":"#afbdcf"});
     }
-    /*
-    if (keyword!="")
-    {
-        var type="all";
-        var order=1;
-        var start=0;
-        var end=5;
-        $.get('/ajax/search/'+keyword+'/'+type+'/'+order+'/'+start+'/'+end+'/',function(ret)
-        {
-            if("fail"!=ret)
-            {
-                appendSearchElement(ret,keyword);
-                checkSearchSelect();
-            }
-        });
-    }
-    else
-    {
-        $('#SearchPopover').popover('hide');
-    }
-    */
 }
 
 $(document).click(function(e) {
