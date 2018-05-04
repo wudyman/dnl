@@ -292,6 +292,34 @@ function checkFollow()
     });
 }
 
+function checkContentCollapse()
+{
+
+}
+function checkContentExpand(){
+    $(".RichContent").off("click");
+    $(".RichContent").each(function(){
+        var index_img_url=$(this).find(".RichContent-cover-inner").attr("data-index-img-url")
+        if("null"==index_img_url)
+        {
+            $(this).find(".RichContent-cover").addClass("is-hide");
+        }
+        else
+        {
+            $(this).find(".RichContent-cover-inner").append('<img src="'+index_img_url+'">');
+        }
+        $(this).click(function(){
+                var alink=$(this).siblings(".ContentItem-title").find("a").attr("href");
+                console.log($(this).siblings(".ContentItem-title").find("a"));
+                console.log(alink);
+                $(this).siblings(".ContentItem-title").find("a").click();
+                location.href=alink;
+        });
+    });
+    
+}
+
+/*
 function checkContentCollapse(){
     $(".ContentItem-less").off("click");
     $(".ContentItem-less").each(function(){
@@ -392,7 +420,7 @@ function checkContentExpand(){
     });
     
 }
-
+*/
 function checkAnswerLike(){
     $(".AnswerLike").off("click");
     $(".AnswerLike").each(function(){
