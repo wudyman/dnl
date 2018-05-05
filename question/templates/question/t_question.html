@@ -1,24 +1,330 @@
 ﻿<!DOCTYPE html>
-<html>
-<head>
-{%load static %}
-<meta http-equiv="X-UA-Compatible" content="IE=11">
-<meta charset="utf-8"> 
-<title>{{ context_question.title }} - 大大大</title>
-<link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
-<link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
-<link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
+<html lang="zh" data-hairline="true" data-theme="light" data-focus-method="pointer" style="">
+{% include 'question/head.html' %}
+<body class="Entry-body">
+{% include 'question/header.html' %}
+
+<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 3px;">
+</div>
+
+
+<!--------------------main---------------------->
+<main role="main" class="App-main">
+        
+<div class="QuestionPage" data-question-id="{{ context_question.id }}" data-question-answer-nums="{{ context_question.answer_nums }}">
+    <div>
+        <div class="QuestionStatus">
+        </div>
+        
+        <div class="QuestionHeader">
+        <div class="QuestionHeader-content">
+        <div class="QuestionHeader-main">
+        
+        <div class="QuestionHeader-tags">
+        <div class="QuestionHeader-topics">
+        
+        {% for topic in context_question.topics.all %}
+        <div class="Tag QuestionTopic">
+        <span class="Tag-content">
+        <a class="TopicLink TopicPopover" href="/topic/{{topic.id}}/" data-topic-id="{{topic.id}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{topic.name}}</a>
+        </span>
+        </div>
+        {% endfor %}
+               
+        </div>
+        </div>
+        
+        <h1 class="QuestionHeader-title">{{ context_question.title }}</h1>
+        <div>
+        <div class="QuestionHeader-detail">
+        <div class="QuestionRichText QuestionRichText--collapsed">
+        <div>
+        <span class="RichText">
+        </span>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+        <div class="QuestionHeader-side">
+        <div class="QuestionHeader-follow-status">
+        <div class="QuestionFollowStatus">
+        <div class="NumberBoard QuestionFollowStatus-counts">
+        <button class="Button NumberBoard-item Button--plain" type="button">
+        <div class="NumberBoard-name">关注者</div>
+        <div class="NumberBoard-value" data-update-value-type="question-followed">{{context_question.follower_nums}}</div>
+        </button>
+        <div class="NumberBoard-divider">
+        </div>
+        <div class="NumberBoard-item">
+        <div class="NumberBoard-name">被浏览</div>
+        <div class="NumberBoard-value">{{context_question.hot}}</div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+        <div class="QuestionHeader-footer">
+        <div class="QuestionHeader-footer-inner">
+        <div class="QuestionHeader-main QuestionHeader-footer-main">
+        
+        <div class="QuestionButtonGroup">
+        {% ifequal followed "true" %}
+        <button class="Button FollowButton Button--primary Button--default" data-follow-type="question" data-followed="true" data-question-id="{{ context_question.id }}" type="button">已关注</button>
+        {% else %}
+        <button class="Button FollowButton Button--primary Button--blue" data-follow-type="question" data-followed="false" data-question-id="{{ context_question.id }}" type="button">关注</button>
+        {% endifequal %}
+        <button class="Button Button--blue" type="button" onclick="showAnswerToolbar()">
+        <svg viewBox="0 0 12 12" class="Icon Button-icon Icon--modify" style="height:16px;width:14px;" width="14" height="16" aria-hidden="true" data-reactid="123"><title data-reactid="124"></title><g data-reactid="125"><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g>
+        </svg>写回答</button>
+        </div>
+        
+        <div class="QuestionHeaderActions">
+        <div class="QuestionHeader-Comment">
+        <button class="Button Button--plain Button--withIcon Button--withLabel" type="button">
+        <span style="display:inline-flex;align-items:center;">
+                                &#8203;
+        <svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="132"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd" data-reactid="133"></path></svg>
+        </span>47 条评论
+        </button>
+        </div>
+        
+        <div class="Popover ShareMenu">
+        <div class="" id="Popover-18753-20337-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-18753-20337-content">
+        <button class="Button Button--plain Button--withIcon Button--withLabel" type="button">
+        <span style="display:inline-flex;align-items:center;">
+        &#8203;
+        <svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="141"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd" data-reactid="142"></path></svg>
+        </span>分享</button>
+        </div>
+        </div>
+        
+        <button class="Button Button--plain Button--withIcon Button--withLabel" type="button" onclick="showInvite()">
+        <span style="display:inline-flex;align-items:center;">
+        &#8203;
+        <svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="148"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd" data-reactid="149"></path></svg>
+        </span>邀请回答</button>
+        
+        
+        </div>
+        <div class="QuestionHeader-actions">
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+        <div class="Sticky" style="">
+        </div>
+
+    </div>
+
+    <div class="Question-main">
+        <div class="Question-mainColumn">
+        <div class="Card QuestionAnswers-answerAdd AnswerToolbar is-hide" data-question-answer-url="/ajax/question_answer/{{ context_question.id }}/">
+        <div class="AnswerAdd">
+        <div class="AnswerAdd-header">
+        <div class="AuthorInfo AnswerAdd-info">
+        <span class="UserLink AuthorInfo-avatarWrapper">
+        <img class="Avatar AuthorInfo-avatar" width="38" height="38" src="{{user.userprofile.avatar}}" srcset="{{user.userprofile.avatar}}" alt="{{user.username}}">
+        </span>
+        <div class="AuthorInfo-content">
+        <div class="AuthorInfo-head">
+        <span class="UserLink AuthorInfo-name">{{user.first_name}}</span>
+        </div>
+        <div class="AuthorInfo-detail">
+        <div class="AuthorInfo-badge">
+        <button class="Button ModifyButton AnswerAdd-topicBiosButton Button--link" type="button">
+        <svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>编辑话题经验</button>
+        </div>
+        </div>       
+        </div>
+        
+        <div>
+        <button  class="Button Button--plain" type="button" onclick="hideAnswerToolbar()">
+        <svg class="Zi Zi--Close " fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>
+        </div>
+        
+        </div>
+        
+        
+        </div>
+        
+        <div>
+        <!--<form action="/question/{{ context_question.id }}/" method="post">-->
+        <!--{% csrf_token %}-->
+            <textarea id="summernote_answer" name="content" 1rows="5" 1cols="70" 1maxlength="160" 1placeholder="写回答..."></textarea>
+            <div>
+            <div class="Sticky AnswerForm-footer is-bottom">
+            <div class="AnswerForm-footerContent AnswerForm-container">
+            <div class="AnswerForm-status"></div>
+            <div class="AnswerForm-footerRight">
+            <button class="AnswerForm-submit  btn btn-success" type="button" onclick="submitAnswer()">提交回答</button>
+            </div>
+            </div>
+            </div>
+            </div>
+        	<!--<button type="button"  class="btn btn-success btn-lg" onclick="submitAnswer()">
+				提交回答
+			</button>-->
+        <!--</form>-->
+        </div>
+        </div>
+        </div>
+        
+        <div id="AnswerItems">
+        {% if push_answer %}
+        <div class="Card">
+        <a class="QuestionMainAction" data-za-detail-view-element_name="ViewAll" href="/question/{{ context_question.id }}">查看全部 {{context_question.answer_nums}} 个回答</a>
+        </div>
+
+        <div class="Card AnswerCard" data-author-id="{{push_answer.author.id}}">
+        <div class="QuestionAnswer-content">
+        <div class="ContentItem AnswerItem">
+        <div class="ContentItem-meta">
+        <div class="AnswerItem-meta AnswerItem-meta--related">
+        <div class="AuthorInfo">
+        <span class="UserLink AuthorInfo-avatarWrapper">
+        <a class="UserLink-link PeoplePopover" href="/er/{{push_answer.author.id}}" data-author-id="{{push_answer.author.id}}" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">
+        <img class="Avatar AuthorInfo-avatar" width="40" height="40" src="{{push_answer.author.userprofile.avatar}}" srcset="{{push_answer.author.userprofile.avatar}}" alt="{{push_answer.author.username}}">
+        </a>
+        </span>
+        <div class="AuthorInfo-content">
+        <div class="AuthorInfo-head">
+        <span class="UserLink AuthorInfo-name">
+        <a class="UserLink-link" href="/er/{{push_answer.author.id}}">{{push_answer.author.first_name}}</a>
+        </span>
+        </div>
+        <div class="AuthorInfo-detail">
+        <div class="AuthorInfo-badge">
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="AnswerItem-extraInfo">
+        <span class="Voters">
+        <button class="Button Button--plain" type="button">
+        {{push_answer.like_nums}} 人赞同了该回答</button>
+        </span>
+        </div>
+        </div>
+        </div>
+        
+        <div class="RichContent RichContent--unescapable">
+            <div class="RichContent-inner">
+                <span class="RichText CopyrightRichText-richText" data-content="{{push_answer.content}}">{{push_answer.content|safe}}</span>
+            </div>
+            <button class="Button ContentItem-more NC-RichContent-type2 ContentItem-rightButton Button--plain is-hide" type="button">展开阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
+            <div class="ContentItem-actions">
+                <span>
+                    <button class="AnswerLike Button LikeButton ContentItem-action" type="button" data-answer-id="{{push_answer.id}}">
+                        <svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>{{push_answer.like_nums}}
+                    </button>
+                </span>
+                <button class="Button ContentItem-less NC-RichContent-type2 ContentItem-rightButton Button--plain" type="button">
+                    <span class="RichContent-collapsedText">收起</span>
+                    <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>
+                </button>
+            </div>
+        </div>
+                
+        </div>
+        </div>
+        </div>
+
+        
+        <div class="Card MoreAnswers">
+        <div class="List">
+        <div class="List-header">
+        <h4 class="List-headerText">更多回答</h4>
+        <div class="List-headerOptions">
+        </div>
+        </div>
+        
+        </div>
+        </div>
+                
+        <div class="Card">
+        <a class="QuestionMainAction" href="/question/{{ context_question.id }}">查看全部 {{context_question.answer_nums}} 个回答</a>
+        </div>
+        {% endif %}
+        </div>
+                
+        </div>
     
-<script src="{%static 'common/jquery.js' %}"></script>
-<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
-<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
-<script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
-<script src="{% static 'common/main.js' %}"></script>
-    
+
+        
+        <div class="Question-sideColumn Question-sideColumn--sticky">
+        {% if push_answer %}
+        <div class="Card AnswerAuthor">
+        </div>
+        {% endif %}
+        
+        <div class="Card" data-za-module="RelatedQuestions" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:null}}"><div class="Card-header SimilarQuestions-title"><div class="Card-headerText">相关问题</div></div>
+        <div class="Card-section SimilarQuestions-list"><div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;22360160&quot;,&quot;author_member_hash_id&quot;:&quot;aa12047f1223c7092e3a2ab10bbdb1f6&quot;}}}"><meta itemprop="name" content="如何评价电影《等风来》？"><meta itemprop="url" content="https://www.zhihu.com/question/22360160"><meta itemprop="answerCount" content="194"><meta itemprop="zhihu:followerCount" content="992">
+        <a class="Button Button--plain" target="_blank" type="button" href="/question/22360160">如何评价电影《等风来》？</a> 194 个回答</div><div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;20688873&quot;,&quot;author_member_hash_id&quot;:&quot;3abd7c80c7329104dd38639c36c9d828&quot;}}}"><meta itemprop="name" content="有哪些关于王家卫的趣事？"><meta itemprop="url" content="https://www.zhihu.com/question/20688873"><meta itemprop="answerCount" content="111"><meta itemprop="zhihu:followerCount" content="10860">
+        <a class="Button Button--plain" target="_blank" type="button" href="/question/20688873">有哪些关于王家卫的趣事？</a> 111 个回答</div><div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;21536276&quot;,&quot;author_member_hash_id&quot;:&quot;028c1a112074b9faefbcfa3d8cbbf6b3&quot;}}}"><meta itemprop="name" content="怎样把电影票在影院里卖得更贵？"><meta itemprop="url" content="https://www.zhihu.com/question/21536276"><meta itemprop="answerCount" content="32"><meta itemprop="zhihu:followerCount" content="377">
+        <a class="Button Button--plain" target="_blank" type="button" href="/question/21536276">怎样把电影票在影院里卖得更贵？</a> 32 个回答</div>
+        <div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;21494802&quot;,&quot;author_member_hash_id&quot;:&quot;89e621346acf976a36e15486faf76b73&quot;}}}"><meta itemprop="name" content="如何评价《喜剧之王》这部电影？"><meta itemprop="url" content="https://www.zhihu.com/question/21494802"><meta itemprop="answerCount" content="327"><meta itemprop="zhihu:followerCount" content="5952"><a class="Button Button--plain" target="_blank" type="button" href="/question/21494802">如何评价《喜剧之王》这部电影？</a> 327 个回答</div>
+        <div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;21437495&quot;,&quot;author_member_hash_id&quot;:&quot;f063857548e1ea1de94d74ead8746f26&quot;}}}"><meta itemprop="name" content="《被嫌弃的松子的一生》中的松子要怎么做才能改变命运？"><meta itemprop="url" content="https://www.zhihu.com/question/21437495"><meta itemprop="answerCount" content="810"><meta itemprop="zhihu:followerCount" content="13584"><a class="Button Button--plain" target="_blank" type="button" href="/question/21437495">《被嫌弃的松子的一生》中的松子要怎么做才能改变命运？</a> 810 个回答</div></div>
+        </div>
+
+        
+            <footer class="Footer">
+            </span><a class="Footer-item" target="_blank" href="http://www.12377.cn">网上有害信息举报专区</a><br><span class="Footer-item">违法和不良信息举报：010-82716601</span><br><!--<a class="Footer-item" target="_blank" href="/jubao">儿童色情信息举报专区</a><br>--><a class="Footer-item" target="_blank" href="/">联系我们</a><span> © 2018 大大大</span>
+            </footer>
+
+        
+        
+        </div>
+    </div>
+</div>    
+</main>
+<!--------------------main end-------------------->
+
+
+<!-- ask（Modal） -->
+{% include 'question/ask_modal.html' %}
+<!-- ask（Modal） -->
+
+<!-- letter（Modal） -->
+<!-- append by js -->
+<!-- letter（Modal） -->
+
+<!--- div other for invite--->
+<!-- invite（Modal） -->
+<div class="modal fade" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="inviteModalLabel" aria-hidden="true">
+<div class="modal-dialog inviteModal">
+<div class="Modal-inner">
+<div class="Modal-content Modal-content--spread">
+<div class="QuestionInvitation">
+<div class="Topbar">
+<div class="Topbar-title">
+<h2 class="QuestionInvitation-title">你可以邀请下面用户，快速获得回答</h2>
+</div>
+<div class="Topbar-options">
+<div class="QuestionInvitation-input Input-wrapper">
+<input data-tooltip="也可以搜索职业、公司等资料" data-tooltip-position="bottom" class="Input" placeholder="搜索你想邀请的人">
+<div class="Input-after">
+<svg viewBox="0 0 16 16" class="Icon Icon--search" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg>
+</div>
+</div>
+</div>
+</div>
+<div class="QuestionInvitation-content">
+<div class="List">
+</div>
+</div>
+</div>
+</div>
+<button data-dismiss="modal" aria-hidden="true" class="Button Modal-closeButton Button--plain 1close" aria-label="关闭" type="button"><svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>
+</div>
+</div>
+</div>
+<!--- div other for invite--->
 <script>
 function appendMoreAnswerListElement(ret)
 {
@@ -420,484 +726,5 @@ function init()
     appendLetterModal();
 }
 </script>
-</head>
-<body class="Entry-body">
-
-<div>
-<header role="banner" class="Sticky AppHeader">
-<div class="AppHeader-inner">
-<div class="container">
-<!-- react-empty: 1220 -->
-<div class="row">
-<div class="col-md-1">
-<a href="/" aria-label="大大大">
-<svg viewBox="0 0 200 91" class="Icon Icon--logo" width="64" height="30" aria-hidden="true" style="fill: rgb(15, 136, 235); height: 30px; width: 64px;">
-<title></title><g><path d="M53.29 80.035l7.32.002 2.41 8.24 13.128-8.24h15.477v-67.98H53.29v67.978zm7.79-60.598h22.756v53.22h-8.73l-8.718 5.473-1.587-5.46-3.72-.012v-53.22zM46.818 43.162h-16.35c.545-8.467.687-16.12.687-22.955h15.987s.615-7.05-2.68-6.97H16.807c1.09-4.1 2.46-8.332 4.1-12.708 0 0-7.523 0-10.085 6.74-1.06 2.78-4.128 13.48-9.592 24.41 1.84-.2 7.927-.37 11.512-6.94.66-1.84.785-2.08 1.605-4.54h9.02c0 3.28-.374 20.9-.526 22.95H6.51c-3.67 0-4.863 7.38-4.863 7.38H22.14C20.765 66.11 13.385 79.24 0 89.62c6.403 1.828 12.784-.29 15.937-3.094 0 0 7.182-6.53 11.12-21.64L43.92 85.18s2.473-8.402-.388-12.496c-2.37-2.788-8.768-10.33-11.496-13.064l-4.57 3.627c1.363-4.368 2.183-8.61 2.46-12.71H49.19s-.027-7.38-2.372-7.38zm128.752-.502c6.51-8.013 14.054-18.302 14.054-18.302s-5.827-4.625-8.556-1.27c-1.874 2.548-11.51 15.063-11.51 15.063l6.012 4.51zm-46.903-18.462c-2.814-2.577-8.096.667-8.096.667s12.35 17.2 12.85 17.953l6.08-4.29s-8.02-11.752-10.83-14.33zM199.99 46.5c-6.18 0-40.908.292-40.953.292v-31.56c1.503 0 3.882-.124 7.14-.376 12.773-.753 21.914-1.25 27.427-1.504 0 0 3.817-8.496-.185-10.45-.96-.37-7.24 1.43-7.24 1.43s-51.63 5.153-72.61 5.64c.5 2.756 2.38 5.336 4.93 6.11 4.16 1.087 7.09.53 15.36.277 7.76-.5 13.65-.76 17.66-.76v31.19h-41.71s.88 6.97 7.97 7.14h33.73v22.16c0 4.364-3.498 6.87-7.65 6.6-4.4.034-8.15-.36-13.027-.566.623 1.24 1.977 4.496 6.035 6.824 3.087 1.502 5.054 2.053 8.13 2.053 9.237 0 14.27-5.4 14.027-14.16V53.93h38.235c3.026 0 2.72-7.432 2.72-7.432z" fill-rule="evenodd"></path></g>
-</svg>
-</a>
-</div>
-<nav role="navigation" class="col-md-3">
-<a class="AppHeader-navItem" href="/">首页</a>
-<a class="AppHeader-navItem" href="/trade">买卖</a>
-<a class="AppHeader-navItem" href="/topic">话题</a>
-</nav>
-
-<!--
-<div class="SearchBar col-md-6" role="search">
-<input type="text" maxlength="100" value="" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-88417-181--1" id="Popover-88417-61448-toggle" aria-haspopup="true" aria-owns="Popover-88417-61448-content" class="Input" placeholder="搜索你感兴趣的内容…">
-<button class="Button SearchBar-searchIcon Button--primary" aria-label="搜索" type="button">
-<svg viewBox="0 0 16 16" class="Icon Icon--search" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g>
-</svg>
-</button>
-<button class="Button QuestionAskButton SearchBar-askButton btn-success" type="button" data-toggle="modal" data-target="#askModal">提问</button>
-</div>
--->
-
-<div class="SearchBar col-md-6" role="search">
-<div class="SearchBar-toolWrapper">
-<form class="SearchBar-tool">
-<div>
-<div class="1Popover">
-<div class="SearchBar-input Input-wrapper Input-wrapper--grey">
-<input type="text" maxlength="120" value="" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-41236-89421--1" id="Popover-41236-42847-toggle" aria-haspopup="true" aria-owns="Popover-41236-42847-content" class="Input" placeholder="搜索你感兴趣的内容…">
-<div class="Input-after">
-<button class="Button SearchBar-searchIcon Button--primary" aria-label="搜索" type="button" data-reactid="25"><svg viewBox="0 0 16 16" class="Icon Icon--search" style="height:16px;width:16px;" width="16" height="16" aria-hidden="true" data-reactid="26"><title data-reactid="27"></title><g data-reactid="28"><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg>
-</button>
-</div>
-</div>
-</div>
-</div>
-</form>
-</div>
-<button class="1Button QuestionAskButton SearchBar-askButton 1Button--primary 1Button--green btn btn-success" type="button" data-toggle="modal" data-target="#askModal">提问</button>
-</div>
-
-<div class="AppHeader-userInfo col-md-2">
-<div class="1Popover PushNotifications AppHeader-notifications">
-<button class="1Button PushNotifications-icon 1Button--plain" type="button" id="NotificationPopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
-<svg viewBox="0 0 20 22" class="Icon Icon--news" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M2.502 14.08C3.1 10.64 2 3 8.202 1.62 8.307.697 9.08 0 10 0s1.694.697 1.797 1.62C18 3 16.903 10.64 17.497 14.076c.106 1.102.736 1.855 1.7 2.108.527.142.868.66.793 1.206-.075.546-.542.95-1.09.943H1.1C.55 18.34.084 17.936.01 17.39c-.075-.547.266-1.064.794-1.206.963-.253 1.698-1.137 1.698-2.104zM10 22c-1.417.003-2.602-1.086-2.73-2.51-.004-.062.02-.124.063-.17.043-.045.104-.07.166-.07h5c.063 0 .124.025.167.07.044.046.067.108.063.17-.128 1.424-1.313 2.513-2.73 2.51z"></path></g>
-</svg>
-</button>
-</div>
-
-<div class="1Popover Messages AppHeader-messages">
-<button class="1Button Messages-icon 1Button--plain" id="MessagePopover" type="button" id="Popover-88478-87650-toggle" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
-<svg viewBox="0 0 20 20" class="Icon Icon--message" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path><path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path></g>
-</svg>
-</button>
-</div>
-
-<div class="AppHeader-profile">
-<div class="1Popover AppHeader-menu">
-<img class="Avatar AppHeader-profileAvatar" id="MenuPopover" data-er-id="{{user.id}}" data-er-avatar="{{user.userprofile.avatar}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="{{user.userprofile.avatar}}" srcset="{{user.userprofile.avatar}} 2x">
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-</div>
-
-<!--<div class="PageHeader"><div data-reactroot="" class="QuestionHeader-content"><div class="QuestionHeader-main"><h1 class="QuestionHeader-title">你见过的最美丽的短发女性角色是谁？</h1></div><div class="QuestionHeader-side" data-za-module="ToolBar" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;59214151&quot;}}}"><div class="QuestionButtonGroup"><button class="Button 1FollowButton Button--primary Button--blue" type="button">关注问题</button><button class="Button Button--blue" type="button"><svg viewBox="0 0 12 12" class="Icon Button-icon Icon--modify" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>写回答</button></div></div></div></div>-->
-
-</header>
-</div>
-
-<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 3px;">
-</div>
-
-
-<!--------------------main---------------------->
-<main role="main" class="App-main">
-        
-<div class="QuestionPage" data-question-id="{{ context_question.id }}" data-question-answer-nums="{{ context_question.answer_nums }}">
-    <div>
-        <div class="QuestionStatus">
-        </div>
-        
-        <div class="QuestionHeader">
-        <div class="QuestionHeader-content">
-        <div class="QuestionHeader-main">
-        
-        <div class="QuestionHeader-tags">
-        <div class="QuestionHeader-topics">
-        
-        {% for topic in context_question.topics.all %}
-        <div class="Tag QuestionTopic">
-        <span class="Tag-content">
-        <a class="TopicLink TopicPopover" href="/topic/{{topic.id}}/" data-topic-id="{{topic.id}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{topic.name}}</a>
-        </span>
-        </div>
-        {% endfor %}
-               
-        </div>
-        </div>
-        
-        <h1 class="QuestionHeader-title">{{ context_question.title }}</h1>
-        <div>
-        <div class="QuestionHeader-detail">
-        <div class="QuestionRichText QuestionRichText--collapsed">
-        <div>
-        <span class="RichText">
-        </span>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        
-        <div class="QuestionHeader-side">
-        <div class="QuestionHeader-follow-status">
-        <div class="QuestionFollowStatus">
-        <div class="NumberBoard QuestionFollowStatus-counts">
-        <button class="Button NumberBoard-item Button--plain" type="button">
-        <div class="NumberBoard-name">关注者</div>
-        <div class="NumberBoard-value" data-update-value-type="question-followed">{{context_question.follower_nums}}</div>
-        </button>
-        <div class="NumberBoard-divider">
-        </div>
-        <div class="NumberBoard-item">
-        <div class="NumberBoard-name">被浏览</div>
-        <div class="NumberBoard-value">{{context_question.hot}}</div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        
-        <div class="QuestionHeader-footer">
-        <div class="QuestionHeader-footer-inner">
-        <div class="QuestionHeader-main QuestionHeader-footer-main">
-        
-        <div class="QuestionButtonGroup">
-        {% ifequal followed "true" %}
-        <button class="Button FollowButton Button--primary Button--default" data-follow-type="question" data-followed="true" data-question-id="{{ context_question.id }}" type="button">已关注</button>
-        {% else %}
-        <button class="Button FollowButton Button--primary Button--blue" data-follow-type="question" data-followed="false" data-question-id="{{ context_question.id }}" type="button">关注</button>
-        {% endifequal %}
-        <button class="Button Button--blue" type="button" onclick="showAnswerToolbar()">
-        <svg viewBox="0 0 12 12" class="Icon Button-icon Icon--modify" style="height:16px;width:14px;" width="14" height="16" aria-hidden="true" data-reactid="123"><title data-reactid="124"></title><g data-reactid="125"><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g>
-        </svg>写回答</button>
-        </div>
-        
-        <div class="QuestionHeaderActions">
-        <div class="QuestionHeader-Comment">
-        <button class="Button Button--plain Button--withIcon Button--withLabel" type="button">
-        <span style="display:inline-flex;align-items:center;">
-                                &#8203;
-        <svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="132"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd" data-reactid="133"></path></svg>
-        </span>47 条评论
-        </button>
-        </div>
-        
-        <div class="Popover ShareMenu">
-        <div class="" id="Popover-18753-20337-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-18753-20337-content">
-        <button class="Button Button--plain Button--withIcon Button--withLabel" type="button">
-        <span style="display:inline-flex;align-items:center;">
-        &#8203;
-        <svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="141"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd" data-reactid="142"></path></svg>
-        </span>分享</button>
-        </div>
-        </div>
-        
-        <button class="Button Button--plain Button--withIcon Button--withLabel" type="button" onclick="showInvite()">
-        <span style="display:inline-flex;align-items:center;">
-        &#8203;
-        <svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="148"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd" data-reactid="149"></path></svg>
-        </span>邀请回答</button>
-        
-        <!--
-        <button class="Button Button--plain Button--withIcon Button--withLabel" type="button">
-        <span style="display:inline-flex;align-items:center;">&#8203;<svg class="Zi Zi--Report Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="154"><path d="M19.947 3.129c-.633.136-3.927.639-5.697.385-3.133-.45-4.776-2.54-9.949-.888-.997.413-1.277 1.038-1.277 2.019L3 20.808c0 .3.101.54.304.718a.97.97 0 0 0 .73.304c.275 0 .519-.102.73-.304.202-.179.304-.418.304-.718v-6.58c4.533-1.235 8.047.668 8.562.864 2.343.893 5.542.008 6.774-.657.397-.178.596-.474.596-.887V3.964c0-.599-.42-.972-1.053-.835z" fill-rule="evenodd" data-reactid="155"></path></svg>
-        </span>举报</button>
-        -->
-        
-        <!--
-        <div class="Popover">
-        <button class="Button Button--plain Button--withIcon Button--iconOnly" aria-label="更多" type="button" id="Popover-18753-96203-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-18753-96203-content">
-        <span style="display:inline-flex;align-items:center;">&#8203;<svg class="Zi Zi--Dots Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="161"><path d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill-rule="evenodd" data-reactid="162"></path></svg>
-        </span>
-        </button>
-        </div>
-        -->
-        
-        </div>
-        <div class="QuestionHeader-actions">
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-
-        <div class="Sticky" style="">
-        </div>
-
-    </div>
-
-    <div class="Question-main container">
-        <div class="row">
-   <div class="Question-mainColumn col-md-8">
-
-        <div class="Card QuestionAnswers-answerAdd AnswerToolbar is-hide" data-question-answer-url="/ajax/question_answer/{{ context_question.id }}/">
-        <div class="AnswerAdd">
-        <div class="AnswerAdd-header">
-        <div class="AuthorInfo AnswerAdd-info">
-        <span class="UserLink AuthorInfo-avatarWrapper">
-        <img class="Avatar AuthorInfo-avatar" width="38" height="38" src="{{user.userprofile.avatar}}" srcset="{{user.userprofile.avatar}}" alt="{{user.username}}">
-        </span>
-        <div class="AuthorInfo-content">
-        <div class="AuthorInfo-head">
-        <span class="UserLink AuthorInfo-name">{{user.first_name}}</span>
-        </div>
-        <div class="AuthorInfo-detail">
-        <div class="AuthorInfo-badge">
-        <button class="Button ModifyButton AnswerAdd-topicBiosButton Button--link" type="button">
-        <svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>编辑话题经验</button>
-        </div>
-        </div>       
-        </div>
-        
-        <div>
-        <button  class="Button Button--plain" type="button" onclick="hideAnswerToolbar()">
-        <svg class="Zi Zi--Close " fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>
-        </div>
-        
-        </div>
-        
-        <!--<button class="Button AnswerAdd-toggleAnonymous Button--plain" type="button">使用匿名身份回答</button>-->
-        
-        </div>
-        
-        <div>
-        <!--<form action="/question/{{ context_question.id }}/" method="post">-->
-        <!--{% csrf_token %}-->
-            <textarea id="summernote_answer" name="content" 1rows="5" 1cols="70" 1maxlength="160" 1placeholder="写回答..."></textarea>
-            <div>
-            <div class="Sticky AnswerForm-footer is-bottom">
-            <div class="AnswerForm-footerContent AnswerForm-container">
-            <div class="AnswerForm-status"></div>
-            <div class="AnswerForm-footerRight">
-            <!--<div class="Popover"><button class="Button Button--plain" type="button" id="Popover-29254-85237-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-29254-85237-content"><svg viewBox="0 0 20 20" class="Icon Icon--setting Icon--left" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M18.868 15.185c-.164.096-.315.137-.452.137-.123 0-1.397-.26-1.617-.233-1.355.013-1.782 1.275-1.836 1.74-.055.454 0 .893.19 1.304.138.29.125.577-.067.85-.863.893-2.165 1.016-2.357 1.016-.123 0-.247-.055-.356-.15-.11-.097-.685-1.14-1.07-1.47-1.303-.954-2.246-.328-2.63 0-.397.33-.67.7-.835 1.126-.07.18-.18.302-.33.37-1.354.426-2.918-.92-3.014-1.056-.082-.11-.123-.22-.123-.356-.014-.138.383-1.276.342-1.688-.342-1.9-1.836-1.687-2.096-1.673-.303.014-.604.068-.92.178-.205.056-.396.03-.588-.054-.888-.462-1.137-2.332-1.11-2.51.055-.315.192-.52.438-.604.425-.164.81-.452 1.15-.85.932-1.262.344-2.25 0-2.634-.34-.356-.725-.645-1.15-.81-.137-.04-.233-.15-.328-.315C-.27 6.07.724 4.95.978 4.733c.255-.22.6-.055.723 0 .426.164.878.22 1.344.15C4.7 4.636 4.784 3.14 4.81 2.908c.015-.247-.11-1.29-.136-1.4-.027-.123-.014-.22.027-.315C5.318.178 7.073 0 7.223 0c.178 0 .33.055.44.178.108.124.63 1.11 1 1.4.398.338 1.582.83 2.588.013.398-.273.96-1.288 1.083-1.412.123-.123.26-.178.384-.178 1.56 0 2.33 1.03 2.438 1.22.083.124.096.248.07.37-.03.152-.33 1.153-.262 1.606.366 1.537 1.384 1.742 1.89 1.783.494.027 1.645-.357 1.81-.344.164.014.315.083.424.206.535.31.85 1.715.905 2.14.027.233-.014.44-.11.562-.11.138-1.165.714-1.48 1.112-.855.982-.342 2.25-.068 2.606.26.37 1.22.905 1.288.96.15.137.26.302.315.494.146 1.413-.89 2.387-1.07 2.47zm-8.905-.535c.644 0 1.246-.123 1.822-.356.575-.248 1.082-.59 1.493-1.016.425-.425.754-.92 1-1.495.247-.562.357-1.18.357-1.81 0-.66-.11-1.262-.356-1.825-.248-.562-.577-1.056-1.002-1.48-.41-.427-.918-.756-1.493-1.003-.576-.233-1.178-.357-1.822-.357-.644 0-1.247.124-1.81.357-.56.247-1.067.576-1.478 1.002-.425.425-.768.92-1 1.48-.247.564-.37 1.167-.37 1.826 0 .644.123 1.248.37 1.81.232.563.575 1.07 1 1.495.424.426.917.768 1.48 1.016.56.233 1.164.356 1.808.356z"></path></g></svg>设置</button></div>-->
-            <button class="AnswerForm-submit  btn btn-success" type="button" onclick="submitAnswer()">提交回答</button>
-            </div>
-            </div>
-            </div>
-            </div>
-        	<!--<button type="button"  class="btn btn-success btn-lg" onclick="submitAnswer()">
-				提交回答
-			</button>-->
-        <!--</form>-->
-        </div>
-        </div>
-        </div>
-        
-        <div id="AnswerItems">
-        {% if push_answer %}
-        <div class="Card">
-        <a class="QuestionMainAction" data-za-detail-view-element_name="ViewAll" href="/question/{{ context_question.id }}">查看全部 {{context_question.answer_nums}} 个回答</a>
-        </div>
-
-        <div class="Card AnswerCard" data-author-id="{{push_answer.author.id}}">
-        <div class="QuestionAnswer-content">
-        <div class="ContentItem AnswerItem">
-        <div class="ContentItem-meta">
-        <div class="AnswerItem-meta AnswerItem-meta--related">
-        <div class="AuthorInfo">
-        <span class="UserLink AuthorInfo-avatarWrapper">
-        <a class="UserLink-link PeoplePopover" href="/er/{{push_answer.author.id}}" data-author-id="{{push_answer.author.id}}" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">
-        <img class="Avatar AuthorInfo-avatar" width="40" height="40" src="{{push_answer.author.userprofile.avatar}}" srcset="{{push_answer.author.userprofile.avatar}}" alt="{{push_answer.author.username}}">
-        </a>
-        </span>
-        <div class="AuthorInfo-content">
-        <div class="AuthorInfo-head">
-        <span class="UserLink AuthorInfo-name">
-        <a class="UserLink-link" href="/er/{{push_answer.author.id}}">{{push_answer.author.first_name}}</a>
-        </span>
-        </div>
-        <div class="AuthorInfo-detail">
-        <div class="AuthorInfo-badge">
-        </div>
-        </div>
-        </div>
-        </div>
-        <div class="AnswerItem-extraInfo">
-        <span class="Voters">
-        <button class="Button Button--plain" type="button">
-        {{push_answer.like_nums}} 人赞同了该回答</button>
-        </span>
-        </div>
-        </div>
-        </div>
-        
-        <div class="RichContent RichContent--unescapable">
-            <div class="RichContent-inner">
-                <span class="RichText CopyrightRichText-richText" data-content="{{push_answer.content}}">{{push_answer.content|safe}}</span>
-            </div>
-            <button class="Button ContentItem-more NC-RichContent-type2 ContentItem-rightButton Button--plain is-hide" type="button">展开阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
-            <div class="ContentItem-actions">
-                <span>
-                    <button class="AnswerLike Button LikeButton ContentItem-action" type="button" data-answer-id="{{push_answer.id}}">
-                        <svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>{{push_answer.like_nums}}
-                    </button>
-                </span>
-                <button class="Button ContentItem-less NC-RichContent-type2 ContentItem-rightButton Button--plain" type="button">
-                    <span class="RichContent-collapsedText">收起</span>
-                    <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>
-                </button>
-            </div>
-        </div>
-                
-        </div>
-        </div>
-        </div>
-
-        
-        <div class="Card MoreAnswers">
-        <div class="List">
-        <div class="List-header">
-        <h4 class="List-headerText">更多回答</h4>
-        <div class="List-headerOptions">
-        </div>
-        </div>
-        
-        </div>
-        </div>
-                
-        <div class="Card">
-        <a class="QuestionMainAction" href="/question/{{ context_question.id }}">查看全部 {{context_question.answer_nums}} 个回答</a>
-        </div>
-        {% endif %}
-        </div>
-                
-        </div>
-                
-
-        
-        <div class="Question-sideColumn Question-sideColumn--sticky col-md-3">
-        <!--
-        <div>
-        <div class="Sticky">
-        -->
-        {% if push_answer %}
-        <div class="Card AnswerAuthor">
-        </div>
-        {% endif %}
-        
-        <div class="Card" data-za-module="RelatedQuestions" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:null}}"><div class="Card-header SimilarQuestions-title"><div class="Card-headerText">相关问题</div></div>
-        <div class="Card-section SimilarQuestions-list"><div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;22360160&quot;,&quot;author_member_hash_id&quot;:&quot;aa12047f1223c7092e3a2ab10bbdb1f6&quot;}}}"><meta itemprop="name" content="如何评价电影《等风来》？"><meta itemprop="url" content="https://www.zhihu.com/question/22360160"><meta itemprop="answerCount" content="194"><meta itemprop="zhihu:followerCount" content="992">
-        <a class="Button Button--plain" target="_blank" type="button" href="/question/22360160">如何评价电影《等风来》？</a> 194 个回答</div><div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;20688873&quot;,&quot;author_member_hash_id&quot;:&quot;3abd7c80c7329104dd38639c36c9d828&quot;}}}"><meta itemprop="name" content="有哪些关于王家卫的趣事？"><meta itemprop="url" content="https://www.zhihu.com/question/20688873"><meta itemprop="answerCount" content="111"><meta itemprop="zhihu:followerCount" content="10860">
-        <a class="Button Button--plain" target="_blank" type="button" href="/question/20688873">有哪些关于王家卫的趣事？</a> 111 个回答</div><div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;21536276&quot;,&quot;author_member_hash_id&quot;:&quot;028c1a112074b9faefbcfa3d8cbbf6b3&quot;}}}"><meta itemprop="name" content="怎样把电影票在影院里卖得更贵？"><meta itemprop="url" content="https://www.zhihu.com/question/21536276"><meta itemprop="answerCount" content="32"><meta itemprop="zhihu:followerCount" content="377">
-        <a class="Button Button--plain" target="_blank" type="button" href="/question/21536276">怎样把电影票在影院里卖得更贵？</a> 32 个回答</div>
-        <div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;21494802&quot;,&quot;author_member_hash_id&quot;:&quot;89e621346acf976a36e15486faf76b73&quot;}}}"><meta itemprop="name" content="如何评价《喜剧之王》这部电影？"><meta itemprop="url" content="https://www.zhihu.com/question/21494802"><meta itemprop="answerCount" content="327"><meta itemprop="zhihu:followerCount" content="5952"><a class="Button Button--plain" target="_blank" type="button" href="/question/21494802">如何评价《喜剧之王》这部电影？</a> 327 个回答</div>
-        <div class="SimilarQuestions-item" itemprop="zhihu:similarQuestion" itemtype="http://schema.org/Question" itemscope="" data-za-module="QuestionItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;21437495&quot;,&quot;author_member_hash_id&quot;:&quot;f063857548e1ea1de94d74ead8746f26&quot;}}}"><meta itemprop="name" content="《被嫌弃的松子的一生》中的松子要怎么做才能改变命运？"><meta itemprop="url" content="https://www.zhihu.com/question/21437495"><meta itemprop="answerCount" content="810"><meta itemprop="zhihu:followerCount" content="13584"><a class="Button Button--plain" target="_blank" type="button" href="/question/21437495">《被嫌弃的松子的一生》中的松子要怎么做才能改变命运？</a> 810 个回答</div></div>
-        </div>
-        <!--
-        <div class="Card" data-za-module="ContentList" data-za-detail-view-path-module_name="私家课 · Live 推荐" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:null},&quot;attached_info_bytes&quot;:&quot;MiAyZjM0OGU3YjU5MmI0NDVjOGM3ZDY1YjA2ODQ0OWNlMQ==&quot;}"><div class="Card-header RelatedLives-title"><div class="Card-headerText">私家课 · Live 推荐</div></div><div class="Card-section RelatedLives-list"><a class="Button RelatedLives-item Button--plain" target="_blank" href="/remix/albums/908274938669043712" type="button" data-za-module="RemixAlbumItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;RemixAlbum&quot;,&quot;id&quot;:&quot;908274938669043712&quot;}}}"><img class="RelatedLives-image" src="https://pic1.zhimg.com/90/v2-c65d71fcedb7190de0102e7993da2fd4_250x0.jpg" alt="live"><div class="RelatedLives-content">
-        <div class="RelatedLives-subject RelatedLives-subject-two">25 节课学透比特币与区块链</div><div class="RelatedLives-meta"><div class="RelatedLives-remixMeta"><div>共 26 节课</div>
-        <button class="Button RelatedLives-remixListen Button--plain" type="button">试听</button></div>
-        </div></div></a><a class="Button RelatedLives-item Button--plain" target="_blank" href="/lives/specials/907199531949629440" type="button" data-za-module="LiveAlbumItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;LiveAlbum&quot;,&quot;id&quot;:&quot;907199531949629440&quot;}}}"><img class="RelatedLives-image" src="https://pic4.zhimg.com/90/v2-80d4159dcd04d9488c04505f3d848757_250x0.jpg" alt="live"><div class="RelatedLives-content"><div class="RelatedLives-subject RelatedLives-subject-two">11.11 剁手指南，蓝心帮你科学选家电</div>
-        <div class="RelatedLives-meta">5 场 Live, 2551 次参与</div>
-        </div></a>
-        <a class="Button RelatedLives-item Button--plain" target="_blank" href="/lives/752228199001247744" type="button" data-za-module="LiveItem" data-za-module-info="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Live&quot;,&quot;id&quot;:&quot;752228199001247744&quot;,&quot;author_member_hash_id&quot;:&quot;2d6717f820b2fc9e6450b0a3ff7542eb&quot;}}}"><img class="RelatedLives-image" src="https://pic3.zhimg.com/90/1dc4b5dd6_250x0.jpg" alt="live"><div class="RelatedLives-content"><div class="RelatedLives-subject">正装入门：先穿对，再穿贵</div>
-        <div class="RelatedLives-description">葛巾</div><div class="RelatedLives-meta"><div class="RelatedLives-scoreWrapper">
-        <div class="Rating"><svg viewBox="0 0 15 15" class="Icon Icon--rating" width="15" height="15" aria-hidden="true" style="margin-left: 0px; height: 15px; width: 15px;"><title></title><g><g fill-rule="evenodd">     <path fill="#ffab2e" d="M10.925 14.302c.173.13.408.13.58-.002.174-.13.244-.362.175-.572l-1.323-4.296 3.435-2.456c.175-.13.25-.36.185-.572-.064-.212-.253-.357-.468-.36H9.275L7.96 1.754c-.064-.21-.21-.354-.46-.354-.14 0-1.027 3.53-.988 6.32.04 2.788.98 3.85.98 3.85l3.433 2.732z"></path>     <path fill="#ffab2e" d="M7.5 1.4c-.25 0-.41.144-.474.354l-1.318 4.29H1.49c-.214.003-.403.148-.467.36-.065.212.01.442.185.572l3.42 2.463-1.307 4.286c-.066.21.004.44.176.572.172.13.407.132.58.003l3.42-2.734L7.5 1.4z">   </path></g></g></svg><svg viewBox="0 0 15 15" class="Icon Icon--rating" width="15" height="15" aria-hidden="true" style="margin-left: 0px; height: 15px; width: 15px;"><title></title><g><g fill-rule="evenodd">     <path fill="#ffab2e" d="M10.925 14.302c.173.13.408.13.58-.002.174-.13.244-.362.175-.572l-1.323-4.296 3.435-2.456c.175-.13.25-.36.185-.572-.064-.212-.253-.357-.468-.36H9.275L7.96 1.754c-.064-.21-.21-.354-.46-.354-.14 0-1.027 3.53-.988 6.32.04 2.788.98 3.85.98 3.85l3.433 2.732z"></path>     <path fill="#ffab2e" d="M7.5 1.4c-.25 0-.41.144-.474.354l-1.318 4.29H1.49c-.214.003-.403.148-.467.36-.065.212.01.442.185.572l3.42 2.463-1.307 4.286c-.066.21.004.44.176.572.172.13.407.132.58.003l3.42-2.734L7.5 1.4z">   </path></g></g></svg><svg viewBox="0 0 15 15" class="Icon Icon--rating" width="15" height="15" aria-hidden="true" style="margin-left: 0px; height: 15px; width: 15px;"><title></title><g><g fill-rule="evenodd">     <path fill="#ffab2e" d="M10.925 14.302c.173.13.408.13.58-.002.174-.13.244-.362.175-.572l-1.323-4.296 3.435-2.456c.175-.13.25-.36.185-.572-.064-.212-.253-.357-.468-.36H9.275L7.96 1.754c-.064-.21-.21-.354-.46-.354-.14 0-1.027 3.53-.988 6.32.04 2.788.98 3.85.98 3.85l3.433 2.732z"></path>     <path fill="#ffab2e" d="M7.5 1.4c-.25 0-.41.144-.474.354l-1.318 4.29H1.49c-.214.003-.403.148-.467.36-.065.212.01.442.185.572l3.42 2.463-1.307 4.286c-.066.21.004.44.176.572.172.13.407.132.58.003l3.42-2.734L7.5 1.4z">   </path></g></g></svg><svg viewBox="0 0 15 15" class="Icon Icon--rating" width="15" height="15" aria-hidden="true" style="margin-left: 0px; height: 15px; width: 15px;"><title></title><g><g fill-rule="evenodd">     <path fill="#ffab2e" d="M10.925 14.302c.173.13.408.13.58-.002.174-.13.244-.362.175-.572l-1.323-4.296 3.435-2.456c.175-.13.25-.36.185-.572-.064-.212-.253-.357-.468-.36H9.275L7.96 1.754c-.064-.21-.21-.354-.46-.354-.14 0-1.027 3.53-.988 6.32.04 2.788.98 3.85.98 3.85l3.433 2.732z"></path>     <path fill="#ffab2e" d="M7.5 1.4c-.25 0-.41.144-.474.354l-1.318 4.29H1.49c-.214.003-.403.148-.467.36-.065.212.01.442.185.572l3.42 2.463-1.307 4.286c-.066.21.004.44.176.572.172.13.407.132.58.003l3.42-2.734L7.5 1.4z">   </path></g></g></svg><svg width="15" height="15" viewBox="0 0 15 15" class="Icon Icon--ratingHalf" aria-hidden="true" style="margin-left: 0px; height: 15px; width: 15px;"><title></title><g><g fill-rule="evenodd">     <path fill="#d7d8d9" d="M10.925 14.302c.173.13.408.13.58-.002.174-.13.244-.362.175-.572l-1.323-4.296 3.435-2.456c.175-.13.25-.36.185-.572-.064-.212-.253-.357-.468-.36H9.275L7.96 1.754c-.064-.21-.21-.354-.46-.354-.14 0-1.027 3.53-.988 6.32.04 2.788.98 3.85.98 3.85l3.433 2.732z"></path>     <path fill="#ffab2e" d="M7.5 1.4c-.25 0-.41.144-.474.354l-1.318 4.29H1.49c-.214.003-.403.148-.467.36-.065.212.01.442.185.572l3.42 2.463-1.307 4.286c-.066.21.004.44.176.572.172.13.407.132.58.003l3.42-2.734L7.5 1.4z"></path>   </g></g></svg></div>33418 人参与</div></div></div></a></div>
-        </div>
-        -->
-        
-            <footer class="Footer">
-            <!--<a class="Footer-item" target="_blank" href="//liukanshan.zhihu.com/">刘看山</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/question/19581624">知乎指南</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/terms">知乎协议</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/app">应用</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/careers">工作</a><br>-->
-            <!--<a class="Footer-item" target="_blank" href="https://zhuanlan.zhihu.com/p/28561671">侵权举报</a><span class="Footer-dot">-->
-            </span><a class="Footer-item" target="_blank" href="http://www.12377.cn">网上有害信息举报专区</a><br><span class="Footer-item">违法和不良信息举报：010-82716601</span><br><!--<a class="Footer-item" target="_blank" href="/jubao">儿童色情信息举报专区</a><br>--><a class="Footer-item" target="_blank" href="/">联系我们</a><span> © 2018 大大大</span>
-            </footer>
-        </div>
-        
-        </div>
-        
-        
-        </div>
-</div>           
-</main>
-<!--------------------main end-------------------->
-
-
-<!--- div other--->
-<!-- 模态框（Modal）for ask -->
-<div class="modal fade" id="askModal" tabindex="-1" role="dialog" aria-labelledby="askModalLabel" aria-hidden="true">
-	<div class="modal-dialog askmodal">
-        <div class="Modal-inner">
-            <h3 class="Modal-title" id="askModalLabel">写下你的问题</h3>
-            <div class="Modal-subtitle">描述精确的问题更易得到解答</div>
-                <div class="Modal-content">
-                    <div class="QuestionAsk">
-                        <form method="post" action="/question/" id="form_ask">
-                        {% csrf_token %}            
-                            <div class="QuestionAsk-section">
-                                <div class="QuestionAsk-title">
-                                        <div class="Input-wrapper Input-wrapper--spread Input-wrapper--multiline Input-wrapper--large">
-                                        <textarea required="" name="title" rows="2" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-64372-3800-0" id="Popover-64372-42711-toggle" aria-haspopup="true" aria-owns="Popover-64372-42711-content" class="Input" placeholder="问题标题"></textarea>
-                                        </div>
-                                </div>
-                            </div>
-            
-                            <div class="QuestionAsk-section">
-                                <div class="TagInput TagInput--empty">
-                                            <select id="topics_select" name="topics_selected" class="selectpicker show-menu-arrow form-control" multiple data-live-search="true" data-max-options="5" data-style="Input-wrapper Input-wrapper--spread Input-wrapper--large" title="添加话题"></select>
-                                </div>
-                            </div>
-
-                            <input id="hide_for_submit" type="hidden" name="topics" value="null123">
-                
-                            <div class="QuestionAsk-section QuestionAsk-DetailSection">问题描述（可选）:<textarea id="summernote_question" name="detail" 1rows="5" 1cols="70" 1maxlength="160"></textarea>              
-                            </div>
-                           
-                            <div class="ModalButtonGroup QuestionAsk-buttonGroup ModalButtonGroup--vertical">
-                                <button class="1Button 1Button--primary 1Button--green btn btn-success" type="submit" form="form_ask">提交问题</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-		</div>        
-        <button data-dismiss="modal" aria-hidden="true" class="Button Modal-closeButton Button--plain 1close" aria-label="关闭" type="button">
-        <svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>        
-	</div>
-</div>
-<!--- div other--->
-
-<!--- div other for invite--->
-<!-- 模态框（Modal） -->
-<div class="modal fade" id="inviteModal" tabindex="-1" role="dialog" aria-labelledby="inviteModalLabel" aria-hidden="true">
-<div class="modal-dialog inviteModal">
-<div class="Modal-inner">
-<div class="Modal-content Modal-content--spread">
-<div class="QuestionInvitation">
-<div class="Topbar">
-<div class="Topbar-title">
-<h2 class="QuestionInvitation-title">你可以邀请下面用户，快速获得回答</h2>
-</div>
-<div class="Topbar-options">
-<div class="QuestionInvitation-input Input-wrapper">
-<input data-tooltip="也可以搜索职业、公司等资料" data-tooltip-position="bottom" class="Input" placeholder="搜索你想邀请的人">
-<div class="Input-after">
-<svg viewBox="0 0 16 16" class="Icon Icon--search" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg>
-</div>
-</div>
-</div>
-</div>
-<div class="QuestionInvitation-content">
-<div class="List">
-</div>
-</div>
-</div>
-</div>
-<button data-dismiss="modal" aria-hidden="true" class="Button Modal-closeButton Button--plain 1close" aria-label="关闭" type="button"><svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>
-</div>
-</div>
-</div>
-<!--- div other for invite--->
-
-<!--- div other--->
 </body>
-
 </html>

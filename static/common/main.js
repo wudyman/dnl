@@ -69,12 +69,12 @@ function checkRegisterValid()
     }
     
     var value=$("input[name='regPassword']").val();
-    var reg=/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
+    var reg=/^[A-Za-z0-9]{6,18}$/;//    /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
     var is_check=reg.test(value);
     if(!is_check)
     {
         console.log("password error");
-        $(".SignFlow-password>.SignFlowInput>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("长度为6~18位，必须包含字母和数字");
+        $(".SignFlow-password>.SignFlowInput>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("密码为6~18位的字母或数字");
         result=false;
     }
        
@@ -97,12 +97,12 @@ function checkLoginValid()
         
     var value=$("input[name='loginPassword']").val();
     console.log(value);
-    var reg=/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
+    var reg=/^[A-Za-z0-9]{6,18}$/;//  /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,18}$/;
     var is_check=reg.test(value);
     if(!is_check)
     {
         console.log("password error");
-        $(".SignFlow-password>.SignFlowInput>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("长度为6~18位，必须包含字母和数字");
+        $(".SignFlow-password>.SignFlowInput>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("密码为6~18位的字母或数字");
         result=false;
     }
        

@@ -1,24 +1,135 @@
 ﻿<!DOCTYPE html>
-<html>
-<head>
-{%load static %}
-<meta http-equiv="X-UA-Compatible" content="IE=11">
-<meta charset="utf-8">
-<title>话题 - 大大大</title>
-<link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
-<link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
-<link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
-    
-<script src="{%static 'common/jquery.js' %}"></script>
-<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
-<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
-<script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
-<script src="{% static 'common/main.js' %}"></script>
-    
+<html lang="zh" data-hairline="true" data-theme="light" data-focus-method="pointer" style="">
+{% include 'question/head.html' %}
+<body class="Entry-body">
+{% include 'question/header.html' %}
+
+<main role="main" class="App-main">
+<div class="ContentLayout">
+
+<div class="ContentLayout-mainColumn">
+<div class="Card">
+
+<div class="TopicCard" data-topic-id="{{context_topic.id}}">
+<div class="ContentItem TopicCard-content">
+
+<div class="ContentItem-main">
+<div class="ContentItem-image">
+{% if user.is_staff %}
+<div class="ImageWrapper TopicCard-image TopicCard-image-editor">-->
+{% else %}
+<div class="ImageWrapper TopicCard-image">
+{% endif %}
+<img id="id_avatar" alt="{{context_topic.name}}" src="{{context_topic.avatar}}" style="width:100px;height:100px;">
+
+<div class="Mask UserAvatarEditor-mask Mask-hidden">
+<div class="Mask-mask Mask-mask--black UserAvatarEditor-maskInner">
+</div>
+<div class="Mask-content">
+<svg class="Zi Zi--Camera UserAvatarEditor-cameraIcon" fill="currentColor" viewBox="0 0 24 24" width="36" height="36"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill-rule="evenodd"></path></svg>
+<div class="1UserAvatarEditor-maskInnerText">修改图片</div>
+</div>
+</div>
+
+<input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/>
+</div>
+
+</div>
+
+<div class="ContentItem-head">
+<h2 class="ContentItem-title">
+<div class="TopicCard-title">
+<h1 class="TopicCard-titleText">{{context_topic.name}}</h1></div></h2>
+<div class="ContentItem-meta">
+<div class="TopicCard-description">
+<span class="RichText">{{context_topic.detail}}</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="TopicCard-actions">
+<div class="TopicActions">
+{% ifequal followed "true"%}
+<button class="Button FollowButton TopicActions-followButton Button--primary Button--grey" type="button" data-topic-id="{{context_topic.id}}" data-follow-type="topic" data-followed="true">已关注</button>
+{% else %}
+<button class="Button FollowButton TopicActions-followButton Button--primary Button--green" type="button" data-topic-id="{{context_topic.id}}" data-follow-type="topic" data-followed="false">关注</button>
+{% endifequal %}
+<div class="Popover ShareMenu TopicActions-shareMenu"><div class="" aria-haspopup="true" aria-expanded="false"><button class="Button Button--plain Button--withIcon Button--withLabel" type="button"><span style="display:inline-flex;align-items:center;">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button></div></div>
+</div>
+</div>
+
+
+</div>
+
+<div class="Sticky" style=""></div>
+</div>
+
+<div id="QuestionItems"></div>
+
+</div>
+
+
+
+<div class="ContentLayout-sideColumn">
+<div class="TopstorySideBar">
+    <div class="Card"><div class="NumberBoard NumberBoard--divider"><button class="Button NumberBoard-item TopicNumberBoard-item" type="button"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注者</div><strong class="NumberBoard-itemValue NumberBoard-value" data-update-value-type="topic-followed">{{context_topic.follower_nums}}</strong></div></button><a class="NumberBoard-item TopicNumberBoard-item" href="/topic/{{context_topic.id}}"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">问题数</div><strong class="NumberBoard-itemValue">{{context_topic.question_nums}}</strong></div></a></div></div>
+    <div class="Card">
+        <ul class="TopstorySideBar-navList">
+            <li class="TopstorySideBar-navItem TopstorySideBar-inviteItem"><a class="Button TopstorySideBar-navLink Button--plain" href="/notifications/" target="_blank" type="button"><svg class="Zi Zi--Invite TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M17.53 21c-2.47 0-4.471-2.035-4.471-4.545s2.001-4.544 4.47-4.544C20 11.911 22 13.946 22 16.455 22 18.965 19.998 21 17.53 21zm.555-5.116s-.005-2.04 0-2.272c-.014-.753-1.13-.753-1.117 0-.014.724 0 2.272 0 2.272h-2.233c-.745.003-.745 1.14 0 1.14s2.233-.004 2.233-.004v2.272c0 .765 1.12.765 1.117 0-.004-.764 0-2.272 0-2.272s1.488.004 2.237.004c.748 0 .748-1.137-.004-1.14h-2.233zm-5.778-3.074a5.692 5.692 0 0 0-.561 6.936H8.408c-4.514 0-5.32-.154-5.408-1.57 0-2.45 2.42-5.407 5.408-5.407h3.49c.14 0 .271.031.409.041zm-2.33-1.437a4.187 4.187 0 1 1 0-8.373 4.187 4.187 0 0 1 0 8.373z" fill-rule="evenodd"></path></svg><span class="TopstorySideBar-navText">我的提醒</span></a></li>
+            <li class="TopstorySideBar-navItem TopstorySideBar-questionListItem"><a class="Button TopstorySideBar-navLink Button--plain" target="_blank" type="button" href="/er/{{user.id}}/asks/"><svg class="Zi Zi--HelpBubble TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M5.74 4h12.52c.961 0 1.74.775 1.74 1.73V16.27c0 .955-.779 1.73-1.74 1.73h-3.825l-1.658 2.044a1 1 0 0 1-1.554 0l-1.658-2.044H5.74C4.78 18 4 17.224 4 16.27V5.73C4 4.775 4.778 4 5.74 4zM12 16a.976.976 0 0 0 .705-.287.951.951 0 0 0 .295-.712.954.954 0 0 0-.295-.714A.976.976 0 0 0 12 14a.962.962 0 0 0-.705.295A.961.961 0 0 0 11 15c0 .284.098.522.295.713A.975.975 0 0 0 12 16zm1.278-4.924a36.81 36.81 0 0 0 1.023-.975c.19-.193.354-.422.492-.688.138-.266.207-.575.207-.928 0-.448-.12-.864-.363-1.246a2.517 2.517 0 0 0-1.029-.906C13.164 6.111 12.652 6 12.072 6c-.624 0-1.17.133-1.638.399-.468.265-.824.6-1.068 1.005-.244.405-.366.804-.366 1.2 0 .19.077.368.231.531a.747.747 0 0 0 .567.246c.38 0 .638-.234.774-.703.144-.449.32-.788.528-1.019.208-.23.532-.345.972-.345.376 0 .683.114.921.342.238.229.357.51.357.841 0 .17-.039.328-.117.473a1.782 1.782 0 0 1-.288.396c-.114.118-.3.294-.555.526a9.71 9.71 0 0 0-.696.688c-.172.194-.31.418-.414.673a2.391 2.391 0 0 0-.156.906c0 .278.071.488.213.63a.716.716 0 0 0 .525.211c.4 0 .638-.216.714-.648.044-.203.077-.345.099-.426.022-.081.053-.162.093-.243.04-.081.101-.17.183-.268.082-.098.191-.21.327-.34z" fill-rule="evenodd"></path></svg><span class="TopstorySideBar-navText">我提问的问题</span></a></li>
+            <li class="TopstorySideBar-navItem TopstorySideBar-questionListItem"><a class="Button TopstorySideBar-navLink Button--plain" target="_blank" type="button" href="/er/{{user.id}}/following/questions/"><svg class="Zi Zi--HelpBubble TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M5.74 4h12.52c.961 0 1.74.775 1.74 1.73V16.27c0 .955-.779 1.73-1.74 1.73h-3.825l-1.658 2.044a1 1 0 0 1-1.554 0l-1.658-2.044H5.74C4.78 18 4 17.224 4 16.27V5.73C4 4.775 4.778 4 5.74 4zM12 16a.976.976 0 0 0 .705-.287.951.951 0 0 0 .295-.712.954.954 0 0 0-.295-.714A.976.976 0 0 0 12 14a.962.962 0 0 0-.705.295A.961.961 0 0 0 11 15c0 .284.098.522.295.713A.975.975 0 0 0 12 16zm1.278-4.924a36.81 36.81 0 0 0 1.023-.975c.19-.193.354-.422.492-.688.138-.266.207-.575.207-.928 0-.448-.12-.864-.363-1.246a2.517 2.517 0 0 0-1.029-.906C13.164 6.111 12.652 6 12.072 6c-.624 0-1.17.133-1.638.399-.468.265-.824.6-1.068 1.005-.244.405-.366.804-.366 1.2 0 .19.077.368.231.531a.747.747 0 0 0 .567.246c.38 0 .638-.234.774-.703.144-.449.32-.788.528-1.019.208-.23.532-.345.972-.345.376 0 .683.114.921.342.238.229.357.51.357.841 0 .17-.039.328-.117.473a1.782 1.782 0 0 1-.288.396c-.114.118-.3.294-.555.526a9.71 9.71 0 0 0-.696.688c-.172.194-.31.418-.414.673a2.391 2.391 0 0 0-.156.906c0 .278.071.488.213.63a.716.716 0 0 0 .525.211c.4 0 .638-.216.714-.648.044-.203.077-.345.099-.426.022-.081.053-.162.093-.243.04-.081.101-.17.183-.268.082-.098.191-.21.327-.34z" fill-rule="evenodd"></path></svg><span class="TopstorySideBar-navText">我关注的问题</span></a></li>
+        </ul>
+    </div>
+    <footer class="Footer">
+    </span><a class="Footer-item" target="_blank" href="http://www.12377.cn">网上有害信息举报专区</a><br><span class="Footer-item">违法和不良信息举报：010-82716601</span><br><!--<a class="Footer-item" target="_blank" href="/jubao">儿童色情信息举报专区</a><br>--><a class="Footer-item" target="_blank" href="/">联系我们</a><span> © 2018 大大大</span>
+    </footer>
+</div>
+</div>
+</div>
+</main>
+
+<!-- ask（Modal） -->
+{% include 'question/ask_modal.html' %}
+<!-- ask（Modal） -->
+
+<!-- letter（Modal） -->
+<!-- append by js -->
+<!-- letter（Modal） -->
+<div id="upAvatarModal" class="modal fade 1Modal 1Modal--default 1UploadImageModal-modal" tabindex="-1" role="dialog" 1aria-labelledby="upAvatarModalLabel" 1aria-hidden="true">
+<div class="modal-dialog" style="#width:200px;">
+
+<div class="Modal-inner">
+<h3 class="Modal-title">编辑图片</h3>
+<div class="Modal-subtitle">调整图片尺寸和位置</div>
+<div class="Modal-content">
+<div>
+<div class="UploadImageModal-container">
+<div style="text-align:center">
+<img id="preview_avatar" width="300px" height="300px" alt="" >
+</div>
+<div  id="chooseBox" style="width: 200px;height: 200px;border: 1px solid #4fb8e3;position: absolute;left: 200px;top: 163px;z-index: 1000"></div>
+<canvas id="avatar_canvas" width="200" height="200" style="width: 200px; height: 200px;display:none"></canvas>
+</div>
+<div style="text-align:center">
+<svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
+<input id="adjust_choosebox"type="range" step="1" min="0" max="100" class="RangeInput" value="50" style="display:inline" oninput="adjustChooseBox()">
+<svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="22" height="22"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
+</div>
+<div class="ModalButtonGroup ModalButtonGroup--vertical">
+<button class="Button Button--primary Button--blue" type="button" onclick="saveFile()">保存</button>
+</div>
+</div>
+</div>
+</div>
+<button data-dismiss="modal" class="Button Modal-closeButton Button--plain" aria-label="关闭" type="button">
+<svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+
 <script>
 function appendTopicElement(ret)
 {
@@ -328,307 +439,6 @@ function init()
     checkSets();
 }
 </script>
-</head>
-
-<body class="Entry-body">
-<header  role="banner" class="123Sticky AppHeader">
-<div class="AppHeader-inner">
-
-<div class="container">
-<div class="row">
-<div class="col-md-1">
-<a href="/" aria-label="大大大">
-<svg viewBox="0 0 200 91" class="Icon Icon--logo" width="64" height="30" aria-hidden="true" style="fill: rgb(15, 136, 235); height: 30px; width: 64px;">
-<title></title><g><path d="M53.29 80.035l7.32.002 2.41 8.24 13.128-8.24h15.477v-67.98H53.29v67.978zm7.79-60.598h22.756v53.22h-8.73l-8.718 5.473-1.587-5.46-3.72-.012v-53.22zM46.818 43.162h-16.35c.545-8.467.687-16.12.687-22.955h15.987s.615-7.05-2.68-6.97H16.807c1.09-4.1 2.46-8.332 4.1-12.708 0 0-7.523 0-10.085 6.74-1.06 2.78-4.128 13.48-9.592 24.41 1.84-.2 7.927-.37 11.512-6.94.66-1.84.785-2.08 1.605-4.54h9.02c0 3.28-.374 20.9-.526 22.95H6.51c-3.67 0-4.863 7.38-4.863 7.38H22.14C20.765 66.11 13.385 79.24 0 89.62c6.403 1.828 12.784-.29 15.937-3.094 0 0 7.182-6.53 11.12-21.64L43.92 85.18s2.473-8.402-.388-12.496c-2.37-2.788-8.768-10.33-11.496-13.064l-4.57 3.627c1.363-4.368 2.183-8.61 2.46-12.71H49.19s-.027-7.38-2.372-7.38zm128.752-.502c6.51-8.013 14.054-18.302 14.054-18.302s-5.827-4.625-8.556-1.27c-1.874 2.548-11.51 15.063-11.51 15.063l6.012 4.51zm-46.903-18.462c-2.814-2.577-8.096.667-8.096.667s12.35 17.2 12.85 17.953l6.08-4.29s-8.02-11.752-10.83-14.33zM199.99 46.5c-6.18 0-40.908.292-40.953.292v-31.56c1.503 0 3.882-.124 7.14-.376 12.773-.753 21.914-1.25 27.427-1.504 0 0 3.817-8.496-.185-10.45-.96-.37-7.24 1.43-7.24 1.43s-51.63 5.153-72.61 5.64c.5 2.756 2.38 5.336 4.93 6.11 4.16 1.087 7.09.53 15.36.277 7.76-.5 13.65-.76 17.66-.76v31.19h-41.71s.88 6.97 7.97 7.14h33.73v22.16c0 4.364-3.498 6.87-7.65 6.6-4.4.034-8.15-.36-13.027-.566.623 1.24 1.977 4.496 6.035 6.824 3.087 1.502 5.054 2.053 8.13 2.053 9.237 0 14.27-5.4 14.027-14.16V53.93h38.235c3.026 0 2.72-7.432 2.72-7.432z" fill-rule="evenodd"></path></g>
-</svg>
-</a>
-</div>
-<nav role="navigation" class="col-md-3">
-<a class="AppHeader-navItem" href="/">首页</a>
-<a class="AppHeader-navItem" href="/trade">买卖</a>
-<a class="AppHeader-navItem" href="/topic">话题</a>
-</nav>
-
-
-<div class="SearchBar col-md-6" role="search">
-<div class="SearchBar-toolWrapper">
-<form class="SearchBar-tool">
-<div>
-<div class="1Popover">
-<div class="SearchBar-input Input-wrapper Input-wrapper--grey">
-<input type="text" maxlength="120" value="" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-41236-89421--1" id="Popover-41236-42847-toggle" aria-haspopup="true" aria-owns="Popover-41236-42847-content" class="Input" placeholder="搜索你感兴趣的内容…">
-<div class="Input-after">
-<button class="Button SearchBar-searchIcon Button--primary" aria-label="搜索" type="button" data-reactid="25"><svg viewBox="0 0 16 16" class="Icon Icon--search" style="height:16px;width:16px;" width="16" height="16" aria-hidden="true" data-reactid="26"><title data-reactid="27"></title><g data-reactid="28"><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg>
-</button>
-</div>
-</div>
-</div>
-</div>
-</form>
-</div>
-<button class="1Button QuestionAskButton SearchBar-askButton 1Button--primary 1Button--green btn btn-success" type="button" data-toggle="modal" data-target="#askModal">提问</button>
-</div>
-
-
-<div class="AppHeader-userInfo col-md-2">
-<div class="1Popover PushNotifications AppHeader-notifications">
-<button class="1Button PushNotifications-icon 1Button--plain" type="button" id="NotificationPopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
-<svg viewBox="0 0 20 22" class="Icon Icon--news" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M2.502 14.08C3.1 10.64 2 3 8.202 1.62 8.307.697 9.08 0 10 0s1.694.697 1.797 1.62C18 3 16.903 10.64 17.497 14.076c.106 1.102.736 1.855 1.7 2.108.527.142.868.66.793 1.206-.075.546-.542.95-1.09.943H1.1C.55 18.34.084 17.936.01 17.39c-.075-.547.266-1.064.794-1.206.963-.253 1.698-1.137 1.698-2.104zM10 22c-1.417.003-2.602-1.086-2.73-2.51-.004-.062.02-.124.063-.17.043-.045.104-.07.166-.07h5c.063 0 .124.025.167.07.044.046.067.108.063.17-.128 1.424-1.313 2.513-2.73 2.51z"></path></g>
-</svg>
-</button>
-</div>
-
-<div class="1Popover Messages AppHeader-messages">
-<button class="1Button Messages-icon 1Button--plain" id="MessagePopover" type="button" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
-<svg viewBox="0 0 20 20" class="Icon Icon--message" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path><path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path></g>
-</svg>
-</button>
-</div>
-
-<div class="AppHeader-profile">
-<div class="1Popover AppHeader-menu">
-<img class="Avatar AppHeader-profileAvatar" id="MenuPopover" data-er-id="{{user.id}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="{{user.userprofile.avatar}}" srcset="{{user.userprofile.avatar}} 2x">
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-</div>
-</header>
-
-
-<!--
-<div class="1zg-wrap 1zu-main clearfix " role="main">
-<div class="1zu-main-content">
-<div class="1zu-main-content-inner">
--->
-
-<main role="main" class="App-main">
-<div class="Topstory">
-<div class="Topstory-container container">
-<div class="row">
-<div class="Topstory-mainColumn 1col-md-offset-1 col-md-8">
-
-<div class="Card">
-<div class="TopicCard" data-topic-id="{{context_topic.id}}">
-<div class="ContentItem TopicCard-content">
-<div class="ContentItem-main">
-<div class="ContentItem-image">
-{% if user.is_staff %}
-<div class="ImageWrapper TopicCard-image TopicCard-image-editor">
-{% else %}
-<div class="ImageWrapper TopicCard-image">
-{% endif %}
-<img id="id_avatar" alt="{{context_topic.name}}" src="{{context_topic.avatar}}" style="width:100px;height:100px;">
-
-<div class="Mask UserAvatarEditor-mask Mask-hidden">
-<div class="Mask-mask Mask-mask--black UserAvatarEditor-maskInner">
-</div>
-<div class="Mask-content">
-<svg class="Zi Zi--Camera UserAvatarEditor-cameraIcon" fill="currentColor" viewBox="0 0 24 24" width="36" height="36"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill-rule="evenodd"></path></svg>
-<div class="1UserAvatarEditor-maskInnerText">修改图片</div>
-</div>
-</div>
-<input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/>
-
-</div>
-
-
-
-</div>
-<div class="ContentItem-head">
-<h2 class="ContentItem-title">
-<div class="TopicCard-title">
-<h1 class="TopicCard-titleText">{{context_topic.name}}</h1></div></h2>
-<div class="ContentItem-meta">
-<div class="TopicCard-description">
-<span class="RichText">{{context_topic.detail}}</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="TopicCard-actions">
-<div class="TopicActions">
-{% ifequal followed "true"%}
-<button class="Button FollowButton TopicActions-followButton Button--primary Button--grey" type="button" data-topic-id="{{context_topic.id}}" data-follow-type="topic" data-followed="true">已关注</button>
-{% else %}
-<button class="Button FollowButton TopicActions-followButton Button--primary Button--green" type="button" data-topic-id="{{context_topic.id}}" data-follow-type="topic" data-followed="false">关注</button>
-{% endifequal %}
-<div class="Popover ShareMenu TopicActions-shareMenu" data-reactid="81"><div class="" id="Popover-93094-91454-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-93094-91454-content" data-reactid="82"><button class="Button Button--plain Button--withIcon Button--withLabel" type="button" data-reactid="83"><span style="display:inline-flex;align-items:center;" data-reactid="84"><!-- react-text: 85 -->&#8203;<!-- /react-text --><svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em" data-reactid="86"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd" data-reactid="87"></path></svg></span>分享</button></div>
-</div>
-</div>
-</div>
-</div>
-<div class="Sticky" style=""></div>
-</div>
-
-        
-
-  
-
-
-        
-<!--
-<div>
-<a href="" target="_blank" class=""><img class="Avatar Avatar--m js-topic-avatar" src="" srcset="" alt=""></a>
-<a href="" target="_blank" class="">电影</a>
-</div>
--->
-
-<div id="QuestionItems">
-</div>
-
-</div>
-        <div class="ContentLayout-sideColumn col-md-3">
-        <div class="TopstorySideBar 1col-md-3">
-            <div class="Card"><div class="NumberBoard NumberBoard--divider"><button class="Button NumberBoard-item TopicNumberBoard-item" type="button"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注者</div><strong class="NumberBoard-itemValue NumberBoard-value" data-update-value-type="topic-followed">{{context_topic.follower_nums}}</strong></div></button><a class="NumberBoard-item TopicNumberBoard-item" href="/topic/{{context_topic.id}}"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">问题数</div><strong class="NumberBoard-itemValue">{{context_topic.question_nums}}</strong></div></a></div></div>
-            <!--<div class="Card"><ul class="TopstorySideBar-categoryList"><li class="TopstorySideBar-categoryItem"><a class="Button Button--plain" href="/lives" target="_blank" title="Live" style="color:#ffcf00;" type="button" data-reactid="1249"><span class="TopstorySideBar-categoryIcon" data-reactid="1250"><svg class="Zi Zi--Live" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1251"><path d="M13.693 10.354l1.634-7.542c.195-.901-.16-1.083-.798-.39l-9.18 9.97c-.638.693-.377 1.254.582 1.254h5.376l-1.634 7.542c-.195.901.16 1.083.798.39l9.18-9.97c.638-.693.377-1.254-.582-1.254h-5.376z" data-reactid="1252"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1253">Live</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1254"><a class="Button Button--plain" href="/pub/" target="_blank" title="书店" style="color:#43d480;" type="button" data-reactid="1255"><span class="TopstorySideBar-categoryIcon" data-reactid="1256"><svg class="Zi Zi--Ebook" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1257"><path d="M16 17.649V2.931a.921.921 0 0 0-.045-.283.943.943 0 0 0-1.182-.604L4.655 5.235A.932.932 0 0 0 4 6.122v14.947c0 .514.421.931.941.931H19.06c.52 0 .941-.417.941-.93V7.292a.936.936 0 0 0-.941-.931h-.773v12.834a.934.934 0 0 1-.83.924L6.464 21.416c-.02.002 2.94-.958 8.883-2.881a.932.932 0 0 0 .653-.886z" fill-rule="evenodd" data-reactid="1258"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1259">书店</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1260"><a class="Button Button--plain" href="/roundtable" target="_blank" title="圆桌" style="color:#0084ff;" type="button" data-reactid="1261"><span class="TopstorySideBar-categoryIcon" data-reactid="1262"><svg class="Zi Zi--Org" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1263"><path d="M10.786 8.41a8.938 8.938 0 0 0-3.968-2.528c-.305-1.719.814-3.337 2.442-3.741 1.221-.405 2.646.101 3.46 1.011 1.045 1.38.915 3.64.814 4.348-.102 1.315-1.221 3.034-1.323 3.135-.305-.809-.814-1.517-1.425-2.225zm-2.442 2.832c-1.526.202-3.052 1.01-4.171 2.123-1.12-.404-1.934-1.314-2.137-2.427-.316-2.427 1.526-3.64 2.849-3.842 1.628-.371 2.849.505 4.07 1.415 1.146 1.012 2.035 2.63 2.035 2.73-.916-.202-1.832-.1-2.646 0zm4.986.303c.509-.607.931-1.586 1.12-2.225.318-1.039.61-3.134.203-4.651 1.323-1.011 3.154-1.011 4.477.303 1.235 1.146 1.017 2.933.814 3.438-.663 1.581-1.933 2.326-3.256 2.832-1.221.404-3.256.303-3.358.303zm-2.645 1.011c-.51.607-.916 1.416-1.221 2.326-.407 1.314-.643 3.06-.102 4.55-1.323 1.011-3.256 1.011-4.477-.202-1.198-1.124-1.018-2.932-.814-3.438.599-1.605 1.933-2.326 3.256-2.831.916-.304 3.256-.405 3.358-.405zm9.259-1.82c1.017.404 1.933 1.315 2.035 2.427.233 2.57-1.526 3.64-2.849 3.842-1.526 0-2.85-.505-4.07-1.415-1.018-.81-2.035-2.528-2.035-2.63.916.203 1.831.102 2.645 0 1.628-.404 3.053-1.112 4.274-2.224zm-6.716 4.854c1.065 1.08 2.442 2.022 4.07 2.528.306 1.719-.814 3.235-2.442 3.741-1.22.405-2.645-.101-3.46-1.011-1.1-1.481-1.017-3.54-.915-4.247.102-1.315 1.221-3.034 1.323-3.135.305.708.721 1.44 1.424 2.124z" data-reactid="1264"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1265">圆桌</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1266"><a class="Button Button--plain" href="//zhuanlan.zhihu.com" target="_blank" title="专栏" style="color:#0f88eb;" type="button" data-reactid="1267"><span class="TopstorySideBar-categoryIcon" data-reactid="1268"><svg class="Zi Zi--Edit" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1269"><path d="M4.076 16.966a4.19 4.19 0 0 1 1.05-1.76l8.568-8.569a.524.524 0 0 1 .741 0l2.928 2.927a.524.524 0 0 1 0 .74l-8.568 8.57c-.49.49-1.096.852-1.761 1.051l-3.528 1.058a.394.394 0 0 1-.49-.488l1.06-3.53zM20.558 4.83c.59.59.59 1.546 0 2.136l-1.693 1.692a.503.503 0 0 1-.712 0l-2.812-2.812a.504.504 0 0 1 0-.712l1.693-1.693a1.51 1.51 0 0 1 2.135 0l1.389 1.389z" data-reactid="1270"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1271">专栏</span></a></li><li class="TopstorySideBar-categoryItem" data-reactid="1272"><a class="Button Button--plain" href="/zhi" target="_blank" title="付费咨询" style="color:#5478f0;" type="button" data-reactid="1273"><span class="TopstorySideBar-categoryIcon" data-reactid="1274"><svg class="Zi Zi--Infinity" fill="currentColor" viewBox="0 0 24 24" width="24" height="24" data-reactid="1275"><path d="M11.267 10.188h-2.69a.26.26 0 0 0-.261.26v.508c0 .149.117.26.262.26h2.896v1.54H8.578a.26.26 0 0 0-.262.259v.508c0 .15.117.26.262.26h2.896v2.31c0 .139.119.257.265.257h.522a.258.258 0 0 0 .265-.257v-2.31h2.896a.26.26 0 0 0 .262-.26v-.508a.257.257 0 0 0-.262-.26h-2.896v-1.54h2.896a.26.26 0 0 0 .262-.26v-.507a.257.257 0 0 0-.262-.26h-2.69l2.51-2.636a.26.26 0 0 0-.004-.366l-.423-.413a.253.253 0 0 0-.36.01L12 9.418 9.545 6.784a.248.248 0 0 0-.36-.011l-.423.413a.264.264 0 0 0-.004.366l2.509 2.636zM12 19.973c-1.101 0-2.16-.15-3.152-.43-.532.18-5.27 2.177-4.743 1.179.527-.998 1.58-2.746.806-3.25C3.11 15.936 2 13.822 2 11.486 2 6.8 6.477 3 12 3s10 3.8 10 8.487-4.477 8.486-10 8.486z" data-reactid="1276"></path></svg></span><span class="TopstorySideBar-categoryLabel" data-reactid="1277">付费咨询</span></a></li></ul></div>-->
-            <!--<div class="Card Banner" data-za-module="ExternalAdItem" data-za-detail-view-path-is_ad="true"><a class="Button Banner-link Button--plain" target="_blank" href="https://sugar.zhihu.com/track?pr=0&amp;ci=9831&amp;ai=9368&amp;lo=new_home_up&amp;tu=aHR0cHM6Ly96aHVhbmxhbi56aGlodS5jb20vcC8zMTQ1NjQ3Mg%3D%3D&amp;ts=1511837158&amp;lu=109597428&amp;si=7bbe68a0c31840489e35ccf57925e804&amp;vs=2&amp;au=182&amp;at=click&amp;ut=fb2d63dd0f534be99bffadfa67950732&amp;hn=ad-engine.ad-engine.9c800212&amp;pf=Windows&amp;az=1&amp;sg=da65d3d6db0a3d4c5e07be95a0571b07" type="button"><img class="Banner-image" src="https://pic3.zhimg.com/v2-96f061e37797b50680eb5106f7e5779e_294x245|adx4.jpg" srcset="https://pic3.zhimg.com/v2-96f061e37797b50680eb5106f7e5779e_540x450|adx4.jpg 2x" alt="广告"></a><button class="Button Banner-close Button--plain" data-tooltip="不再显示" data-tooltip-position="bottom" type="button"><svg width="14" height="16" viewBox="0 0 12 12" class="Icon Icon--boldRemove" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path fill-rule="evenodd" d="M3 2L2 3l3 3-3 3 1 1 3-3 3 3 1-1-3-3 3-3-1-1-3 3"></path></g></svg></button></div>-->
-            <div class="Card">
-                <ul class="TopstorySideBar-navList">
-                    <!--<li class="TopstorySideBar-navItem TopstorySideBar-starItem"><a class="Button TopstorySideBar-navLink Button--plain" href="/collections" target="_blank" type="button"><svg class="Zi Zi--Star TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg><span class="TopstorySideBar-navText">我的收藏</span></a></li>-->
-                    <li class="TopstorySideBar-navItem TopstorySideBar-inviteItem"><a class="Button TopstorySideBar-navLink Button--plain" href="/notifications/" target="_blank" type="button"><svg class="Zi Zi--Invite TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M17.53 21c-2.47 0-4.471-2.035-4.471-4.545s2.001-4.544 4.47-4.544C20 11.911 22 13.946 22 16.455 22 18.965 19.998 21 17.53 21zm.555-5.116s-.005-2.04 0-2.272c-.014-.753-1.13-.753-1.117 0-.014.724 0 2.272 0 2.272h-2.233c-.745.003-.745 1.14 0 1.14s2.233-.004 2.233-.004v2.272c0 .765 1.12.765 1.117 0-.004-.764 0-2.272 0-2.272s1.488.004 2.237.004c.748 0 .748-1.137-.004-1.14h-2.233zm-5.778-3.074a5.692 5.692 0 0 0-.561 6.936H8.408c-4.514 0-5.32-.154-5.408-1.57 0-2.45 2.42-5.407 5.408-5.407h3.49c.14 0 .271.031.409.041zm-2.33-1.437a4.187 4.187 0 1 1 0-8.373 4.187 4.187 0 0 1 0 8.373z" fill-rule="evenodd"></path></svg><span class="TopstorySideBar-navText">我的提醒</span></a></li>
-                    <li class="TopstorySideBar-navItem TopstorySideBar-questionListItem"><a class="Button TopstorySideBar-navLink Button--plain" target="_blank" type="button" href="/er/{{user.id}}/asks/"><svg class="Zi Zi--HelpBubble TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M5.74 4h12.52c.961 0 1.74.775 1.74 1.73V16.27c0 .955-.779 1.73-1.74 1.73h-3.825l-1.658 2.044a1 1 0 0 1-1.554 0l-1.658-2.044H5.74C4.78 18 4 17.224 4 16.27V5.73C4 4.775 4.778 4 5.74 4zM12 16a.976.976 0 0 0 .705-.287.951.951 0 0 0 .295-.712.954.954 0 0 0-.295-.714A.976.976 0 0 0 12 14a.962.962 0 0 0-.705.295A.961.961 0 0 0 11 15c0 .284.098.522.295.713A.975.975 0 0 0 12 16zm1.278-4.924a36.81 36.81 0 0 0 1.023-.975c.19-.193.354-.422.492-.688.138-.266.207-.575.207-.928 0-.448-.12-.864-.363-1.246a2.517 2.517 0 0 0-1.029-.906C13.164 6.111 12.652 6 12.072 6c-.624 0-1.17.133-1.638.399-.468.265-.824.6-1.068 1.005-.244.405-.366.804-.366 1.2 0 .19.077.368.231.531a.747.747 0 0 0 .567.246c.38 0 .638-.234.774-.703.144-.449.32-.788.528-1.019.208-.23.532-.345.972-.345.376 0 .683.114.921.342.238.229.357.51.357.841 0 .17-.039.328-.117.473a1.782 1.782 0 0 1-.288.396c-.114.118-.3.294-.555.526a9.71 9.71 0 0 0-.696.688c-.172.194-.31.418-.414.673a2.391 2.391 0 0 0-.156.906c0 .278.071.488.213.63a.716.716 0 0 0 .525.211c.4 0 .638-.216.714-.648.044-.203.077-.345.099-.426.022-.081.053-.162.093-.243.04-.081.101-.17.183-.268.082-.098.191-.21.327-.34z" fill-rule="evenodd"></path></svg><span class="TopstorySideBar-navText">我提问的问题</span></a></li>
-                    <li class="TopstorySideBar-navItem TopstorySideBar-questionListItem"><a class="Button TopstorySideBar-navLink Button--plain" target="_blank" type="button" href="/er/{{user.id}}/following/questions/"><svg class="Zi Zi--HelpBubble TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M5.74 4h12.52c.961 0 1.74.775 1.74 1.73V16.27c0 .955-.779 1.73-1.74 1.73h-3.825l-1.658 2.044a1 1 0 0 1-1.554 0l-1.658-2.044H5.74C4.78 18 4 17.224 4 16.27V5.73C4 4.775 4.778 4 5.74 4zM12 16a.976.976 0 0 0 .705-.287.951.951 0 0 0 .295-.712.954.954 0 0 0-.295-.714A.976.976 0 0 0 12 14a.962.962 0 0 0-.705.295A.961.961 0 0 0 11 15c0 .284.098.522.295.713A.975.975 0 0 0 12 16zm1.278-4.924a36.81 36.81 0 0 0 1.023-.975c.19-.193.354-.422.492-.688.138-.266.207-.575.207-.928 0-.448-.12-.864-.363-1.246a2.517 2.517 0 0 0-1.029-.906C13.164 6.111 12.652 6 12.072 6c-.624 0-1.17.133-1.638.399-.468.265-.824.6-1.068 1.005-.244.405-.366.804-.366 1.2 0 .19.077.368.231.531a.747.747 0 0 0 .567.246c.38 0 .638-.234.774-.703.144-.449.32-.788.528-1.019.208-.23.532-.345.972-.345.376 0 .683.114.921.342.238.229.357.51.357.841 0 .17-.039.328-.117.473a1.782 1.782 0 0 1-.288.396c-.114.118-.3.294-.555.526a9.71 9.71 0 0 0-.696.688c-.172.194-.31.418-.414.673a2.391 2.391 0 0 0-.156.906c0 .278.071.488.213.63a.716.716 0 0 0 .525.211c.4 0 .638-.216.714-.648.044-.203.077-.345.099-.426.022-.081.053-.162.093-.243.04-.081.101-.17.183-.268.082-.098.191-.21.327-.34z" fill-rule="evenodd"></path></svg><span class="TopstorySideBar-navText">我关注的问题</span></a></li>
-                    <!--<li class="TopstorySideBar-navItem TopstorySideBar-serviceItem"><a class="Button TopstorySideBar-navLink Button--plain" href="/community" target="_blank" type="button"><svg class="Zi Zi--Community TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M5.74 4h12.52c.961 0 1.74.775 1.74 1.73V16.27c0 .955-.779 1.73-1.74 1.73h-3.825l-1.658 2.044a1 1 0 0 1-1.554 0l-1.658-2.044H5.74C4.78 18 4 17.224 4 16.27V5.73C4 4.775 4.778 4 5.74 4zM7 8.98c0 .554.449.996 1.003.996h4.994A.992.992 0 0 0 14 8.981a.997.997 0 0 0-1.003-.995H8.003A.992.992 0 0 0 7 8.98zm0 4c0 .554.446.996.995.996h8.01a.993.993 0 0 0 .995-.995.993.993 0 0 0-.995-.995h-8.01A.993.993 0 0 0 7 12.98z" fill-rule="evenodd"></path></svg><span class="TopstorySideBar-navText">社区服务中心</span></a></li>-->
-                    <!--<li class="TopstorySideBar-navItem TopstorySideBar-copyrightItem"><a class="Button TopstorySideBar-navLink Button--plain" href="/copyright" target="_blank" type="button"><svg class="Zi Zi--Copyright TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M16.517 15.815a5.871 5.871 0 0 1-4.481 2.078 5.865 5.865 0 0 1-5.859-5.857 5.865 5.865 0 0 1 5.859-5.859c1.63 0 3.204.7 4.319 1.919.085.093.24.432.209.797a1.086 1.086 0 0 1-.436.779c-.248.193-.516.29-.797.29-.402 0-.7-.198-.814-.314A3.473 3.473 0 0 0 12 8.575a3.464 3.464 0 0 0-3.46 3.461 3.464 3.464 0 0 0 3.46 3.46 3.63 3.63 0 0 0 2.654-1.181c.136-.152.458-.306.806-.306.274 0 .542.095.773.274.35.269.45.588.473.809.032.308-.072.585-.188.723m4.686-7.699C20.67 6.883 19.96 5.82 19.07 4.929c-.891-.89-1.954-1.601-3.188-2.133A9.728 9.728 0 0 0 12 2a9.733 9.733 0 0 0-3.883.796c-1.234.532-2.297 1.243-3.186 2.133-.891.891-1.602 1.954-2.134 3.187A9.713 9.713 0 0 0 2 12a9.752 9.752 0 0 0 .797 3.883c.531 1.233 1.242 2.296 2.134 3.186.89.891 1.953 1.602 3.186 2.134A9.725 9.725 0 0 0 12 22a9.72 9.72 0 0 0 3.883-.797c1.233-.532 2.296-1.243 3.188-2.134.89-.89 1.601-1.953 2.132-3.186A9.73 9.73 0 0 0 22 12a9.69 9.69 0 0 0-.797-3.884" fill-rule="evenodd"></path></svg><span class="TopstorySideBar-navText">版权服务中心</span></a></li>-->
-                    <!--<li class="TopstorySideBar-navItem TopstorySideBar-publicEditItem"><a class="Button TopstorySideBar-navLink Button--plain" href="/watch" target="_blank" type="button"><svg class="Zi Zi--EditRounded TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M16.886 3A4.114 4.114 0 0 1 21 7.114v9.772A4.114 4.114 0 0 1 16.886 21H7.114A4.114 4.114 0 0 1 3 16.886V7.114A4.114 4.114 0 0 1 7.114 3h9.772zM7.542 14.793l-.595 1.985a.22.22 0 0 0 .275.275l1.984-.595a2.36 2.36 0 0 0 .991-.592l4.82-4.82a.295.295 0 0 0 0-.416L13.37 8.983a.295.295 0 0 0-.417 0l-4.82 4.82c-.275.277-.478.617-.59.99zm9.272-6.826l-.781-.78a.849.849 0 0 0-1.202 0l-.952.951c-.11.11-.11.29 0 .4l1.582 1.583a.283.283 0 0 0 .4 0l.953-.952a.85.85 0 0 0 0-1.202z"></path></svg><span class="TopstorySideBar-navText">公共编辑动态</span></a></li>-->
-                </ul>
-            </div>
-            <footer class="Footer">
-            <!--<a class="Footer-item" target="_blank" href="//liukanshan.zhihu.com/">刘看山</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/question/19581624">知乎指南</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/terms">知乎协议</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/app">应用</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/careers">工作</a><br>-->
-            <!--<a class="Footer-item" target="_blank" href="https://zhuanlan.zhihu.com/p/28561671">侵权举报</a><span class="Footer-dot">-->
-            </span><a class="Footer-item" target="_blank" href="http://www.12377.cn">网上有害信息举报专区</a><br><span class="Footer-item">违法和不良信息举报：010-82716601</span><br><!--<a class="Footer-item" target="_blank" href="/jubao">儿童色情信息举报专区</a><br>--><a class="Footer-item" target="_blank" href="/">联系我们</a><span> © 2018 大大大</span>
-            </footer>
-        </div>
-        </div>
-
-<!--
-<div class="zu-main-sidebar" data-za-module="RightSideBar">
-
-
-<div class="topics-plaza">
-<a target="_blank" href="/topics" class="zg-btn-blue">
-进入话题广场
-</a>
-<a target="_blank" href="https://www.zhihu.com/topics" class="text">
-来这里发现更多有趣话题
-</a>
-</div>
-
-<div class="topic-recommend">
-<div class="topic-recommend-head">
-<h2 class="topic-recommend-name">其他人关注的话题</h2>
-<a href="https://www.zhihu.com/topic#" class="zg-link-litblue-normal js-pager topics-pager">
-换一换
-</a>
-</div>
-<div class="topic-recommend-list js-list">
-
-
-<div class="topic-item zg-clear zm-profile-section-item zm-item">
-<div class="topic-avatar">
-<a href="https://www.zhihu.com/topic/19604128" target="_blank"><img class="Avatar Avatar--xs" src="./(1 条消息) 话题动态 - 知乎_files/a78b253d8f27af0933c63bae17bb5cb0_xs.jpg" srcset="https://pic1.zhimg.com/a78b253d8f27af0933c63bae17bb5cb0_l.jpg 2x" alt="医学"></a>
-</div>
-<div class="topic-item-content">
-<h3 class="topic-item-title">
-<a href="https://www.zhihu.com/topic/19604128" target="_blank"><strong>医学</strong></a>
-</h3>
-<a data-follow="t:link:simple" data-id="18012" data-token="19604128" href="javascript:;" class="meta-item zg-follow"><i class="z-icon-follow"></i>关注</a>
-</div>
-</div>
-
-</script>
-
-</div>
-
-
-
-</div>
--->
-
-
-</div>
-</div>
-</div>
-</main>
-
-<!--- div other--->
-<!-- 提问（Modal） -->
-<div class="modal fade" id="askModal" tabindex="-1" role="dialog" aria-labelledby="askModalLabel" aria-hidden="true">
-	<div class="modal-dialog askmodal">
-        <div class="Modal-inner">
-            <h3 class="Modal-title" id="askModalLabel">写下你的问题</h3>
-            <div class="Modal-subtitle">描述精确的问题更易得到解答</div>
-                <div class="Modal-content">
-                    <div class="QuestionAsk">
-                        <form method="post" action="/question/" id="form_ask">
-                        {% csrf_token %}            
-                            <div class="QuestionAsk-section">
-                                <div class="QuestionAsk-title">
-                                        <div class="Input-wrapper Input-wrapper--spread Input-wrapper--multiline Input-wrapper--large">
-                                        <textarea required="" name="title" rows="2" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-64372-3800-0" id="Popover-64372-42711-toggle" aria-haspopup="true" aria-owns="Popover-64372-42711-content" class="Input" placeholder="问题标题"></textarea>
-                                        </div>
-                                </div>
-                            </div>
-            
-                            <div class="QuestionAsk-section">
-                                <div class="TagInput TagInput--empty">
-                                            <select id="topics_select" name="topics_selected" class="selectpicker show-menu-arrow form-control" multiple data-live-search="true" data-max-options="5" data-style="Input-wrapper Input-wrapper--spread Input-wrapper--large" title="添加话题"></select>
-                                </div>
-                            </div>
-
-                            <input id="hide_for_submit" type="hidden" name="topics" value="null123">
-                
-                            <div class="QuestionAsk-section QuestionAsk-DetailSection">问题描述（可选）:<textarea id="summernote_question" name="detail" 1rows="5" 1cols="70" 1maxlength="160"></textarea>              
-                            </div>
-                           
-                            <div class="ModalButtonGroup QuestionAsk-buttonGroup ModalButtonGroup--vertical">
-                                <button class="1Button 1Button--primary 1Button--green btn btn-success" type="submit" form="form_ask">提交问题</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-		</div>        
-        <button data-dismiss="modal" aria-hidden="true" class="Button Modal-closeButton Button--plain close" aria-label="关闭" type="button">
-        <svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>        
-	</div>
-</div>
-<!--- div other--->
-<div id="upAvatarModal" class="modal fade 1Modal 1Modal--default 1UploadImageModal-modal" tabindex="-1" role="dialog" 1aria-labelledby="upAvatarModalLabel" 1aria-hidden="true">
-<div class="modal-dialog" style="#width:200px;">
-
-<div class="Modal-inner">
-<h3 class="Modal-title">编辑图片</h3>
-<div class="Modal-subtitle">调整图片尺寸和位置</div>
-<div class="Modal-content">
-<div>
-<div class="UploadImageModal-container">
-<div style="text-align:center">
-<img id="preview_avatar" width="300px" height="300px" alt="" >
-</div>
-<div  id="chooseBox" style="width: 200px;height: 200px;border: 1px solid #4fb8e3;position: absolute;left: 200px;top: 163px;z-index: 1000"></div>
-<canvas id="avatar_canvas" width="200" height="200" style="width: 200px; height: 200px;display:none"></canvas>
-</div>
-<div style="text-align:center">
-<svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
-<input id="adjust_choosebox"type="range" step="1" min="0" max="100" class="RangeInput" value="50" style="display:inline" oninput="adjustChooseBox()">
-<svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="22" height="22"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
-</div>
-<div class="ModalButtonGroup ModalButtonGroup--vertical">
-<button class="Button Button--primary Button--blue" type="button" onclick="saveFile()">保存</button>
-</div>
-</div>
-</div>
-</div>
-<button data-dismiss="modal" class="Button Modal-closeButton Button--plain" aria-label="关闭" type="button">
-<svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg>
-</button>
-</div>
-</div>
 
 </body>
 
