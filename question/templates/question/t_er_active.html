@@ -1,27 +1,199 @@
 ﻿<!DOCTYPE html>
-<html>
-<head>
-{%load static %}
-<meta charset="utf-8">
-<title>{{er.first_name}} - 大大大</title>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-<meta name="renderer" content="webkit"/>
-<meta name="force-rendering" content="webkit"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+<html lang="zh" data-hairline="true" data-theme="light" data-focus-method="pointer" style="">
+{% include 'question/head.html' %}
+<body class="Entry-body">
+{% include 'question/header.html' %}
 
-<link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
-<link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
-<link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'common/z_main.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'common/main.css' %}">
+<main role="main" class="App-main" data-dfs-main='{ "user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","er_id":"{{er.id}}","er_name":"{{er.first_name}}"
+,"er_avatar":"{{er.userprofile.avatar}}","er_mood":"{{er.userprofile.mood}}","er_intro":"{{er.userprofile.intro}}","er_sexual":"{{er.userprofile.sexual}}","er_residence":"{{er.userprofile.residence}}"
+,"er_job":"{{er.userprofile.job}}","followed":"{{followed}}","command":"{{command}}","subcmd":"{{subcmd}}"}'   data-dfs-ext='{"questions_num":"{{ext_info.questions_num}}","answers_num":"{{ext_info.answers_num}}"
+,"followtos_num":"{{ext_info.followtos_num}}","followers_num":"{{ext_info.followers_num}}","followtopics_num":"{{ext_info.followtopics_num}}","followquestions_num":"{{ext_info.followquestions_num}}"}'>
+<div>
+<div>
+<div id="ProfileHeader" class="ProfileHeader">
+<div class="Card">
 
-<script src="{%static 'common/jquery.js' %}"></script>
-<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
-<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
-<script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
-<script src="{% static 'common/main.js' %}"></script>
+<div class="ProfileHeader-userCover">
+<div class="UserCoverEditor">
+<div>
+<div class="UserCover UserCover--colorBlock">
+</div>
+</div>
+<input type="file" accept="image/png,image/jpeg" style="display: none;">
+</div>
+</div>
+
+<div class="ProfileHeader-wrapper">
+<div class="ProfileHeader-main">
+
+<div class="UserAvatarEditor ProfileHeader-avatar" style="top: -25px;">
+<div class="UserAvatar">
+<img id="id_avatar" class="Avatar Avatar--large UserAvatar-inner" width="160" height="160" src="" srcset="" alt="">
+</div>
+<div class="Mask UserAvatarEditor-mask Mask-hidden">
+<div class="Mask-mask Mask-mask--black UserAvatarEditor-maskInner">
+</div>
+<div class="Mask-content">
+<svg class="Zi Zi--Camera UserAvatarEditor-cameraIcon" fill="currentColor" viewBox="0 0 24 24" width="36" height="36"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill-rule="evenodd"></path></svg>
+<div class="UserAvatarEditor-maskInnerText">修改我的头像</div>
+</div>
+</div>
+<input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/>
+</div>
+
+<div class="ProfileHeader-content">
+<div class="ProfileHeader-contentHead">
+<h1 class="ProfileHeader-title">
+<span class="ProfileHeader-name"></span>
+<span class="RichText ProfileHeader-headline"></span>
+</h1>
+</div>
+<div class="ProfileHeader-contentBody" style="overflow: hidden; transition: height 300ms ease-out; height: 50px;">
+</div>
+<div class="ProfileHeader-contentFooter">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="Profile-main">
+<div class="Profile-mainColumn">
+<div class="Card ProfileMain" id="ProfileMain">
+<div class="ProfileMain-header">
+<ul role="tablist" class="Tabs ProfileMain-tabs">
+<!--
+<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities">
+<a class="Tabs-link" href="/er/{{er.id}}/activities/">动态</a>
+</li>
+
+<li role="tab" class="Tabs-item" aria-controls="Profile-answers">
+<a class="Tabs-link" href="/er/{{er.id}}/answers/">回答<span class="Tabs-meta">{{ext_info.answers_num}}</span></a>
+</li>
+<li role="tab" class="Tabs-item" aria-controls="Profile-asks">
+<a class="Tabs-link" href="/er/{{er.id}}/asks/">提问<span class="Tabs-meta">{{ext_info.questions_num}}</span></a>
+</li>
+<li role="tab" class="Tabs-item" aria-controls="Profile-posts">
+<a class="Tabs-link" href="/er/{{er.id}}/posts/">文章<span class="Tabs-meta">0</span></a>
+</li>
+
+<li role="tab" class="Tabs-item" aria-controls="Profile-columns">
+<a class="Tabs-link" href="/er/{{er.id}}/columns/">专栏<span class="Tabs-meta">0</span></a>
+</li>
+<li role="tab" class="Tabs-item" aria-controls="Profile-pins">
+<a class="Tabs-link" href="/er/{{er.id}}/pins/">想法<span class="Tabs-meta">0</span></a>
+</li>
+<li role="tab" class="Tabs-item" aria-controls="Profile-collections">
+<a class="Tabs-link" href="/er/{{er.id}}/collections/">收藏<span class="Tabs-meta">0</span></a>
+</li>
+
+<li role="tab" class="Tabs-item" aria-controls="Profile-following">
+<a class="Tabs-link" href="/er/{{er.id}}/following/">关注<span class="Tabs-meta"><svg viewBox="0 0 10 6" class="Icon ProfileMain-tabIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></span></a>
+</li>
+
+
+<li role="tab" class="Tabs-item Tabs-item--noMeta">
+<div class="Popover Tabs-link">
+<button class="Button ProfileMain-menuToggler Button--plain" type="button" id="Popover-20486-79514-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-20486-79514-content">更多<svg viewBox="0 0 10 6" class="Icon ProfileMain-tabIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
+</div>
+</li>
+-->
+
+</ul>
+</div>
+
+<div>
+<div>
+<div class="Sticky">
+</div>
+</div>
+</div>
+
+
+</div>
+</div>
+
+<div class="Profile-sideColumn">
+<div class="Card FollowshipCard">
+<!--<div class="NumberBoard FollowshipCard-counts NumberBoard--divider">
+<a class="Button NumberBoard-item Button--plain" type="button" href="/er/{{er.id}}/following/followtos"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注了</div><strong class="NumberBoard-itemValue" title="{{ext_info.followtos_num}}">{{ext_info.followtos_num}}</strong></div></a>
+<a class="Button NumberBoard-item Button--plain" type="button" href="/er/{{er.id}}/following/followers"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注者</div><strong class="NumberBoard-itemValue" title="{{ext_info.followers_num}}">{{ext_info.followers_num}}</strong></div></a>
+</div>-->
+</div>
+<div class="Profile-lightList">
+<!--<a class="Profile-lightItem" href="/er/{{er.id}}/following/topics"><span class="Profile-lightItemName">关注的话题</span><span class="Profile-lightItemValue">{{ext_info.followtopics_num}}</span></a>-->
+<!--<a class="Profile-lightItem" href="/er/{{er.id}}/following/columns"><span class="Profile-lightItemName">关注的专栏</span><span class="Profile-lightItemValue">0</span></a>-->
+<!--<a class="Profile-lightItem" href="/er/{{er.id}}/following/questions"><span class="Profile-lightItemName">关注的问题</span><span class="Profile-lightItemValue">{{ext_info.followquestions_num}}</span></a>-->
+<!--<a class="Profile-lightItem" href="/er/{{er.id}}/following/collections"><span class="Profile-lightItemName">关注的收藏夹</span><span class="Profile-lightItemValue">0</span></a>-->
+</div>
+<div class="Profile-footerOperations">个人主页被浏览 2 次</div>
+<footer class="Footer">
+<!--<a class="Footer-item" target="_blank" href="//liukanshan.zhihu.com/">刘看山</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/question/19581624">知乎指南</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/terms">知乎协议</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/app">应用</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/careers">工作</a><br>-->
+<!--<a class="Footer-item" target="_blank" href="https://zhuanlan.zhihu.com/p/28561671">侵权举报</a><span class="Footer-dot">-->
+</span><a class="Footer-item" target="_blank" href="http://www.12377.cn">网上有害信息举报专区</a><br><span class="Footer-item">违法和不良信息举报：010-82716601</span><br><!--<a class="Footer-item" target="_blank" href="/jubao">儿童色情信息举报专区</a><br>--><a class="Footer-item" target="_blank" href="/">联系我们</a><span> © 2018 大大大</span>
+</footer>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+
+<div class="CornerButtons">
+<div class="CornerAnimayedFlex">
+<button class="Button CornerButton Button--plain" data-tooltip="建议反馈" data-tooltip-position="left" aria-label="建议反馈" type="button"><svg class="Zi Zi--Feedback" title="建议反馈" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M19.99 6.99L18 5s-1-1-2-1H8C7 4 6 5 6 5L4 7S3 8 3 9v9s0 2 2.002 2H19c2 0 2-2 2-2V9c0-1-1.01-2.01-1.01-2.01zM16.5 5.5L19 8H5l2.5-2.5h9zm-2 5.5s.5 0 .5.5-.5.5-.5.5h-5s-.5 0-.5-.5.5-.5.5-.5h5z"></path></svg></button>
+</div>
+<div class="CornerAnimayedFlex CornerAnimayedFlex--hidden">
+<button class="Button CornerButton Button--plain" data-tooltip="回到顶部" data-tooltip-position="left" aria-label="回到顶部" type="button"><svg class="Zi Zi--BackToTop" title="回到顶部" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M16.036 19.59a1 1 0 0 1-.997.995H9.032a.996.996 0 0 1-.997-.996v-7.005H5.03c-1.1 0-1.36-.633-.578-1.416L11.33 4.29a1.003 1.003 0 0 1 1.412 0l6.878 6.88c.782.78.523 1.415-.58 1.415h-3.004v7.005z"></path></svg></button>
+</div>
+</div>
+</div>
+</div>
+<span><div></div></span>
+
+<!--
+<div class="Modal-wrapper">
+<div class="Modal-backdrop">
+</div>
+-->
+<div id="upAvatarModal" class="modal fade 1Modal 1Modal--default 1UploadImageModal-modal" tabindex="-1" role="dialog" 1aria-labelledby="upAvatarModalLabel" 1aria-hidden="true">
+<div class="modal-dialog" style="#width:200px;">
+
+<div class="Modal-inner">
+<h3 class="Modal-title">编辑头像</h3>
+<div class="Modal-subtitle">调整头像尺寸和位置</div>
+<div class="Modal-content">
+<div>
+<div class="UploadImageModal-container">
+<div style="text-align:center">
+<img id="preview_avatar" width="300px" height="300px" alt="" >
+</div>
+<div  id="chooseBox" style="width: 200px;height: 200px;border: 1px solid #4fb8e3;position: absolute;left: 200px;top: 163px;z-index: 1000"></div>
+<canvas id="avatar_canvas" width="200" height="200" style="width: 200px; height: 200px;display:none"></canvas>
+</div>
+<div style="text-align:center">
+<svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
+<input id="adjust_choosebox"type="range" step="1" min="0" max="100" class="RangeInput" value="50" style="display:inline" oninput="adjustChooseBox()">
+<svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="22" height="22"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
+</div>
+<div class="ModalButtonGroup ModalButtonGroup--vertical">
+<button class="Button Button--primary Button--blue" type="button" onclick="saveFile()">保存</button>
+</div>
+</div>
+</div>
+</div>
+<button data-dismiss="modal" class="Button Modal-closeButton Button--plain" aria-label="关闭" type="button">
+<svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg>
+</button>
+</div>
+</div>
+<!-- ask（Modal） -->
+{% include 'question/ask_modal.html' %}
+<!-- ask（Modal） -->
+
+<!-- letter（Modal） -->
+<!-- append by js -->
+<!-- letter（Modal） -->
 <script>
 function appendFollowElementSub(subcmd,ret)
 {
@@ -815,303 +987,5 @@ function init()
 
 }
 </script>
-</head>
-
-<body class="Entry-body">
-<header  role="banner" class="123Sticky AppHeader">
-<div class="AppHeader-inner">
-
-<div class="container">
-<div class="row">
-<div class="col-md-1">
-<a href="/" aria-label="大大大">
-<svg viewBox="0 0 200 91" class="Icon Icon--logo" width="64" height="30" aria-hidden="true" style="fill: rgb(15, 136, 235); height: 30px; width: 64px;">
-<title></title><g><path d="M53.29 80.035l7.32.002 2.41 8.24 13.128-8.24h15.477v-67.98H53.29v67.978zm7.79-60.598h22.756v53.22h-8.73l-8.718 5.473-1.587-5.46-3.72-.012v-53.22zM46.818 43.162h-16.35c.545-8.467.687-16.12.687-22.955h15.987s.615-7.05-2.68-6.97H16.807c1.09-4.1 2.46-8.332 4.1-12.708 0 0-7.523 0-10.085 6.74-1.06 2.78-4.128 13.48-9.592 24.41 1.84-.2 7.927-.37 11.512-6.94.66-1.84.785-2.08 1.605-4.54h9.02c0 3.28-.374 20.9-.526 22.95H6.51c-3.67 0-4.863 7.38-4.863 7.38H22.14C20.765 66.11 13.385 79.24 0 89.62c6.403 1.828 12.784-.29 15.937-3.094 0 0 7.182-6.53 11.12-21.64L43.92 85.18s2.473-8.402-.388-12.496c-2.37-2.788-8.768-10.33-11.496-13.064l-4.57 3.627c1.363-4.368 2.183-8.61 2.46-12.71H49.19s-.027-7.38-2.372-7.38zm128.752-.502c6.51-8.013 14.054-18.302 14.054-18.302s-5.827-4.625-8.556-1.27c-1.874 2.548-11.51 15.063-11.51 15.063l6.012 4.51zm-46.903-18.462c-2.814-2.577-8.096.667-8.096.667s12.35 17.2 12.85 17.953l6.08-4.29s-8.02-11.752-10.83-14.33zM199.99 46.5c-6.18 0-40.908.292-40.953.292v-31.56c1.503 0 3.882-.124 7.14-.376 12.773-.753 21.914-1.25 27.427-1.504 0 0 3.817-8.496-.185-10.45-.96-.37-7.24 1.43-7.24 1.43s-51.63 5.153-72.61 5.64c.5 2.756 2.38 5.336 4.93 6.11 4.16 1.087 7.09.53 15.36.277 7.76-.5 13.65-.76 17.66-.76v31.19h-41.71s.88 6.97 7.97 7.14h33.73v22.16c0 4.364-3.498 6.87-7.65 6.6-4.4.034-8.15-.36-13.027-.566.623 1.24 1.977 4.496 6.035 6.824 3.087 1.502 5.054 2.053 8.13 2.053 9.237 0 14.27-5.4 14.027-14.16V53.93h38.235c3.026 0 2.72-7.432 2.72-7.432z" fill-rule="evenodd"></path></g>
-</svg>
-</a>
-</div>
-<nav role="navigation" class="col-md-3">
-<a class="AppHeader-navItem" href="/">首页</a>
-<a class="AppHeader-navItem" href="/trade">买卖</a>
-<a class="AppHeader-navItem" href="/topic">话题</a>
-</nav>
-
-
-<div class="SearchBar col-md-6" role="search">
-<div class="SearchBar-toolWrapper">
-<form class="SearchBar-tool">
-<div>
-<div class="1Popover">
-<div class="SearchBar-input Input-wrapper Input-wrapper--grey">
-<input type="text" maxlength="120" value="" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-41236-89421--1" id="Popover-41236-42847-toggle" aria-haspopup="true" aria-owns="Popover-41236-42847-content" class="Input" placeholder="搜索你感兴趣的内容…">
-<div class="Input-after">
-<button class="Button SearchBar-searchIcon Button--primary" aria-label="搜索" type="button" data-reactid="25"><svg viewBox="0 0 16 16" class="Icon Icon--search" style="height:16px;width:16px;" width="16" height="16" aria-hidden="true" data-reactid="26"><title data-reactid="27"></title><g data-reactid="28"><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg>
-</button>
-</div>
-</div>
-</div>
-</div>
-</form>
-</div>
-<button class="1Button QuestionAskButton SearchBar-askButton 1Button--primary 1Button--green btn btn-success" type="button" data-toggle="modal" data-target="#askModal">提问</button>
-</div>
-
-
-<div class="AppHeader-userInfo col-md-2">
-<div class="1Popover PushNotifications AppHeader-notifications">
-<button class="1Button PushNotifications-icon 1Button--plain" type="button" id="NotificationPopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
-<svg viewBox="0 0 20 22" class="Icon Icon--news" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M2.502 14.08C3.1 10.64 2 3 8.202 1.62 8.307.697 9.08 0 10 0s1.694.697 1.797 1.62C18 3 16.903 10.64 17.497 14.076c.106 1.102.736 1.855 1.7 2.108.527.142.868.66.793 1.206-.075.546-.542.95-1.09.943H1.1C.55 18.34.084 17.936.01 17.39c-.075-.547.266-1.064.794-1.206.963-.253 1.698-1.137 1.698-2.104zM10 22c-1.417.003-2.602-1.086-2.73-2.51-.004-.062.02-.124.063-.17.043-.045.104-.07.166-.07h5c.063 0 .124.025.167.07.044.046.067.108.063.17-.128 1.424-1.313 2.513-2.73 2.51z"></path></g>
-</svg>
-</button>
-</div>
-
-<div class="1Popover Messages AppHeader-messages">
-<button class="1Button Messages-icon 1Button--plain" id="MessagePopover" type="button" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
-<svg viewBox="0 0 20 20" class="Icon Icon--message" width="20" height="20" aria-hidden="true" style="height: 20px; width: 20px;"><title></title><g><path d="M9 0C3.394 0 0 4.13 0 8c0 1.654.522 3.763 2.014 5.566.314.292.518.82.454 1.17-.165 1.488-.842 1.905-.842 1.905-.328.332.105.67.588.582 1.112-.2 2.07-.58 3.526-1.122.4-.202.464-.147.78-.078C11.524 17.764 18 14 18 8c0-3.665-3.43-8-9-8z"></path><path d="M19.14 9.628c.758.988.86 2.01.86 3.15 0 1.195-.62 3.11-1.368 3.938-.21.23-.354.467-.308.722.12 1.073.614 1.5.614 1.5.237.24-.188.563-.537.5-.802-.145-1.494-.42-2.545-.81-.29-.146-.336-.106-.563-.057-2.043.712-4.398.476-6.083-.926 5.964-.524 8.726-3.03 9.93-8.016z"></path></g>
-</svg>
-</button>
-</div>
-
-<div class="AppHeader-profile">
-<div class="1Popover AppHeader-menu">
-<img class="Avatar AppHeader-profileAvatar" id="MenuPopover" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body" width="30" height="30" src="" srcset="" alt="">
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-</div>
-</header>
-
-</div>
-<main role="main" class="App-main" data-dfs-main='{ "user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","er_id":"{{er.id}}","er_name":"{{er.first_name}}"
-,"er_avatar":"{{er.userprofile.avatar}}","er_mood":"{{er.userprofile.mood}}","er_intro":"{{er.userprofile.intro}}","er_sexual":"{{er.userprofile.sexual}}","er_residence":"{{er.userprofile.residence}}"
-,"er_job":"{{er.userprofile.job}}","followed":"{{followed}}","command":"{{command}}","subcmd":"{{subcmd}}"}'   data-dfs-ext='{"questions_num":"{{ext_info.questions_num}}","answers_num":"{{ext_info.answers_num}}"
-,"followtos_num":"{{ext_info.followtos_num}}","followers_num":"{{ext_info.followers_num}}","followtopics_num":"{{ext_info.followtopics_num}}","followquestions_num":"{{ext_info.followquestions_num}}"}'>
-<div>
-<div>
-<div id="ProfileHeader" class="ProfileHeader">
-<div class="Card">
-
-<div class="ProfileHeader-userCover">
-<div class="UserCoverEditor">
-<div>
-<div class="UserCover UserCover--colorBlock">
-</div>
-</div>
-<input type="file" accept="image/png,image/jpeg" style="display: none;">
-</div>
-</div>
-
-<div class="ProfileHeader-wrapper">
-<div class="ProfileHeader-main">
-
-<div class="UserAvatarEditor ProfileHeader-avatar" style="top: -25px;">
-<div class="UserAvatar">
-<img id="id_avatar" class="Avatar Avatar--large UserAvatar-inner" width="160" height="160" src="" srcset="" alt="">
-</div>
-<div class="Mask UserAvatarEditor-mask Mask-hidden">
-<div class="Mask-mask Mask-mask--black UserAvatarEditor-maskInner">
-</div>
-<div class="Mask-content">
-<svg class="Zi Zi--Camera UserAvatarEditor-cameraIcon" fill="currentColor" viewBox="0 0 24 24" width="36" height="36"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill-rule="evenodd"></path></svg>
-<div class="UserAvatarEditor-maskInnerText">修改我的头像</div>
-</div>
-</div>
-<input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/>
-</div>
-
-<div class="ProfileHeader-content">
-<div class="ProfileHeader-contentHead">
-<h1 class="ProfileHeader-title">
-<span class="ProfileHeader-name"></span>
-<span class="RichText ProfileHeader-headline"></span>
-</h1>
-</div>
-<div class="ProfileHeader-contentBody" style="overflow: hidden; transition: height 300ms ease-out; height: 50px;">
-</div>
-<div class="ProfileHeader-contentFooter">
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="Profile-main">
-<div class="Profile-mainColumn">
-<div class="Card ProfileMain" id="ProfileMain">
-<div class="ProfileMain-header">
-<ul role="tablist" class="Tabs ProfileMain-tabs">
-<!--
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities">
-<a class="Tabs-link" href="/er/{{er.id}}/activities/">动态</a>
-</li>
-
-<li role="tab" class="Tabs-item" aria-controls="Profile-answers">
-<a class="Tabs-link" href="/er/{{er.id}}/answers/">回答<span class="Tabs-meta">{{ext_info.answers_num}}</span></a>
-</li>
-<li role="tab" class="Tabs-item" aria-controls="Profile-asks">
-<a class="Tabs-link" href="/er/{{er.id}}/asks/">提问<span class="Tabs-meta">{{ext_info.questions_num}}</span></a>
-</li>
-<li role="tab" class="Tabs-item" aria-controls="Profile-posts">
-<a class="Tabs-link" href="/er/{{er.id}}/posts/">文章<span class="Tabs-meta">0</span></a>
-</li>
-
-<li role="tab" class="Tabs-item" aria-controls="Profile-columns">
-<a class="Tabs-link" href="/er/{{er.id}}/columns/">专栏<span class="Tabs-meta">0</span></a>
-</li>
-<li role="tab" class="Tabs-item" aria-controls="Profile-pins">
-<a class="Tabs-link" href="/er/{{er.id}}/pins/">想法<span class="Tabs-meta">0</span></a>
-</li>
-<li role="tab" class="Tabs-item" aria-controls="Profile-collections">
-<a class="Tabs-link" href="/er/{{er.id}}/collections/">收藏<span class="Tabs-meta">0</span></a>
-</li>
-
-<li role="tab" class="Tabs-item" aria-controls="Profile-following">
-<a class="Tabs-link" href="/er/{{er.id}}/following/">关注<span class="Tabs-meta"><svg viewBox="0 0 10 6" class="Icon ProfileMain-tabIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></span></a>
-</li>
-
-
-<li role="tab" class="Tabs-item Tabs-item--noMeta">
-<div class="Popover Tabs-link">
-<button class="Button ProfileMain-menuToggler Button--plain" type="button" id="Popover-20486-79514-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-20486-79514-content">更多<svg viewBox="0 0 10 6" class="Icon ProfileMain-tabIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
-</div>
-</li>
--->
-
-</ul>
-</div>
-
-<div>
-<div>
-<div class="Sticky">
-</div>
-</div>
-</div>
-
-
-</div>
-</div>
-
-<div class="Profile-sideColumn">
-<div class="Card FollowshipCard">
-<!--<div class="NumberBoard FollowshipCard-counts NumberBoard--divider">
-<a class="Button NumberBoard-item Button--plain" type="button" href="/er/{{er.id}}/following/followtos"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注了</div><strong class="NumberBoard-itemValue" title="{{ext_info.followtos_num}}">{{ext_info.followtos_num}}</strong></div></a>
-<a class="Button NumberBoard-item Button--plain" type="button" href="/er/{{er.id}}/following/followers"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注者</div><strong class="NumberBoard-itemValue" title="{{ext_info.followers_num}}">{{ext_info.followers_num}}</strong></div></a>
-</div>-->
-</div>
-<div class="Profile-lightList">
-<!--<a class="Profile-lightItem" href="/er/{{er.id}}/following/topics"><span class="Profile-lightItemName">关注的话题</span><span class="Profile-lightItemValue">{{ext_info.followtopics_num}}</span></a>-->
-<!--<a class="Profile-lightItem" href="/er/{{er.id}}/following/columns"><span class="Profile-lightItemName">关注的专栏</span><span class="Profile-lightItemValue">0</span></a>-->
-<!--<a class="Profile-lightItem" href="/er/{{er.id}}/following/questions"><span class="Profile-lightItemName">关注的问题</span><span class="Profile-lightItemValue">{{ext_info.followquestions_num}}</span></a>-->
-<!--<a class="Profile-lightItem" href="/er/{{er.id}}/following/collections"><span class="Profile-lightItemName">关注的收藏夹</span><span class="Profile-lightItemValue">0</span></a>-->
-</div>
-<div class="Profile-footerOperations">个人主页被浏览 2 次</div>
-<footer class="Footer">
-<!--<a class="Footer-item" target="_blank" href="//liukanshan.zhihu.com/">刘看山</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/question/19581624">知乎指南</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/terms">知乎协议</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/app">应用</a><span class="Footer-dot"></span><a class="Footer-item" target="_blank" href="/careers">工作</a><br>-->
-<!--<a class="Footer-item" target="_blank" href="https://zhuanlan.zhihu.com/p/28561671">侵权举报</a><span class="Footer-dot">-->
-</span><a class="Footer-item" target="_blank" href="http://www.12377.cn">网上有害信息举报专区</a><br><span class="Footer-item">违法和不良信息举报：010-82716601</span><br><!--<a class="Footer-item" target="_blank" href="/jubao">儿童色情信息举报专区</a><br>--><a class="Footer-item" target="_blank" href="/">联系我们</a><span> © 2018 大大大</span>
-</footer>
-</div>
-</div>
-</div>
-</div>
-</main>
-
-
-<div class="CornerButtons">
-<div class="CornerAnimayedFlex">
-<button class="Button CornerButton Button--plain" data-tooltip="建议反馈" data-tooltip-position="left" aria-label="建议反馈" type="button"><svg class="Zi Zi--Feedback" title="建议反馈" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M19.99 6.99L18 5s-1-1-2-1H8C7 4 6 5 6 5L4 7S3 8 3 9v9s0 2 2.002 2H19c2 0 2-2 2-2V9c0-1-1.01-2.01-1.01-2.01zM16.5 5.5L19 8H5l2.5-2.5h9zm-2 5.5s.5 0 .5.5-.5.5-.5.5h-5s-.5 0-.5-.5.5-.5.5-.5h5z"></path></svg></button>
-</div>
-<div class="CornerAnimayedFlex CornerAnimayedFlex--hidden">
-<button class="Button CornerButton Button--plain" data-tooltip="回到顶部" data-tooltip-position="left" aria-label="回到顶部" type="button"><svg class="Zi Zi--BackToTop" title="回到顶部" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M16.036 19.59a1 1 0 0 1-.997.995H9.032a.996.996 0 0 1-.997-.996v-7.005H5.03c-1.1 0-1.36-.633-.578-1.416L11.33 4.29a1.003 1.003 0 0 1 1.412 0l6.878 6.88c.782.78.523 1.415-.58 1.415h-3.004v7.005z"></path></svg></button>
-</div>
-</div>
-</div>
-</div>
-<span><div></div></span>
-
-<!--
-<div class="Modal-wrapper">
-<div class="Modal-backdrop">
-</div>
--->
-<div id="upAvatarModal" class="modal fade 1Modal 1Modal--default 1UploadImageModal-modal" tabindex="-1" role="dialog" 1aria-labelledby="upAvatarModalLabel" 1aria-hidden="true">
-<div class="modal-dialog" style="#width:200px;">
-
-<div class="Modal-inner">
-<h3 class="Modal-title">编辑头像</h3>
-<div class="Modal-subtitle">调整头像尺寸和位置</div>
-<div class="Modal-content">
-<div>
-<div class="UploadImageModal-container">
-<div style="text-align:center">
-<img id="preview_avatar" width="300px" height="300px" alt="" >
-</div>
-<div  id="chooseBox" style="width: 200px;height: 200px;border: 1px solid #4fb8e3;position: absolute;left: 200px;top: 163px;z-index: 1000"></div>
-<canvas id="avatar_canvas" width="200" height="200" style="width: 200px; height: 200px;display:none"></canvas>
-</div>
-<div style="text-align:center">
-<svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
-<input id="adjust_choosebox"type="range" step="1" min="0" max="100" class="RangeInput" value="50" style="display:inline" oninput="adjustChooseBox()">
-<svg class="Zi Zi--Size" fill="currentColor" viewBox="0 0 24 24" width="22" height="22"><path d="M16.296 7h.697A1.01 1.01 0 0 1 18 8.003v10.995c0 .554-.45 1.003-1.007 1.003H4.007A1.01 1.01 0 0 1 3 18.998V8.003C3 7.449 3.45 7 4.007 7h12.289zm-.892 11a.6.6 0 0 0 .597-.601V9.601A.597.597 0 0 0 15.405 9H5.596A.599.599 0 0 0 5 9.602v7.797c0 .335.267.601.596.601h9.808zM7 4h13a1 1 0 0 1 1 1v11a1 1 0 0 1-2 0V6.5c0-.5-.5-.5-.5-.5H7a1 1 0 0 1 0-2z" fill-rule="evenodd"></path></svg>
-</div>
-<div class="ModalButtonGroup ModalButtonGroup--vertical">
-<button class="Button Button--primary Button--blue" type="button" onclick="saveFile()">保存</button>
-</div>
-</div>
-</div>
-</div>
-<button data-dismiss="modal" class="Button Modal-closeButton Button--plain" aria-label="关闭" type="button">
-<svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg>
-</button>
-</div>
-</div>
-<!--</div>-->
-
-<!-- 提问（Modal） -->
-<div class="modal fade" id="askModal" tabindex="-1" role="dialog" aria-labelledby="askModalLabel" aria-hidden="true">
-	<div class="modal-dialog askmodal">
-        <div class="Modal-inner">
-            <h3 class="Modal-title" id="askModalLabel">写下你的问题</h3>
-            <div class="Modal-subtitle">描述精确的问题更易得到解答</div>
-                <div class="Modal-content">
-                    <div class="QuestionAsk">
-                        <form method="post" action="/question/" id="form_ask">
-                        {% csrf_token %}            
-                            <div class="QuestionAsk-section">
-                                <div class="QuestionAsk-title">
-                                        <div class="Input-wrapper Input-wrapper--spread Input-wrapper--multiline Input-wrapper--large">
-                                        <textarea required="" name="title" rows="2" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-64372-3800-0" id="Popover-64372-42711-toggle" aria-haspopup="true" aria-owns="Popover-64372-42711-content" class="Input" placeholder="问题标题"></textarea>
-                                        </div>
-                                </div>
-                            </div>
-            
-                            <div class="QuestionAsk-section">
-                                <div class="TagInput TagInput--empty">
-                                            <select id="topics_select" name="topics_selected" class="selectpicker show-menu-arrow form-control" multiple data-live-search="true" data-max-options="5" data-style="Input-wrapper Input-wrapper--spread Input-wrapper--large" title="添加话题">
-                                            </select>
-                                </div>
-                            </div>
-
-                            <input id="hide_for_submit" type="hidden" name="topics" value="null123">
-                
-                            <div class="QuestionAsk-section QuestionAsk-DetailSection">问题描述（可选）:<textarea id="summernote_question" name="detail" 1rows="5" 1cols="70" 1maxlength="160"></textarea>              
-                            </div>
-                           
-                            <div class="ModalButtonGroup QuestionAsk-buttonGroup ModalButtonGroup--vertical">
-                                <button class="1Button 1Button--primary 1Button--green btn btn-success" type="submit" form="form_ask">提交问题</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-		</div>        
-        <button data-dismiss="modal" aria-hidden="true" class="Button Modal-closeButton Button--plain close" aria-label="关闭" type="button">
-        <svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>        
-	</div>
-</div>
-<!--- div other--->
 </body>
 </html>

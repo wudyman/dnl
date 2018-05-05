@@ -172,7 +172,7 @@ class SettingsView(LoginRequiredMixin,generic.ListView):
                 self.sub_type='profile'
             return render(request,self.template_name,{'type':self.type,'sub_type':self.sub_type,'logged':'true'})
         else:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/signinup/')
         #user=request.user #get_object_or_404(User,username=request.user)
         #conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
         #conversation_list=conversations.order_by('-update_date')[:10]
@@ -186,13 +186,14 @@ class AnswerView(LoginRequiredMixin,generic.ListView):
         return
     def get(self,request,*args,**kwargs):
         user=request.user
-        if user:
+        if user.is_authenticated:
+            logged='true'
             self.type=request.GET.get('type')
             if not self.type:
                 self.type='recommend'
-            return render(request,self.template_name,{'type':self.type})
+            return render(request,self.template_name,{'type':self.type,'logged':logged})
         else:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/signinup/')
         
 class SearchView(generic.ListView):
     #login_url='/'
@@ -209,25 +210,34 @@ class SearchView(generic.ListView):
         print('is moblie:',is_mobile)
         if is_mobile:
             self.template_name='question/t_search_mobile.html'
-        user=request.user
         self.keyword=request.GET.get('q')
         if not self.keyword:
             self.keyword=''
         self.type=request.GET.get('type')
         if not self.type:
             self.type=''
+        user=request.user
         if user.is_authenticated:
             return render(request,self.template_name,{'keyword':self.keyword,'type':self.type,'logged':'true'})
         else:
             return render(request,self.template_name,{'keyword':self.keyword,'type':self.type,'logged':'false'})
         
-class WriteView(LoginRequiredMixin,generic.ListView):
+class WriteView(generic.ListView):
     login_url='/'
     template_name='question/t_no_feature.html'
     def get_queryset(self):
         return
     def get(self,request,*args,**kwargs):
-        return render(request,self.template_name)
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print('is moblie:',is_mobile)
+        if is_mobile:
+            self.template_name='question/t_no_feature.html'
+        user=request.user
+        if user.is_authenticated:
+            return render(request,self.template_name,{'logged':'true'})
+        else:
+            return HttpResponseRedirect('/signinup/')
         
 class TradeView(LoginRequiredMixin,generic.ListView):
     login_url='/'
@@ -235,4 +245,13 @@ class TradeView(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         return
     def get(self,request,*args,**kwargs):
-        return render(request,self.template_name)
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print('is moblie:',is_mobile)
+        if is_mobile:
+            self.template_name='question/t_no_feature.html'
+        user=request.user
+        if user.is_authenticated:
+            return render(request,self.template_name,{'logged':'true'})
+        else:
+            return HttpResponseRedirect('/signinup/')
