@@ -58,7 +58,7 @@
 <!-- letter（Modal） -->
 <script>
 function getMoreData() { 
-    var nums=$('.QuestionFrame').length;
+    var nums=g_last_getmoredata_index;
     var order=1;//pub_date
     var start=nums;
     var end=start+STEP;
@@ -67,6 +67,7 @@ function getMoreData() {
         {
             appendAnswerElementCard(ret,"has_topic_question_title");  
             checkSets();
+            g_last_getmoredata_index+=STEP;
         }
         setLockScrollMoreData("false");
     });

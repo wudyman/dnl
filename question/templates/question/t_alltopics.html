@@ -116,17 +116,19 @@ function appendTopicElement(ret)
     }
 } 
 function getMoreData(step) { 
-    var nums=$('.item.even').length;
+    var nums=g_last_getmoredata_index;///;;$('.item.even').length;
     var bIsGetAll="0";//pub_date
     var start=nums;
-    var end=start+step;
+    var end=start+step*20;
     $.get('/ajax/topics/'+bIsGetAll+'/'+start+'/'+end+'/',function(ret){
         if("fail"!=ret)
         {
             appendTopicElement(ret); 
             followTopics();            
             checkSets();
+            g_last_getmoredata_index+=STEP*20;
         }
+        setLockScrollMoreData("false");
     });
 } 
 function init()

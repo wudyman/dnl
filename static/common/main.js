@@ -1,3 +1,129 @@
+function adjustChooseBox()
+{
+    var width=200;
+    var height=200;
+    var left=$("#preview_avatar").position().left+50;
+    var top=$("#preview_avatar").position().top+50;
+   
+    var refLeft=$("#preview_avatar").position().left;
+    var refTop=$("#preview_avatar").position().top;
+  
+    var adjust=$("#adjust_choosebox").val();
+    width=width+(adjust-50)*2;
+    height=height+(adjust-50)*2;
+    left=left-adjust+50;
+    top=top-adjust+50;
+    
+    $('#chooseBox').css({
+                    width:width+'px',
+                    height:height+'px',
+                    left:left+'px',
+                    top:top+'px'
+    });
+    
+    
+    $('#chooseBox').mousedown(function (e) {
+            var originX= e.offsetX;
+            var originY= e.offsetY;
+            left=$("#chooseBox").position().left;
+            top=$("#chooseBox").position().top;
+            console.log("mousedown");
+            window.onmousemove=function (e) {
+                $('#chooseBox').css({
+                    position:'absolute',
+                    left:left+e.offsetX-originX+'px',
+                    top: top+e.offsetY-originY+'px'
+                });              
+                
+                if($('#chooseBox').position().left<=refLeft){
+                    $('#chooseBox').css({
+                        left:refLeft+'px'
+                    });
+                }
+                if($('#chooseBox').position().left>=refLeft+300-width){
+                    $('#chooseBox').css({
+                        left:refLeft+300-width+'px'
+                    });
+                }
+                if($('#chooseBox').position().top<=refTop){
+                    $('#chooseBox').css({
+                        top:refTop+'px'
+                    });
+                }
+                if($('#chooseBox').position().top>=refTop+300-height){
+                    $('#chooseBox').css({
+                        top:refTop+300-height+'px'
+                    });
+                }
+                
+                $('#chooseBox').mouseout(function () {
+                    console.log("mouseout");
+                    window.onmousemove=null;
+                    return
+                })
+            };
+            window.onmouseup= function () {
+                console.log("onmouseup");
+                window.onmousemove=null;
+                return
+            }
+        });
+}
+
+function getObjectURL(file) {
+    var url = null ;
+    if (window.createObjectURL!=undefined) { // basic
+        url = window.createObjectURL(file) ;
+    } else if (window.URL!=undefined) { // mozilla(firefox)
+        url = window.URL.createObjectURL(file) ;
+    } else if (window.webkitURL!=undefined) { // webkit or chrome
+        url = window.webkitURL.createObjectURL(file) ;
+    }
+    return url ;
+}
+
+function checkAvatar(){
+    $(".Avatar-editor").hover(
+        function(){
+            $(".Mask").removeClass("Mask-hidden");
+        },
+        function(){
+            $(".Mask").addClass("Mask-hidden");
+        }
+    );
+    
+    $(".Mask-content").click(function(){
+            $("#id_avatar_input").click();
+            $("#id_avatar_input").on("change",function(){
+               $("#upAvatarModal").modal('show');
+                var objUrl = getObjectURL(this.files[0]);
+                if (objUrl) { 
+                    $("#preview_avatar").attr("src", objUrl);
+                    $("#adjust_choosebox").val(50);                    
+                    
+                    setTimeout(adjustChooseBox,1*1000);
+                }
+            });
+    });
+    
+    $(".AvatarSave").click(function(){
+        var type=$(this).attr("data-avatar-type");
+        var img=document.getElementById("preview_avatar");
+        imgWidth=img.naturalWidth;
+        var can=document.getElementById("avatar_canvas");
+        var ctx=can.getContext("2d");
+        var newX=($('#chooseBox').position().left-$('#preview_avatar').position().left)*(img.naturalWidth/300);
+        var newY=($('#chooseBox').position().top-$('#preview_avatar').position().top)*(img.naturalHeight/300);
+        var newWidth=newHeight=(200+($("#adjust_choosebox").val()-50)*2)*(img.naturalWidth/300);
+        var newHeight=(200+($("#adjust_choosebox").val()-50)*2)*(img.naturalHeight/300);
+        ctx.drawImage(img,newX,newY,newWidth,newHeight,0,0,200,200);
+        can.toBlob(function(blobUrl){
+            console.log(blobUrl);
+            uploadImage(type,blobUrl);
+        },"image/jpeg"); 
+    });
+}
+
 function getScrollTop() 
 { 
     var scrollTop = 0; 
@@ -86,6 +212,8 @@ function uploadImage(type,file)
 {
     if("forAvatar"==type)
         var url_data="/ajax/upload/avatar/";
+    else if("forTopicAvatar"==type)
+        var url_data="/ajax/upload/topic_avatar/"+g_topic_id+"/";
     else
         var url_data="/ajax/upload/img/";
     var data=new FormData();
@@ -104,8 +232,11 @@ function uploadImage(type,file)
                     $("#summernote_question").summernote('insertImage', url, 'image name'); // the insertImage API
                 else if("forAnswer"==type)
                     $("#summernote_answer").summernote('insertImage', url, 'image name'); // the insertImage API
-                else if("forAvatar"==type)
-                    $("#id_avatar").attr("src",url).attr("srcset",url);  
+                else if(("forAvatar"==type)||("forTopicAvatar"==type))
+                {
+                    $("#upAvatarModal").modal('hide');
+                    $("#id_avatar").attr("src",url).attr("srcset",url);
+                }                  
             }
         }
     });
@@ -451,7 +582,6 @@ function appendAnswerElementList(ret,type)
             var question_title=ret[i][2];
             var answer_content=ret[i][3];
             var answer_like_nums=ret[i][4];
-            console.log(answer_content);
             var index_img_url=getIndexImg(answer_content);
             var rich_content='<div class="RichContent is-collapsed">\
                                 <div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'">\
@@ -977,6 +1107,7 @@ function initCommon()
 {
     notifications="null";
     messages="null";
+    g_last_getmoredata_index=0;
     $('#summernote_question').summernote({
         toolbar: [
         // [groupName, [list of button]]
