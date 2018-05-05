@@ -1,28 +1,72 @@
 ﻿<!DOCTYPE html>
-<html>
-<head>
-{%load static %}
-<meta charset="utf-8">
-<title>{{er.first_name}} - 大农令</title>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
-<meta name="renderer" content="webkit">
-<meta name="force-rendering" content="webkit">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<html lang="zh" data-hairline="true" data-android="true" data-theme="light">
+{% include 'question/head_mobile.html' %}
+<body class="Mobile-body">
+<div id="root">
+<div class="App">
+<div class="LoadingBar"></div>
+<div>
+{% include 'question/header_mobile.html' %}
+</div>
+<div class="PageHeader">
+<div class="Profile-tabs">
+<ul role="tablist" class="Tabs ProfileBar">
+<!-------------ul_list---------------->
+</ul>
+</div>
+</div>
 
-
-<link rel="stylesheet" href="{% static 'common/bootstrap-3.3.7/css/bootstrap.css' %}">
-<link rel="stylesheet" href="{% static 'common/bootstrap-select-1.12.4/css/bootstrap-select.css' %}">
-<link rel="stylesheet" href="{% static 'common/summernote-0.8.8/summernote.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'common/mobile_z_main.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'common/mobile_main.css' %}">
-
-<script src="{%static 'common/jquery.js' %}"></script>
-<script src="{% static 'common/bootstrap-3.3.7/js/bootstrap.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/bootstrap-select.js' %}"></script>
-<script src="{% static 'common/bootstrap-select-1.12.4/js/i18n/defaults-zh_CN.js' %}"></script>
-<script src="{% static 'common/summernote-0.8.8/summernote.js' %}"></script>
-<script src="{% static 'common/summernote-0.8.8/lang/summernote-zh-CN.js' %}"></script>
-<script src="{% static 'common/mobile_main.js' %}"></script>
+<main role="main" class="App-main" data-module="home" data-dfs-main='{ "user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","er_id":"{{er.id}}","er_name":"{{er.first_name}}"
+,"er_avatar":"{{er.userprofile.avatar}}","er_mood":"{{er.userprofile.mood}}","er_intro":"{{er.userprofile.intro}}","er_sexual":"{{er.userprofile.sexual}}","er_residence":"{{er.userprofile.residence}}"
+,"er_job":"{{er.userprofile.job}}","followed":"{{followed}}","command":"{{command}}","subcmd":"{{subcmd}}"}'   data-dfs-ext='{"questions_num":"{{ext_info.questions_num}}","answers_num":"{{ext_info.answers_num}}"
+,"followtos_num":"{{ext_info.followtos_num}}","followers_num":"{{ext_info.followers_num}}","followtopics_num":"{{ext_info.followtopics_num}}","followquestions_num":"{{ext_info.followquestions_num}}"}'>
+<div class="Profile">
+<div class="Card">
+<div class="Profile-intro">
+<img class="Profile-avatar" src="" alt="">
+<div class="Profile-name"></div>
+<div class="RichText Profile-headline"></div>
+<div class="MobileQuestionButtonGroup" style="margin:12px auto;">
+<button class="Button ProfileEditButton Button--primary Button--blue" onClick="profileEdit()">编辑个人资料</button>
+<button class="Button FollowButton ProfileFollowButton Button--primary Button--blue" type="button" data-follow-type="people"></button>
+<button class="Button ProfileLetterButton Button--grey Button--withIcon Button--withLabel" type="button" data-toggle="modal" data-target="#letterModal"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comments Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M11 2c5.571 0 9 4.335 9 8 0 6-6.475 9.764-11.481 8.022-.315-.07-.379-.124-.78.078-1.455.54-2.413.921-3.525 1.122-.483.087-.916-.25-.588-.581 0 0 .677-.417.842-1.904.064-.351-.14-.879-.454-1.171A8.833 8.833 0 0 1 2 10c0-3.87 3.394-8 9-8zm10.14 9.628c.758.988.86 2.009.86 3.15 0 1.195-.619 3.11-1.368 3.938-.209.23-.354.467-.308.722.12 1.073.614 1.501.614 1.501.237.239-.188.562-.537.5-.803-.146-1.495-.42-2.546-.811-.29-.146-.336-.106-.563-.057-2.043.711-4.398.475-6.083-.927 5.965-.524 8.727-3.03 9.93-8.016z" fill-rule="evenodd"></path></svg></span>发私信</button>
+</div>
+<div class="Profile-infos">
+<div class="Profile-infosDes Profile-infosDesEllipsis">
+<span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Education" fill="#999" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M12 4L1 7.94v.588l4.153 2.73v5.166C5.158 16.758 8.028 20 12 20c3.972 0 6.808-3.116 6.85-3.576l.006-5.163 4.129-2.733.015-.586L12 4z" fill-rule="evenodd"></path></svg></span>
+<span id="residence"></span>
+<div class="ProfileHeader-infosDivider"></div>
+<span id="job"></span>
+</div>
+<button class="Profile-infosOia" onClick="profileDetailShow()">详细资料 <span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--ArrowRight" fill="#8590a6" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z" fill-rule="evenodd"></path></svg></span></button>
+</div>
+<div class="Profile-badges">
+<div class="Profile-badgeItem">
+<span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Like" fill="#0f88eb" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.718 10.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.649.718.649h1.45c.916 0 .847-.649.847-.649v-9.554c-.09-.879-.854-.791-.847-.791l-2.446.022zm11.727-.05s.756-1.577 1.156-4.083c.163-2.861-2.052-3.491-3.037-2.362-1.014 1.233 0 2.057-4.45 5.83C7.336 9.966 7 11.011 7 11.998v6.998c-.016 1.104.491 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.911c1.047-3.515-1.95-3.703-1.95-3.703l-5.387.007z" fill-rule="evenodd"></path></svg></span>0 赞同 · 0 感谢</div>
+</div>
+<div class="Profile-follows"><span class="NextPage" data-next-page-type="followers"><span id="followers"></span> 关注<span class="who"></span>的人</span><div class="ProfileHeader-infosDivider"></div><span class="NextPage" data-next-page-type="followtos"><span id="followtos"></span> <span class="who"></span>关注的人</span></div>
+</div>
+</div>
+<ul role="tablist" class="Tabs ProfileBar">
+<!-------------ul_list---------------->
+</ul>
+</ul>
+<div>
+<div>
+<div class="Sticky"></div>
+</div>
+</div>
+<div class="Profile-data">
+<div class="Card Profile-datalist" id="Profile-datalist">
+<div id="feedArea" class="">
+<!---------<div class="List-item">--->
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
 <script>
 function appendFollowElementSub(subcmd,ret)
 {
@@ -557,89 +601,5 @@ function init()
     checkNextPage();
 }
 </script>
-</head>
-<body class="Mobile-body">
-<div id="root">
-<div class="App">
-<div class="LoadingBar"></div>
-<div>
-<header class="Sticky MobileAppHeader" style="line-height:50px">
-<div class="MobileAppHeader-inner">
-<a class="MobileAppHeader-logo" href="//www.danongling.com/" aria-label="知乎" data-za-detail-view-name="知乎"><svg viewBox="0 0 200 91" width="56" height="28" fill="#0f88eb"><title></title><g><path d="M53.29 80.035l7.32.002 2.41 8.24 13.128-8.24h15.477v-67.98H53.29v67.978zm7.79-60.598h22.756v53.22h-8.73l-8.718 5.473-1.587-5.46-3.72-.012v-53.22zM46.818 43.162h-16.35c.545-8.467.687-16.12.687-22.955h15.987s.615-7.05-2.68-6.97H16.807c1.09-4.1 2.46-8.332 4.1-12.708 0 0-7.523 0-10.085 6.74-1.06 2.78-4.128 13.48-9.592 24.41 1.84-.2 7.927-.37 11.512-6.94.66-1.84.785-2.08 1.605-4.54h9.02c0 3.28-.374 20.9-.526 22.95H6.51c-3.67 0-4.863 7.38-4.863 7.38H22.14C20.765 66.11 13.385 79.24 0 89.62c6.403 1.828 12.784-.29 15.937-3.094 0 0 7.182-6.53 11.12-21.64L43.92 85.18s2.473-8.402-.388-12.496c-2.37-2.788-8.768-10.33-11.496-13.064l-4.57 3.627c1.363-4.368 2.183-8.61 2.46-12.71H49.19s-.027-7.38-2.372-7.38zm128.752-.502c6.51-8.013 14.054-18.302 14.054-18.302s-5.827-4.625-8.556-1.27c-1.874 2.548-11.51 15.063-11.51 15.063l6.012 4.51zm-46.903-18.462c-2.814-2.577-8.096.667-8.096.667s12.35 17.2 12.85 17.953l6.08-4.29s-8.02-11.752-10.83-14.33zM199.99 46.5c-6.18 0-40.908.292-40.953.292v-31.56c1.503 0 3.882-.124 7.14-.376 12.773-.753 21.914-1.25 27.427-1.504 0 0 3.817-8.496-.185-10.45-.96-.37-7.24 1.43-7.24 1.43s-51.63 5.153-72.61 5.64c.5 2.756 2.38 5.336 4.93 6.11 4.16 1.087 7.09.53 15.36.277 7.76-.5 13.65-.76 17.66-.76v31.19h-41.71s.88 6.97 7.97 7.14h33.73v22.16c0 4.364-3.498 6.87-7.65 6.6-4.4.034-8.15-.36-13.027-.566.623 1.24 1.977 4.496 6.035 6.824 3.087 1.502 5.054 2.053 8.13 2.053 9.237 0 14.27-5.4 14.027-14.16V53.93h38.235c3.026 0 2.72-7.432 2.72-7.432z" fill-rule="evenodd"></path></g></svg></a>
-{% ifequal logged 'true' %}
-<div class="MobileAppHeader-actions">
-<a class="MobileAppHeader-downloadLink" href="https://www.danongling.com/app?auto_download=true&amp;utm_source=zhihu&amp;utm_campaign=guest_feed&amp;utm_content=guide" data-za-detail-view-name="下载 App">下载 App</a>
-<div class="MobileAppHeader-navItem MobileAppHeader-moreIconWrapper">
-<span class="MobileAppHeader-expandBtn"><svg class="Zi Zi--More" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M3.5 5h16a1.5 1.5 0 0 1 0 3h-16a1.5 1.5 0 0 1 0-3zm0 6h16a1.5 1.5 0 0 1 0 3h-16a1.5 1.5 0 0 1 0-3zm0 6h16a1.5 1.5 0 0 1 0 3h-16a1.5 1.5 0 0 1 0-3z" fill-rule="evenodd"></path></svg></span>
-</div>
-</div>
-{% else %}
-<div class="MobileAppHeader-actions"><a class="MobileAppHeader-downloadLink" href="https://www.danongling.com/app?auto_download=true&amp;utm_source=zhihu&amp;utm_campaign=guest_feed&amp;utm_content=guide">下载 App</a>
-<a class="MobileAppHeader-authLink" href="/signinup/?next=/">注册或登录</a></div>
-{% endifequal %}
-
-
-</div>
-<div class="PageHeader">
-<div class="Profile-tabs">
-<ul role="tablist" class="Tabs ProfileBar">
-<!-------------ul_list---------------->
-</ul>
-</div>
-</div>
-</header>
-</div>
-<div id="debug"></div>
-<main role="main" class="App-main" data-module="home" data-dfs-main='{ "user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","er_id":"{{er.id}}","er_name":"{{er.first_name}}"
-,"er_avatar":"{{er.userprofile.avatar}}","er_mood":"{{er.userprofile.mood}}","er_intro":"{{er.userprofile.intro}}","er_sexual":"{{er.userprofile.sexual}}","er_residence":"{{er.userprofile.residence}}"
-,"er_job":"{{er.userprofile.job}}","followed":"{{followed}}","command":"{{command}}","subcmd":"{{subcmd}}"}'   data-dfs-ext='{"questions_num":"{{ext_info.questions_num}}","answers_num":"{{ext_info.answers_num}}"
-,"followtos_num":"{{ext_info.followtos_num}}","followers_num":"{{ext_info.followers_num}}","followtopics_num":"{{ext_info.followtopics_num}}","followquestions_num":"{{ext_info.followquestions_num}}"}'>
-<div class="Profile">
-<div class="Card">
-<div class="Profile-intro">
-<img class="Profile-avatar" src="" alt="">
-<div class="Profile-name"></div>
-<div class="RichText Profile-headline"></div>
-<div class="MobileQuestionButtonGroup" style="margin:12px auto;">
-<button class="Button ProfileEditButton Button--primary Button--blue" onClick="profileEdit()">编辑个人资料</button>
-<button class="Button FollowButton ProfileFollowButton Button--primary Button--blue" type="button" data-follow-type="people"></button>
-<button class="Button ProfileLetterButton Button--grey Button--withIcon Button--withLabel" type="button" data-toggle="modal" data-target="#letterModal"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comments Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M11 2c5.571 0 9 4.335 9 8 0 6-6.475 9.764-11.481 8.022-.315-.07-.379-.124-.78.078-1.455.54-2.413.921-3.525 1.122-.483.087-.916-.25-.588-.581 0 0 .677-.417.842-1.904.064-.351-.14-.879-.454-1.171A8.833 8.833 0 0 1 2 10c0-3.87 3.394-8 9-8zm10.14 9.628c.758.988.86 2.009.86 3.15 0 1.195-.619 3.11-1.368 3.938-.209.23-.354.467-.308.722.12 1.073.614 1.501.614 1.501.237.239-.188.562-.537.5-.803-.146-1.495-.42-2.546-.811-.29-.146-.336-.106-.563-.057-2.043.711-4.398.475-6.083-.927 5.965-.524 8.727-3.03 9.93-8.016z" fill-rule="evenodd"></path></svg></span>发私信</button>
-</div>
-<div class="Profile-infos">
-<div class="Profile-infosDes Profile-infosDesEllipsis">
-<span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Education" fill="#999" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M12 4L1 7.94v.588l4.153 2.73v5.166C5.158 16.758 8.028 20 12 20c3.972 0 6.808-3.116 6.85-3.576l.006-5.163 4.129-2.733.015-.586L12 4z" fill-rule="evenodd"></path></svg></span>
-<span id="residence"></span>
-<div class="ProfileHeader-infosDivider"></div>
-<span id="job"></span>
-</div>
-<button class="Profile-infosOia" onClick="profileDetailShow()">详细资料 <span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--ArrowRight" fill="#8590a6" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z" fill-rule="evenodd"></path></svg></span></button>
-</div>
-<div class="Profile-badges">
-<div class="Profile-badgeItem">
-<span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Like" fill="#0f88eb" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.718 10.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.649.718.649h1.45c.916 0 .847-.649.847-.649v-9.554c-.09-.879-.854-.791-.847-.791l-2.446.022zm11.727-.05s.756-1.577 1.156-4.083c.163-2.861-2.052-3.491-3.037-2.362-1.014 1.233 0 2.057-4.45 5.83C7.336 9.966 7 11.011 7 11.998v6.998c-.016 1.104.491 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.911c1.047-3.515-1.95-3.703-1.95-3.703l-5.387.007z" fill-rule="evenodd"></path></svg></span>0 赞同 · 0 感谢</div>
-</div>
-<div class="Profile-follows"><span class="NextPage" data-next-page-type="followers"><span id="followers"></span> 关注<span class="who"></span>的人</span><div class="ProfileHeader-infosDivider"></div><span class="NextPage" data-next-page-type="followtos"><span id="followtos"></span> <span class="who"></span>关注的人</span></div>
-</div>
-</div>
-<ul role="tablist" class="Tabs ProfileBar">
-<!-------------ul_list---------------->
-</ul>
-</ul>
-<div>
-<div>
-<div class="Sticky"></div>
-</div>
-</div>
-<div class="Profile-data">
-<div class="Card Profile-datalist" id="Profile-datalist">
-<div id="feedArea" class="">
-<!---------<div class="List-item">--->
-</div>
-</div>
-</div>
-</div>
-</main>
-</div>
-</div>
 </body>
 </html>
