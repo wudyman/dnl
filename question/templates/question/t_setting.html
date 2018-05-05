@@ -311,7 +311,7 @@ function getMoreData() {
             type="conversation_messages/"+conversation_id;
         }
     }
-    var nums=$('.Setting-item').length;
+    var nums=g_last_getmoredata_index;//$('.Setting-item').length;
     var order=1;//pub_date
     var start=nums;
     var end=start+STEP;
@@ -325,6 +325,7 @@ function getMoreData() {
             else if("notifications"==type)
                 appendAllNotificationElement(ret);
             checkSets();
+            g_last_getmoredata_index+=STEP;
             //alert(ret);
         }
         setLockScrollMoreData("false");
