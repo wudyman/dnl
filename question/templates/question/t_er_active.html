@@ -280,7 +280,6 @@ function appendAnswerElement()
     $.get("/ajax/er/"+g_er_id+"/"+g_command+"/",function(ret){
         if("fail"!=ret)
         {
-            console.log(ret);
             appendAnswerElementList(ret,"homepage");
             checkSets();
         }
