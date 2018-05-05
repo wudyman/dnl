@@ -110,6 +110,8 @@ function switchRegisterLogin(e)
         $(".Register").removeClass("is-hide");
         $(".Login-content.Login-type-password").addClass("is-hide");
         $(".Login-content.Login-type-sms").addClass("is-hide");
+        $(".SignFlowInput-errorMask").addClass("SignFlowInput-errorMask--hidden");
+        $("input").val("");
     }
     else
     {
@@ -118,6 +120,8 @@ function switchRegisterLogin(e)
         $(".Register").addClass("is-hide");
         $(".Login-content.Login-type-password").removeClass("is-hide");
         $(".Login-content.Login-type-sms").addClass("is-hide");
+        $(".SignFlowInput-errorMask").addClass("SignFlowInput-errorMask--hidden");
+        $("input").val("");
     }
 }
 function init()
@@ -186,7 +190,7 @@ function init()
 
 <div class="SignFlow-password">
 <div class="SignFlowInput">
-<div class="Input-wrapper"><input name="regPassword" type="text" class="Input" placeholder="密码(长度为6~18位，必须包含字母和数字)" value=""></div>
+<div class="Input-wrapper"><input name="regPassword" type="text" class="Input" placeholder="密码 (6~18位的字母或数字)" value=""></div>
 <div class="SignFlowInput-errorMask SignFlowInput-requiredErrorMask SignFlowInput-errorMask--hidden"></div>
 </div>
 <button class="Button SignFlow-switchPassword Button--plain" tabindex="-1" type="button"><svg width="24" height="20" viewBox="0 0 24 24" class="Icon SignFlow-switchPasswordIcon Icon--read" aria-hidden="true" style="vertical-align: middle; height: 20px; width: 24px;"><title></title><g><title>Read</title><path d="M1 11.5C1 15 7 19 12 19s11-4 11-7.5S17 4 12 4 1 8 1 11.5zm11 5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm-3-5c0 1.66 1.34 3 3 3s3-1.34 3-3-1.34-3-3-3-3 1.34-3 3z" fill-rule="evenodd"></path></g></svg></button>
