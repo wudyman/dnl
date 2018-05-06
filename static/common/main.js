@@ -380,7 +380,7 @@ function submitAnswer()
         success:function(ret){
             if("fail"!=ret)
             {
-                appendMoreAnswerListElement(ret);
+                appendAnswerElementList(ret,g_list_type,"prepend")
                 hideAnswerToolbar();                
                 checkSets();
             }
@@ -528,7 +528,7 @@ function appendSearchElement(ret,keyword)
     }
 }
 
-function appendAnswerElementList(ret,type)
+function appendAnswerElementList(ret,type,diretion="append")
 {
     for(i in ret)
     {
@@ -623,7 +623,10 @@ function appendAnswerElementList(ret,type)
         </div>\
         ';
         
-        $("#appendArea").append(data);
+        if("append"==diretion)
+            $("#appendArea").append(data);
+        else
+            $("#appendArea").prepend(data);
     }
 }
 function appendAnswerElementCard(ret,type)
