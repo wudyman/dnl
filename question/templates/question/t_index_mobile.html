@@ -23,49 +23,6 @@
 </main>
 </div>
 </div>
-<script>
-function getMoreData()
-{
-    {
-        var nums=g_last_getmoredata_index;//$('.Feed').length;
-        var order=1;//pub_date
-        var start=nums;
-        var end=start+STEP;
-        $.get('/ajax/questions/'+order+'/'+start+'/'+end+'/',function(ret){
-            if("fail"!=ret)
-            {
-                appendAnswerElementCard(ret,"has_topic_question_title",diretion="append") 
-                checkSets();
-                g_last_getmoredata_index+=STEP;
-            }
-            setLockScrollMoreData("false");
-        });
-    }
-}
-function initElement()
-{
-}
-function initData()
-{
-    g_last_getmoredata_index=0;
-	var str_main_data=$("main").attr("data-dfs-main");
-	console.log(str_main_data);
-	var main_data=JSON.parse(str_main_data);//str_main_data.parseJSON();
-	g_logged=main_data.logged;
-    if("true"==g_logged)
-    {
-        g_user_id=main_data.user_id;
-        g_user_name=main_data.user_name;
-        g_user_avatar=main_data.user_avatar;
-    }
-} 
-function init()
-{
-    initData();
-    initElement();
-    getMoreData();
-    //appendLetterModal();
-}
-</script>
+
 </body>
 </html>
