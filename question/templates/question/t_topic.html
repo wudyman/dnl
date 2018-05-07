@@ -67,10 +67,10 @@
 <div class="Sticky" style=""></div>
 </div>
 
-<div id="appendArea"></div>
-
+<div class="Card">
+<div id="appendArea" class="List"></div>
 </div>
-
+</div>
 
 
 <div class="ContentLayout-sideColumn">
@@ -140,7 +140,7 @@ function getMoreData()
     $.get("/ajax/topic/"+g_topic_id+"/"+order+"/"+start+"/"+end+"/",function(ret){
         if("fail"!=ret)
         {
-            appendAnswerElementCard(ret,"has_question_title");
+            appendAnswerElementList(ret,"topic");
             checkSets();
             g_last_getmoredata_index+=STEP;
         } 

@@ -10,15 +10,16 @@
 {% include 'question/header_mobile.html' %}
 
 </div>
+<!--
 <div class="PageHeader">
 <div class="Topic-mobilePageHeader">
 <div class="Topic-bar">
 <ul role="tablist" class="Tabs Topic-tabs">
-<!--append-->
 </ul>
 </div>
 </div>
 </div>
+-->
 
 <main role="main" class="App-main" data-module="topic" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","topic_id":"{{context_topic.id}}","topic_name":"{{context_topic.name}}","topic_avatar":"{{context_topic.avatar}}","topic_detail":"{{context_topic.detail}}","topic_follower_nums":"{{context_topic.follower_nums}}","topic_followed":"{{followed}}"}'>
 <div class="Topic">
@@ -55,7 +56,6 @@
 </div>
 <div class="Topic-main" id="TopicMain"><div>
 <div class="Card">
-<div class="List">
 
 <!--
 <div class="List-item TopicFeedList-header is-hide">
@@ -68,15 +68,12 @@
 </div>
 -->
 
-<div id="feedArea" class="">
+<div id="appendArea" class="List">
 
 <!--<div class="List-item TopicFeedItem">-->
 
-<div>
-</div>
 </div>
 
-</div>
 </div>
 </div>
 </div>
@@ -148,7 +145,7 @@ function getMoreData()
     $.get("/ajax/topic/"+g_topic_id+"/"+order+"/"+start+"/"+end+"/",function(ret){
         if("fail"!=ret)
         {
-            appendTopicElement(ret);
+            appendAnswerElementList(ret,"topic");
             checkSets();
             g_last_getmoredata_index+=STEP;
         }

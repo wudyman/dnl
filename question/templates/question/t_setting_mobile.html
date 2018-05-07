@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html lang="zh" data-hairline="true" data-android="true" data-theme="light">
+{% include 'question/head_mobile.html' %}
+
+<body class="Mobile-body">
+<div id="root">
+<div class="App">
+<div class="LoadingBar"></div>
+<div>
+
+{% include 'question/header_mobile.html' %}
+
+</div>
+
+<main role="main" class="App-main" data-module="setting" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","type":"{{type}}","conversation_id":"{{conversation_id}}","parter_name":"{{parter_name}}"}'>
+
+<div id="settings">
+
+<div class="Card">
+<div>
+<div>
+<div class="Sticky" style=""></div>
+</div>
+</div>
+<div class="Topic-bar">
+<ul role="tablist" class="Tabs Topic-tabs">
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><a class="Tabs-link is-active" href="/notifications">通知</a></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><a class="Tabs-link" href="/conversations">私信</a></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><a class="Tabs-link" href="/settings">设置</a></li>
+</ul>
+</div>
+</div>
+
+<div class="Card">
+<div class="List">
+<div id="feedArea" class="">
+<!--<div class="List-item SearchItem">-->
+</div>
+</div>
+</div>
+
+<!--<button class="OpenInAppButton OpenInApp is-shown">App 内打开</button>-->
+
+</div>
+</main>
+
+</div>
+</div>
+
+<!-- 提问（Modal） -->
+<div class="modal fade" id="askModal" tabindex="-1" role="dialog" aria-labelledby="askModalLabel" aria-hidden="true">
+	<div class="modal-dialog askmodal">
+        <div class="Modal-inner">
+            <h3 class="Modal-title" id="askModalLabel">写下你的问题</h3>
+            <div class="Modal-subtitle">描述精确的问题更易得到解答</div>
+                <div class="Modal-content">
+                    <div class="QuestionAsk">
+                        <form method="post" action="/question/" id="form_ask">
+                        {% csrf_token %}            
+                            <div class="QuestionAsk-section">
+                                <div class="QuestionAsk-title">
+                                        <div class="Input-wrapper Input-wrapper--spread Input-wrapper--multiline Input-wrapper--large">
+                                        <textarea required="" name="title" rows="2" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-64372-3800-0" id="Popover-64372-42711-toggle" aria-haspopup="true" aria-owns="Popover-64372-42711-content" class="Input" placeholder="问题标题"></textarea>
+                                        </div>
+                                </div>
+                            </div>
+            
+                            <div class="QuestionAsk-section">
+                                <div class="TagInput TagInput--empty">
+                                            <select id="topics_select" name="topics_selected" class="selectpicker show-menu-arrow form-control" multiple data-live-search="true" data-max-options="5" data-style="Input-wrapper Input-wrapper--spread Input-wrapper--large" title="添加话题"></select>
+                                </div>
+                            </div>
+
+                            <input id="hide_for_submit" type="hidden" name="topics" value="null123">
+                
+                            <div class="QuestionAsk-section QuestionAsk-DetailSection">问题描述（可选）:<textarea id="summernote_question" name="detail" 1rows="5" 1cols="70" 1maxlength="160"></textarea>              
+                            </div>
+                           
+                            <div class="ModalButtonGroup QuestionAsk-buttonGroup ModalButtonGroup--vertical">
+                                <button class="1Button 1Button--primary 1Button--green btn btn-success" type="submit" form="form_ask">提交问题</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+		</div>        
+        <button data-dismiss="modal" aria-hidden="true" class="Button Modal-closeButton Button--plain close" style="right:0px;" aria-label="关闭" type="button">
+        <svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>        
+	</div>
+</div>
+<script>
+function replyConversation()
+{
+    $("a[name='reply']").off("click");
+    $("a[name='reply']").on("click",function(){
+        var element=$(this);
+        console.log(element);
+        var id=element.attr("data-receiver-id");
+        var name=element.attr("data-receiver-name");
+        setLetterReceiver(id,name);
+    });
+}
+
+function deleteConversation()
+{
+    $("a[name='delete']").off("click");
+    $("a[name='delete']").on("click",function(){
+        var element=$(this).parents(".Setting-item");
+        var action=element.attr("data-action");
+        var action_id=element.attr("data-action-id");
+        $.get("/ajax/"+action+"/"+action_id+"/",function(ret){
+            if("success"==ret)
+                element.remove();
+        });
+    });
+}
+function appendAllNotificationElement(ret)
+{
+}
+function appendConversationMessagesElement(ret)
+{
+    for(i in ret)
+    {
+    var message_id=ret[i][0];
+    var message_content=ret[i][1];
+    var message_status=ret[i][2];
+    var message_delete_id=ret[i][3];
+    var message_pub_date=ret[i][4].split('.')[0];
+    var er_id=ret[i][5];
+    var er_name=ret[i][6];
+    var er_avatar=ret[i][7];
+
+    if (message_delete_id==g_user_id) //user have delete this message
+        continue;
+
+    if(er_id==g_user_id)
+        er_name="我";
+
+    var data='<div class="List-item Conversation-messages-item" data-action="delete_conversation_message" data-action-id="'+message_id+'">\
+        <a class="zm-item-link-avatar50" href="/er/'+er_id+'">\
+        <img class="zm-item-img-avatar50" src="'+er_avatar+'">\
+        </a>\
+        <div class="zm-pm-item-main"><a class="pm-touser author-link" title="verna wu" href="/er/'+er_id+'">'+er_name+'</a>：'+message_content+'</div>\
+        <div class="zg-gray zu-pm-item-meta">\
+        <span class="zg-gray zg-left">'+message_pub_date+'</span>\
+        <a class="zg-link-litblue" href="javascript:;" name="delete">删除</a>\
+        </div>\
+        </div>\
+        ';
+
+    $('#feedArea').append(data);
+    }
+    
+    if($(".List-item").hasClass("Conversation-messages-head"))
+    {
+        console.log("do nothing");
+    }
+    else
+    {
+        var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">'+g_parter_name+'</span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText2" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="4"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--blue" type="button" onclick="sendLetter2()">发送</button></div></div></div>';
+        $('#feedArea').prepend(data);
+    }
+    deleteConversation();
+}
+function appendConversationElement(ret)
+{
+    for(i in ret)
+    {
+    var conversation_id=ret[i][0];
+    var conversation_delete_id=ret[i][1];
+    var conversation_update=ret[i][2].split('.')[0];
+    var er_id=ret[i][3];
+    var er_name=ret[i][4];
+    var er_avatar=ret[i][5];
+    var message_content=ret[i][6];
+    
+    if (conversation_delete_id==g_user_id) //user have delete this message
+        continue;
+
+    var data='<div class="List-item Conversations-item" data-action="delete_conversation" data-action-id="'+conversation_id+'">\
+        <a class="zm-item-link-avatar50" href="/er/'+er_id+'">\
+        <img class="zm-item-img-avatar50" src="'+er_avatar+'">\
+        </a>\
+        <div class="zm-pm-item-main"><a class="pm-touser author-link" title="verna wu" href="/er/'+er_id+'">'+er_name+'</a>：'+message_content+'</div>\
+        <div class="zg-gray zu-pm-item-meta">\
+        <span class="zg-gray zg-left">'+conversation_update+'</span>\
+        <a class="zg-link-litblue" href="/conversations/?i='+conversation_id+'">查看对话</a>\
+        <span class="zg-bull">|</span>\
+        <a class="zg-link-litblue" href="javascript:;" name="reply" data-receiver-id="'+er_id+'"  data-receiver-name="'+er_name+'" data-toggle="modal" data-target="#letterModal">回复</a>\
+        <span class="zg-bull">|</span>\
+        <a class="zg-link-litblue" href="javascript:;" name="delete">删除</a>\
+        </div>\
+        </div>\
+        ';
+
+    $('#feedArea').append(data);
+    }
+    deleteConversation();
+    replyConversation();
+}
+function appendAllNotificationElement(ret)
+{
+    for (i in ret)
+    {
+        var notification_id=ret[i][0];
+        var notification_type=ret[i][1];
+        var notification_active_id=ret[i][2];
+        var notification_status=ret[i][3];
+        var notification_pub_date=ret[i][4].split('.')[0];
+        var notification_sender_id=ret[i][5];
+        var notification_sender_first_name=ret[i][6];
+        
+        if("invite"==notification_type)
+        {
+            var question_title=ret[i][7];
+            var data='<div class="List-item day"><h3>'+notification_pub_date+'</h3><div><i></i><div><span><span><a href="/er/'+notification_sender_id+'" target="_blank" style="color:#259">'+notification_sender_first_name+'</a></span>邀请你回答 <a style="color:#259" href="/question/'+notification_active_id+'">'+question_title+'</a></span></div></div></div>';
+        }
+        $("#feedArea").append(data);
+    }
+}
+function getMoreData() {
+    var nums=g_last_getmoredata_index;//$('.Setting-item').length;
+    var order=1;//pub_date
+    var start=nums;
+    var end=start+STEP*2;
+    $.get('/ajax/'+g_type+'/'+order+'/'+start+'/'+end+'/',function(ret){
+        if("fail"!=ret)
+        {
+            if("conversations"==g_type)
+                appendConversationElement(ret);
+            else if(g_type.indexOf("conversation_messages")>-1)
+            {
+                appendConversationMessagesElement(ret);
+            }
+            else if("notifications"==g_type)
+                appendAllNotificationElement(ret);
+            checkSets();
+            g_last_getmoredata_index+=STEP*2;
+            //alert(ret);
+        }
+        setLockScrollMoreData("false");
+    });
+} 
+function initElement()
+{   
+    $(".Tabs-link").removeClass("is-active");
+    $(".Tabs-link").each(function(){
+        if($(this).attr("href"))
+        {
+            if($(this).attr("href").indexOf(g_type)>-1)
+                $(this).addClass("is-active");
+        }
+    });
+}
+function initData()
+{
+    g_last_getmoredata_index=0;
+    var str_main_data=$("main").attr("data-dfs-main");
+	var main_data=JSON.parse(str_main_data);
+    g_logged=main_data.logged;
+    g_user_id=main_data.user_id;
+    g_type=main_data.type;
+    g_conversation_id=main_data.conversation_id;
+    g_parter_name=main_data.parter_name;
+}
+function init()
+{
+    initData();
+    if (("notifications"==g_type)||("conversations"==g_type))
+    {
+        if(""!=g_conversation_id)
+        {
+            g_type="conversation_messages/"+g_conversation_id;
+        }
+        getMoreData();
+    }
+    initElement();
+    appendLetterModal();
+    //setLetterReceiver(g_er_id,g_er_name);  
+    checkSets();
+}
+</script>
+</body>
+</html>

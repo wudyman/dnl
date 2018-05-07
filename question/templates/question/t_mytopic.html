@@ -41,8 +41,9 @@
 <a href="" target="_blank" class="">电影</a>
 </div>
 -->
-
-<div id="appendArea">
+<div class="Card">
+<div id="appendArea" class="List">
+</div>
 </div>
 
 </div>
@@ -160,7 +161,7 @@ function getMoreData()
     $.get("/ajax/topic/"+g_topic_id+"/"+order+"/"+start+"/"+end+"/",function(ret){
         if("fail"!=ret)
         {
-            appendAnswerElementCard(ret,"has_question_title");
+            appendAnswerElementList(ret,"topic");
             checkSets();
             g_last_getmoredata_index+=STEP;
         }
