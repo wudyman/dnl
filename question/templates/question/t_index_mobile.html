@@ -12,8 +12,8 @@
 <main role="main" class="App-main" data-module="index" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}"}'>
 <div id="topstory">
 <div class="TopstoryMain">
-<div id="topstory-items" class="">
-<!--topstory-item-->
+<div id="appendArea" class="">
+<!--appendArea-->
 <div>
 </div>
 </div>
@@ -24,62 +24,6 @@
 </div>
 </div>
 <script>
-function appendFeedElement(ret)
-{
-    console.log(ret);
-    for (i in ret)
-    {
-        var question_id=ret[i][0];
-        var question_title=ret[i][1];
-        var topic_id=ret[i][2];
-        var topic_name=ret[i][3];
-        var answer_id=ret[i][4];
-        var author_id=ret[i][5];
-        var author_name=ret[i][6];
-        var author_avatar=ret[i][7];
-        var author_mood=ret[i][8];
-        var answer_content=ret[i][9];
-        var answer_like_nums=ret[i][10];
-        for(var j=0;j<100;j++)
-            answer_content=answer_content+"&nbsp;";
-        var index_img_url=getIndexImg(answer_content);
-
-            var data='<div class="ScrollIntoMark"><div class="Card TopstoryItem TopstoryItem--experimentExpand">\
-                        <div class="Feed">\
-                        <div class="FeedSource">\
-                        <div class="FeedSource-firstline">来自话题: <span><a class="TopicLink" href="/topic/'+topic_id+'/" target="_blank">'+topic_name+'</a></span></div>\
-                        <div class="AuthorInfo FeedSource-byline AuthorInfo--plain">\
-                        <span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/"><img class="Avatar AuthorInfo-avatar" width="24" height="24" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span>\
-                        <div class="AuthorInfo-content">\
-                        <div class="AuthorInfo-head">\
-                        <span class="UserLink AuthorInfo-name">\
-                        <a class="UserLink-link" target="_blank" href="/er/'+author_id+'/">'+author_name+'</a>\
-                        <a class="UserLink-badge" 111data-tooltip="优秀回答者" href="/er/'+author_id+'/" target="_blank"><svg viewBox="0 0 20 20" class="Icon Icon--badgeGlorious" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title>用户标识</title><g><g fill="none" fill-rule="evenodd">     <path d="M.64 11.39c1.068.895 1.808 2.733 1.66 4.113l.022-.196c-.147 1.384.856 2.4 2.24 2.278l-.198.016c1.387-.12 3.21.656 4.083 1.735l-.125-.154c.876 1.085 2.304 1.093 3.195.028l-.127.152c.895-1.068 2.733-1.808 4.113-1.66l-.198-.022c1.386.147 2.402-.856 2.28-2.238l.016.197c-.12-1.388.656-3.212 1.735-4.084l-.154.125c1.084-.876 1.093-2.304.028-3.195l.152.127c-1.068-.895-1.808-2.732-1.66-4.113l-.022.198c.147-1.386-.856-2.4-2.24-2.28l.198-.016c-1.387.122-3.21-.655-4.083-1.734l.125.153C10.802-.265 9.374-.274 8.483.79L8.61.64c-.895 1.068-2.733 1.808-4.113 1.662l.198.02c-1.386-.147-2.4.857-2.28 2.24L2.4 4.363c.12 1.387-.656 3.21-1.735 4.084l.154-.126C-.265 9.2-.274 10.626.79 11.517L.64 11.39z" fill="#FF9500"></path>     <path d="M10.034 12.96L7.38 14.58c-.47.286-.747.09-.618-.45l.72-3.024-2.36-2.024c-.418-.357-.318-.68.235-.725l3.1-.25 1.195-2.87c.21-.508.55-.513.763 0l1.195 2.87 3.1.25c.547.043.657.365.236.725l-2.362 2.024.72 3.025c.13.535-.143.74-.616.45l-2.654-1.62z" fill="#FFF"></path>   </g></g></svg></a>\
-                        </span></div>\
-                        <div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div>\
-                        <div class="ContentItem AnswerItem"><h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>\
-                        <div class="ContentItem-meta"></div>\
-                        <div class="RichContent is-collapsed RichContent--withMask">\
-                        <div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'">\
-                        <div class="RichContent-cover RichContent-cover--mobile">\
-                        <div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div>\
-                        </div>\
-                        <div class="RichContent-inner RichContent-inner--collapsed" style="1max-height:400px">\
-                        <span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span>\
-                        </div>\
-                        </div>\
-                        <div class="ContentItem-actions">\
-                        <span>\
-                        <button class="Button VoteButton VoteButton--up" aria-label="赞同" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-upIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg>95</button>\
-                        <button class="Button VoteButton VoteButton--down VoteButton--mobileDown" aria-label="反对" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-downIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg></button>\
-                        </span>\
-                        <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>评论 21</button>\
-                        <button class="Button ContentItem-action Button--plain Button--withIcon Button--iconOnly" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span></button>\
-                        </div></div></div></div></div>\
-                        </div>';
-            $("#topstory-items").append(data);
-    }
-}
 function getMoreData()
 {
     {
@@ -90,7 +34,7 @@ function getMoreData()
         $.get('/ajax/questions/'+order+'/'+start+'/'+end+'/',function(ret){
             if("fail"!=ret)
             {
-                appendFeedElement(ret);  
+                appendAnswerElementCard(ret,"has_topic_question_title",diretion="append") 
                 checkSets();
                 g_last_getmoredata_index+=STEP;
             }

@@ -58,7 +58,7 @@
 </div>
 <div class="Profile-data">
 <div class="Card Profile-datalist" id="Profile-datalist">
-<div id="feedArea" class="">
+<div id="appendArea" class="List">
 <!---------<div class="List-item">--->
 </div>
 </div>
@@ -237,8 +237,7 @@ function appendAnswerElement()
     $.get("/ajax/er/"+g_er_id+"/answers/",function(ret){
         if("fail"!=ret)
         {
-            for(i in ret)
-                appendAnswerElementSub(ret[i]);
+            appendAnswerElementList(ret,"homepage");
             checkSets();
         }
     });

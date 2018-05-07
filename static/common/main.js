@@ -1,3 +1,41 @@
+function setCookie(name,value,secs)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() + secs*1000);
+    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+}
+function getCookie(name)
+{
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+        return (arr[2]);
+    else
+        return null;
+}
+function delCookie(name)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null)
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
+function countDown()
+{
+    if(0==g_countdown_secs)
+    {
+        $(".SignFlow-smsInputButton").removeClass("is-counting").text("获取短信验证码");
+        delCookie("countdown");
+    }
+    else
+    {
+        g_countdown_secs-=1;
+        $("#counting-num").text(g_countdown_secs);
+        setCookie("countdown",g_countdown_secs,g_countdown_secs);
+        setTimeout("countDown()",1000);        
+    }
+}
+
 function adjustChooseBox()
 {
     var width=200;
@@ -82,47 +120,7 @@ function getObjectURL(file) {
     return url ;
 }
 
-function checkAvatar(){
-    $(".Avatar-editor").hover(
-        function(){
-            $(".Mask").removeClass("Mask-hidden");
-        },
-        function(){
-            $(".Mask").addClass("Mask-hidden");
-        }
-    );
-    
-    $(".Mask-content").click(function(){
-            $("#id_avatar_input").click();
-            $("#id_avatar_input").on("change",function(){
-               $("#upAvatarModal").modal('show');
-                var objUrl = getObjectURL(this.files[0]);
-                if (objUrl) { 
-                    $("#preview_avatar").attr("src", objUrl);
-                    $("#adjust_choosebox").val(50);                    
-                    
-                    setTimeout(adjustChooseBox,1*1000);
-                }
-            });
-    });
-    
-    $(".AvatarSave").click(function(){
-        var type=$(this).attr("data-avatar-type");
-        var img=document.getElementById("preview_avatar");
-        imgWidth=img.naturalWidth;
-        var can=document.getElementById("avatar_canvas");
-        var ctx=can.getContext("2d");
-        var newX=($('#chooseBox').position().left-$('#preview_avatar').position().left)*(img.naturalWidth/300);
-        var newY=($('#chooseBox').position().top-$('#preview_avatar').position().top)*(img.naturalHeight/300);
-        var newWidth=newHeight=(200+($("#adjust_choosebox").val()-50)*2)*(img.naturalWidth/300);
-        var newHeight=(200+($("#adjust_choosebox").val()-50)*2)*(img.naturalHeight/300);
-        ctx.drawImage(img,newX,newY,newWidth,newHeight,0,0,200,200);
-        can.toBlob(function(blobUrl){
-            console.log(blobUrl);
-            uploadImage(type,blobUrl);
-        },"image/jpeg"); 
-    });
-}
+
 
 function getScrollTop() 
 { 
@@ -149,64 +147,8 @@ function getScrollHeight() {
     return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); 
 } 
 
-function getIndexImg(content){
-    var imgReg=/<img.*?(?:>|\/>)/gi;
-    var arr=content.match(imgReg);
-    if(arr!=null)
-    {
-        var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
-        imgsrc=arr[0].match(srcReg);
-        return imgsrc[1];
-    }
-    else
-        return null;
-}
 
-function removeImg(content){
-    var imgReg=/<img.*?(?:>|\/>)/gi;
-    var temp=content.replace(imgReg,"").replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,150);
-    for(var i=0;i<100;i++)
-        temp=temp+"&nbsp;";
-    return temp;
-    //return content.replace(imgReg,"").replace(/<p>/gi,"").replace(/<\/p>/gi,"").replace(/(^\s*)|(\s*$)/g,"");
-}
-function setCookie(name,value,secs)
-{
-    var exp = new Date();
-    exp.setTime(exp.getTime() + secs*1000);
-    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
-}
-function getCookie(name)
-{
-    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
-    if(arr=document.cookie.match(reg))
-        return (arr[2]);
-    else
-        return null;
-}
-function delCookie(name)
-{
-    var exp = new Date();
-    exp.setTime(exp.getTime() - 1);
-    var cval=getCookie(name);
-    if(cval!=null)
-        document.cookie= name + "="+cval+";expires="+exp.toGMTString();
-}
-function countDown()
-{
-    if(0==g_countdown_secs)
-    {
-        $(".SignFlow-smsInputButton").removeClass("is-counting").text("获取短信验证码");
-        delCookie("countdown");
-    }
-    else
-    {
-        g_countdown_secs-=1;
-        $("#counting-num").text(g_countdown_secs);
-        setCookie("countdown",g_countdown_secs,g_countdown_secs);
-        setTimeout("countDown()",1000);        
-    }
-}
+
 
 function uploadImage(type,file)
 {
@@ -265,203 +207,34 @@ function scaleAndUploadImage(type,file,scale_value){
 }
 
 
-
-
-function updateValue(type,value)
-{
-    $(".NumberBoard-value").each(function(){
-        var item=$(this);
-        if(type==item.attr("data-update-value-type"))
-            item.text(value)
-    });
-}
-function followPeople(button){
-    var er_id=button.attr("data-er-id");
-    var who=button.attr("data-who");
-    if("true"==button.attr("data-followed"))
+function getIndexImg(content){
+    var imgReg=/<img.*?(?:>|\/>)/gi;
+    var arr=content.match(imgReg);
+    if(arr!=null)
     {
-        $.post("/ajax/er_follow/0/"+er_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                if ("she"==who)
-                    button.removeClass("Button--grey").addClass("Button--blue").text("关注她");
-                else if ("he"==who)
-                    button.removeClass("Button--grey").addClass("Button--blue").text("关注他");
-                else
-                    button.removeClass("Button--grey").addClass("Button--blue").text("关注");
-                button.attr("data-followed","false");
-                updateValue("people-followed",ret);
-            }
-        }); 
+        var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+        imgsrc=arr[0].match(srcReg);
+        return imgsrc[1];
     }
     else
-    {
-        $.post("/ajax/er_follow/1/"+er_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                button.removeClass("Button--green").addClass("Button--grey").text("已关注");
-                button.attr("data-followed","true");
-                updateValue("people-followed",ret);
-            }
-        });  
-    }
-} 
-
-function followTopic(button){
-    var topic_id=button.attr("data-topic-id");
-    if("true"==button.attr("data-followed"))
-    {
-        $.post("/ajax/topic_follow/0/"+topic_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                button.removeClass("Button--grey").addClass("Button--green").text("关注");
-                button.attr("data-followed","false");
-                updateValue("topic-followed",ret);
-            }
-        }); 
-    }
-    else
-    {
-        $.post("/ajax/topic_follow/1/"+topic_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                button.removeClass("Button--green").addClass("Button--grey").text("已关注");
-                button.attr("data-followed","true");
-                updateValue("topic-followed",ret);
-            }
-        });  
-    }
-} 
-
-function followQuestion(button){
-    var question_id=button.attr("data-question-id");
-    if("true"==button.attr("data-followed"))
-    {
-        $.post("/ajax/question_follow/0/"+question_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                button.removeClass("Button--grey").addClass("Button--green").text("关注");
-                button.attr("data-followed","false");
-                updateValue("question-followed",ret);
-            }
-        }); 
-    }
-    else
-    {
-        $.post("/ajax/question_follow/1/"+question_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                button.removeClass("Button--green").addClass("Button--grey").text("已关注");
-                button.attr("data-followed","true");
-                updateValue("question-followed",ret);
-            }
-        });  
-    }
-}  
-
-
-
-
-
-
-function submitAnswer()
-{
-    var url=$(".AnswerToolbar").attr("data-question-answer-url");
-    var content=$('#summernote_answer').summernote('code');
-    var data=new FormData();
-    data.append("content",content);
-    $.ajax({
-        data:data,
-        type:"POST",
-        url:url,
-        cache:false,
-        contentType:false,
-        processData:false,
-        success:function(ret){
-            if("fail"!=ret)
-            {
-                appendAnswerElementList(ret,g_list_type,"prepend")
-                hideAnswerToolbar();                
-                checkSets();
-            }
-        }
-    });
+        return null;
 }
 
-function showAnswerToolbar()
-{
-    $(".AnswerToolbar").removeClass("is-hide");
+function removeImg(content){
+    var imgReg=/<img.*?(?:>|\/>)/gi;
+    var temp=content.replace(imgReg,"").replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,150);
+    for(var i=0;i<100;i++)
+        temp=temp+"&nbsp;";
+    return temp;
+    //return content.replace(imgReg,"").replace(/<p>/gi,"").replace(/<\/p>/gi,"").replace(/(^\s*)|(\s*$)/g,"");
 }
 
-function hideAnswerToolbar()
+function addClassImg(content,classStr)
 {
-    $(".AnswerToolbar").addClass("is-hide");
-}
-function sendLetter2()
-{
-    var value=$("#letterText2").val();
-    var er_id=$("#letterText2").attr("data-receiver-id");
-    console.log(value);
-    $.post("/ajax/send_message/"+er_id+"/",{"content":value},function(ret){
-        if("fail"!=ret)
-        {
-            var message_id=ret;
-            pushOneConversationMessagesElement(message_id);
-        }
-    });
-}
-function sendLetter()
-{
-    var value=$("#letterText").val();
-    var er_id=$(".Messages-receiverInfo").attr("data-receiver-id");
-    console.log(value);
-    //$("#letterModal").modal("hide");
-    $('#letterModal').modal('toggle');
-    $.post("/ajax/send_message/"+er_id+"/",{"content":value},function(ret){
-        if("fail"!=ret)
-        {
-            console.log(ret);
-        }
-    });
-}
-function setLetterReceiver(id,name)
-{
-    $(".Messages-receiverInfo").attr("data-receiver-id",id);
-    $(".Messages-receiverInfo").text(name);
+    var temp=content.replace(/<img/gi,"<img "+classStr);
+    return temp;
 }
 
-function appendLetterModal()
-{
-    var data='<div class="modal fade" id="letterModal" tabindex="0" role="dialog" aria-labelledby="letterModalLabel" aria-hidden="true">\
-        <div class="modal-dialog lettermodal">\
-        <div class="Modal-inner">\
-        <h3 class="Modal-title">发送私信</h3>\
-        <div class="Modal-content">\
-        <div class="Messages-newDialog">\
-        <div class="Messages-receiver">\
-        <span class="Messages-receiverInfo" data-receiver-id="">who</span>\
-        </div>\
-        <div class="Messages-sendContent Input-wrapper Input-wrapper--spread Input-wrapper--multiline">\
-        <textarea id="letterText" rows="5" class="Input" placeholder="私信内容"></textarea>\
-        </div>\
-        <span class="Messages-warning"></span>\
-        <div class="ModalButtonGroup ModalButtonGroup--vertical">\
-        <button class="Button Messages-sendButton Button--primary Button--blue" type="button" onclick="sendLetter()">发送</button>\
-        </div>\
-        </div>\
-        </div>\
-        </div>\
-        <button class="Button Modal-closeButton Button--plain" data-dismiss="modal" aria-label="关闭" type="button"><svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>\
-        </div>\
-        </div>\
-        ';
-
-    $("body").append(data);
-    
-    $("#letterModal").on("show.bs.modal", function(){
-        $(".PeoplePopover").popover("hide");
-    });
-}
 
 function appendMessageElement(ret)
 {
@@ -508,10 +281,6 @@ function appendNotificationElement(ret)
 
 function appendSearchElement(ret,keyword)
 {
-//<div class="AutoComplete-group"><div class="SearchBar-label">用户</div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="UserItem"><a class="SearchBar-peopleResult" data-za-not-track-link="true" href="/people/fang-jie-9-6-38" target="_blank"><div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="房价"><meta itemprop="image" content="https://pic2.zhimg.com/66162bae6d34b7b0c5a454cd93e90769_s.jpg"><meta itemprop="url" content="https://www.zhihu.com/people/fang-jie-9-6-38"><meta itemprop="zhihu:followerCount"><span class="UserLink AuthorInfo-avatarWrapper"><img class="Avatar Avatar--medium AuthorInfo-avatar" width="40" height="40" src="https://pic2.zhimg.com/66162bae6d34b7b0c5a454cd93e90769_xs.jpg" srcset="https://pic2.zhimg.com/66162bae6d34b7b0c5a454cd93e90769_l.jpg 2x" alt="房价"></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name">房价</span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"></div></div></div></div></a></div></div></div></div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="UserItem" data-za-detail-view-path-index="1"><a class="SearchBar-peopleResult" data-za-not-track-link="true" href="/people/fang-jie-40-53" target="_blank"><div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="房价"><meta itemprop="image" content="https://pic4.zhimg.com/da8e974dc_s.jpg"><meta itemprop="url" content="https://www.zhihu.com/people/fang-jie-40-53"><meta itemprop="zhihu:followerCount"><span class="UserLink AuthorInfo-avatarWrapper"><img class="Avatar Avatar--medium AuthorInfo-avatar" width="40" height="40" src="https://pic4.zhimg.com/da8e974dc_xs.jpg" srcset="https://pic4.zhimg.com/da8e974dc_l.jpg 2x" alt="房价"></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name">房价</span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">经济学在读</div></div></div></div></div></a></div></div></div></div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="UserItem" data-za-detail-view-path-index="2"><a class="SearchBar-peopleResult" data-za-not-track-link="true" href="/people/nu-wang-da-ren-ni-hao" target="_blank"><div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="高是房价太高的高"><meta itemprop="image" content="https://pic2.zhimg.com/v2-2b47db6a78c66355ca13c88909004fcb_s.jpg"><meta itemprop="url" content="https://www.zhihu.com/people/nu-wang-da-ren-ni-hao"><meta itemprop="zhihu:followerCount"><span class="UserLink AuthorInfo-avatarWrapper"><img class="Avatar Avatar--medium AuthorInfo-avatar" width="40" height="40" src="https://pic2.zhimg.com/v2-2b47db6a78c66355ca13c88909004fcb_xs.jpg" srcset="https://pic2.zhimg.com/v2-2b47db6a78c66355ca13c88909004fcb_l.jpg 2x" alt="高是房价太高的高"></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name">高是房价太高的高</span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">举杯邀明月   对影成三人</div></div></div></div></div></a></div></div></div></div></div>\
-//<div class="AutoComplete-group"><div class="SearchBar-label">话题</div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="TopicItem"><a class="SearchBar-topicResult" data-za-not-track-link="true" href="/topic/19554569" target="_blank">房价<span class="SearchBar-topicSuffix">999 个精华回答</span></a></div></div></div></div></div>\
-//<div id="IdQuestion" class="AutoComplete-group"><div class="Menu-item is-active" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/53369195" target="_blank">2018 年房价会涨吗？<span class="SearchBar-contentSuffix">2,188 个回答</span></a></div></div></div></div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="PostItem" data-za-detail-view-path-index="1"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="//zhuanlan.zhihu.com/p/26262058" target="_blank">一苒说：2017年，房价的拐点是不是到了？<span class="SearchBar-contentSuffix">4,774 个赞</span></a></div></div></div></div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-detail-view-path-index="2"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/33412557" target="_blank">深圳的高房价会导致人才流失吗？<span class="SearchBar-contentSuffix">1,021 个回答</span></a></div></div></div></div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-detail-view-path-index="3"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/27605852" target="_blank">2015 年全国房价会呈什么趋势？<span class="SearchBar-contentSuffix">409 个回答</span></a></div></div></div></div><div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-detail-view-path-index="4"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/22451840" target="_blank">中国人为什么买得起房子？中国房价高吗？为什么？<span class="SearchBar-contentSuffix">701 个回答</span></a></div></div></div></div></div>\
-//var data='<div class="Popover-content Popover-content--bottom Popover-content--fixed Popover-content-enter Popover-content-enter-active" id="Popover-37601-45625-content" aria-labelledby="Popover-37601-45625-toggle" style="left: 212.4px; top: 43px;"><div class="Menu AutoComplete-menu SearchBar-menu" role="listbox"><div class="AutoComplete-group"><div class="Menu-item" id="AutoComplet-37601-58607-content-0" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;53369195&quot;}}}"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/53369195" target="_blank"><!-- react-text: 11 -->2018 年房价会涨吗？<!-- /react-text --><span class="SearchBar-contentSuffix">2,188 个回答</span></a></div></div></div></div><div class="Menu-item" id="AutoComplet-37601-58607-content-1" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="PostItem" data-za-detail-view-path-index="1" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Post&quot;,&quot;token&quot;:&quot;26262058&quot;}}}"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="//zhuanlan.zhihu.com/p/26262058" target="_blank"><!-- react-text: 18 -->一苒说：2017年，房价的拐点是不是到了？<!-- /react-text --><span class="SearchBar-contentSuffix">4,774 个赞</span></a></div></div></div></div><div class="Menu-item" id="AutoComplet-37601-58607-content-2" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-detail-view-path-index="2" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;33412557&quot;}}}"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/33412557" target="_blank"><!-- react-text: 25 -->深圳的高房价会导致人才流失吗？<!-- /react-text --><span class="SearchBar-contentSuffix">1,021 个回答</span></a></div></div></div></div><div class="Menu-item" id="AutoComplet-37601-58607-content-3" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-detail-view-path-index="3" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;27605852&quot;}}}"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/27605852" target="_blank"><!-- react-text: 32 -->2015 年全国房价会呈什么趋势？<!-- /react-text --><span class="SearchBar-contentSuffix">409 个回答</span></a></div></div></div></div><div class="Menu-item" id="AutoComplet-37601-58607-content-4" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem" data-za-detail-view-path-index="4" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Question&quot;,&quot;token&quot;:&quot;22451840&quot;}}}"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/22451840" target="_blank"><!-- react-text: 39 -->中国人为什么买得起房子？中国房价高吗？为什么？<!-- /react-text --><span class="SearchBar-contentSuffix">701 个回答</span></a></div></div></div></div></div><div class="AutoComplete-group"><div class="SearchBar-label">用户</div><div class="Menu-item" id="AutoComplet-37601-58607-people-0" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="UserItem" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;User&quot;,&quot;member_hash_id&quot;:&quot;824eb6bfb1b90655582ef22390719cc6&quot;}}}"><a class="SearchBar-peopleResult" data-za-not-track-link="true" href="/people/fang-jie-9-6-38" target="_blank"><div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="房价"><meta itemprop="image" content="https://pic2.zhimg.com/66162bae6d34b7b0c5a454cd93e90769_s.jpg"><meta itemprop="url" content="https://www.zhihu.com/people/fang-jie-9-6-38"><meta itemprop="zhihu:followerCount"><span class="UserLink AuthorInfo-avatarWrapper"><img class="Avatar Avatar--medium AuthorInfo-avatar" width="40" height="40" src="https://pic2.zhimg.com/66162bae6d34b7b0c5a454cd93e90769_xs.jpg" srcset="https://pic2.zhimg.com/66162bae6d34b7b0c5a454cd93e90769_l.jpg 2x" alt="房价"></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><!-- react-text: 58 -->房价<!-- /react-text --><!-- react-empty: 59 --></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><!-- react-empty: 62 --></div></div></div></div></a></div></div></div></div><div class="Menu-item" id="AutoComplet-37601-58607-people-1" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="UserItem" data-za-detail-view-path-index="1" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;User&quot;,&quot;member_hash_id&quot;:&quot;21a23a1730bd47ded60b160e700138a0&quot;}}}"><a class="SearchBar-peopleResult" data-za-not-track-link="true" href="/people/fang-jie-40-53" target="_blank"><div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="房价"><meta itemprop="image" content="https://pic4.zhimg.com/da8e974dc_s.jpg"><meta itemprop="url" content="https://www.zhihu.com/people/fang-jie-40-53"><meta itemprop="zhihu:followerCount"><span class="UserLink AuthorInfo-avatarWrapper"><img class="Avatar Avatar--medium AuthorInfo-avatar" width="40" height="40" src="https://pic4.zhimg.com/da8e974dc_xs.jpg" srcset="https://pic4.zhimg.com/da8e974dc_l.jpg 2x" alt="房价"></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><!-- react-text: 78 -->房价<!-- /react-text --><!-- react-empty: 79 --></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">经济学在读</div></div></div></div></div></a></div></div></div></div><div class="Menu-item" id="AutoComplet-37601-58607-people-2" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="UserItem" data-za-detail-view-path-index="2" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;User&quot;,&quot;member_hash_id&quot;:&quot;058a022782cecaef87c1f271c5445a75&quot;}}}"><a class="SearchBar-peopleResult" data-za-not-track-link="true" href="/people/nu-wang-da-ren-ni-hao" target="_blank"><div class="AuthorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="高是房价太高的高"><meta itemprop="image" content="https://pic2.zhimg.com/v2-2b47db6a78c66355ca13c88909004fcb_s.jpg"><meta itemprop="url" content="https://www.zhihu.com/people/nu-wang-da-ren-ni-hao"><meta itemprop="zhihu:followerCount"><span class="UserLink AuthorInfo-avatarWrapper"><img class="Avatar Avatar--medium AuthorInfo-avatar" width="40" height="40" src="https://pic2.zhimg.com/v2-2b47db6a78c66355ca13c88909004fcb_xs.jpg" srcset="https://pic2.zhimg.com/v2-2b47db6a78c66355ca13c88909004fcb_l.jpg 2x" alt="高是房价太高的高"></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><!-- react-text: 98 -->高是房价太高的高<!-- /react-text --><!-- react-empty: 99 --></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">举杯邀明月   对影成三人</div></div></div></div></div></a></div></div></div></div></div><div class="AutoComplete-group"><div class="SearchBar-label">话题</div><div class="Menu-item" id="AutoComplet-37601-58607-topic-0" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="TopicItem" data-za-extra-module="{&quot;card&quot;:{&quot;content&quot;:{&quot;type&quot;:&quot;Topic&quot;,&quot;token&quot;:&quot;19554569&quot;}}}"><a class="SearchBar-topicResult" data-za-not-track-link="true" href="/topic/19554569" target="_blank"><!-- react-text: 110 -->房价<!-- /react-text --><span class="SearchBar-topicSuffix"><!-- react-text: 112 -->999<!-- /react-text --><!-- react-text: 113 --> 个精华回答<!-- /react-text --></span></a></div></div></div></div></div><div class="AutoComplete-group"><div class="Menu-item" id="AutoComplet-37601-58607-searchLink-0" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div><a class="SearchBar-searchLink" data-za-not-track-link="true" href="/search?type=content&amp;q='+keyword+'" target="_blank">查看全部搜索结果</a></div></div></div></div></div></div></div>';
     var data='<div class="Popover-content Popover-content--bottom Popover-content--fixed Popover-content-enter Popover-content-enter-active" style="left: 212.4px; top: 43px;"><div class="Menu AutoComplete-menu SearchBar-menu" role="listbox">\
         <div id="IdQuestion" class="AutoComplete-group"></div>\
         <div class="AutoComplete-group"><div role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div><a class="SearchBar-searchLink" data-za-not-track-link="true" href="/search?type=all&amp;q='+keyword+'" target="_blank">查看全部搜索结果</a></div></div></div></div></div>\
@@ -557,7 +326,7 @@ function appendAnswerElementList(ret,type,diretion="append")
                 var expand_btn_class="Button ContentItem-more ContentItem-rightButton Button--plain";
                 var collapse_btn_class="Button ContentItem-less ContentItem-rightButton Button--plain is-hide";
             }
-                            
+            var question_title_element="";               
             var rich_content='<div class="RichContent '+richContent_class+'">\
                                 <div class="RichContent-expand">\
                                 <div class="RichContent-inner" '+RichContent_inner_attr+'><span class="RichText CopyrightRichText-richText">'+answer_content+'</span></div>\
@@ -571,18 +340,36 @@ function appendAnswerElementList(ret,type,diretion="append")
                                 </div>\
                                 </div>';
         }
-        else if("homepage"==type)
+        else if(("topic"==type)||("homepage"==type))
         {
-            var author_id=g_er_id;
-            var author_name=g_er_name;
-            var author_avatar=g_er_avatar;
-            var author_mood=g_er_mood;
-            var answer_id=ret[i][0];
-            var question_id=ret[i][1];
-            var question_title=ret[i][2];
-            var answer_content=ret[i][3];
-            var answer_like_nums=ret[i][4];
+            if("topic"==type)
+            {
+                var question_id=ret[i][0];
+                var question_title=ret[i][1];
+                var topic_id=ret[i][2];
+                var topic_name=ret[i][3];
+                var answer_id=ret[i][4];
+                var author_id=ret[i][5];
+                var author_name=ret[i][6];
+                var author_avatar=ret[i][7];
+                var author_mood=ret[i][8];
+                var answer_content=ret[i][9];
+                var answer_like_nums=ret[i][10];
+            }
+            else if("homepage"==type)
+            {
+                var author_id=g_er_id;
+                var author_name=g_er_name;
+                var author_avatar=g_er_avatar;
+                var author_mood=g_er_mood;
+                var answer_id=ret[i][0];
+                var question_id=ret[i][1];
+                var question_title=ret[i][2];
+                var answer_content=ret[i][3];
+                var answer_like_nums=ret[i][4];
+            }
             var index_img_url=getIndexImg(answer_content);
+            var question_title_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>';
             var rich_content='<div class="RichContent is-collapsed">\
                                 <div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'">\
                                     <div class="RichContent-cover">\
@@ -604,8 +391,9 @@ function appendAnswerElementList(ret,type,diretion="append")
                             </div>';
         }
         
-        var data='<div class="List-item">\
+        var appendElement='<div class="List-item">\
         <div class="ContentItem AnswerItem">\
+        '+question_title_element+'\
         <div class="ContentItem-meta">\
         <div class="AnswerItem-meta AnswerItem-meta--related">\
         <div class="AuthorInfo">\
@@ -624,9 +412,9 @@ function appendAnswerElementList(ret,type,diretion="append")
         ';
         
         if("append"==diretion)
-            $("#appendArea").append(data);
+            $("#appendArea").append(appendElement);
         else
-            $("#appendArea").prepend(data);
+            $("#appendArea").prepend(appendElement);
     }
 }
 function appendAnswerElementCard(ret,type)
@@ -640,8 +428,8 @@ function appendAnswerElementCard(ret,type)
         var answer_id=ret[i][4];
         var author_id=ret[i][5];
         var author_name=ret[i][6];
-        var anthor_avatar=ret[i][7];
-        var anthor_mood=ret[i][8];
+        var author_avatar=ret[i][7];
+        var author_mood=ret[i][8];
         var answer_content=ret[i][9];
         var answer_like_nums=ret[i][10];
         if("has_topic_question_title"==type)
@@ -662,10 +450,10 @@ function appendAnswerElementCard(ret,type)
                         <div class="Feed">\
                                 '+topic_element+'\
                                 <div class="AuthorInfo Feed-meta-author AuthorInfo--plain">\
-                                    <span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link PeoplePopover" href="/er/'+author_id+'/" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"><img src="'+anthor_avatar+'" width="40" height="40"></a></span>\
+                                    <span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link PeoplePopover" href="/er/'+author_id+'/" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"><img src="'+author_avatar+'" width="40" height="40"></a></span>\
                                     <div class="AuthorInfo-content">\
                                         <div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a href="/er/'+author_id+'/" class="UserLink-link 1PeoplePopover" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">'+author_name+'</a></span></div>\
-                                        <div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+anthor_mood+'</div></div></div>\
+                                        <div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div>\
                                     </div>\
                                 </div>\
                                 <div class="ContentItem AnswerItem">\
@@ -683,68 +471,201 @@ function appendAnswerElementCard(ret,type)
         $('#appendArea').append(appendElement);
     }
 }
-function checkSelectOption()
+
+function appendLetterModal()
 {
-    $('#topics_select').on('show.bs.select', function (e) {
-    // do something...
-        var bIsGetAll="1";
-        $.post("/ajax/topics/"+bIsGetAll+"/0/0/", function(ret){
-            if("fail"!=ret)
-            {
-                $('#topics_select').empty();
-                for (var i in ret)
-                {
-                    var topic_id=ret[i][0];
-                    var topic_name=ret[i][1];
-                    $('#topics_select').append("<option value=" + topic_id + ":" + topic_name + ">" + topic_name + "</option>");
-                }   
-                $('.selectpicker').selectpicker('refresh');
-            }  
-        })
-    });
-}
-function checkSearchSelect()
-{
-    $(".Menu-item").off("mouseenter mouseleave");
-    $(".Menu-item").on("mouseenter mouseleave",function(event){
-        if(event.type=="mouseenter")
-        {
-            console.log(".Menu-item  enter");
-            $(this).addClass("is-active");
-        }
-        else if(event.type=="mouseleave"){
-            console.log(".Menu-item  leave");
-            $(this).removeClass("is-active");
-        }
+    var data='<div class="modal fade" id="letterModal" tabindex="0" role="dialog" aria-labelledby="letterModalLabel" aria-hidden="true">\
+        <div class="modal-dialog lettermodal">\
+        <div class="Modal-inner">\
+        <h3 class="Modal-title">发送私信</h3>\
+        <div class="Modal-content">\
+        <div class="Messages-newDialog">\
+        <div class="Messages-receiver">\
+        <span class="Messages-receiverInfo" data-receiver-id="">who</span>\
+        </div>\
+        <div class="Messages-sendContent Input-wrapper Input-wrapper--spread Input-wrapper--multiline">\
+        <textarea id="letterText" rows="5" class="Input" placeholder="私信内容"></textarea>\
+        </div>\
+        <span class="Messages-warning"></span>\
+        <div class="ModalButtonGroup ModalButtonGroup--vertical">\
+        <button class="Button Messages-sendButton Button--primary Button--blue" type="button" onclick="sendLetter()">发送</button>\
+        </div>\
+        </div>\
+        </div>\
+        </div>\
+        <button class="Button Modal-closeButton Button--plain" data-dismiss="modal" aria-label="关闭" type="button"><svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>\
+        </div>\
+        </div>\
+        ';
+
+    $("body").append(data);
     
+    $("#letterModal").on("show.bs.modal", function(){
+        $(".PeoplePopover").popover("hide");
     });
 }
-function checkSearch(e)
+
+function sendLetter2()
 {
-    var keyword=$(e).val();
-    keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
-    if (keyword!="")
-    {
-        console.log(keyword);
-        var type="all";
-        var order=1;
-        var start=0;
-        var end=5;
-        $.post('/ajax/search/'+type+'/'+order+'/'+start+'/'+end+'/',{keyword:keyword},function(ret)
+    var value=$("#letterText2").val();
+    var er_id=$("#letterText2").attr("data-receiver-id");
+    console.log(value);
+    $.post("/ajax/send_message/"+er_id+"/",{"content":value},function(ret){
+        if("fail"!=ret)
+        {
+            var message_id=ret;
+            pushOneConversationMessagesElement(message_id);
+        }
+    });
+}
+function sendLetter()
+{
+    var value=$("#letterText").val();
+    var er_id=$(".Messages-receiverInfo").attr("data-receiver-id");
+    console.log(value);
+    //$("#letterModal").modal("hide");
+    $('#letterModal').modal('toggle');
+    $.post("/ajax/send_message/"+er_id+"/",{"content":value},function(ret){
+        if("fail"!=ret)
         {
             console.log(ret);
+        }
+    });
+}
+function setLetterReceiver(id,name)
+{
+    $(".Messages-receiverInfo").attr("data-receiver-id",id);
+    $(".Messages-receiverInfo").text(name);
+}
+
+function submitAnswer()
+{
+    var url=$(".AnswerToolbar").attr("data-question-answer-url");
+    var content=$('#summernote_answer').summernote('code');
+    var data=new FormData();
+    data.append("content",content);
+    $.ajax({
+        data:data,
+        type:"POST",
+        url:url,
+        cache:false,
+        contentType:false,
+        processData:false,
+        success:function(ret){
             if("fail"!=ret)
             {
-                appendSearchElement(ret,keyword);
-                checkSearchSelect();
+                appendAnswerElementList(ret,g_list_type,"prepend")
+                hideAnswerToolbar();                
+                checkSets();
             }
-        });
+        }
+    });
+}
+
+function showAnswerToolbar()
+{
+    $(".AnswerToolbar").removeClass("is-hide");
+}
+
+function hideAnswerToolbar()
+{
+    $(".AnswerToolbar").addClass("is-hide");
+}
+
+
+function updateValue(type,value)
+{
+    $(".NumberBoard-value").each(function(){
+        var item=$(this);
+        if(type==item.attr("data-update-value-type"))
+            item.text(value)
+    });
+}
+function followPeople(button){
+    var er_id=button.attr("data-er-id");
+    var who=button.attr("data-who");
+    if("true"==button.attr("data-followed"))
+    {
+        $.post("/ajax/er_follow/0/"+er_id+"/",function(ret){
+            if("fail"!=ret)
+            {
+                if ("she"==who)
+                    button.removeClass("Button--grey").addClass("Button--blue").text("关注她");
+                else if ("he"==who)
+                    button.removeClass("Button--grey").addClass("Button--blue").text("关注他");
+                else
+                    button.removeClass("Button--grey").addClass("Button--blue").text("关注");
+                button.attr("data-followed","false");
+                updateValue("people-followed",ret);
+            }
+        }); 
     }
     else
     {
-        $('#SearchPopover').popover('hide');
+        $.post("/ajax/er_follow/1/"+er_id+"/",function(ret){
+            if("fail"!=ret)
+            {
+                button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
+                button.attr("data-followed","true");
+                updateValue("people-followed",ret);
+            }
+        });  
     }
-}
+} 
+
+function followTopic(button){
+    var topic_id=button.attr("data-topic-id");
+    if("true"==button.attr("data-followed"))
+    {
+        $.post("/ajax/topic_follow/0/"+topic_id+"/",function(ret){
+            if("fail"!=ret)
+            {
+                button.removeClass("Button--grey").addClass("Button--blue").text("关注话题");
+                button.attr("data-followed","false");
+                updateValue("topic-followed",ret);
+            }
+        }); 
+    }
+    else
+    {
+        $.post("/ajax/topic_follow/1/"+topic_id+"/",function(ret){
+            if("fail"!=ret)
+            {
+                button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
+                button.attr("data-followed","true");
+                updateValue("topic-followed",ret);
+            }
+        });  
+    }
+} 
+
+function followQuestion(button){
+    var question_id=button.attr("data-question-id");
+    if("true"==button.attr("data-followed"))
+    {
+        $.post("/ajax/question_follow/0/"+question_id+"/",function(ret){
+            if("fail"!=ret)
+            {
+                button.removeClass("Button--grey").addClass("Button--blue").text("关注问题");
+                button.attr("data-followed","false");
+                updateValue("question-followed",ret);
+            }
+        }); 
+    }
+    else
+    {
+        $.post("/ajax/question_follow/1/"+question_id+"/",function(ret){
+            if("fail"!=ret)
+            {
+                button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
+                button.attr("data-followed","true");
+                updateValue("question-followed",ret);
+            }
+        });  
+    }
+}  
+
+
 function checkFollow()
 {
     $(".FollowButton").off("click");
@@ -761,6 +682,7 @@ function checkFollow()
             });
     });
 }
+
 function checkContentClick(){
     $(".RichContent-content").off("click");
     $(".RichContent-content").each(function(){
@@ -803,6 +725,49 @@ function checkContentExpand(){
             $(this).children(".RichContent-inner").css("max-height","");
         });
     });
+}
+
+function checkSearchSelect()
+{
+    $(".Menu-item").off("mouseenter mouseleave");
+    $(".Menu-item").on("mouseenter mouseleave",function(event){
+        if(event.type=="mouseenter")
+        {
+            console.log(".Menu-item  enter");
+            $(this).addClass("is-active");
+        }
+        else if(event.type=="mouseleave"){
+            console.log(".Menu-item  leave");
+            $(this).removeClass("is-active");
+        }
+    
+    });
+}
+function checkSearch(e)
+{
+    var keyword=$(e).val();
+    keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
+    if (keyword!="")
+    {
+        console.log(keyword);
+        var type="all";
+        var order=1;
+        var start=0;
+        var end=5;
+        $.post('/ajax/search/'+type+'/'+order+'/'+start+'/'+end+'/',{keyword:keyword},function(ret)
+        {
+            console.log(ret);
+            if("fail"!=ret)
+            {
+                appendSearchElement(ret,keyword);
+                checkSearchSelect();
+            }
+        });
+    }
+    else
+    {
+        $('#SearchPopover').popover('hide');
+    }
 }
 
 function checkAnswerLike(){
@@ -1023,6 +988,49 @@ function checkPopoverShow(){
     });
     
 }
+
+function checkAvatar(){
+    $(".Avatar-editor").hover(
+        function(){
+            $(".Mask").removeClass("Mask-hidden");
+        },
+        function(){
+            $(".Mask").addClass("Mask-hidden");
+        }
+    );
+    
+    $(".Mask-content").click(function(){
+            $("#id_avatar_input").click();
+            $("#id_avatar_input").on("change",function(){
+               $("#upAvatarModal").modal('show');
+                var objUrl = getObjectURL(this.files[0]);
+                if (objUrl) { 
+                    $("#preview_avatar").attr("src", objUrl);
+                    $("#adjust_choosebox").val(50);                    
+                    
+                    setTimeout(adjustChooseBox,1*1000);
+                }
+            });
+    });
+    
+    $(".AvatarSave").click(function(){
+        var type=$(this).attr("data-avatar-type");
+        var img=document.getElementById("preview_avatar");
+        imgWidth=img.naturalWidth;
+        var can=document.getElementById("avatar_canvas");
+        var ctx=can.getContext("2d");
+        var newX=($('#chooseBox').position().left-$('#preview_avatar').position().left)*(img.naturalWidth/300);
+        var newY=($('#chooseBox').position().top-$('#preview_avatar').position().top)*(img.naturalHeight/300);
+        var newWidth=newHeight=(200+($("#adjust_choosebox").val()-50)*2)*(img.naturalWidth/300);
+        var newHeight=(200+($("#adjust_choosebox").val()-50)*2)*(img.naturalHeight/300);
+        ctx.drawImage(img,newX,newY,newWidth,newHeight,0,0,200,200);
+        can.toBlob(function(blobUrl){
+            console.log(blobUrl);
+            uploadImage(type,blobUrl);
+        },"image/jpeg"); 
+    });
+}
+
 function checkRegisterValid()
 {
     console.log("need checkRegisterValid");
@@ -1096,6 +1104,26 @@ function checkLoginValid()
        
     return result;
 }
+function checkSelectOption()
+{
+    $('#topics_select').on('show.bs.select', function (e) {
+    // do something...
+        var bIsGetAll="1";
+        $.post("/ajax/topics/"+bIsGetAll+"/0/0/", function(ret){
+            if("fail"!=ret)
+            {
+                $('#topics_select').empty();
+                for (var i in ret)
+                {
+                    var topic_id=ret[i][0];
+                    var topic_name=ret[i][1];
+                    $('#topics_select').append("<option value=" + topic_id + ":" + topic_name + ">" + topic_name + "</option>");
+                }   
+                $('.selectpicker').selectpicker('refresh');
+            }  
+        })
+    });
+}
 function checkSets()
 {
     checkFollow();
@@ -1146,8 +1174,6 @@ function slog(arg)
     }
 }
 
-
-
 function isLockScrollMoreData()
 {
     return LOCK_SCROLL_MOREDATA;
@@ -1157,7 +1183,6 @@ function setLockScrollMoreData(val)
     LOCK_SCROLL_MOREDATA=val;
     console.log("LOCK_SCROLL_MOREDATA="+LOCK_SCROLL_MOREDATA);
 }
-
 
 $(document).ready(function() {
     initCommon();
@@ -1182,6 +1207,7 @@ if (getScrollTop() + getClientHeight() +10 >= getScrollHeight()) {
         }
     } 
 }
+
 STEP=5;
 LOCK_SCROLL_MOREDATA="true";
 ENABLE_SCREEN_LOG="true";//"false"
