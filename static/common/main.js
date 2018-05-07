@@ -1188,12 +1188,14 @@ $(document).ready(function() {
     initCommon();
     init();
 });
+
 $(document).click(function(e) {
     $("#NotificationPopover").popover("hide");
     $("#MessagePopover").popover("hide");
     $("#MenuPopover").popover("hide");
     $("#SearchPopover").popover("hide");
 });
+
 window.onscroll = function () { 
 //console.log(getScrollTop());
 //console.log(getClientHeight());
