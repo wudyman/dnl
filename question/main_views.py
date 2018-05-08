@@ -134,7 +134,7 @@ class ConversationView(LoginRequiredMixin,generic.ListView):
             if conversation_id:
                 conversation=get_object_or_404(Conversation,pk=conversation_id)
                 if conversation:
-                    user=request.user
+                    self.type='conversation_messages'
                     parter=conversation.initator
                     if parter.id==user.id:
                         parter=conversation.parter
