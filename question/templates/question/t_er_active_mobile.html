@@ -27,7 +27,7 @@
 <div class="Profile-name"></div>
 <div class="RichText Profile-headline"></div>
 <div class="MobileQuestionButtonGroup" style="margin:12px auto;">
-<button class="Button ProfileEditButton Button--primary Button--blue" onClick="profileEdit()">编辑个人资料</button>
+<button class="Button ProfileEditButton Button--primary Button--blue">编辑个人资料</button>
 <button class="Button FollowButton ProfileFollowButton Button--primary Button--blue" type="button" data-follow-type="people"></button>
 <button class="Button ProfileLetterButton Button--grey Button--withIcon Button--withLabel" type="button" data-toggle="modal" data-target="#letterModal"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comments Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M11 2c5.571 0 9 4.335 9 8 0 6-6.475 9.764-11.481 8.022-.315-.07-.379-.124-.78.078-1.455.54-2.413.921-3.525 1.122-.483.087-.916-.25-.588-.581 0 0 .677-.417.842-1.904.064-.351-.14-.879-.454-1.171A8.833 8.833 0 0 1 2 10c0-3.87 3.394-8 9-8zm10.14 9.628c.758.988.86 2.009.86 3.15 0 1.195-.619 3.11-1.368 3.938-.209.23-.354.467-.308.722.12 1.073.614 1.501.614 1.501.237.239-.188.562-.537.5-.803-.146-1.495-.42-2.546-.811-.29-.146-.336-.106-.563-.057-2.043.711-4.398.475-6.083-.927 5.965-.524 8.727-3.03 9.93-8.016z" fill-rule="evenodd"></path></svg></span>发私信</button>
 </div>
@@ -38,7 +38,7 @@
 <div class="ProfileHeader-infosDivider"></div>
 <span id="job"></span>
 </div>
-<button class="Profile-infosOia" onClick="profileDetailShow()">详细资料 <span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--ArrowRight" fill="#8590a6" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z" fill-rule="evenodd"></path></svg></span></button>
+<button class="Profile-infosOia">详细资料 <span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--ArrowRight" fill="#8590a6" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z" fill-rule="evenodd"></path></svg></span></button>
 </div>
 <div class="Profile-badges">
 <div class="Profile-badgeItem">
@@ -187,50 +187,6 @@ function appendQuestionElement()
         }
     });
 }
-function appendAnswerElementSub(ret)
-{
-    var author_id=g_er_id;
-    var author_name=g_er_name;
-    var author_mood=g_er_mood;
-    var author_avatar=g_er_avatar;
-    
-    var answer_id=ret[0];
-    var question_id=ret[1];
-    var question_title=ret[2];
-    var answer_content=ret[3];
-    var answer_like_nums=ret[4];
-    var index_img_url=getIndexImg(answer_content);
-    var data='<div class="ScrollIntoMark"><div class="List-item">\
-                    <div class="ContentItem AnswerItem">\
-                    <h2 class="ContentItem-title"><div><a target="_blank" href="">'+question_title+'</a></div></h2>\
-                    <div class="ContentItem-meta">\
-                    <div class="AuthorInfo AnswerItem-authorInfo">\
-                    <span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href=""><img class="Avatar AuthorInfo-avatar" width="38" height="38" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span>\
-                    <div class="AuthorInfo-content">\
-                    <div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" target="_blank" href="">'+author_name+'</a></span></div>\
-                    <div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div>\
-                    </div>\
-                    </div>\
-                    </div>\
-                    <div class="RichContent is-collapsed RichContent--withMask">\
-                    <div class="RichContent-cover RichContent-cover--mobile"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"><img width="334" src="" alt=""></div></div>\
-                    <div class="RichContent-inner RichContent-inner--collapsed">\
-                    <span class="RichText CopyrightRichText-richText less">'+removeImg(answer_content)+'</span>\
-                    <span class="RichText CopyrightRichText-richText more">'+addClassImg(answer_content,'class="origin_image"')+'</span>\
-                    <button class="Button ContentItem-more Button--plain" type="button">阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
-                    </div>\
-                    <div class="ContentItem-actions">\
-                    <span>\
-                    <button class="Button VoteButton VoteButton--up" aria-label="赞同" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-upIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg>1</button>\
-                    <button class="Button VoteButton VoteButton--down VoteButton--mobileDown" aria-label="反对" type="button"><svg viewBox="0 0 20 18" class="Icon VoteButton-downIcon Icon--triangle" width="9" height="16" aria-hidden="true" style="height: 16px; width: 9px;"><title></title><g><path d="M0 15.243c0-.326.088-.533.236-.896l7.98-13.204C8.57.57 9.086 0 10 0s1.43.57 1.784 1.143l7.98 13.204c.15.363.236.57.236.896 0 1.386-.875 1.9-1.955 1.9H1.955c-1.08 0-1.955-.517-1.955-1.9z"></path></g></svg></button>\
-                    </span>\
-                    <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>评论</button>\
-                    <button class="Button ContentItem-action Button--plain Button--withIcon Button--iconOnly" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Star Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="evenodd"></path></svg></span></button>\
-                    <button class="Button ContentItem-action ContentItem-less ContentItem-rightButton Button--plain is-hide" type="button"><span class="RichContent-collapsedText">收起</span><svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
-                    </div>\</div>\</div>\</div></div>';
-    
-    $("#feedArea").append(data);
-}
 
 function appendAnswerElement()
 {
@@ -242,6 +198,7 @@ function appendAnswerElement()
         }
     });
 }
+/*
 function checkProfileSave()
 {
 	$(".save").off("click");
@@ -425,7 +382,7 @@ function checkAvatarModify()
         });
     });
 }
-
+/*
 function profileDetailShow()
 {
     g_cache_page=$("main").html();
@@ -485,6 +442,7 @@ function checkReturnHomePage()
         checkNextPage();
     });
 }
+
 function initElement()
 {
     $(".Profile-avatar").attr("src",g_er_avatar);
@@ -599,6 +557,7 @@ function init()
 	checkSets();
     checkNextPage();
 }
+*/
 </script>
 </body>
 </html>

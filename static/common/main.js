@@ -297,7 +297,7 @@ function appendSearchElement(ret,keyword)
     }
 }
 
-function appendAnswerElementList(ret,type,diretion="append")
+function appendAnswerElementList(ret,type,direction)
 {
     for(i in ret)
     {
@@ -411,13 +411,13 @@ function appendAnswerElementList(ret,type,diretion="append")
         </div>\
         ';
         
-        if("append"==diretion)
-            $("#appendArea").append(appendElement);
-        else
+        if("prepend"==direction)
             $("#appendArea").prepend(appendElement);
+        else
+            $("#appendArea").append(appendElement);
     }
 }
-function appendAnswerElementCard(ret,type)
+function appendAnswerElementCard(ret,type,direction)
 {
     for(i in ret)
     {
@@ -468,7 +468,10 @@ function appendAnswerElementCard(ret,type)
                                 </div>\
                         </div>\
                     </div>';
-        $('#appendArea').append(appendElement);
+        if("prepend"==direction)
+            $("#appendArea").prepend(appendElement);
+        else
+            $("#appendArea").append(appendElement);
     }
 }
 
@@ -745,29 +748,31 @@ function checkSearchSelect()
 }
 function checkSearch(e)
 {
-    var keyword=$(e).val();
-    keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
-    if (keyword!="")
-    {
-        console.log(keyword);
-        var type="all";
-        var order=1;
-        var start=0;
-        var end=5;
-        $.post('/ajax/search/'+type+'/'+order+'/'+start+'/'+end+'/',{keyword:keyword},function(ret)
+    $("#SearchPopover").on("input",function(){
+        var keyword=$(this).val();
+        keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
+        if (keyword!="")
         {
-            console.log(ret);
-            if("fail"!=ret)
+            console.log(keyword);
+            var type="all";
+            var order=1;
+            var start=0;
+            var end=5;
+            $.post('/ajax/search/'+type+'/'+order+'/'+start+'/'+end+'/',{keyword:keyword},function(ret)
             {
-                appendSearchElement(ret,keyword);
-                checkSearchSelect();
-            }
-        });
-    }
-    else
-    {
-        $('#SearchPopover').popover('hide');
-    }
+                console.log(ret);
+                if("fail"!=ret)
+                {
+                    appendSearchElement(ret,keyword);
+                    checkSearchSelect();
+                }
+            });
+        }
+        else
+        {
+            $('#SearchPopover').popover('hide');
+        }
+    });
 }
 
 function checkAnswerLike(){

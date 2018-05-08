@@ -65,7 +65,7 @@ function getMoreData() {
     $.get('/ajax/questions/'+order+'/'+start+'/'+end+'/',function(ret){
         if("fail"!=ret)
         {
-            appendAnswerElementCard(ret,"has_topic_question_title");  
+            appendAnswerElementCard(ret,"has_topic_question_title","append");  
             checkSets();
             g_last_getmoredata_index+=STEP;
         }
