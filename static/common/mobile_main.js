@@ -232,7 +232,6 @@ function appendAnswerElementList(ret,type,direction)
             }
             else if("more"==type)
             {
-                console.log("more lsit");
                 var richContent_class="RichContent--unescapable is-collapsed";
                 var RichContent_inner_attr='style="max-height:400px"';
                 var expand_btn_class="Button ContentItem-more ContentItem-rightButton Button--plain";
@@ -301,7 +300,7 @@ function appendAnswerElementList(ret,type,direction)
         }
         
         
-        var appendElement='<div class="ScrollIntoMark"><div class="List-item 1TopicFeedItem">\
+        var appendElement='<div class="ScrollIntoMark"><div class="List-item">\
                 <div class="ContentItem AnswerItem">\
                 '+question_title_element+'\
                 <div class="ContentItem-meta">\
@@ -319,9 +318,9 @@ function appendAnswerElementList(ret,type,direction)
                 </div>';
         
         if("prepend"==direction)
-            $('#appendArea').prepend(appendElement);
+            $("#appendArea").prepend(appendElement);
         else
-            $('#appendArea').append(appendElement);
+            $("#appendArea").append(appendElement);
     }
 }
 function appendAnswerElementCard(ret,type,direction)
@@ -391,9 +390,9 @@ function appendAnswerElementCard(ret,type,direction)
             </div>';
                            
         if("prepend"==direction)
-            $('#appendArea').prepend(appendElement);
+            $("#appendArea").prepend(appendElement);
         else
-            $('#appendArea').append(appendElement);
+            $("#appendArea").append(appendElement);
     }
 }
 function appendTopicElement(ret)
@@ -1018,33 +1017,7 @@ function checkSearch()
         getMoreData();
     });
 }
-function checkSettingPage()
-{
-    $("a[name='reply']").off("click");
-    $("a[name='reply']").on("click",function(){
-        var element=$(this);
-        console.log(element);
-        var id=element.attr("data-receiver-id");
-        var name=element.attr("data-receiver-name");
-        setLetterReceiver(id,name);
-    });
 
-
-    $("a[name='delete']").off("click");
-    $("a[name='delete']").on("click",function(){
-        var element=$(this).parents(".List-item");
-        var action=element.attr("data-action");
-        var action_id=element.attr("data-action-id");
-        if("true"==g_lock_ajax)
-            return;
-        g_lock_ajax="true";
-        $.post("/ajax/"+action+"/"+action_id+"/",function(ret){
-            if("success"==ret)
-                element.remove();
-            g_lock_ajax="false";
-        });
-    });
-}
 function checkAnswerLike(){
     $(".AnswerLike").off("click");
     $(".AnswerLike").each(function(){
@@ -1625,6 +1598,33 @@ function checkHomePage()
             });
         });
     }
+}
+function checkSettingPage()
+{
+    $("a[name='reply']").off("click");
+    $("a[name='reply']").on("click",function(){
+        var element=$(this);
+        console.log(element);
+        var id=element.attr("data-receiver-id");
+        var name=element.attr("data-receiver-name");
+        setLetterReceiver(id,name);
+    });
+
+
+    $("a[name='delete']").off("click");
+    $("a[name='delete']").on("click",function(){
+        var element=$(this).parents(".List-item");
+        var action=element.attr("data-action");
+        var action_id=element.attr("data-action-id");
+        if("true"==g_lock_ajax)
+            return;
+        g_lock_ajax="true";
+        $.post("/ajax/"+action+"/"+action_id+"/",function(ret){
+            if("success"==ret)
+                element.remove();
+            g_lock_ajax="false";
+        });
+    });
 }
 function checkSelectOption()
 {

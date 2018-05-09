@@ -9,7 +9,7 @@
 
 
 <!--------------------main---------------------->
-<main role="main" class="App-main">
+<main role="main" class="App-main"  data-module="question" data-answer-content="{{push_answer.content}}" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","question_id":"{{context_question.id}}","question_title":"{{context_question.title}}","question_answer_nums":"{{context_question.answer_nums}}","question_followed":"{{followed}}","answer_id":"{{push_answer.id}}","answer_like_nums":"{{push_answer.like_nums}}","author_id":"{{push_answer.author.id}}","author_name":"{{push_answer.author.first_name}}","author_avatar":"{{push_answer.author.userprofile.avatar}}","author_mood":"{{push_answer.author.userprofile.mood}}"}'>
         
 <div class="QuestionPage" data-question-id="{{ context_question.id }}" data-question-answer-nums="{{ context_question.answer_nums }}">
     <div>
@@ -254,6 +254,17 @@
         <div class="Card">
         <a class="QuestionMainAction" href="/question/{{ context_question.id }}">查看全部 {{context_question.answer_nums}} 个回答</a>
         </div>
+        {% else %}
+        <div class="Card AllAnswers">
+        <div class="List">
+        <div class="List-header">
+        <h4 class="List-headerText">全部 {{context_question.answer_nums}} 个回答</h4>
+        <div class="List-headerOptions">
+        </div>
+        </div>
+        <div id="appendArea"></div>
+        </div>
+        </div>
         {% endif %}
         </div>
                 
@@ -330,6 +341,7 @@
 </div>
 <!--- div other for invite--->
 <script>
+/*
 function invite()
 {
     $(".Invite").each(function(index,element){
@@ -595,6 +607,7 @@ function init()
     
     appendLetterModal();
 }
+*/
 </script>
 </body>
 </html>
