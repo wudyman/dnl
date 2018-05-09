@@ -505,7 +505,25 @@ function appendSearchPageElement(ret)
         $("#appendArea").append(data);
     }
 }
-
+function pushOneConversationMessagesElement(message_id)
+{
+    var message_content=$("#letterText").val();
+    var date = new Date();
+    var time=date.toLocaleTimeString(); 
+    var data='<div class="List-item Conversation-messages-item" data-action="delete_conversation_message" data-action-id="'+message_id+'">\
+        <a class="zm-item-link-avatar50" href="/er/'+g_user_id+'">\
+        <img class="zm-item-img-avatar50" src="'+g_user_avatar+'">\
+        </a>\
+        <div class="zm-pm-item-main"><a class="pm-touser author-link" title="verna wu" href="/er/'+g_user_id+'">我</a>：'+message_content+'</div>\
+        <div class="zg-gray zu-pm-item-meta">\
+        <span class="zg-gray zg-left">'+time+'</span>\
+        <a class="zg-link-litblue" href="javascript:;" name="delete">删除</a>\
+        </div>\
+        </div>\
+        ';   
+    $(".List-item.Conversation-messages-head").after(data);
+    checkSettingPage();
+}
 function appendSettingPageElement(ret)
 {
     for(i in ret)
@@ -592,7 +610,81 @@ function appendSettingPageElement(ret)
     }
     checkSettingPage();
 }
-
+function appendQuestionElement(ret)
+{
+    for (var i in ret)
+    {
+        var question_id=ret[i][0];
+        var question_title=ret[i][1];
+        var question_pubdate=ret[i][2].split(".")[0];
+        var question_answer_nums=ret[i][3];
+        var question_follower_nums=ret[i][4];
+        
+        var data='<div class="List-item"><div class="ContentItem"><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
+        $("#appendArea").append(data);
+    }
+}
+function appendFollowOrMoreElement(ret)
+{
+    for (var i in ret)
+    {
+        if(("followtos"==g_subcmd)||("followers"==g_subcmd))
+        {
+            var people_id=ret[i][0];
+            var people_name=ret[i][1];
+            var people_anwser_nums=ret[i][2];
+            var people_avatar=ret[i][3];
+            var people_mood=ret[i][4];
+            var people_follower_nums=ret[i][5];
+            var people_followed=ret[i][6];
+            var people_followed_each=ret[i][7];
+            if("1"==people_followed)
+                var followed_html='<button class="Button FollowButton Button--primary Button--grey" type="button">已关注</button>';
+            else
+                var followed_html='<button class="Button FollowButton Button--primary Button--green" type="button">关注</button>';
+            if("1"==people_followed_each)
+                var followed_each_html='<span class="FollowStatus">相互关注</span>';
+            else
+                var followed_each_html='';
+            var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><div class="Popover"><div id="Popover-28784-64463-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-64463-content"><a class="UserLink-link" target="_blank" href="/er/'+people_id+'">\
+                    <img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+people_avatar+'" srcset="'+people_avatar+'" alt="'+people_name+'"></a></div></div></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><div class="Popover"><div id="Popover-28784-44728-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-44728-content"><a class="UserLink-link" data-za-detail-view-element_name="User" target="_blank" href="/er/'+people_id+'">'+people_name+'</a></div></div></span>'+followed_each_html+'</div></h2><div class="ContentItem-meta"><div><div class="RichText">'+people_mood+'</div>\
+                    <div class="ContentItem-status"><span class="ContentItem-statusItem">'+people_anwser_nums+' 回答</span><span class="ContentItem-statusItem">0 文章</span><span class="ContentItem-statusItem">'+people_follower_nums+' 关注者</span></div></div></div></div><div class="ContentItem-extra">'+followed_html+'</div></div></div></div>';
+            $("#appendArea").append(data);
+        }
+        else if("topics"==g_subcmd)
+        {
+            var topic_id=ret[i][0];
+            var topic_name=ret[i][1];
+            var topic_avatar=ret[i][2];
+            var topic_detail=ret[i][3];
+            
+            var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><img class="Avatar Avatar--large" width="60" height="60" src="'+topic_avatar+'" srcset="'+topic_avatar+' 2x"></div><div class="ContentItem-head"><h2 class="ContentItem-title"><a class="TopicLink" href="/topic/'+topic_id+'" target="_blank"><div class="Popover"><div id="Popover-92518-2569-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-92518-2569-content">'+topic_name+'</div></div></a></h2><div class="ContentItem-meta"><div class="ContentItem-status">'+topic_detail+'</div></div></div></div></div></div>';
+            $("#appendArea").append(data);
+        }
+        else if("questions"==g_subcmd)
+        {
+            var question_id=ret[i][0];
+            var question_title=ret[i][1];
+            var question_pubdate=ret[i][2];
+            var question_answer_nums=ret[i][3];
+            var question_follower_nums=ret[i][4];
+            var data='\
+                    <div class="List-item">\
+                    <div class="ContentItem" ><h2 class="ContentItem-title"><div class="QuestionItem-title">\
+                    <a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2>\
+                    <div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>\
+                    ';
+            $("#appendArea").append(data);
+        }
+    }
+}
+function appendFollowOrMoreHead()
+{       
+    var data='<div class="List-item NextPage" data-next-page-type="questions"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的问题</h2></div><div class="ContentItem-extra">'+g_followquestions_num+'</div></div></div></div>\
+                    <div class="List-item NextPage" data-next-page-type="topics"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的话题</h2></div><div class="ContentItem-extra">'+g_followtopics_num+'</div></div></div></div>';
+    $("#appendArea").append(data);
+    checkNextPage();
+}
 function appendLetterModal()
 {
     var data='<div class="modal fade" id="letterModal" tabindex="0" role="dialog" aria-labelledby="letterModalLabel" aria-hidden="true">\
@@ -605,11 +697,11 @@ function appendLetterModal()
         <span class="Messages-receiverInfo" data-receiver-id="">who</span>\
         </div>\
         <div class="Messages-sendContent Input-wrapper Input-wrapper--spread Input-wrapper--multiline">\
-        <textarea id="letterText" rows="5" class="Input" placeholder="私信内容"></textarea>\
+        <textarea id="letterTextModal" rows="5" class="Input" placeholder="私信内容"></textarea>\
         </div>\
         <span class="Messages-warning"></span>\
         <div class="ModalButtonGroup ModalButtonGroup--vertical">\
-        <button class="Button Messages-sendButton Button--primary Button--blue" type="button" onclick="sendLetter()">发送</button>\
+        <button class="Button Messages-sendButton Button--primary Button--blue" type="button" onclick="sendLetterViaModal()">发送</button>\
         </div>\
         </div>\
         </div>\
@@ -629,12 +721,13 @@ function invite()
 {
     $(".Invite").each(function(index,element){
         $(element).click(function(){
-            var question_id=$(".QuestionPage").attr("data-question-id");
-            //inviter=$(element).attr("data-from");
             receiver=$(element).attr("data-receiver");
-            //$.get('/ajax/invite/?question='+question_id+'&from='+inviter+'&to='+invitee,function(ret){
-            $.get('/ajax/invite/?question='+question_id+'&to='+receiver,function(ret){
+            if("true"==g_lock_ajax)
+                return;
+            g_lock_ajax="true";
+            $.post("/ajax/invite/",{question:g_question_id,to:receiver},function(ret){
                 alert(ret);
+                g_lock_ajax="false";
             });
         });
     });
@@ -645,7 +738,9 @@ function showInvite()
     $(".TopicLink").each(function(){
         topics+=($(this).attr("data-topic-id"))+";";
     });
-
+    if("true"==g_lock_ajax)
+        return;
+    g_lock_ajax="true";
     $.post("/ajax/topic_adept/",{"topics":topics},function(ret){
         if("fail"!=ret)
         {
@@ -654,34 +749,40 @@ function showInvite()
             checkSets();
             invite();
         }
+        g_lock_ajax="false";
     })
-    //$("#inviteModal").modal('show');
 }
-function sendLetter2()
+function sendLetter()
 {
-    var value=$("#letterText2").val();
-    var er_id=$("#letterText2").attr("data-receiver-id");
-    console.log(value);
+    var value=$("#letterText").val();
+    var er_id=$("#letterText").attr("data-receiver-id");
+    if("true"==g_lock_ajax)
+        return;
+    g_lock_ajax="true";
     $.post("/ajax/send_message/"+er_id+"/",{"content":value},function(ret){
         if("fail"!=ret)
         {
             var message_id=ret;
             pushOneConversationMessagesElement(message_id);
         }
+        g_lock_ajax="false";
     });
 }
-function sendLetter()
+function sendLetterViaModal()
 {
-    var value=$("#letterText").val();
+    var value=$("#letterTextModal").val();
     var er_id=$(".Messages-receiverInfo").attr("data-receiver-id");
     console.log(value);
-    //$("#letterModal").modal("hide");
     $('#letterModal').modal('toggle');
+    if("true"==g_lock_ajax)
+        return;
+    g_lock_ajax="true";
     $.post("/ajax/send_message/"+er_id+"/",{"content":value},function(ret){
         if("fail"!=ret)
         {
             console.log(ret);
         }
+        g_lock_ajax="false";
     });
 }
 function setLetterReceiver(id,name)
@@ -725,98 +826,6 @@ function hideAnswerToolbar()
 }
 
 
-function updateValue(type,value)
-{
-    $(".NumberBoard-value").each(function(){
-        var item=$(this);
-        if(type==item.attr("data-update-value-type"))
-            item.text(value)
-    });
-}
-function followPeople(button){
-    var er_id=button.attr("data-er-id");
-    var who=button.attr("data-who");
-    if("true"==button.attr("data-followed"))
-    {
-        $.post("/ajax/er_follow/0/"+er_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                if ("she"==who)
-                    button.removeClass("Button--grey").addClass("Button--blue").text("关注她");
-                else if ("he"==who)
-                    button.removeClass("Button--grey").addClass("Button--blue").text("关注他");
-                else
-                    button.removeClass("Button--grey").addClass("Button--blue").text("关注");
-                button.attr("data-followed","false");
-                updateValue("people-followed",ret);
-            }
-        }); 
-    }
-    else
-    {
-        $.post("/ajax/er_follow/1/"+er_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
-                button.attr("data-followed","true");
-                updateValue("people-followed",ret);
-            }
-        });  
-    }
-} 
-
-function followTopic(button){
-    var topic_id=button.attr("data-topic-id");
-    if("true"==button.attr("data-followed"))
-    {
-        $.post("/ajax/topic_follow/0/"+topic_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                button.removeClass("Button--grey").addClass("Button--blue").text("关注话题");
-                button.attr("data-followed","false");
-                updateValue("topic-followed",ret);
-            }
-        }); 
-    }
-    else
-    {
-        $.post("/ajax/topic_follow/1/"+topic_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
-                button.attr("data-followed","true");
-                updateValue("topic-followed",ret);
-            }
-        });  
-    }
-} 
-
-function followQuestion(button){
-    var question_id=button.attr("data-question-id");
-    if("true"==button.attr("data-followed"))
-    {
-        $.post("/ajax/question_follow/0/"+question_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                button.removeClass("Button--grey").addClass("Button--blue").text("关注问题");
-                button.attr("data-followed","false");
-                updateValue("question-followed",ret);
-            }
-        }); 
-    }
-    else
-    {
-        $.post("/ajax/question_follow/1/"+question_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
-                button.attr("data-followed","true");
-                updateValue("question-followed",ret);
-            }
-        });  
-    }
-}  
-
 
 function checkFollow()
 {
@@ -825,14 +834,75 @@ function checkFollow()
         var button=$(this);
         button.click(function(){
             console.log("checkFollow");
+            if("true"==button.attr("data-followed"))
+            {
+                follow_action="0";
+            }
+            else
+            {
+                follow_action="1";
+            }
             if("people"==button.attr("data-follow-type"))
-                followPeople(button);
+            {
+                var who=button.attr("data-who");
+                if ("she"==who)
+                    var follow_tips="关注她";
+                else
+                    var follow_tips="关注他";
+                var follow_type="er_follow";
+                var update_value_type="people-followed";
+                var follow_id=button.attr("data-er-id");
+                var url="/ajax/"+follow_type+"/"+follow_action+"/"+follow_id+"/";
+            }
             else if("topic"==button.attr("data-follow-type"))
-                followTopic(button);
+            {
+                var follow_tips="关注话题";
+                var follow_type="topic_follow";
+                var update_value_type="topic-followed";
+                var follow_id=button.attr("data-topic-id");
+                var url="/ajax/"+follow_type+"/"+follow_action+"/"+follow_id+"/";
+            }
             else if("question"==button.attr("data-follow-type"))
-                followQuestion(button);
-            });
+            {
+                var follow_tips="关注问题";
+                var follow_type="question_follow";
+                var update_value_type="question-followed";
+                var follow_id=button.attr("data-question-id");
+                var url="/ajax/"+follow_type+"/"+follow_action+"/"+follow_id+"/";
+            }
+            var post_data='';
+            if("true"==g_lock_ajax)
+                return;
+            g_lock_ajax="true";
+            $.post(url,post_data,function(ret){
+                if("fail"!=ret)
+                {
+                    if("true"==button.attr("data-followed"))
+                    {
+                        button.removeClass("Button--grey").addClass("Button--blue").text(follow_tips);
+                        button.attr("data-followed","false");
+                    }
+                    else
+                    {
+                        button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
+                        button.attr("data-followed","true");
+                    }
+                    updateFollowValue(update_value_type,ret);
+                }
+                g_lock_ajax="false";
+            });  
+        });
     });
+    
+    function updateFollowValue(type,value)
+    {
+        $(".NumberBoard-value").each(function(){
+            var item=$(this);
+            if(type==item.attr("data-update-value-type"))
+                item.text(value)
+        });
+    }
+
 }
 
 function checkContentClick(){
@@ -962,12 +1032,16 @@ function checkSettingPage()
 
     $("a[name='delete']").off("click");
     $("a[name='delete']").on("click",function(){
-        var element=$(this).parents(".Setting-item");
+        var element=$(this).parents(".List-item");
         var action=element.attr("data-action");
         var action_id=element.attr("data-action-id");
-        $.get("/ajax/"+action+"/"+action_id+"/",function(ret){
+        if("true"==g_lock_ajax)
+            return;
+        g_lock_ajax="true";
+        $.post("/ajax/"+action+"/"+action_id+"/",function(ret){
             if("success"==ret)
                 element.remove();
+            g_lock_ajax="false";
         });
     });
 }
@@ -977,11 +1051,15 @@ function checkAnswerLike(){
         $(this).click(function(){
             var element=$(this);
             answer_id=$(this).attr("data-answer-id");
-            $.get("/ajax/answer_like/"+answer_id+"/",function(ret){
+            if("true"==g_lock_ajax)
+                return;
+            g_lock_ajax="true";
+            $.post("/ajax/answer_like/"+answer_id+"/",function(ret){
                 if("fail"!=ret)
                 {
                     element.text(ret);
                 }
+                g_lock_ajax="false";
             });
         });
     });
@@ -1044,30 +1122,33 @@ function checkSmsSend()
                 setCookie("countdown",g_countdown_secs,g_countdown_secs);
                 if("sign"==g_module)
                 {
-                    $.post("/ajax/send_sms/",{"phone_no":value,"type":"register"},function(ret){
-                        if("fail"!=ret)
-                        {
-                            if("registered"==ret)
-                                $(".SignFlow-accountInputContainer>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("该手机号已注册");
-                        }
-                    });
+                    var post_data={"phone_no":value,"type":"register"};
                 }
                 else if("misc"==g_module)
                 {
-                    $.post("/ajax/send_sms/",{"phone_no":value,"type":"password_reset"},function(ret){
-                        if("fail"!=ret)
-                        {
-                            if("unregistered"==ret)
-                            {
-                                $(".SignFlow-accountInputContainer>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("该手机号未注册，无此用户");
-                            }
-                            else
-                            {
-                                $(".StepHeader-subtitle").text("验证码已发送到您的手机上，请查看并输入");
-                            }
-                        }
-                    });
+                    var post_data={"phone_no":value,"type":"password_reset"};
                 }
+                if("true"==g_lock_ajax)
+                    return;
+                g_lock_ajax="true";
+                $.post("/ajax/send_sms/",post_data,function(ret){
+                    if("fail"!=ret)
+                    {
+                        if("registered"==ret)
+                        {
+                            $(".SignFlow-accountInputContainer>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("该手机号已注册");
+                        }
+                        else if("unregistered"==ret)
+                        {
+                            $(".SignFlow-accountInputContainer>.SignFlowInput-errorMask").removeClass("SignFlowInput-errorMask--hidden").text("该手机号未注册，无此用户");
+                        }
+                        else
+                        {
+                            $(".StepHeader-subtitle").text("验证码已发送到您的手机上，请查看并输入");
+                        }
+                    }
+                    g_lock_ajax="false";
+                });
             }
             else
             {
@@ -1080,17 +1161,17 @@ function checkSmsSend()
 }
 function checkSignAndMiscPage()
 {
-//function checkErrorMask()
-//{
+    //function checkErrorMask()
+    //{
     $(".SignFlowInput-errorMask").click(function(){
         console.log("error mask click");
         $(this).addClass("SignFlowInput-errorMask--hidden");
         $(this).siblings(".Input-wrapper").children(".Input").val("").focus();
     });
-//}
+    //}
 
-//function checkSwithPassword()
-//{
+    //function checkSwithPassword()
+    //{
     $(".SignFlow-switchPassword").off("click");
     $(".SignFlow-switchPassword").click(function(){
         var input=$(this).parents(".SignFlow-password").find(".Input");
@@ -1106,8 +1187,7 @@ function checkSignAndMiscPage()
         }
         $(this).empty().append(password_icon);
     });
-
-//}
+    //}
 
     $("#switchRegisterLogin").click(function(){
         var swith_element=$(".SignContainer-switch");
@@ -1116,7 +1196,6 @@ function checkSignAndMiscPage()
             $(this).text("登录");
             $("#registerLoginText").text("已有帐号？");
             swith_element.attr("data-action","register");
-            //swith_element.attr("data-action","register").empty().append('已有帐号？<span id="switchRegisterLogin">登录</span>');
             $(".SignFlowHeader-title").text("注册知乎");
             $("#register").removeClass("is-hide");
             $("#login").addClass("is-hide");
@@ -1126,7 +1205,6 @@ function checkSignAndMiscPage()
             $(this).text("登录");
             $("#registerLoginText").text("没有帐号？");
             swith_element.attr("data-action","login");
-            //swith_element.attr("data-action","login").empty().append('没有帐号？<span id="switchRegisterLogin">注册</span>');
             $(".SignFlowHeader-title").text("登录知乎");
             $("#register").addClass("is-hide");
             $("#login").removeClass("is-hide");
@@ -1251,6 +1329,9 @@ function checkSecondStep()
         return false;
     var phone_no=$("input[name='phoneNo']").val(); 
     var veri_code=$("input[name='digits']").val();
+    if("true"==g_lock_ajax)
+        return;
+    g_lock_ajax="true";
     $.post("/ajax/reset_pwd/",{"phone_no":phone_no,"veri_code":veri_code,"pwd":value},function(ret){
         if("fail"!=ret)
         {
@@ -1260,6 +1341,7 @@ function checkSecondStep()
                 location.href="/account/?arg=reset_pwd_success";
             }
         }
+        g_lock_ajax="false";
     });
     return false;
 }
@@ -1289,6 +1371,9 @@ function checkFirstStep()
     }
     if(false==result)
         return false;
+    if("true"==g_lock_ajax)
+        return;
+    g_lock_ajax="true";
     $.post("/ajax/check_sms/",{"phone_no":phone_no,"type":"password_reset","veri_code":veri_code},function(ret){
         if("fail"!=ret)
         {
@@ -1312,28 +1397,31 @@ function checkFirstStep()
                 $(".PasswordReset-step").attr("onsubmit","return checkSecondStep()")
             }
         }
+        g_lock_ajax="false";
     });
         
     return false;
 }
-function checkSelectOption()
+
+function checkReturnHomePage(){
+    $(".ReturnHomePage").off("click");
+    $(".ReturnHomePage").click(function(){
+        $("main").empty().append(g_cache_page);
+        checkHomePage();
+        checkNextPage();
+    });
+}
+function checkNextPage()
 {
-    $('#topics_select').on('show.bs.select', function (e) {
-    // do something...
-        var bIsGetAll="1";
-        $.post("/ajax/topics/"+bIsGetAll+"/0/0/", function(ret){
-            if("fail"!=ret)
-            {
-                $('#topics_select').empty();
-                for (var i in ret)
-                {
-                    var topic_id=ret[i][0];
-                    var topic_name=ret[i][1];
-                    $('#topics_select').append("<option value=" + topic_id + ":" + topic_name + ">" + topic_name + "</option>");
-                }   
-                $('.selectpicker').selectpicker('refresh');
-            }  
-        })
+    $(".NextPage").off("click");
+    $(".NextPage").on("click",function(){
+        console.log(this);
+        g_subcmd=$(this).attr("data-next-page-type");
+        g_cache_page=$("main").html();
+        var head='<div class="Card Profile-datalist" id="Profile-datalist"><div id="appendArea" class=""><div class="ProfileHeader-expandActions ProfileEdit-expandActions"><button class="Button--blue ReturnHomePage" style="margin:3px" type="button">返回我的主页</button></div></div></div>';
+        $("main").empty().append(head);
+        getMoreData();
+        checkReturnHomePage();
     });
 }
 
@@ -1391,46 +1479,33 @@ function checkHomePage()
             checkReturnHomePage();
             checkAvatarModify();
             checkProfileModify();
-        }
-        
-        
+        }              
     });
-    function checkReturnHomePage(){
-        $(".ReturnHomePage").off("click");
-        $(".ReturnHomePage").click(function(){
-            $("main").empty().append(g_cache_page);
-            checkHomePage();
-            checkNextPage();
-        });
-    }
+
     function checkProfileSave()
     {
         $(".save").off("click");
         $(".save").click(function(){
             var _this=$(this);
-            var field_type=$(this).parents(".Field-content").attr("data-field-type")
-            console.log(field_type);
-            if("nickname"==field_type)
-            {
-                var value=$("input[name='nickname']").val();
-                $.post("/ajax/profile_edit/nickname/",{content:value},function(ret){
-                    if("fail"!=ret)
-                    {
-                        g_er_name=ret;                 
-                    }
-                    var data='<div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
-                    _this.parents(".Field-content").empty().append(data);
-                    checkProfileModify();
-                });
-
-            }
+            var field_type=$(this).parents(".Field-content").attr("data-field-type");
+            var value=$("input[name='"+field_type+"']").val();
             if("sexual"==field_type)
-            {	
                 var value=$("input[name='sexual']:checked").val();
-                $.post("/ajax/profile_edit/sexual/",{content:value},function(ret){
-                    if("fail"!=ret)
+            else if("intro"==field_type)
+                var value=$("textarea[name='intro']").val();
+            if("true"==g_lock_ajax)
+                return;
+            g_lock_ajax="true";
+            $.post("/ajax/profile_edit/",{field_type:field_type,content:value},function(ret){
+                if("fail"!=ret)
+                {
+                    if("nickname"==field_type)
                     {
-                        console.log(ret);
+                        g_er_name=ret;
+                        var data='<div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';                        
+                    }
+                    else if("sexual"==field_type)
+                    {
                         if("f"==ret)
                         {
                             g_er_sexual="she";
@@ -1440,73 +1515,41 @@ function checkHomePage()
                         {
                             g_er_sexual="he";
                             g_er_sexual_han="男";
-                        }                    
+                        }
+                        var data='<div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                     }
-                    var data='<div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
-                    _this.parents(".Field-content").empty().append(data);
-                    checkProfileModify();
-                });
-            }
-            else if("mood"==field_type)
-            {
-                var value=$("input[name='mood']").val();
-                $.post("/ajax/profile_edit/mood/",{content:value},function(ret){
-                    if("fail"!=ret)
+                    else if("mood"==field_type)
                     {
-                        g_er_mood=ret;                 
+                        g_er_mood=ret;
+                        var data='<div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                     }
-                    var data='<div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
-                    _this.parents(".Field-content").empty().append(data);
-                    checkProfileModify();
-                });
+                    else if("residence"==field_type)
+                    {
+                        g_er_residence=ret; 
+                        var data='<div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
 
-            }
-            else if("residence"==field_type)
-            {
-                var value=$("input[name='residence']").val();
-                $.post("/ajax/profile_edit/residence/",{content:value},function(ret){
-                    if("fail"!=ret)
-                    {
-                        g_er_residence=ret;                     
                     }
-                    var data='<div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
-                    _this.parents(".Field-content").empty().append(data);
-                    checkProfileModify();
-                });
-            }
-            else if("job"==field_type)
-            {
-                var value=$("input[name='job']").val();
-                $.post("/ajax/profile_edit/job/",{content:value},function(ret){
-                    if("fail"!=ret)
+                    else if("job"==field_type)
                     {
                         g_er_job=ret;
+                        var data='<div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                     }
-                    var data='<div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
-                    _this.parents(".Field-content").empty().append(data);
-                    checkProfileModify();
-                });
-            }
-            else if("intro"==field_type)
-            {
-                var value=$("textarea[name='intro']").val();
-                $.post("/ajax/profile_edit/intro/",{content:value},function(ret){
-                    if("fail"!=ret)
+                    else if("intro"==field_type)
                     {
                         g_er_intro=ret;
+                        var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+ 
                     }
-                    var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
                     _this.parents(".Field-content").empty().append(data);
-                    checkProfileModify();
-                });
-            }
-            checkProfileModify();
+                }
+                g_lock_ajax="false";
+                checkProfileModify();
+            });
         });
+
         $(".cancle").off("click");
-        //$(".cancle").each(function(){
         $(".cancle").click(function(){
             var field_type=$(this).parents(".Field-content").attr("data-field-type")
-            console.log(field_type);
             if("nickname"==field_type)
             {
                 var data='<div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
@@ -1534,14 +1577,12 @@ function checkHomePage()
             $(this).parents(".Field-content").empty().append(data);
             checkProfileModify();
         });
-        //});
     }
     function checkProfileModify()
     {
         $(".Field").find(".ModifyButton").off("click");
         $(".Field").find(".ModifyButton").click(function(){
             var field_type=$(this).parents(".Field-content").attr("data-field-type");
-            console.log(field_type);
             if("nickname"==field_type)
             {
                 var data='<div><div class="HeadlineField-input Input-wrapper"><input name="nickname" class="Input" value="'+g_er_name+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
@@ -1573,19 +1614,40 @@ function checkHomePage()
             $(this).parents(".Field-content").empty().append(data);
             checkProfileSave();
         });
-            //ata-field-type="sexual"
     }
     function checkAvatarModify()
     {
         $(".Profile-avatar.Modify-avatar").click(function(){
             $("#id_avatar_input").click();
             $("#id_avatar_input").on("change",function(){
-                //fileUpload();
                 var file = $('#id_avatar_input')[0].files[0];
                 scaleAndUploadImage("forAvatar",file,200);
             });
         });
     }
+}
+function checkSelectOption()
+{
+    $('#topics_select').on('show.bs.select', function (e) {
+        var bIsGetAll="1";
+        if("true"==g_lock_ajax)
+            return;
+        g_lock_ajax="true";
+        $.post("/ajax/topics/"+bIsGetAll+"/0/0/", function(ret){
+            if("fail"!=ret)
+            {
+                $('#topics_select').empty();
+                for (var i in ret)
+                {
+                    var topic_id=ret[i][0];
+                    var topic_name=ret[i][1];
+                    $('#topics_select').append("<option value=" + topic_id + ":" + topic_name + ">" + topic_name + "</option>");
+                }   
+                $('.selectpicker').selectpicker('refresh');
+            }
+            g_lock_ajax="false";            
+        })
+    });
 }
 function checkSets()
 {
@@ -1598,10 +1660,10 @@ function checkSets()
     checkExpandBtn();
 }
 
-
-
 function getMoreData()
 {
+    if($(".List-item.NoMoreData").length>0)
+        return;
     if("index"==g_module)
     {
         var nums=g_last_getmoredata_index;
@@ -1676,6 +1738,30 @@ function getMoreData()
             var url='/ajax/'+g_setting_type+'/'+order+'/'+start+'/'+end+'/';
         var post_data='';
     }
+    else if("home"==g_module)
+    {
+        if ("answers"==g_command)
+        {
+            var url="/ajax/er/"+g_er_id+"/answers/";
+            var post_data='';
+        }
+        else if ("asks"==g_command)
+        {
+            var url="/ajax/er/"+g_er_id+"/asks/";
+            var post_data='';
+        }
+        else if ("following"==g_command)
+        {
+            console.log($("main").find(".ReturnHomePage").length);
+            if($("main").find(".ReturnHomePage").length<=0)
+                return;
+            var url="/ajax/er/"+g_er_id+"/following/"+g_subcmd+"/";
+            var post_data='';
+        }
+    }
+    if("true"==g_lock_ajax)
+        return;
+    g_lock_ajax="true";
     $.post(url,post_data,function(ret){
         if("fail"!=ret)
         {
@@ -1688,6 +1774,7 @@ function getMoreData()
                 if("more"==g_list_type)
                 {
                     appendAnswerElementList(ret,"more");
+                    $("#appendArea").append('<div class="List-item NoMoreData is-hide"><div class="ContentItem" ><div class="ContentItem-status"  style="text-align:center">没有更多内容</div></div></div>');
                 }
                 else
                 {
@@ -1710,10 +1797,31 @@ function getMoreData()
             {
                 appendSettingPageElement(ret);
             }
+            else if("home"==g_module)
+            {
+                if ("answers"==g_command)
+                {
+                    appendAnswerElementList(ret,"homepage");
+                }
+                else if ("asks"==g_command)
+                {
+                    appendQuestionElement(ret);
+                }
+                else if ("following"==g_command)
+                {
+                    appendFollowOrMoreElement(ret);
+                }
+            }
             checkSets();
             g_last_getmoredata_index+=STEP;
         }
-        setLockScrollMoreData("false");
+        else
+        {
+            console.log("no more data");
+            $("#appendArea").append('<div class="List-item NoMoreData"><div class="ContentItem" ><div class="ContentItem-status"  style="text-align:center">没有更多内容</div></div></div>');
+        }
+        g_lock_ajax="false";
+        //setLockScrollMoreData("false");
     });
 }
 
@@ -1779,7 +1887,7 @@ function initElement()
         });
         if("conversation_messages"==g_setting_type)
         {
-            var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">'+g_parter_name+'</span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText2" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="4"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--blue" type="button" onclick="sendLetter2()">发送</button></div></div></div>';
+            var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">'+g_parter_name+'</span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="4"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--blue" type="button" onclick="sendLetter()">发送</button></div></div></div>';
             $('#appendArea').prepend(data);
         }
         checkSettingPage();
@@ -1887,12 +1995,12 @@ function initElement()
         if ("answers"==g_command)
         {
             answers_active="is-active";
-            appendAnswerElement();
+            //appendAnswerElement();
         }
         else if("asks"==g_command)
         {
             asks_active="is-active";
-            appendQuestionElement();
+            //appendQuestionElement();
         }
         else if("posts"==g_command)
         {
@@ -1902,7 +2010,8 @@ function initElement()
         else if("following"==g_command)
         {
             following_active="is-active";
-            appendFollowElement();
+            appendFollowOrMoreHead();
+            //appendFollowElement();
         }
         else 
             console.log("false");
@@ -2081,16 +2190,6 @@ function slog(arg)
     }
 }
 
-function isLockScrollMoreData()
-{
-    return LOCK_SCROLL_MOREDATA;
-}
-function setLockScrollMoreData(val)
-{
-    LOCK_SCROLL_MOREDATA=val;
-    console.log("LOCK_SCROLL_MOREDATA="+LOCK_SCROLL_MOREDATA);
-}
-
 $(document).ready(function(){
     initCommon();
     init();
@@ -2106,15 +2205,10 @@ window.onscroll = function () {
 //console.log(getClientHeight());
 //console.log(getScrollHeight());
 if (getScrollTop() + getClientHeight() +10 >= getScrollHeight()) {
-        if("false"==isLockScrollMoreData())
-        {
-            setLockScrollMoreData("true");
-            setTimeout(function(){setLockScrollMoreData("false");},15*1000);
-            getMoreData();
-        }
+        getMoreData();
     } 
 }
 SITE="知乎";
 STEP=10;
-LOCK_SCROLL_MOREDATA="true";
+g_lock_ajax="false";
 ENABLE_SCREEN_LOG="true";//"false"

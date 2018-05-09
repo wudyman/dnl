@@ -487,9 +487,9 @@ def upload_img(request):
 @csrf_exempt
 def invite(request):
     to_json=json.dumps('fail')
-    q=request.GET.get('question')
+    q=request.POST.get('question')
     #f=request.GET.get('from')
-    t=request.GET.get('to')
+    t=request.POST.get('to')
 
     inviter=request.user
     if inviter.is_authenticated:
@@ -725,25 +725,26 @@ def answer_page(request,type,order,start,end):
     return HttpResponse(to_json,content_type='application/json')
 	
 @csrf_exempt
-def profile_edit(request,type):
+def profile_edit(request):
     to_json=json.dumps('fail')
     user=request.user
     if user.is_authenticated:
+        field_type=request.POST.get('field_type')
         content=request.POST.get('content')
         if content:
-            if type=='nickname':
+            if field_type=='nickname':
                 user.first_name=content
                 user.save()
             else:
-                if type=='sexual':
+                if field_type=='sexual':
                     user.userprofile.sexual=content
-                elif type=='mood':
+                elif field_type=='mood':
                     user.userprofile.mood=content
-                elif type=='residence':
+                elif field_type=='residence':
                     user.userprofile.residence=content
-                elif type=='job':
+                elif field_type=='job':
                     user.userprofile.job=content
-                elif type=='intro':
+                elif field_type=='intro':
                     user.userprofile.intro=content
                 user.userprofile.save()
             to_json=json.dumps(content)
