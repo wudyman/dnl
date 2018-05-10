@@ -1,14 +1,15 @@
 ﻿<!DOCTYPE html>
 <html lang="zh" data-hairline="true" data-theme="light" data-focus-method="pointer" style="">
 {% include 'question/head.html' %}
-<body class="Entry-body">
+<body class="Entry-body" style="background-color:#fff">
 {% include 'question/header.html' %}
 
 <div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 3px;"></div>
 
 <!--------------------main---------------------->
-<main role="main">
+<main role="main" class="App-main" data-module="alltopics" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}"}'>
 
+<!--
 <div class="AppHeader">
 <div class="container">
 <div class="row">
@@ -16,19 +17,25 @@
 
 <div class="zm-topic-cat-sub">
 <div class="zh-general-list clearfix"  style="display: block;">
-<div id="topiclist">
-</div>
-
-</div>
-<!--<a aria-role="button" class="zg-btn-white zu-button-more">更多</a>
-<a href="javascript:;" id="zh-load-more" data-method="next" class="zg-btn-white zg-r3px zu-button-more" style="display:none">更多</a>-->
+<div id="appendArea">
 </div>
 
 </div>
 </div>
-</div>
-</div>
 
+</div>
+</div>
+</div>
+</div>
+-->
+<div class="ContentLayout">
+<div class="ContentLayout-mainColumn">
+<div class="1Card">
+<div id="appendArea" class="List">
+</div>
+</div>
+</div>
+</div>
 
 </main>
 <!--------------------main end-------------------->
@@ -41,6 +48,7 @@
 <!-- append by js -->
 <!-- letter（Modal） -->
 <script>
+/*
 function followTopics()
 {
     $("a[name='follow']").off("click");
@@ -137,6 +145,7 @@ function init()
     getMoreData(20);
     appendLetterModal();
 }
+*/
 </script>
 </body>
 

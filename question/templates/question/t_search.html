@@ -5,16 +5,16 @@
 {% include 'question/header.html' %}
 
         <!--------------------main---------------------->
-<main role="main" class="App-main">
+<main role="main" class="App-main" data-module="search" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","search_keyword":"{{keyword}}","search_type":"{{type}}"}'>
 
 <div class="SearchTabs SearchTab-bottomShadow"  data-za-detail-view-path-module="SearchSwitchTabBar">
 <div class="SearchTabs-inner">
 <div class="SearchTabs-actions">
 <ul role="tablist" class="Tabs">
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Search-all"><a class="Tabs-link is-active" href="/search?q={{keyword}}&amp;type=all">综合</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Search-question"><a class="Tabs-link" href="/search?q={{keyword}}&amp;type=question">问题</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Search-people"><a class="Tabs-link" href="/search?q={{keyword}}&amp;type=people">用户</a></li>
-<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Search-topic"><a class="Tabs-link" href="/search?q={{keyword}}&amp;type=topic">话题</a></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Search-all"><a class="Tabs-link is-active" data-search-type="all" href="/search?q={{keyword}}&amp;type=all">综合</a></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Search-question"><a class="Tabs-link" data-search-type="question" href="/search?q={{keyword}}&amp;type=question">问题</a></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Search-people"><a class="Tabs-link" data-search-type="people" href="/search?q={{keyword}}&amp;type=people">用户</a></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Search-topic"><a class="Tabs-link" data-search-type="topic" href="/search?q={{keyword}}&amp;type=topic">话题</a></li>
 </ul>
 
 <!--<div class="Popover"><button class="Button Select-button Select-plainButton Button--plain" role="combobox" aria-expanded="false" type="button" aria-haspopup="true">时间不限<span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Select Select-arrow" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M12 16.183l2.716-2.966a.757.757 0 0 1 1.064.001.738.738 0 0 1 0 1.052l-3.247 3.512a.758.758 0 0 1-1.064 0L8.22 14.27a.738.738 0 0 1 0-1.052.758.758 0 0 1 1.063 0L12 16.183zm0-9.365L9.284 9.782a.758.758 0 0 1-1.064 0 .738.738 0 0 1 0-1.052l3.248-3.512a.758.758 0 0 1 1.065 0L15.78 8.73a.738.738 0 0 1 0 1.052.757.757 0 0 1-1.063.001L12 6.818z" fill-rule="evenodd"></path></svg></span></button></div>-->
@@ -39,7 +39,7 @@
 </div>
 -->
 <div class="Card">
-<div class="List" data-search-type="{{type}}" data-search-keyword="{{keyword}}">
+<div id="appendArea" class="List" data-search-type="{{type}}" data-search-keyword="{{keyword}}">
 </div>
 </div>
 </div>
@@ -55,58 +55,6 @@
 <!-- letter（Modal） -->
 <!-- append by js -->
 <!-- letter（Modal） -->
-<script>
-function appendSearchPageElement(ret)
-{
-    for ( var i in ret)
-    {
-        var question_id=ret[i][0];
-        var question_title=ret[i][1];
-        var question_answer_nums=ret[i][2];
-        question_title=question_title.replace(search_keyword,"<em>"+search_keyword+"</em>");
-        console.log(question_title);
-        var data='<div class="List-item"><div class="ContentItem AnswerItem" itemprop="answer" itemtype="http://schema.org/Answer" itemscope=""><h2 class="ContentItem-title"><div itemprop="zhihu:question" itemtype="http://schema.org/Question" itemscope=""><meta itemprop="url" content="/question/'+question_id+'"><meta itemprop="name" content="'+question_title+'"><a target="_blank" href="/question/'+question_id+'"><span class="Highlight">'+question_title+'</span></a></div></h2></div></div>';
-        $(".List").append(data);
-    }
-}
 
-function getMoreData() {
-    if("None"!=search_keyword)
-    {
-        var nums=g_last_getmoredata_index;//$('.List-item').length;
-        var order=1;//pub_date
-        var start=nums;
-        var end=start+STEP;
-        $.post('/ajax/search/'+search_type+'/'+order+'/'+start+'/'+end+'/',{keyword:search_keyword},function(ret){
-            if("fail"!=ret)
-            {
-                appendSearchPageElement(ret);  
-                checkSets();
-                g_last_getmoredata_index+=STEP;
-            }
-            setLockScrollMoreData("false");
-        });
-    }
-} 
-
-function init()
-{
-    search_keyword=$(".List").attr("data-search-keyword");
-    search_type=$(".List").attr("data-search-type");
-    if("None"!=search_type)
-    {
-        $(".Tabs-link").removeClass("is-active");
-        $(".Tabs-link").each(function(){
-            if($(this).attr("href"))
-            {
-                if($(this).attr("href").indexOf(search_type)>-1)
-                    $(this).addClass("is-active");
-            }
-        });
-        getMoreData();
-    }
-    appendLetterModal();
-}
-</script>
 </body>
 </html>
