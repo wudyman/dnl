@@ -1523,7 +1523,7 @@ html[data-ios] .List-headerText{font-weight:500}
 html[data-android] .List-headerText{font-weight:700}
 .List-headerOptions{font-size:14px}
 .List-loading{padding:200px 0;color:#8590a6;text-align:center}
-.List-item{/*position:relative;*/padding:16px 20px}
+.List-item{position:relative;padding:16px 20px}
 .List-item+.List-item:after{position:absolute;left:0;right:0;top:0;margin:0 20px;display:block;border-bottom:1px solid #f0f2f7;content:""}
 .List-item--holder{padding:24px 0}
 .List-itemMeta{margin-bottom:10px;color:#8590a6}
