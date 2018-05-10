@@ -392,7 +392,7 @@ function appendAnswerElementList(ret,type,direction)
         }
         
         
-        var appendElement='<div class="ScrollIntoMark"><div class="List-item">\
+        var appendElement='<div class="List-item ScrollIntoMark">\
         <div class="ContentItem AnswerItem">\
         '+question_title_element+'\
         <div class="ContentItem-meta">\
@@ -408,7 +408,6 @@ function appendAnswerElementList(ret,type,direction)
         </div>\
         </div>\
         '+rich_content+'\
-        </div>\
         </div>\
                 </div>';
         
@@ -447,7 +446,7 @@ function appendAnswerElementCard(ret,type,direction)
         for(var j=0;j<100;j++)
             answer_content=answer_content+"&nbsp;";
         var index_img_url=getIndexImg(answer_content);
-        var appendElement='<div class="ScrollIntoMark"><div class="QuestionFrame Card">\
+        var appendElement='<div class="Card QuestionFrame ScrollIntoMark">\
                         <div class="Feed">\
                                 '+topic_element+'\
                                 <div class="AuthorInfo Feed-meta-author AuthorInfo--plain">\
@@ -466,7 +465,6 @@ function appendAnswerElementCard(ret,type,direction)
                                         </div>\
                                         <div class="ContentItem-actions"><span><button class="AnswerLike Button LikeButton ContentItem-action" type="button" data-answer-id="'+answer_id+'"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'</button></span></div>\
                                     </div>\
-                                </div>\
                         </div></div>\
                     </div>';
         if("prepend"==direction)
@@ -1101,8 +1099,8 @@ function checkContentExpand(){
     $(".RichContent-expand").each(function(){
         if($(this).parents(".ScrollIntoMark").length>0)
         {
-            var timestamp=new Date().getTime();
-            $(this).parents(".ScrollIntoMark").attr("id",timestamp);
+            var randomId=""+Math.random();
+            $(this).parents(".ScrollIntoMark").attr("id",randomId);
         }
         $(this).click(function(){
             $(this).children(".ContentItem-more").addClass("is-hide");
@@ -1112,8 +1110,8 @@ function checkContentExpand(){
             
             if($(this).parents(".ScrollIntoMark").length>0)
             {
-                var timestamp=new Date().getTime();
-                $(this).parents(".ScrollIntoMark").attr("id",timestamp);
+                var randomId=""+Math.random();
+                $(this).parents(".ScrollIntoMark").attr("id",randomId);
             }
         });
     });
