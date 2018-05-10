@@ -1,65 +1,53 @@
 ﻿<!DOCTYPE html>
 <html lang="zh" data-hairline="true" data-theme="light" data-focus-method="pointer" style="">
 {% include 'question/head.html' %}
-<body class="Entry-body">
+<body class="Entry-body" style="background-color:#fff">
 {% include 'question/header.html' %}
 
 <div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 3px;"></div>
 
 <!--------------------main---------------------->
-<main role="main">
+<main role="main" class="App-main" data-module="setting" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","type":"{{type}}","conversation_id":"{{conversation_id}}","parter_name":"{{parter_name}}"}'>
+<div class="ContentLayout">
+<div class="ContentLayout-mainColumn">
+<div class="1Card">
 
-<div class="AppHeader">
-<div class="container">
-<div class="row">
-<div class="1col-md-offset-1 col-md-8">
-<div class="zu-main-content">
-<div class="zu-main-content-inner">
-{% if parter %}
-    <div class="zg-section"><a href="/conversations">« 返回</a></div>
-    <div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">{{parter.first_name}}</span>：</div>
-    <div class="zg-section LetterSend" id="zh-pm-editor-form">
-    <div class="zg-editor-simple-wrap zg-form-text-input">
-    <div class="zg-user-name" style="display:none"></div>
-    <textarea id="letterText2" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="{{parter.id}}"></textarea>
-    </div>
-    <div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div>
-    <div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--blue" type="button" onclick="sendLetter2()">发送</button></div>
-    </div>
-{% endif %}
-{% ifequal type 'conversations' %}
-    <div id="setting-items" data-type="{{type}}" data-conversation-id="{{conversation_id}}">
-    </div>
-{% else %}
-    {% ifequal type 'notifications' %}
-        <div id="zh-noti7">
-        <div class="zm-noti-header">全部消息提醒<span class="zm-noti-header-unread-amount"></span></div>
-        <div class="zm-noti7-wrap zu-noti7-all" id="zh-noti7-list">
-        <div id="zh-noti7-list-inner">
-        <div id="setting-items" data-type="{{type}}">
-        </div>
-        </div>
-        </div>
-        </div>
-    {% else %}
-        <ul class="nav nav-tabs nav-justified">
-        <li class="settings-link"><a href="/settings/?sub=profile">基本资料</a></li>
-        <li class="settings-link"><a href="/settings/?sub=account">账号和密码</a></li>
-        <li class="settings-link"><a href="/settings/?sub=notification">通知提醒</a></li>
-        <li class="settings-link"><a href="/settings/?sub=conversation">私信设置</a></li>
-        </ul>
-        <div id="setting-items"  data-type="{{type}}" data-sub-type="{{sub_type}}" data-user-name="{{user.first_name}}">
-        </div>
-    {% endifequal%}
-{% endifequal %}
+<div class="1zu-main-content">
+<div class="1zu-main-content-inner">
+
+<div id="settings">
+
+<div class="Card">
+<div>
+<div>
+<div class="Sticky" style=""></div>
+</div>
+</div>
+<div class="Topic-bar">
+<ul role="tablist" class="Tabs Topic-tabs">
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><a class="Tabs-link is-active" href="/notifications">通知</a></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><a class="Tabs-link" href="/conversations">私信</a></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><a class="Tabs-link" href="/settings">设置</a></li>
+</ul>
 </div>
 </div>
 
+<div class="Card">
+<div class="List">
+<div id="appendArea" class="">
 </div>
 </div>
 </div>
 </div>
 
+
+</div>
+</div>
+
+
+</div>
+</div>
+</div>
 </main>
 <!--------------------main end-------------------->
 <!-- ask（Modal） -->
@@ -69,294 +57,8 @@
 <!-- letter（Modal） -->
 <!-- append by js -->
 <!-- letter（Modal） -->
-<script>
 
-function replyConversation()
-{
-    $("a[name='reply']").off("click");
-    $("a[name='reply']").on("click",function(){
-        var element=$(this);
-        console.log(element);
-        var id=element.attr("data-receiver-id");
-        var name=element.attr("data-receiver-name");
-        setLetterReceiver(id,name);
-    });
-}
 
-function deleteConversation()
-{
-    $("a[name='delete']").off("click");
-    $("a[name='delete']").on("click",function(){
-        var element=$(this).parents(".Setting-item");
-        var action=element.attr("data-action");
-        var action_id=element.attr("data-action-id");
-        $.get("/ajax/"+action+"/"+action_id+"/",function(ret){
-            if("success"==ret)
-                element.remove();
-        });
-    });
-}
-
-function pushOneConversationMessagesElement(message_id)
-{
-    var user_id=$("#MenuPopover").attr("data-er-id");
-    var user_avatar=$("#MenuPopover").attr("data-er-avatar");
-    var message_content=$("#letterText2").val();
-    var date = new Date();
-    var time=date.toLocaleTimeString(); 
-    var data='<div class="Setting-item zm-pm-item" data-action="delete_conversation_message" data-action-id="'+message_id+'">\
-        <a class="zm-item-link-avatar50" href="/er/'+user_id+'">\
-        <img class="zm-item-img-avatar50" src="'+user_avatar+'">\
-        </a>\
-        <div class="zm-pm-item-main"><a class="pm-touser author-link" title="verna wu" href="/er/'+user_id+'">我</a>：'+message_content+'</div>\
-        <div class="zg-gray zu-pm-item-meta">\
-        <span class="zg-gray zg-left">'+time+'</span>\
-        <a class="zg-link-litblue" href="javascript:;" name="delete">删除</a>\
-        </div>\
-        </div>\
-        ';
-
-    $('#setting-items').before(data);
-    deleteConversation();
-}
-
-function appendConversationMessagesElement(ret)
-{
-    var user_id=$("#MenuPopover").attr("data-er-id");
-    for(i in ret)
-    {
-    var message_id=ret[i][0];
-    var message_content=ret[i][1];
-    var message_status=ret[i][2];
-    var message_delete_id=ret[i][3];
-    var message_pub_date=ret[i][4].split('.')[0];
-    var er_id=ret[i][5];
-    var er_name=ret[i][6];
-    var er_avatar=ret[i][7];
-    
-    if (message_delete_id==user_id) //user have delete this message
-        continue;
-
-    if(er_id==user_id)
-        er_name="我";
-
-    var data='<div class="Setting-item zm-pm-item" data-action="delete_conversation_message" data-action-id="'+message_id+'">\
-        <a class="zm-item-link-avatar50" href="/er/'+er_id+'">\
-        <img class="zm-item-img-avatar50" src="'+er_avatar+'">\
-        </a>\
-        <div class="zm-pm-item-main"><a class="pm-touser author-link" title="verna wu" href="/er/'+er_id+'">'+er_name+'</a>：'+message_content+'</div>\
-        <div class="zg-gray zu-pm-item-meta">\
-        <span class="zg-gray zg-left">'+message_pub_date+'</span>\
-        <a class="zg-link-litblue" href="javascript:;" name="delete">删除</a>\
-        </div>\
-        </div>\
-        ';
-
-    $('#setting-items').append(data);
-    }
-    deleteConversation();
-}
-
-function appendConversationElement(ret)
-{
-    var user_id=$("#MenuPopover").attr("data-er-id");
-    for(i in ret)
-    {
-    var conversation_id=ret[i][0];
-    var conversation_delete_id=ret[i][1];
-    var conversation_update=ret[i][2].split('.')[0];
-    var er_id=ret[i][3];
-    var er_name=ret[i][4];
-    var er_avatar=ret[i][5];
-    var message_content=ret[i][6];
-    
-    if (conversation_delete_id==user_id) //user have delete this message
-        continue;
-
-    var data='<div class="Setting-item zm-pm-item" data-action="delete_conversation" data-action-id="'+conversation_id+'">\
-        <a class="zm-item-link-avatar50" href="/er/'+er_id+'">\
-        <img class="zm-item-img-avatar50" src="'+er_avatar+'">\
-        </a>\
-        <div class="zm-pm-item-main"><a class="pm-touser author-link" title="verna wu" href="/er/'+er_id+'">'+er_name+'</a>：'+message_content+'</div>\
-        <div class="zg-gray zu-pm-item-meta">\
-        <span class="zg-gray zg-left">'+conversation_update+'</span>\
-        <a class="zg-link-litblue" href="/conversations/?i='+conversation_id+'">查看对话</a>\
-        <span class="zg-bull">|</span>\
-        <a class="zg-link-litblue" href="javascript:;" name="reply" data-receiver-id="'+er_id+'"  data-receiver-name="'+er_name+'" data-toggle="modal" data-target="#letterModal">回复</a>\
-        <span class="zg-bull">|</span>\
-        <a class="zg-link-litblue" href="javascript:;" name="delete">删除</a>\
-        </div>\
-        </div>\
-        ';
-
-    $('#setting-items').append(data);
-    }
-    deleteConversation();
-    replyConversation();
-}
-
-function appendAllNotificationElement(ret)
-{
-    for (i in ret)
-    {
-        var notification_id=ret[i][0];
-        var notification_type=ret[i][1];
-        var notification_active_id=ret[i][2];
-        var notification_status=ret[i][3];
-        var notification_pub_date=ret[i][4].split('.')[0];
-        var notification_sender_id=ret[i][5];
-        var notification_sender_first_name=ret[i][6];
-        
-        if("invite"==notification_type)
-        {
-            var question_title=ret[i][7];
-            var data='<div class="day">\
-                    <h3>'+notification_pub_date+'</h3>\
-                    <div class="items">\
-                    <div class="invite category">\
-                    <i class="zg-icon" data-tooltip="s$t$邀请"></i>\
-                    <div class="zm-noti7-content-item unread" data-notigroupname="INVITE">\
-                    <span class="author-list">\
-                    <span class="user-block"><a href="/er/'+notification_sender_id+'" target="_blank" class="zg-link author-link">'+notification_sender_first_name+'</a></span>邀请你回答 <a class="question_link" href="/question/'+notification_active_id+'" data-id="18781444" data-za-element-name="Title">'+question_title+'</a>\
-                    </span></div>\
-                    </div>\
-                    </div>\
-                    </div>';
-        }
-        $("#setting-items").append(data);
-    }
-}
-
-function appendSettingsElement(sub_type)
-{
-    console.log("appendSettingsElement");
-    console.log(sub_type);
-    if ("profile"==sub_type)
-    {
-        var user_name=$('#setting-items').attr("data-user-name");
-        var data='<form action="/settings/?sub=profile" method="POST" class="zm-settings-account" id="js-settings-account-form" autocomplete="off">\
-                <input type="hidden" name="_xsrf" value="61656565373836392d613465302d346636302d623866392d326633653736653832623332">\
-                <div class="settings-section">\
-                <div class="settings-item clearfix">\
-                <label for="fullname" class="settings-item-title">姓名</label>\
-                <div class="settings-item-content rename-section" id="rename-section">\
-                <span class="name">'+user_name+'</span>\
-                <a href="javascript:;" class="zu-edit-button rename-button" name="edit"><i class="zu-edit-button-icon"></i>修改</a>\
-                </div>\
-                </div>\
-                </div>\
-                <div class="settings-save">\
-                <button type="submit" class="Button Button--primary Button--blue">保存</button>\
-                </div>\
-                </form>';
-        $('#setting-items').append(data);        
-    }
-    else  if ("account"==sub_type)
-    {
-        var data='<form action="/settings/?sub=profile" method="POST" class="zm-settings-account" id="js-settings-account-form" autocomplete="off">\
-                <input type="hidden" name="_xsrf" value="61656565373836392d613465302d346636302d623866392d326633653736653832623332">\
-                <div class="settings-section">\
-                <div class="settings-item clearfix">\
-                <label for="fullname" class="settings-item-title">姓名</label>\
-                <div class="settings-item-content rename-section" id="rename-section">\
-                <span class="name">wudy</span>\
-                <a href="javascript:;" class="zu-edit-button rename-button" name="edit"><i class="zu-edit-button-icon"></i>修改</a>\
-                </div>\
-                </div>\
-                </div>\
-                <div class="settings-save">\
-                <button type="submit" class="Button Button--primary Button--blue">保存</button>\
-                </div>\
-                </form>';
-        $('#setting-items').append(data);        
-    }
-    else if ("notification"==sub_type)
-    {
-        var data='<div class="settings-section">\
-                <div class="settings-item clearfix">\
-                <label><input type="radio" name="inboxmsg-receive" value="all" checked="">允许接收通知</label>\
-                </div>\
-                <div class="settings-item clearfix">\
-                <label><input type="radio" name="inboxmsg-receive" value="all" checked="">禁止接收通知</label>\
-                </div>\
-                </div>\
-                <div class="settings-save">\
-                <button type="submit" class="Button Button--primary Button--blue">保存</button>\
-                </div>';
-        $('#setting-items').append(data);        
-    }
-    else if ("conversation"==sub_type)
-    {
-        var data='<div class="settings-section">\
-                <div class="settings-item clearfix">\
-                <label><input type="radio" name="inboxmsg-receive" value="all" checked="">允许接收私信</label>\
-                <label><input type="radio" name="inboxmsg-receive" value="all" checked="">禁止接收私信</label>\
-                </div>\
-                </div>\
-                <div class="settings-save">\
-                <button type="submit" class="Button Button--primary Button--blue">??</button>\
-                </div>';
-        $('#setting-items').append(data);        
-    }
-}
-
-//获取文档完整的高度 
-function getMoreData() { 
-    var type=$("#setting-items").attr("data-type");
-    if("conversations"==type)
-    {
-        var conversation_id=$("#setting-items").attr("data-conversation-id");
-        if(""!=conversation_id)
-        {
-            type="conversation_messages/"+conversation_id;
-        }
-    }
-    var nums=g_last_getmoredata_index;//$('.Setting-item').length;
-    var order=1;//pub_date
-    var start=nums;
-    var end=start+STEP;
-    $.get('/ajax/'+type+'/'+order+'/'+start+'/'+end+'/',function(ret){
-        if("fail"!=ret)
-        {
-            if("conversations"==type)
-                appendConversationElement(ret);
-            else if(type.indexOf("conversation_messages")>-1)
-                appendConversationMessagesElement(ret);
-            else if("notifications"==type)
-                appendAllNotificationElement(ret);
-            checkSets();
-            g_last_getmoredata_index+=STEP;
-            //alert(ret);
-        }
-        setLockScrollMoreData("false");
-    });
-} 
-
-function init()
-{
-    var type=$("#setting-items").attr("data-type");
-    if (("notifications"==type)||("conversations"==type))
-    {
-        getMoreData();
-    }
-    else
-    {
-        var sub_type=$("#setting-items").attr("data-sub-type");
-        console.log(sub_type);
-        $(".settings-link").removeClass("active");
-        $(".settings-link").each(function(){
-            if($(this).children("a").attr("href"))
-            {
-                if($(this).children("a").attr("href").indexOf(sub_type)>-1)
-                    $(this).addClass("active");
-            }
-        });
-        appendSettingsElement(sub_type);
-    }
-    appendLetterModal();
-    checkSets();    
-}
-</script>
 </body>
 
 </html>

@@ -279,14 +279,14 @@ function appendNotificationElement(ret)
     }
 }
 
-function appendSearchElement(ret,keyword)
+function appendPopoverSearchElement(ret,keyword)
 {
     var data='<div class="Popover-content Popover-content--bottom Popover-content--fixed Popover-content-enter Popover-content-enter-active" style="left: 212.4px; top: 43px;"><div class="Menu AutoComplete-menu SearchBar-menu" role="listbox">\
         <div id="IdQuestion" class="AutoComplete-group"></div>\
         <div class="AutoComplete-group"><div role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div><a class="SearchBar-searchLink" data-za-not-track-link="true" href="/search?type=all&amp;q='+keyword+'" target="_blank">查看全部搜索结果</a></div></div></div></div></div>\
         </div></div>';
-    $('#SearchPopover').attr("data-content",data);
-    $('#SearchPopover').popover('show');
+    $('#searchInput').attr("data-content",data);
+    $('#searchInput').popover('show');
     for (var i in ret)
     {
         var question_id=ret[i][0];
@@ -492,7 +492,7 @@ function appendTopicElement(ret)
             var follow_button_data='<button class="Button Button--grey FollowButton" type="button" data-follow-type="topic" data-topic-id="'+topic_id+'" data-followed="true">已关注</button>';
         else
             var follow_button_data='<button class="Button Button--blue FollowButton" type="button" data-follow-type="topic" data-topic-id="'+topic_id+'" data-followed="false">关注话题</button>';
-        
+
         var data='<div class="List-item">\
                     <div class="ContentItem">\
                     <div class="ContentItem-main">\
@@ -759,10 +759,21 @@ function appendFollowOrMoreElement(ret)
 }
 function appendFollowOrMoreHead()
 {       
-    var data='<div class="List-item NextPage" data-next-page-type="questions"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的问题</h2></div><div class="ContentItem-extra">'+g_followquestions_num+'</div></div></div></div>\
-                    <div class="List-item NextPage" data-next-page-type="topics"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的话题</h2></div><div class="ContentItem-extra">'+g_followtopics_num+'</div></div></div></div>';
-    $("#appendArea").append(data);
-    checkNextPage();
+    var data='<div class="List" id="Profile-following"><div class="List-header"><h4 class="List-headerText"><div class="SubTabs">\
+    <a class="SubTabs-item" href="/er/'+g_er_id+'/following/followtos">'+g_who_han+'关注的人</a>\
+    <a class="SubTabs-item" href="/er/'+g_er_id+'/following/followers">关注'+g_who_han+'的人</a>\
+    <a class="SubTabs-item" href="/er/'+g_er_id+'/following/topics">'+g_who_han+'关注的话题</a>\
+    <a class="SubTabs-item" href="/er/'+g_er_id+'/following/questions">'+g_who_han+'关注的问题</a>\
+    </div></h4></div><div id="appendArea"></div></div>';
+    $("#profileMainContent").append(data);
+    
+    $(".SubTabs-item").each(function(){
+        if($(this).attr("href"))
+        {
+            if($(this).attr("href").indexOf(g_subcmd)>-1)
+                $(this).addClass("is-active");
+        }
+    });
 }
 function appendLetterModal()
 {
@@ -795,6 +806,62 @@ function appendLetterModal()
     $("#letterModal").on("show.bs.modal", function(){
         $(".PeoplePopover").popover("hide");
     });
+}
+function appendAuthorCard()
+{
+    if("more"==g_list_type)
+    {
+        $.post("/ajax/er/"+g_author_id+"/",function(ret){
+            if("fail"!=ret)
+            {
+                var author_id=ret[0];
+                var author_name=ret[1];
+                var author_avatar=ret[2];
+                var author_mood=ret[3];
+                var author_answer_nums=ret[4];
+                var author_follower_nums=ret[5];
+                var author_followed=ret[6];
+                var author_sexual=ret[7];
+                if("f"==author_sexual)
+                {
+                    var who="she";
+                    var who_han="她";
+                }
+                else
+                {
+                    var who="he";
+                    var who_han="他";
+                }
+                var data1='<div class="Card-header AnswerAuthor-title"><div class="Card-headerText">关于作者</div>\</div>\
+                <div class="Card-section">\
+                <div class="AnswerAuthor-user">\
+                <div class="AnswerAuthor-user-avatar">\
+                <span class="UserLink"><a class="UserLink-link" href="/er/'+author_id+'"><img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span>\
+                </div>\
+                <div class="AnswerAuthor-user-content">\
+                <div class="AnswerAuthor-user-name"><span class="UserLink"><a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a></span></div>\
+                <div class="AnswerAuthor-user-headline"><div class="RichText">'+author_mood+'</div></div>\
+                </div>\
+                </div>\
+                </div>\
+                <div class="Card-section">\
+                <div class="AnswerAuthor-counts">\
+                <div class="NumberBoard">\
+                <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+author_answer_nums+'</div></a>\
+                <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">10</div></a>\
+                <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="people-followed">'+author_follower_nums+'</div></a>\
+                </div>\
+                </div>';
+                if (author_followed)
+                    var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="true" data-who="'+who+'">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
+                else
+                    var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--blue" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="false" data-who="'+who+'">关注'+who_han+'</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
+                var data=data1+data2;
+                $(".Card.AnswerAuthor").append(data);
+                setLetterReceiver(author_id,author_name);
+            }
+        });
+    }
 }
 function invite()
 {
@@ -916,9 +983,9 @@ function checkFollow()
             if("true"==button.attr("data-followed"))
             {
                 follow_action="0";
-}
+            }
             else
-    {
+            {
                 follow_action="1";
             }
             if("people"==button.attr("data-follow-type"))
@@ -940,9 +1007,9 @@ function checkFollow()
                 var update_value_type="topic-followed";
                 var follow_id=button.attr("data-topic-id");
                 var url="/ajax/"+follow_type+"/"+follow_action+"/"+follow_id+"/";
-    }
+            }
             else if("question"==button.attr("data-follow-type"))
-    {
+            {
                 var follow_tips="关注问题";
                 var follow_type="question_follow";
                 var update_value_type="question-followed";
@@ -954,24 +1021,30 @@ function checkFollow()
                 return;
             g_lock_ajax="true";
             $.post(url,post_data,function(ret){
-            if("fail"!=ret)
-            {
-    if("true"==button.attr("data-followed"))
-    {
-                        button.removeClass("Button--grey").addClass("Button--blue").text(follow_tips);
-                button.attr("data-followed","false");
-    }
-    else
-    {
-                button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
-                button.attr("data-followed","true");
-            }
+                if("fail"!=ret)
+                {
+                    if("true"==button.attr("data-followed"))
+                    {
+                        if("alltopics"==g_module)
+                            button.removeClass("zg-unfollow").addClass("zg-follow").text("关注话题");
+                        else
+                            button.removeClass("Button--grey").addClass("Button--blue").text(follow_tips);
+                        button.attr("data-followed","false");
+                    }
+                    else
+                    {
+                        if("alltopics"==g_module)
+                            button.removeClass("zg-follow").addClass("zg-unfollow").text("已关注");
+                        else
+                            button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
+                        button.attr("data-followed","true");
+                    }
                     updateFollowValue(update_value_type,ret);
                 }
                 g_lock_ajax="false";
             });  
         });
-        });  
+    });  
 
     function updateFollowValue(type,value)
     {
@@ -1062,33 +1135,41 @@ function checkSearchSelect()
     
     });
 }
-function checkSearch(e)
+function checkSearch()
 {
-    $("#SearchPopover").on("input",function(){
+    $("#searchInput").on("input",function(){
         var keyword=$(this).val();
-        keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
-        if (keyword!="")
+        g_search_keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
+        if (""!=g_search_keyword)
         {
-            console.log(keyword);
-            var type="all";
-            var order=1;
-            var start=0;
-            var end=5;
-            $.post('/ajax/search/'+type+'/'+order+'/'+start+'/'+end+'/',{keyword:keyword},function(ret)
-            {
-                console.log(ret);
-                if("fail"!=ret)
+            console.log("can search");
+            $(".Icon.Icon--search").css({"fill":"#0084ff"});
+            $("#search_button").on("click",function(e){
+                e.stopPropagation();
+                var type="all";
+                var order=1;
+                var start=0;
+                var end=5;
+                $.post('/ajax/search/'+type+'/'+order+'/'+start+'/'+end+'/',{keyword:g_search_keyword},function(ret)
                 {
-                    appendSearchElement(ret,keyword);
-                    checkSearchSelect();
-                }
+                    console.log(ret);
+                    if("fail"!=ret)
+                    {                        
+                        appendPopoverSearchElement(ret,g_search_keyword);
+                        checkSearchSelect();
+                    }
+                });
             });
+            
+
         }
         else
         {
-            $('#SearchPopover').popover('hide');
+            console.log("can`t search");
+            $(".Icon.Icon--search").css({"fill":"#afbdcf"});
+            $('#searchInput').popover('hide');
         }
-    });
+    });    
 }
 
 function checkAnswerLike(){
@@ -1314,47 +1395,6 @@ function checkPopoverShow(){
     
 }
 
-function checkAvatar(){
-    $(".Avatar-editor").hover(
-        function(){
-            $(".Mask").removeClass("Mask-hidden");
-        },
-        function(){
-            $(".Mask").addClass("Mask-hidden");
-        }
-    );
-    
-    $(".Mask-content").click(function(){
-            $("#id_avatar_input").click();
-            $("#id_avatar_input").on("change",function(){
-               $("#upAvatarModal").modal('show');
-                var objUrl = getObjectURL(this.files[0]);
-                if (objUrl) { 
-                    $("#preview_avatar").attr("src", objUrl);
-                    $("#adjust_choosebox").val(50);                    
-                    
-                    setTimeout(adjustChooseBox,1*1000);
-                }
-            });
-    });
-    
-    $(".AvatarSave").click(function(){
-        var type=$(this).attr("data-avatar-type");
-        var img=document.getElementById("preview_avatar");
-        imgWidth=img.naturalWidth;
-        var can=document.getElementById("avatar_canvas");
-        var ctx=can.getContext("2d");
-        var newX=($('#chooseBox').position().left-$('#preview_avatar').position().left)*(img.naturalWidth/300);
-        var newY=($('#chooseBox').position().top-$('#preview_avatar').position().top)*(img.naturalHeight/300);
-        var newWidth=newHeight=(200+($("#adjust_choosebox").val()-50)*2)*(img.naturalWidth/300);
-        var newHeight=(200+($("#adjust_choosebox").val()-50)*2)*(img.naturalHeight/300);
-        ctx.drawImage(img,newX,newY,newWidth,newHeight,0,0,200,200);
-        can.toBlob(function(blobUrl){
-            console.log(blobUrl);
-            uploadImage(type,blobUrl);
-        },"image/jpeg"); 
-    });
-}
 function checkSmsSend()
 {
     $(".SignFlow-smsInputButton").off("click");
@@ -1461,7 +1501,7 @@ function checkSignAndMiscPage()
         }
         else
         {
-            $(this).text("登录");
+            $(this).text("注册");
             $("#registerLoginText").text("没有帐号？");
             swith_element.attr("data-action","login");
             $(".SignFlowHeader-title").text("登录知乎");
@@ -1684,59 +1724,133 @@ function checkNextPage()
     });
 }
 
+function checkAvatar(){
+    $(".Avatar-editor").hover(
+        function(){
+            $(".Mask").removeClass("Mask-hidden");
+        },
+        function(){
+            $(".Mask").addClass("Mask-hidden");
+        }
+    );
+    
+    $(".Mask-content").click(function(){
+            $("#id_avatar_input").click();
+            $("#id_avatar_input").on("change",function(){
+               $("#upAvatarModal").modal('show');
+                var objUrl = getObjectURL(this.files[0]);
+                if (objUrl) { 
+                    $("#preview_avatar").attr("src", objUrl);
+                    $("#adjust_choosebox").val(50);                    
+                    
+                    setTimeout(adjustChooseBox,1*1000);
+                }
+            });
+    });
+    
+    $(".AvatarSave").click(function(){
+        var type=$(this).attr("data-avatar-type");
+        var img=document.getElementById("preview_avatar");
+        imgWidth=img.naturalWidth;
+        var can=document.getElementById("avatar_canvas");
+        var ctx=can.getContext("2d");
+        var newX=($('#chooseBox').position().left-$('#preview_avatar').position().left)*(img.naturalWidth/300);
+        var newY=($('#chooseBox').position().top-$('#preview_avatar').position().top)*(img.naturalHeight/300);
+        var newWidth=newHeight=(200+($("#adjust_choosebox").val()-50)*2)*(img.naturalWidth/300);
+        var newHeight=(200+($("#adjust_choosebox").val()-50)*2)*(img.naturalHeight/300);
+        ctx.drawImage(img,newX,newY,newWidth,newHeight,0,0,200,200);
+        can.toBlob(function(blobUrl){
+            console.log(blobUrl);
+            uploadImage(type,blobUrl);
+        },"image/jpeg"); 
+    });
+}
 function checkHomePage()
 {
-    $(".ProfileEditButton,.Profile-infosOia").click(function(){
+    $(".ProfileEditButton,.ProfileHeader-expandButton").click(function(){
         console.log(this);
         g_cache_page=$("main").html();
-        if($(this).hasClass("Profile-infosOia"))
+        if($(this).hasClass("ProfileHeader-expandButton"))
         {
-            var data='\
-			<div class="Card">\
-            <div class="ProfileHeader-expandActions ProfileEdit-expandActions">\
-			<button class="1Button 1Button--primary Button--blue ReturnHomePage" style="margin:3px" type="button">返回我的主页</button>\
-			</div>\
-            <div class="Profile-intro">\
-            <img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt="">\
-            </div>\
-            <div class="Profile-data">\
-            <div class="Profile-datalist">\
-			<div class="Field List-item"><h6>昵称</h6><div class="Field-content"><div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span></div></div></div>\
-			<div class="Field List-item"><h6>性别</h6><div class="Field-content"><div><span class="Field-text">'+g_er_sexual_han+'</span></div></div></div>\
-			<div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span></div></div></div>\
-			<div class="Field List-item"><h6>居住地</h6><div class="Field-content"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span></div></div></div>\
-			<div class="Field List-item"><h6>所在行业</h6><div class="Field-content"><div><span class="Field-text">'+g_er_job+'</span></div></div></div>\
-			<div class="Field List-item"><h6>个人简介</h6><div class="Field-content"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span></div></div></div>\
-            </div></div>\
-			</div>';
-            $("main").empty().append(data);
-            checkReturnHomePage();
+            if("true"!=g_show_detailed)
+            {
+                var data='<div><div class="ProfileHeader-detail"><div class="ProfileHeader-detailItem"><span class="ProfileHeader-detailLabel">居住地</span><div class="ProfileHeader-detailValue"><span>'+g_er_residence+'</span></div></div><div class="ProfileHeader-detailItem"><span class="ProfileHeader-detailLabel">所在行业</span><div class="ProfileHeader-detailValue">'+g_er_job+'</div></div><div class="ProfileHeader-detailItem"><span class="ProfileHeader-detailLabel">个人简介</span><div class="RichText ProfileHeader-detailValue">'+g_er_intro+'</div></div></div></div>';
+                $(".ProfileHeader-contentBody").css({"height":"129px"}).empty().append(data);
+                $(".ProfileHeader-expandButton").empty().append('<svg viewBox="0 0 10 6" class="Icon ProfileHeader-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>收起详细资料');
+                g_show_detailed="true";
+            }
+            else
+            {
+                $(".ProfileHeader-contentBody").css({"height":"50px"}).empty().append(g_contentbody_data);
+                $(".ProfileHeader-expandButton").empty().append('<svg viewBox="0 0 10 6" class="Icon ProfileHeader-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>查看详细资料');
+                g_show_detailed="false";
+            }
         }
         else
         {
-            var data='\
+            console.log("xxxx");
+            var data='<div class="ProfileEdit">\
 			<div class="Card">\
-            <div class="ProfileHeader-expandActions ProfileEdit-expandActions">\
-			<button class="1Button 1Button--primary Button--blue ReturnHomePage" style="margin:3px" type="button">返回我的主页</button>\
+			<div class="ProfileHeader-header">\
+			<div class="UserCoverEditor">\
+			<div>\
+			<div class="UserCoverGuide">\
+			<div class="UserCoverGuide-inner">\
+			<div class="UserCoverGuide-buttonContainer">\
+			<button class="Button DynamicColorButton" type="button"><svg viewBox="0 0 20 16" class="Icon Icon--camera Icon--left" width="14" height="16" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M18.094 2H15s-1-2-2-2H7C6 0 5 2 5 2H2C0 2 0 3.967 0 3.967V14c0 2 2.036 2 2.036 2H17c3 0 3-1.983 3-1.983V4c0-2-1.906-2-1.906-2zM10 12c-1.933 0-3.5-1.567-3.5-3.5S8.067 5 10 5s3.5 1.567 3.5 3.5S11.933 12 10 12zm0 1.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm7.5-8c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1z" fill-rule="evenodd"></path></g></svg>上传封面图片</button>\
 			</div>\
-            <div class="Profile-intro">\
-            <img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt="">\
-            <input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/>\
-            </div>\
-            <div class="Profile-data">\
-            <div class="Profile-datalist">\
-			<div class="Field List-item"><h6>昵称</h6><div class="Field-content" data-field-type="nickname"><div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>性别</h6><div class="Field-content" data-field-type="sexual"><div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content" data-field-type="mood"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>居住地</h6><div class="Field-content" data-field-type="residence"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>所在行业</h6><div class="Field-content" data-field-type="job"><div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>个人简介</h6><div class="Field-content" data-field-type="intro"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-            </div></div>\
+			<div class="UserCoverGuide-dialog">\
+			<h4 class="UserCoverGuide-dialogHead">上传一张图片，展示在这里</h4>\
+			<div class="UserCoverGuide-dialogContent">\
+			<p class="UserCoverGuide-dialogDescription">你可以使用自己的摄影作品、你喜欢的照片，或是任何能展现你特质的图片。</p>\
+			<a href="https://www.danongling.com/question/21757507" target="_blank" rel="noopener noreferrer">哪里能找到可免费使用的优质图片？</a>\
+			</div>\
+			</div>\
+			</div>\
+			<ul class="UserCoverGuide-items">\
+			</ul>\
+			</div>\
+			<div class="UserCover"></div>\
+			</div>\
+			<input type="file" accept="image/png,image/jpeg" style="display: none;">\
+			</div></div>\
+			<div class="ProfileHeader-main"><div>\
+			<div class="UserAvatarEditor ProfileHeader-avatar">\
+			<div class="UserAvatar">\
+			<img id="id_avatar" class="Avatar Avatar--large UserAvatar-inner" width="160" height="160" src="'+g_er_avatar+'" srcset="'+g_er_avatar+'">\
+			</div>\
+			<div class="Mask UserAvatarEditor-mask">\
+			<div class="Mask-mask Mask-mask--black UserAvatarEditor-maskInner">\
+			</div>\
+			<div class="Mask-content">\
+			<svg class="Zi Zi--Camera UserAvatarEditor-cameraIcon" fill="currentColor" viewBox="0 0 24 24" width="36" height="36"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill-rule="evenodd"></path></svg>\
+			<div class="UserAvatarEditor-maskInnerText">修改我的头像</div>\
+			</div>\
+			</div>\
+			<input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;">\
+			</div>\
+			</div>\
+			<div class="ProfileHeader-content">\
+			<div class="ProfileHeader-contentHead">\
+			<h1 class="ProfileHeader-title"><span class="ProfileHeader-name">'+g_er_name+'</span></h1>\
+			<div class="ProfileHeader-expandActions ProfileEdit-expandActions">\
+			<a class="Button Button--plain" type="button" href="/er/'+g_er_id+'">返回我的主页<svg viewBox="0 0 10 6" class="Icon ProfileEdit-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></a>\
+			</div>\
+			</div>\
+			<div class="ProfileEdit-fields">\
+			<form class="Field"><h3 class="Field-label">性别</h3><div class="Field-content" data-field-type="sexual"><div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></form>\
+			<form class="Field"><h3 class="Field-label">一句话介绍</h3><div class="Field-content" data-field-type="mood"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></form>\
+			<form class="Field"><h3 class="Field-label">居住地</h3><div class="Field-content" data-field-type="residence"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></form>\
+			<form class="Field"><h3 class="Field-label">所在行业</h3><div class="Field-content" data-field-type="job"><div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></form>\
+			<form class="Field"><h3 class="Field-label">个人简介</h3><div class="Field-content" data-field-type="intro"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Field-modify Field-modify-hidden Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></form>\
+			</div>\
+			</div>\
+			</div>\
+			</div>\
 			</div>';
-            
             $("main").empty().append(data);
             checkReturnHomePage();
-            checkAvatarModify();
+            checkAvatar();
             checkProfileModify();
         }              
     });
@@ -1839,6 +1953,19 @@ function checkHomePage()
     }
     function checkProfileModify()
     {
+        $(".Field").off("mouseenter mouseleave");
+		$(".Field").on("mouseenter mouseleave",function(event){
+			if(event.type=="mouseenter")
+			{
+				$(this).find(".ModifyButton").removeClass("Field-modify-hidden");
+			}
+			else if(event.type=="mouseleave")
+			{
+				$(this).find(".ModifyButton").addClass("Field-modify-hidden");
+			}
+		});
+
+    
         $(".Field").find(".ModifyButton").off("click");
         $(".Field").find(".ModifyButton").click(function(){
             var field_type=$(this).parents(".Field-content").attr("data-field-type");
@@ -1872,16 +1999,6 @@ function checkHomePage()
             }
             $(this).parents(".Field-content").empty().append(data);
             checkProfileSave();
-        });
-    }
-    function checkAvatarModify()
-    {
-        $(".Profile-avatar.Modify-avatar").click(function(){
-            $("#id_avatar_input").click();
-            $("#id_avatar_input").on("change",function(){
-                var file = $('#id_avatar_input')[0].files[0];
-                scaleAndUploadImage("forAvatar",file,200);
-            });
         });
     }
 }
@@ -1981,22 +2098,30 @@ function getMoreData()
     }
     else if("topic"==g_module)
     {
-            var nums=g_last_getmoredata_index;
-            var order=1;//pub_date
-            var start=nums;
-            var end=start+STEP;
-            var url="/ajax/topic/"+g_topic_id+"/"+order+"/"+start+"/"+end+"/";
-            var post_data='';
+        var nums=g_last_getmoredata_index;
+        var order=1;//pub_date
+        var start=nums;
+        var end=start+STEP;
+        var url="/ajax/topic/"+g_topic_id+"/"+order+"/"+start+"/"+end+"/";
+        var post_data='';
     }
     else if("mytopic"==g_module)
     {
-            var nums=g_last_getmoredata_index;
-            var order=1;//pub_date
-            var start=nums;
-            var end=start+STEP*2;
-            var bIsGetAll=0;
-            var url='/ajax/topics/'+bIsGetAll+'/'+start+'/'+end+'/';
-            var post_data='';
+        var nums=g_last_getmoredata_index;
+        var order=1;
+        var start=nums;
+        var end=start+STEP;
+        var url="/ajax/topic/"+g_topic_id+"/"+order+"/"+start+"/"+end+"/";
+        var post_data='';
+    }
+    else if("alltopics"==g_module)
+    {
+        var nums=g_last_getmoredata_index;///;;$('.item.even').length;
+        var bIsGetAll="0";//pub_date
+        var start=nums;
+        var end=start+STEP;
+        var url='/ajax/topics/'+bIsGetAll+'/'+start+'/'+end+'/';
+        var post_data='';
     }
     else if("search"==g_module)
     {
@@ -2014,6 +2139,8 @@ function getMoreData()
     }
     else if("setting"==g_module)
     {
+        if("settings"==g_setting_type)
+            return;
         var nums=g_last_getmoredata_index;//$('.Setting-item').length;
         var order=1;//pub_date
         var start=nums;
@@ -2038,9 +2165,6 @@ function getMoreData()
         }
         else if ("following"==g_command)
         {
-            console.log($("main").find(".ReturnHomePage").length);
-            if($("main").find(".ReturnHomePage").length<=0)
-                return;
             var url="/ajax/er/"+g_er_id+"/following/"+g_subcmd+"/";
             var post_data='';
         }
@@ -2069,11 +2193,15 @@ function getMoreData()
             }
             else if("topic"==g_module)
             {
-                appendAnswerElementList(ret,"topic");
+                appendAnswerElementList(ret,"topic","append");
             }
             else if("mytopic"==g_module)
             {
-                appendTopicElement(ret);  
+                appendAnswerElementList(ret,"topic","append");  
+            }
+            else if("alltopics"==g_module)
+            {
+                appendTopicElement(ret);
             }
             else if("search"==g_module)
             {
@@ -2087,7 +2215,7 @@ function getMoreData()
             {
                 if ("answers"==g_command)
                 {
-                    appendAnswerElementList(ret,"homepage");
+                    appendAnswerElementList(ret,"homepage","append");
                 }
                 else if ("asks"==g_command)
                 {
@@ -2130,14 +2258,14 @@ function initElement()
         
         var g_push_answer_content_scale_imge=addClassImg(g_push_answer_content,'class="origin_image"');
         $(".RichText.CopyrightRichText-richText").html(g_push_answer_content_scale_imge);
-        showAuthorCard();
+        appendAuthorCard();
     }
     else if("topic"==g_module)
     {
         $(".Tabs.Topic-tabs").append('<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-hot"><a class="Tabs-link is-active" href="/topic/'+g_topic_id+'/hot">讨论</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-top"><a class="Tabs-link" href="/topic/'+g_topic_id+'/top-answers">精华</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-wait"><a class="Tabs-link" href="/topic/'+g_topic_id+'/unanswered">等待回答</a></li>');
         $(".TopicCard-image").empty().append('<img alt="'+g_topic_name+'" src="'+g_topic_avatar+'">');
-        $(".TopicCard-title").append(g_topic_name);
-        $(".TopicCard-description").append(g_topic_detail);
+        $(".TopicCard-titleText").text(g_topic_name);
+        $(".TopicCard-description>.RichText").text(g_topic_detail);
         $(".NumberBoard-value").append(g_topic_follower_nums);
         if("true"==g_topic_followed)
             $(".FollowButton.TopicCard-followButton").removeClass("Button--blue").addClass("Button--grey").attr("data-topic-id",g_topic_id).attr("data-followed","true").text("已关注");
@@ -2146,8 +2274,21 @@ function initElement()
     }
     else if("mytopic"==g_module)
     {
-        if("true"==g_logged)
-            $("#myfollow").attr("href","/er/"+g_user_id+"/following/topics/");
+        //if("true"==g_logged)
+        //    $("#myfollow").attr("href","/er/"+g_user_id+"/following/topics/");
+        window.onhashchange=hashChange; 
+        if((location.hash!="")&&(location.hash!=undefined))
+        {
+            hashChange();
+        }
+        else
+        {
+            g_topic_id=$(".FollowedTopic:first").addClass("current").attr("data-topic-id");
+            getMoreData();
+        }
+    }
+    else if("alltopics"==g_module)
+    {
     }
     else if("search"==g_module)
     {
@@ -2164,6 +2305,7 @@ function initElement()
     }
     else if("setting"==g_module)
     {
+        console.log(g_setting_type);
         $(".Tabs-link").removeClass("is-active");
         $(".Tabs-link").each(function(){
             if($(this).attr("href"))
@@ -2175,6 +2317,12 @@ function initElement()
         if("conversation_messages"==g_setting_type)
         {
             var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">'+g_parter_name+'</span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="4"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--blue" type="button" onclick="sendLetter()">发送</button></div></div></div>';
+            $('#appendArea').prepend(data);
+        }
+        else if("settings"==g_setting_type)
+        {
+            var data='<div class="List-item"><div><label><input type="radio" name="notification-receive" value="all" checked="">允许接收通知</label>&nbsp;<label><input type="radio" name="notification-receive" value="all" checked="">禁止接收通知</label></div><button type="submit" class="Button Button--primary Button--blue">保存</button></div>\
+                        <div class="List-item"><div><label><input type="radio" name="inboxmsg-receive" value="all" checked="">允许接收私信</label>&nbsp;<label><input type="radio" name="inboxmsg-receive" value="all" checked="">禁止接收私信</label></div><button type="submit" class="Button Button--primary Button--blue">保存</button></div>';;
             $('#appendArea').prepend(data);
         }
         checkSettingPage();
@@ -2237,43 +2385,58 @@ function initElement()
     }
     else if("home"==g_module)
     {
-        $(".Profile-avatar").attr("src",g_er_avatar);
-        $(".Profile-name").text(g_er_name);
-        $(".Profile-headline").text(g_er_mood);
-        $("#residence").text(g_er_residence);
-        $("#job").text(g_er_job);
-        $("#followers").text(g_followers_num);
-        $("#followtos").text(g_followtos_num);
+        $("#MenuPopover").attr({"src":g_user_avatar,"srcset":g_user_avatar,"data-er-id":g_user_id});
+        $(".ProfileHeader-name").text(g_er_name);
+        $("#id_avatar").attr({"src":g_er_avatar,"srcset":g_er_avatar});
+        $(".ProfileHeader-headline").text(g_er_mood);
+        
+        var job_element='<div class="ProfileHeader-infoItem"><div class="ProfileHeader-iconWrapper"><svg viewBox="0 0 20 18" class="Icon Icon--company" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></div>'+g_er_job+'</div>'
+        
         if("f"==g_er_sexual)
         {
-            var who="she";
-            var who_han="她";
             g_er_sexual_han="女";
+            g_who="she";
+            g_who_han="她";
+            var followed_text="关注她";
+            var sexual_icon='<div class="ProfileHeader-infoItem"><div class="ProfileHeader-iconWrapper"><svg width="14" height="16" viewBox="0 0 12 16" class="Icon Icon--female" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M6 0C2.962 0 .5 2.462.5 5.5c0 2.69 1.932 4.93 4.485 5.407-.003.702.01 1.087.01 1.087H3C1.667 12 1.667 14 3 14s1.996-.006 1.996-.006v1c0 1.346 2.004 1.346 1.998 0-.006-1.346 0-1 0-1S7.658 14 8.997 14c1.34 0 1.34-2-.006-2.006H6.996s-.003-.548-.003-1.083C9.555 10.446 11.5 8.2 11.5 5.5 11.5 2.462 9.038 0 6 0zM2.25 5.55C2.25 3.48 3.93 1.8 6 1.8c2.07 0 3.75 1.68 3.75 3.75C9.75 7.62 8.07 9.3 6 9.3c-2.07 0-3.75-1.68-3.75-3.75z" fill-rule="evenodd"></path></g></svg></div></div>';
         }
         else
         {
-            var who="he";
-            var who_han="他";
             g_er_sexual_han="男";
+            g_who="he";
+            g_who_han="他";
+            var followed_text="关注他";
+            var sexual_icon='<div class="ProfileHeader-infoItem"><div class="ProfileHeader-iconWrapper"><svg width="14" height="16" viewBox="0 0 14 14" class="Icon Icon--male" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M3.025 10.64c-1.367-1.366-1.367-3.582 0-4.95 1.367-1.366 3.583-1.366 4.95 0 1.367 1.368 1.367 3.584 0 4.95-1.367 1.368-3.583 1.368-4.95 0zm10.122-9.368c-.002-.414-.34-.75-.753-.753L8.322 0c-.413-.002-.746.33-.744.744.002.413.338.75.75.752l2.128.313c-.95.953-1.832 1.828-1.832 1.828-2.14-1.482-5.104-1.27-7.013.64-2.147 2.147-2.147 5.63 0 7.777 2.15 2.148 5.63 2.148 7.78 0 1.908-1.91 2.12-4.873.636-7.016l1.842-1.82.303 2.116c.003.414.34.75.753.753.413.002.746-.332.744-.745l-.52-4.073z" fill-rule="evenodd"></path></g></svg></div></div>';
         }
-        if(g_user_id==g_er_id)
+        g_contentbody_data='<div class="ProfileHeader-info">'+job_element+sexual_icon+'</div>';
+        $(".ProfileHeader-contentBody").empty().append(g_contentbody_data);
+        if(g_er_id==g_user_id)
         {
-            var who="me";
-            var who_han="我";
-            $(".ProfileEditButton").removeClass("is-hide");
-            $(".ProfileLetterButton").addClass("is-hide");
-            $(".ProfileFollowButton").addClass("is-hide");
+            g_who="me";
+            g_who_han="我";
+            var data='<button class="Button ProfileHeader-expandButton Button--plain" type="button"><svg viewBox="0 0 10 6" class="Icon ProfileHeader-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>查看详细资料</button>\
+            <div class="ProfileButtonGroup ProfileHeader-buttons"><button class="ProfileEditButton Button Button--blue" type="button">编辑个人资料</button></div>';
         }
         else
         {
-            $(".ProfileEditButton").addClass("is-hide");
-            $(".ProfileLetterButton").removeClass("is-hide");
             if("true"==g_followed)
-                $(".ProfileFollowButton").removeClass("is-hide Button--blue").addClass("Button--grey").text("已关注").attr("data-followed","true").attr("data-er-id",g_er_id).attr("data-who",who);
+            {
+                var followed_text="已关注";
+                var followed_status="true";
+                var followed_button_class="Button--grey";
+            }
             else
-                $(".ProfileFollowButton").removeClass("is-hide Button--grey").addClass("Button--blue").text("关注"+who_han).attr("data-followed","false").attr("data-er-id",g_er_id).attr("data-who",who);
-}
-        $(".who").text(who_han);
+            {
+                var followed_status="false";
+                var followed_button_class="Button--blue";
+            }
+            var data='<button class="Button ProfileHeader-expandButton Button--plain" type="button"><svg viewBox="0 0 10 6" class="Icon ProfileHeader-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>查看详细资料</button>\
+                        <div class="MemberButtonGroup ProfileButtonGroup ProfileHeader-buttons">\
+                        <button class="Button FollowButton Button--primary '+followed_button_class+'" type="button" data-er-id="'+g_er_id+'" data-who="'+g_who+'" data-follow-type="people" data-followed='+followed_status+'>'+followed_text+'</button>\
+                        <button class="Button Button--grey Button--withIcon Button--withLabel" type="button" data-toggle="modal" data-target="#letterModal"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comments Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M11 2c5.571 0 9 4.335 9 8 0 6-6.475 9.764-11.481 8.022-.315-.07-.379-.124-.78.078-1.455.54-2.413.921-3.525 1.122-.483.087-.916-.25-.588-.581 0 0 .677-.417.842-1.904.064-.351-.14-.879-.454-1.171A8.833 8.833 0 0 1 2 10c0-3.87 3.394-8 9-8zm10.14 9.628c.758.988.86 2.009.86 3.15 0 1.195-.619 3.11-1.368 3.938-.209.23-.354.467-.308.722.12 1.073.614 1.501.614 1.501.237.239-.188.562-.537.5-.803-.146-1.495-.42-2.546-.811-.29-.146-.336-.106-.563-.057-2.043.711-4.398.475-6.083-.927 5.965-.524 8.727-3.03 9.93-8.016z" fill-rule="evenodd"></path></svg></span>发私信</button>\
+                        </div>';
+        }
+        $(".ProfileHeader-contentFooter").append(data);
            
         var answers_active="";
         var asks_active="";
@@ -2282,11 +2445,15 @@ function initElement()
         if ("answers"==g_command)
         {
             answers_active="is-active";
+            var data='<div class="List Profile-answers"><div class="List-header"><h4 class="List-headerText"><span>'+g_who_han+'的回答</span></h4></div><div id="appendArea"></div></div>';
+            $("#profileMainContent").append(data);
             //appendAnswerElement();
         }
         else if("asks"==g_command)
         {
             asks_active="is-active";
+            var data='<div class="List Profile-answers"><div class="List-header"><h4 class="List-headerText"><span>'+g_who_han+'的问题</span></h4></div><div id="appendArea"></div></div>';
+            $("#profileMainContent").append(data);
             //appendQuestionElement();
         }
         else if("posts"==g_command)
@@ -2303,11 +2470,27 @@ function initElement()
         else 
             console.log("false");
         
-        var ul_list='<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-answers"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-articals"><a class="Tabs-link '+posts_active+'" href="/er/'+g_er_id+'/posts/">文章</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-questions"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注</a></li>'
-        $(".Tabs.ProfileBar").append(ul_list);
+        var tabs='<li role="tab" class="Tabs-item" aria-controls="Profile-answers"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答<span class="Tabs-meta">'+g_answers_num+'</span></a></li>\
+                    <li role="tab" class="Tabs-item" aria-controls="Profile-asks"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问<span class="Tabs-meta">'+g_questions_num+'</span></a></li>\
+                    <li role="tab" class="Tabs-item" aria-controls="Profile-posts"><a class="Tabs-link '+posts_active+'" href="/er/'+g_er_id+'/posts/">文章<span class="Tabs-meta">0</span></a></li>\
+                    <li role="tab" class="Tabs-item" aria-controls="Profile-following"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注<span class="Tabs-meta"><svg viewBox="0 0 10 6" class="Icon ProfileMain-tabIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></span></a></li>';
+        $(".Tabs.ProfileMain-tabs").append(tabs);
+        
+        
+        var data='<div class="NumberBoard FollowshipCard-counts NumberBoard--divider">\
+            <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+g_er_id+'/following/followtos"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注了</div><strong class="NumberBoard-itemValue">'+g_followtos_num+'</strong></div></a>\
+            <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+g_er_id+'/following/followers"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注者</div><strong class="NumberBoard-itemValue NumberBoard-value" data-update-value-type="people-followed">'+g_followers_num+'</strong></div></a>\
+            </div>';
+        $(".Card.FollowshipCard").append(data);
+        
+        var data='<a class="Profile-lightItem" href="/er/'+g_er_id+'/following/topics"><span class="Profile-lightItemName">关注的话题</span><span class="Profile-lightItemValue">'+g_followtopics_num+'</span></a>\
+                    <a class="Profile-lightItem" href="/er/'+g_er_id+'/following/questions"><span class="Profile-lightItemName">关注的问题</span><span class="Profile-lightItemValue">'+g_followquestions_num+'</span></a>';
+        
+        $(".Profile-lightList").append(data);
         
         setLetterReceiver(g_er_id,g_er_name);
-        checkNextPage();
+        checkAvatar();
+        //checkNextPage();
         checkHomePage();
     }
 }
@@ -2355,6 +2538,10 @@ function initData()
     else if("mytopic"==g_module)
     {
     }
+    else if("alltopics"==g_module)
+    {
+        g_topiclist_item_index=1;
+    }
     else if("search"==g_module)
     {
         g_search_keyword=main_data.search_keyword;
@@ -2398,6 +2585,8 @@ function initData()
         g_followers_num=ext_data.followers_num;
         g_followtopics_num=ext_data.followtopics_num;
         g_followquestions_num=ext_data.followquestions_num;
+        
+        g_show_detailed="false";
     }
 } 
 
@@ -2485,7 +2674,7 @@ $(document).click(function(e) {
     $("#NotificationPopover").popover("hide");
     $("#MessagePopover").popover("hide");
     $("#MenuPopover").popover("hide");
-    $("#SearchPopover").popover("hide");
+    $("#searchInput").popover("hide");
 });
 window.onscroll = function (){ 
 //console.log(getScrollTop());
@@ -2500,78 +2689,19 @@ STEP=10;
 g_lock_ajax="false";
 ENABLE_SCREEN_LOG="true";//"false"
 
-function showAuthorCard()
+function hashChange()
 {
-    if("more"==g_list_type)
-    {
-        $.get("/ajax/er/"+g_author_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                var author_id=ret[0];
-                var author_name=ret[1];
-                var author_avatar=ret[2];
-                var author_mood=ret[3];
-                var author_answer_nums=ret[4];
-                var author_follower_nums=ret[5];
-                var author_followed=ret[6];
-                var author_sexual=ret[7];
-                if("f"==author_sexual)
-                {
-                    var who="she";
-                    var who_han="她";
-                }
-                else
-                {
-                    var who="he";
-                    var who_han="他";
-                }
-                var data1='\<div class="Card-header AnswerAuthor-title"><div class="Card-headerText">关于作者</div>\</div>\
-                <div class="Card-section">\
-                <div class="AnswerAuthor-user">\
-                <div class="AnswerAuthor-user-avatar">\
-                <span class="UserLink">\
-                <a class="UserLink-link" href="/er/'+author_id+'">\
-                <img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'">\
-                </a>\
-                </span>\
-                </div>\
-                <div class="AnswerAuthor-user-content">\
-                <div class="AnswerAuthor-user-name">\
-                <span class="UserLink">\
-                <a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a>\
-                </span>\
-                </div>\
-                <div class="AnswerAuthor-user-headline">\
-                <div class="RichText">'+author_mood+'</div>\
-                </div>\
-                </div>\
-                </div>\
-                </div>\
-                <div class="Card-section">\
-                <div class="AnswerAuthor-counts">\
-                <div class="NumberBoard">\
-                <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/answers"><div class="NumberBoard-name">回答</div>\
-                <div class="NumberBoard-value">'+author_answer_nums+'</div>\
-                </a>\
-                <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/posts">\
-                <div class="NumberBoard-name">文章</div>\
-                <div class="NumberBoard-value">10</div>\
-                </a>\
-                <a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/followers">\
-                <div class="NumberBoard-name">关注者</div>\
-                <div class="NumberBoard-value" data-update-value-type="people-followed">'+author_follower_nums+'</div>\
-                </a>\
-                </div>\
-                </div>\
-                ';
-                if (author_followed)
-                    var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="true" data-who="'+who+'">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
-                else
-                    var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--blue" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="false" data-who="'+who+'">关注'+who_han+'</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
-                var data=data1+data2;
-                $(".Card.AnswerAuthor").append(data);
-                setLetterReceiver(author_id,author_name);
-            }
+        g_last_getmoredata_index=0;
+        g_topic_id=location.hash.replace("#","");
+        $(".FollowedTopic").each(function(){
+            var item=$(this);
+            if(g_topic_id==item.attr("data-topic-id"))
+                item.addClass("current");
+            else
+                item.removeClass("current");
+                
         });
-    }
+        $('#appendArea').empty();
+        getMoreData();      
 }
+

@@ -4,7 +4,7 @@
 <body class="Entry-body">
 {% include 'question/header.html' %}
 
-<main role="main" class="App-main">
+<main role="main" class="App-main" data-module="topic" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","topic_id":"{{context_topic.id}}","topic_name":"{{context_topic.name}}","topic_avatar":"{{context_topic.avatar}}","topic_detail":"{{context_topic.detail}}","topic_follower_nums":"{{context_topic.follower_nums}}","topic_followed":"{{followed}}"}'>
 <div class="ContentLayout">
 
 <div class="ContentLayout-mainColumn">
@@ -39,10 +39,10 @@
 <div class="ContentItem-head">
 <h2 class="ContentItem-title">
 <div class="TopicCard-title">
-<h1 class="TopicCard-titleText">{{context_topic.name}}</h1></div></h2>
+<h1 class="TopicCard-titleText"></h1></div></h2>
 <div class="ContentItem-meta">
 <div class="TopicCard-description">
-<span class="RichText">{{context_topic.detail}}</span>
+<span class="RichText"></span>
 </div>
 </div>
 </div>
@@ -129,33 +129,6 @@
 </button>
 </div>
 </div>
-
-<script>
-function getMoreData()
-{
-    var nums=g_last_getmoredata_index;//$('.QuestionFrame').length;
-    var order=1;
-    var start=nums;
-    var end=start+STEP;
-    $.get("/ajax/topic/"+g_topic_id+"/"+order+"/"+start+"/"+end+"/",function(ret){
-        if("fail"!=ret)
-        {
-            appendAnswerElementList(ret,"topic");
-            checkSets();
-            g_last_getmoredata_index+=STEP;
-        } 
-        setLockScrollMoreData("false");
-    });
-}    
-function init() 
-{
-    checkAvatar();
-    g_topic_id=$(".TopicCard").attr("data-topic-id");
-    getMoreData(); 
-    appendLetterModal();
-    checkSets();
-}
-</script>
 
 </body>
 

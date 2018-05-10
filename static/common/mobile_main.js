@@ -190,24 +190,6 @@ function appendNotificationElement(ret)
     }
 }
 
-function appendSearchElement(ret,keyword)
-{
-   var data='<div class="Popover-content Popover-content--bottom Popover-content--fixed Popover-content-enter Popover-content-enter-active" style="left: 212.4px; top: 43px;"><div class="Menu AutoComplete-menu SearchBar-menu" role="listbox">\
-        <div id="IdQuestion" class="AutoComplete-group"></div>\
-        <div class="AutoComplete-group"><div role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div><a class="SearchBar-searchLink" data-za-not-track-link="true" href="/search?type=all&amp;q='+keyword+'" target="_blank">查看全部搜索结果</a></div></div></div></div></div>\
-        </div></div>';
-    $('#SearchPopover').attr("data-content",data);
-    $('#SearchPopover').popover('show');
-    for (var i in ret)
-    {
-        var question_id=ret[i][0];
-        var question_title=ret[i][1];
-        var question_answer_num=ret[i][2];
-        var data='<div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/'+question_id+'" target="_blank">'+question_title+'<span class="SearchBar-contentSuffix">'+question_answer_num+' 个回答</span></a></div></div></div></div>';
-        $("#IdQuestion").append(data);
-    }
-}
-
 function appendAnswerElementList(ret,type,direction)
 {
     for(i in ret)
@@ -985,10 +967,9 @@ function checkSearchSelect()
 
 function checkSearch()
 {
-    $("#q").on("input",function(){
+    $("#searchInput").on("input",function(){
         var keyword=$(this).val();
         g_search_keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
-        console.log(g_search_keyword);
         if (""!=g_search_keyword)
         {
             console.log("can search");
@@ -1170,15 +1151,17 @@ function checkSignAndMiscPage()
             $("#registerLoginText").text("已有帐号？");
             swith_element.attr("data-action","register");
             $(".SignFlowHeader-title").text("注册知乎");
+            $(".SignFlowHeader-slogen").text("注册知乎，发现更大的世界");
             $("#register").removeClass("is-hide");
             $("#login").addClass("is-hide");
         }
         else
         {
-            $(this).text("登录");
+            $(this).text("注册");
             $("#registerLoginText").text("没有帐号？");
             swith_element.attr("data-action","login");
             $(".SignFlowHeader-title").text("登录知乎");
+            $(".SignFlowHeader-slogen").text("登录知乎，发现更大的世界");
             $("#register").addClass("is-hide");
             $("#login").removeClass("is-hide");
         }
@@ -1398,6 +1381,16 @@ function checkNextPage()
     });
 }
 
+function checkAvatar()
+{
+    $(".Profile-avatar.Modify-avatar").click(function(){
+        $("#id_avatar_input").click();
+        $("#id_avatar_input").on("change",function(){
+            var file = $('#id_avatar_input')[0].files[0];
+            scaleAndUploadImage("forAvatar",file,200);
+        });
+    });
+}
 function checkHomePage()
 {
     $(".ProfileEditButton,.Profile-infosOia").click(function(){
@@ -1450,7 +1443,7 @@ function checkHomePage()
             
             $("main").empty().append(data);
             checkReturnHomePage();
-            checkAvatarModify();
+            checkAvatar();
             checkProfileModify();
         }              
     });
@@ -1586,16 +1579,6 @@ function checkHomePage()
             }
             $(this).parents(".Field-content").empty().append(data);
             checkProfileSave();
-        });
-    }
-    function checkAvatarModify()
-    {
-        $(".Profile-avatar.Modify-avatar").click(function(){
-            $("#id_avatar_input").click();
-            $("#id_avatar_input").on("change",function(){
-                var file = $('#id_avatar_input')[0].files[0];
-                scaleAndUploadImage("forAvatar",file,200);
-            });
         });
     }
 }

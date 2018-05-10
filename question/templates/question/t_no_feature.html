@@ -21,36 +21,6 @@
 <!-- letter（Modal） -->
 <!-- append by js -->
 <!-- letter（Modal） -->
-<script>
-function init()
-{   
-    $('#summernote_answer').summernote({
-    height:200,
-    lang:'zh-CN',
-    placeholder:'写回答...',
-    callbacks: {
-        onImageUpload: function(files){
-            img=sendFileAnswer(files[0]);
-            console.log(img);
-        }
-    }
-    });
-    
-    $('#summernote_question').summernote({
-    height:120,
-    lang:'zh-CN',
-    placeholder:'问题背景、条件等详细信息',
-    callbacks: {
-        onImageUpload: function(files){
-            img=sendFileQuestion(files[0]);
-            console.log(img);
-        }
-    }
-    });
-    
-    appendLetterModal();
-    checkSets();
-}
-</script>
+
 </body>
 </html>
