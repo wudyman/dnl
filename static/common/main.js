@@ -2593,7 +2593,7 @@ function init()
     g_module=$("main").attr("data-module");
     initData();
     initElement();
-    if(("sign"!=g_module)&&("misc"!=g_module))
+    if(("sign"!=g_module)&&("misc"!=g_module)&&("nofeature"!=g_module))
     {
         getMoreData();
         checkSets();
