@@ -962,6 +962,8 @@ function submitAnswer()
 function showAnswerToolbar()
 {
     $(".AnswerToolbar").removeClass("is-hide");
+    $(".AnswerToolbar .AuthorInfo-avatar").attr("src",g_user_avatar);
+    $(".AnswerToolbar .AuthorInfo-name").empty().append(g_user_name);
 }
 
 function hideAnswerToolbar()
@@ -2243,8 +2245,6 @@ function initElement()
     {
         $('title').text(g_question_title+" - "+SITE);
         $(".QuestionHeader-title").append('<a href="/question/'+g_question_id+'">'+g_question_title+'</a>');
-        $(".AuthorInfo-avatar").attr("src",g_user_avatar);
-        $(".AuthorInfo-name").empty().append(g_user_name);
         if("true"==g_question_followed)
         {
             $(".FollowButton").removeClass("Button--blue").addClass("Button--grey").attr("data-question-id",g_question_id).attr("data-followed","true").text("已关注");
