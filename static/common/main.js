@@ -937,7 +937,7 @@ function setLetterReceiver(id,name)
 
 function submitAnswer()
 {
-    var url=$(".AnswerToolbar").attr("data-question-answer-url");
+    var url="/ajax/question_answer/"+g_question_id+"/";
     var content=$('#summernote_answer').summernote('code');
     var data=new FormData();
     data.append("content",content);

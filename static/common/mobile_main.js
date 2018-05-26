@@ -773,7 +773,7 @@ function setLetterReceiver(id,name)
 
 function submitAnswer()
 {
-    var url=$(".AnswerToolbar").attr("data-question-answer-url");
+    var url="/ajax/question_answer/"+g_question_id+"/";
     var content=$('#summernote_answer').summernote('code');
     var data=new FormData();
     data.append("content",content);
@@ -1817,11 +1817,11 @@ function initElement()
         $(".QuestionHeader-title").append('<a href="/question/'+g_question_id+'">'+g_question_title+'</a>');
         if("true"==g_question_followed)
         {
-            $(".FollowButton").removeClass("Button--blue").addClass("Button--grey").attr("data-question-id",g_question_id).attr("data-followed","true").text("已关注");
+            $(".FollowButton").removeClass("Button--blue is-hide").addClass("Button--grey").attr("data-question-id",g_question_id).attr("data-followed","true").text("已关注");
         }
         else
         {
-            $(".FollowButton").removeClass("Button--grey").addClass("Button--blue").attr("data-question-id",g_question_id).attr("data-followed","false").text("关注问题");
+            $(".FollowButton").removeClass("Button--grey is-hide").addClass("Button--blue").attr("data-question-id",g_question_id).attr("data-followed","false").text("关注问题");
         }
         
         var g_push_answer_content_scale_imge=addClassImg(g_push_answer_content,'class="origin_image"');
