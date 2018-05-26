@@ -223,8 +223,8 @@ function getIndexImg(content){
 function removeImg(content){
     var imgReg=/<img.*?(?:>|\/>)/gi;
     var temp=content.replace(imgReg,"").replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,150);
-    for(var i=0;i<100;i++)
-        temp=temp+"&nbsp;";
+    //for(var i=0;i<100;i++)
+    //    temp=temp+"&nbsp;";
     return temp;
     //return content.replace(imgReg,"").replace(/<p>/gi,"").replace(/<\/p>/gi,"").replace(/(^\s*)|(\s*$)/g,"");
 }
@@ -443,8 +443,8 @@ function appendAnswerElementCard(ret,type,direction)
             var question_element='<h2 class="ContentItem-title"><a href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></h2>';
         }
     
-        for(var j=0;j<100;j++)
-            answer_content=answer_content+"&nbsp;";
+        //for(var j=0;j<100;j++)
+        //    answer_content=answer_content+"&nbsp;";
         var index_img_url=getIndexImg(answer_content);
         var appendElement='<div class="Card QuestionFrame ScrollIntoMark">\
                         <div class="Feed">\
