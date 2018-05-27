@@ -2031,7 +2031,7 @@ function checkSettingPage()
 }
 function checkSelectOption()
 {
-    $('#topics_select').on('show.bs.select', function (e) {
+    $('.selectpicker').on('show.bs.select', function (e) {
         var bIsGetAll="1";
         if("true"==g_lock_ajax)
             return;
@@ -2039,12 +2039,12 @@ function checkSelectOption()
         $.post("/ajax/topics/"+bIsGetAll+"/0/0/", function(ret){
             if("fail"!=ret)
             {
-                $('#topics_select').empty();
+                $('.selectpicker').empty();
                 for (var i in ret)
                 {
                     var topic_id=ret[i][0];
                     var topic_name=ret[i][1];
-                    $('#topics_select').append("<option value=" + topic_id + ":" + topic_name + ">" + topic_name + "</option>");
+                    $('.selectpicker').append("<option value=" + topic_id + ":" + topic_name + ">" + topic_name + "</option>");
                 }   
                 $('.selectpicker').selectpicker('refresh');
             }  
@@ -2608,11 +2608,9 @@ function initCommon()
     $('#summernote_question').summernote({
         toolbar: [
         // [groupName, [list of button]]
-        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['style', ['bold', 'italic', 'underline']],
         ['font', ['strikethrough', 'superscript', 'subscript']],
         ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['paragraph']],
         ['table', ['table']],
         ['link', ['link']],
         ['picture', ['picture']],
@@ -2631,16 +2629,14 @@ function initCommon()
     $('#summernote_answer').summernote({
     toolbar: [
     // [groupName, [list of button]]
-    ['style', ['bold', 'italic', 'underline', 'clear']],
+    ['style', ['bold', 'italic', 'underline']],
     ['font', ['strikethrough', 'superscript', 'subscript']],
     ['fontsize', ['fontsize']],
-    ['color', ['color']],
     ['para', ['paragraph']],
     ['table', ['table']],
     ['link', ['link']],
     ['picture', ['picture']],
-    ['video', ['video']],
-    ['fullscreen', ['fullscreen']]
+    ['video', ['video']]
     ],
     height:200,
     lang:'zh-CN',

@@ -34,7 +34,7 @@ class IndexView(generic.ListView):
         #print(request.POST.items)
         #print(request.user.__dict__)
         if not request.user.is_authenticated:
-            return HttpResponse("fail")
+            return HttpResponseRedirect('/signinup/')
         else:
             quizzer=request.user #get_object_or_404(User,username=request.user)
             topics=request.POST.getlist('topics_selected')#('topics')#

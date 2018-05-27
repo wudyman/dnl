@@ -680,6 +680,18 @@ label {
 .zu-noti7-all .loading,.zu-noti7-all .empty{padding:60px;text-align:center}
 .zu-noti7-all .day a{color:#259}
 
+.pull-left,.note-placeholder{
+   color:#8590a6;
+}
+
+.QuestionAsk-section {
+    margin-bottom: 2px;
+}
+
+.ModalButtonGroup--vertical {
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
 
 .Step-inner {
     width: 320px;
@@ -711,6 +723,79 @@ label {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
+}
+
+.Layout-main {
+    margin: 47px auto 0;
+    padding: 0;
+    width: 660px;
+    z-index: 1;
+}
+.WriteIndex-titleInput {
+    margin: 16px 0;
+    border: 0;
+    padding: 0;
+    height: auto;
+    width: 100%;
+    position: relative;
+}
+.WriteIndex-titleInput .Input {
+    height: 44px;
+    min-height: 44px;
+    display: block;
+    width: 100%;
+    border: 0;
+    font-size: 32px;
+    line-height: 1.4;
+    font-weight: 600;
+    font-synthesis: style;
+    outline: none;
+    box-shadow: none;
+}
+.note-editor.note-frame {
+    border: 1px solid #e7eaf1;
+    border-radius: 3px;
+}
+.note-btn.btn.btn-default.btn-sm {
+    border-color: #fff;
+}
+.panel-default>.panel-heading {
+    background-color:#fff;
+    border-color: #fff;
+}
+.Wirte-content {
+    font-size: 18px;
+}
+.Wirte-content  .panel-default>.panel-heading {
+    border-color: #fff;
+}
+
+.Wirte-select {
+    margin: 20px 0;
+}
+.Wirte-select .Input-wrapper {
+    padding: 4px 5px;
+    font-size: 24px;
+    background: #fff;
+    border-color: #fff;
+}
+.bootstrap-select .dropdown-toggle:focus {
+    outline:None !important;
+}
+.btn-group.open .dropdown-toggle {
+    -webkit-box-shadow: None !important;
+    box-shadow: None !important;
+
+}
+
+.bs-searchbox .form-control {
+    width: 96%;
+}
+.form-control:focus{
+    border-color: #aaa;
+}
+.btn-group:focus{
+    border-color: #aaa !important;
 }
 
 
