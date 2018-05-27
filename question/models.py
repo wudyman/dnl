@@ -18,6 +18,17 @@ class Question(models.Model):
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):
         return self.title
+        
+class Article(models.Model):
+    title=models.CharField(max_length=50)
+    content=models.CharField(max_length=1000,blank=True)
+    author=models.ForeignKey(User,related_name='selfarticles',on_delete=models.CASCADE)
+    hot=models.IntegerField(default=0)
+    prima_topic_id=models.IntegerField(default=-1)
+    prima_topic_name=models.CharField(max_length=50,default='null')
+    pub_date=models.DateTimeField('date published',default=timezone.now)
+    def __str__(self):
+        return self.title
 
 class Topic(models.Model):
     name=models.CharField(max_length=50)
@@ -25,6 +36,8 @@ class Topic(models.Model):
     detail=models.CharField(max_length=200,blank=True)
     question=models.ManyToManyField(Question,related_name='topics',blank=True)
     question_nums=models.IntegerField(default=0)
+    article=models.ManyToManyField(Article,related_name='topics',blank=True)
+    article_nums=models.IntegerField(default=0)
     follower=models.ManyToManyField(User,related_name='followtopics',blank=True)
     follower_nums=models.IntegerField(default=0)
     adept=models.ManyToManyField(User,related_name='adepttopics',blank=True)

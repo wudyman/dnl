@@ -3,7 +3,7 @@ from django.views import generic
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Question,Topic,Answer,Comment,UserProfile,Conversation
+from .models import Question,Article,Topic,Answer,Comment,UserProfile,Conversation
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 # Create your views here.
@@ -224,7 +224,7 @@ class SearchView(generic.ListView):
         
 class WriteView(generic.ListView):
     login_url='/'
-    template_name='question/t_no_feature.html'
+    template_name='question/t_write.html'
     def get_queryset(self):
         return
     def get(self,request,*args,**kwargs):
@@ -232,13 +232,56 @@ class WriteView(generic.ListView):
         is_mobile=ua.upper().find('MOBILE')>=0
         print('is moblie:',is_mobile)
         if is_mobile:
-            self.template_name='question/t_no_feature.html'
+            self.template_name='question/t_write_mobile.html'
         user=request.user
         if user.is_authenticated:
             return render(request,self.template_name,{'logged':'true'})
         else:
             return HttpResponseRedirect('/signinup/')
-        
+    def post(self,request):
+        user=request.user
+        if not user.is_authenticated:
+            return HttpResponseRedirect('/signinup/')
+        else:
+            topics=request.POST.getlist('topics_selected')#('topics')#
+            prima_topic_array=topics[0].split(':')
+
+            article=Article()
+            article.title=request.POST.get('writeTitle')
+            article.content=request.POST.get('writeContent')
+            article.author=user
+            article.prima_topic_id=int(prima_topic_array[0])
+            article.prima_topic_name=prima_topic_array[1]            
+            article.save()
+            
+            for topic_str in topics:
+                topic_array=topic_str.split(':')
+                topic=get_object_or_404(Topic,id=topic_array[0])
+                topic.article.add(article)
+                topic.article_nums=topic.article.count()
+                topic.save()
+            result='/article/'+str(article.id)+'/'
+            return HttpResponseRedirect(result)
+
+class ArticleView(generic.ListView):
+    login_url='/'
+    template_name='question/t_article.html'
+    def get_queryset(self):
+        return
+    def get(self,request,*args,**kwargs):
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print('is moblie:',is_mobile)
+        if is_mobile:
+            self.template_name='question/t_article_mobile.html'
+        article_id=self.kwargs.get('article_id')
+        article=get_object_or_404(Article,pk=article_id)
+        user=request.user
+        if user.is_authenticated:
+            return render(request,self.template_name,{'logged':'true'})
+        else:
+            return render(request,self.template_name,{'logged':'false'})
+            
 class TradeView(LoginRequiredMixin,generic.ListView):
     login_url='/'
     template_name='question/t_no_feature.html'
