@@ -3,7 +3,7 @@ from django.views import generic
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Question,Article,Topic,Answer,Comment,UserProfile,Conversation
+from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 # Create your views here.
@@ -278,9 +278,9 @@ class ArticleView(generic.ListView):
         article=get_object_or_404(Article,pk=article_id)
         user=request.user
         if user.is_authenticated:
-            return render(request,self.template_name,{'logged':'true'})
+            return render(request,self.template_name,{'article':article,'logged':'true'})
         else:
-            return render(request,self.template_name,{'logged':'false'})
+            return render(request,self.template_name,{'article':article,'logged':'false'})
             
 class TradeView(LoginRequiredMixin,generic.ListView):
     login_url='/'
