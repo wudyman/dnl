@@ -2663,6 +2663,7 @@ function slog(arg)
 $(document).ready(function() {
     initCommon();
     init();
+    g_init_done="true";
 });
 $(document).click(function(e) {
     $("#NotificationPopover").popover("hide");
@@ -2675,12 +2676,14 @@ window.onscroll = function (){
 //console.log(getClientHeight());
 //console.log(getScrollHeight());
 if (getScrollTop() + getClientHeight() +10 >= getScrollHeight()) {
-        getMoreData();
+        if("true"==g_init_done)
+            getMoreData();
     }
 } 
 SITE="知乎";
 STEP=10;
 g_lock_ajax="false";
+g_init_done="false";
 ENABLE_SCREEN_LOG="true";//"false"
 
 function hashChange()

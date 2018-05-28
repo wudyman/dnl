@@ -55,11 +55,22 @@ class Answer(models.Model):
     def __str__(self):
         return self.author.username
 
-class Comment(models.Model):
-    author=models.ForeignKey(User,related_name='comments',on_delete=models.CASCADE)
+class AnswerComment(models.Model):
+    author=models.ForeignKey(User,related_name='answercomments',on_delete=models.CASCADE)
     content=models.CharField(max_length=200)
     answer=models.ForeignKey(Answer,related_name='comments',on_delete=models.CASCADE)
     like_nums=models.IntegerField(default=0)
+    parent_id=models.IntegerField(default=0)
+    pub_date=models.DateTimeField('date published',default=timezone.now)
+    def __str__(self):
+        return self.author.username
+        
+class ArticleComment(models.Model):
+    author=models.ForeignKey(User,related_name='articlecomments',on_delete=models.CASCADE)
+    content=models.CharField(max_length=200)
+    article=models.ForeignKey(Article,related_name='comments',on_delete=models.CASCADE)
+    like_nums=models.IntegerField(default=0)
+    parent_id=models.IntegerField(default=0)
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):
         return self.author.username
@@ -115,16 +126,3 @@ class Message(models.Model):
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):
         return str(self.id)
-    
-#=================================below for ajax query==============================================#
-class PushQuestion():
-    topic_id=0
-    topic_name=''
-    question_id=0
-    question_title=''
-    author_id=0
-    author_name=''
-    answer_content=''
-    answer_likes=0
-    answer_comments=0
-    answer_date=''
