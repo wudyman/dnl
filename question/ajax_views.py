@@ -832,7 +832,7 @@ def get_comments(request):
         article=get_object_or_404(Article,pk=aId)
         if article:       
             comment_list=[]
-            comments=article.comments.order_by('-pub_date')
+            comments=article.comments.order_by('pub_date')
             if comments:
                 for comment in comments:
                     temp=[]
@@ -856,13 +856,15 @@ def comment(request):
     if user.is_authenticated:
         commentType=request.POST.get('c_type')
         commentContent=request.POST.get('c_content')
-        aId=request.POST.get('a_id')       
+        aId=request.POST.get('a_id')
+        parent_id=request.POST.get('parent_comment_id')
         if "article"==commentType:
             article=get_object_or_404(Article,pk=aId)
             if article:
                 comment=ArticleComment()
-                comment.author=user
                 comment.content=commentContent
+                comment.parent_id=parent_id;
+                comment.author=user
                 comment.article=article
                 comment.save()
                 to_json=json.dumps('success')

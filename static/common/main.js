@@ -2668,9 +2668,11 @@ function slog(arg)
 }
 
 $(document).ready(function() {
+    console.log("init");
     initCommon();
     init();
     g_init_done="true";
+    console.log("init done");
 });
 $(document).click(function(e) {
     $("#NotificationPopover").popover("hide");
