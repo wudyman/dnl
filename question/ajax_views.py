@@ -821,3 +821,49 @@ def reset_pwd(request):
                 user.save()
                 to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
+
+@csrf_exempt
+def get_comments(request):
+    to_json=json.dumps('fail')
+    user=request.user
+    commentType=request.POST.get('c_type')
+    aId=request.POST.get('a_id')       
+    if "article"==commentType:
+        article=get_object_or_404(Article,pk=aId)
+        if article:       
+            comment_list=[]
+            comments=article.comments.order_by('-pub_date')
+            if comments:
+                for comment in comments:
+                    temp=[]
+                    temp.append(comment.id) #0
+                    temp.append(comment.content) #1
+                    temp.append(comment.like_nums) #2
+                    temp.append(comment.parent_id) #3
+                    temp.append(str(comment.pub_date)) #4
+                    temp.append(comment.author.id) #5
+                    temp.append(comment.author.first_name) #6
+                    temp.append(comment.author.userprofile.avatar) #7
+                    temp.append(comment.author.userprofile.mood) #8
+                    comment_list.append(temp)
+                to_json=json.dumps(comment_list)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def comment(request):
+    to_json=json.dumps('fail')
+    user=request.user
+    if user.is_authenticated:
+        commentType=request.POST.get('c_type')
+        commentContent=request.POST.get('c_content')
+        aId=request.POST.get('a_id')       
+        if "article"==commentType:
+            article=get_object_or_404(Article,pk=aId)
+            if article:
+                comment=ArticleComment()
+                comment.author=user
+                comment.content=commentContent
+                comment.article=article
+                comment.save()
+                to_json=json.dumps('success')
+    return HttpResponse(to_json,content_type='application/json')

@@ -32,4 +32,6 @@ urlpatterns= [
     url(r'^send_sms/$',views.send_sms,name='send_sms'),
     url(r'^check_sms/$',views.check_sms,name='check_sms'),
     url(r'^reset_pwd/$',views.reset_pwd,name='reset_pwd'),
+    url(r'^get_comments/$',views.get_comments,name='get_comments'),
+    url(r'^comment/$',views.comment,name='comment'),
 ]
