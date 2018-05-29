@@ -8,7 +8,6 @@ class Question(models.Model):
     detail=models.CharField(max_length=200,blank=True)
     quizzer=models.ForeignKey(User,related_name='selfquestions',on_delete=models.CASCADE)
     answer_nums=models.IntegerField(default=0)
-    #answers=models.ManyToManyField(User,related_name='answerquestions')
     follower=models.ManyToManyField(User,related_name='followquestions',blank=True)
     follower_nums=models.IntegerField(default=0)
     hot=models.IntegerField(default=0)
@@ -46,6 +45,7 @@ class Topic(models.Model):
         return self.name
 
 class Answer(models.Model):
+    #id=models.BigAutoField(primary_key=True)
     question=models.ForeignKey(Question,related_name='be_answers',on_delete=models.CASCADE)
     author=models.ForeignKey(User,related_name='answers',on_delete=models.CASCADE)
     content=models.CharField(max_length=5000)
@@ -56,20 +56,24 @@ class Answer(models.Model):
         return self.author.username
 
 class AnswerComment(models.Model):
+    #id=models.BigAutoField(primary_key=True)
     author=models.ForeignKey(User,related_name='answercomments',on_delete=models.CASCADE)
     content=models.CharField(max_length=200)
     answer=models.ForeignKey(Answer,related_name='comments',on_delete=models.CASCADE)
     like_nums=models.IntegerField(default=0)
+    #parent_id=models.BigIntegerField(default=0)
     parent_id=models.IntegerField(default=0)
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):
         return self.author.username
         
 class ArticleComment(models.Model):
+    #id=models.BigAutoField(primary_key=True)
     author=models.ForeignKey(User,related_name='articlecomments',on_delete=models.CASCADE)
     content=models.CharField(max_length=200)
     article=models.ForeignKey(Article,related_name='comments',on_delete=models.CASCADE)
     like_nums=models.IntegerField(default=0)
+    #parent_id=models.BigIntegerField(default=0)
     parent_id=models.IntegerField(default=0)
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):
@@ -90,6 +94,7 @@ class UserProfile(models.Model):
         return self.user.username
 
 class Invite(models.Model):
+    #id=models.BigAutoField(primary_key=True)
     inviter=models.ForeignKey(User,related_name='sendinvite')
     invitee=models.ForeignKey(User,related_name='receiveinvite')
     question_id=models.IntegerField(default=-1)
@@ -99,6 +104,7 @@ class Invite(models.Model):
         return str(self.question_id)
 
 class Notification(models.Model):
+    #id=models.BigAutoField(primary_key=True)
     type=models.CharField(default='invite',max_length=11)
     sender=models.ForeignKey(User,related_name='sends')
     receiver=models.ForeignKey(User,related_name='receives')
@@ -108,6 +114,7 @@ class Notification(models.Model):
     def __str__(self):
         return str(self.type)
 class Conversation(models.Model):
+    #id=models.BigAutoField(primary_key=True)
     initator=models.ForeignKey(User,related_name='init_conversations')
     parter=models.ForeignKey(User,related_name='join_conversations')
     delete_id=models.IntegerField(default=-1)
@@ -115,13 +122,12 @@ class Conversation(models.Model):
     def __str__(self):
         return str(self.id)
 class Message(models.Model):
-    #type=models.CharField(default='letter',max_length=11)
+    #id=models.BigAutoField(primary_key=True)
     conversation=models.ForeignKey(Conversation,related_name='messages',on_delete=models.CASCADE)
     content=models.CharField(max_length=1000)
     sender=models.ForeignKey(User,related_name='message_sends')
     receiver=models.ForeignKey(User,related_name='message_receives')
     delete_id=models.IntegerField(default=-1)
-    #active_id=models.PositiveIntegerField(default=0)# question_id,answer_id,comment_id,user_id
     status=models.IntegerField(default=0)
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):

@@ -88,12 +88,12 @@
 </div>
 </div>
 
-<div class="Comments-footer CommentEditor--normal">
+<div class="Comments-footer CommentEditor--normal CommentEditor--nouse">
 <div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding">
 <div class="Input Editable">
 <div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div id="comment_edit" class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none;white-space: pre-wrap;word-wrap: break-word;"></div></div></div></div>
 <div></div></div></div>
-<button disabled="" type="button" class="Button CommentEditor-singleButton Button--primary Button--blue">评论</button>
+<button disabled="" type="button" class="Button Button-comment-send  CommentEditor-singleButton Button--primary Button--blue">评论</button>
 </div>
 
 
@@ -125,9 +125,16 @@ function checkComment()
 {
     var commpent_text="";
     var input_lock="false";
-    $(".CommentEditor-singleButton").on("mousedown",function(){
-    console.log("click");
-        var post_data={c_type:"article",a_id:g_article_id,c_content:commpent_text};
+    
+    $(".Button-comment-send").on("mousedown",function(){
+        console.log("mousedown");
+        var parent_comment_id=$(this).parents(".CommentItem").attr("data-comment-id");
+        if (typeof(parent_comment_id) == "undefined")
+        {
+            parent_comment_id=0;
+        }
+        console.log(parent_comment_id);
+        var post_data={c_type:"article",a_id:g_article_id,c_content:commpent_text,parent_comment_id:parent_comment_id};
         $.post("/ajax/comment/",post_data,function(ret){
             if("fail"!=ret)
             {
@@ -137,23 +144,24 @@ function checkComment()
     });
     
     $(".public-DraftEditor-content").on("click",function(){
-        $(".Comments-footer").addClass("CommentEditor--active");
-        $(".CommentEditor-input").addClass("is-focus");
+        $(this).parents(".CommentEditor--nouse").addClass("CommentEditor--active");
+        $(this).parents(".CommentEditor-input").addClass("is-focus");
+        $(this).parents(".Input.Editable").addClass("Editable--focus");
     });
     
     $(".public-DraftEditor-content").on("keyup",function(){
-        $(".public-DraftEditorPlaceholder-inner").empty();
+        $(this).parents(".DraftEditor-root").find(".public-DraftEditorPlaceholder-inner").empty();
         if("false"==input_lock)
         {
-            commpent_text=$(".public-DraftEditor-content").text();
+            commpent_text=$(this).text();
             console.log(commpent_text);
             if(""!=commpent_text)
             {
-                $(".CommentEditor-singleButton").removeAttr("disabled");
+                $(this).parents(".CommentEditor--nouse").find(".Button-comment-send").removeAttr("disabled");
             }
             else
             {
-                $(".CommentEditor-singleButton").attr("disabled","");
+                $(this).parents(".CommentEditor--nouse").find(".Button-comment-send").attr("disabled","");
             }
         }
     });
@@ -167,12 +175,26 @@ function checkComment()
     });
     
     $(".public-DraftEditor-content").on("blur",function(){
-        console.log("blue");
-        $(".Comments-footer").removeClass("CommentEditor--active");
-        $(".CommentEditor-input").removeClass("is-focus");
+        console.log("blur");
+        $(this).parents(".CommentEditor--nouse").removeClass("CommentEditor--active");
+        $(this).parents(".CommentEditor-input").removeClass("is-focus");
+        $(this).parents(".Input.Editable").removeClass("Editable--focus");
         input_lock="false";
     });
 
+}
+function checkCommentItem()
+{
+    $(".CommentItem-hoverBtn").click(function(){
+        console.log("comment-reply click");
+        var comment_element=$(this).parents(".CommentItem");
+        var comment_id=comment_element.attr("data-comment-id");
+        var comment_author_name=comment_element.attr("data-comment-author-name");
+        var append_element='<div class="CommentItem-editor CommentEditor--inCommentItem CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">回复'+comment_author_name+'</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><div class="CommentEditor-actions"><button type="button" class="Button Button-comment-item-cancle Button--plain">取消</button><button disabled="" type="button" class="Button Button-comment-send Button--primary Button--blue">评论</button></div></div>';
+        comment_element.append(append_element);
+        comment_element.find(".CommentItem-footer").remove();
+        checkComment();
+    });
 }
 function appendCommentsElement(ret)
 {
@@ -192,10 +214,30 @@ function appendCommentsElement(ret)
         
         if(0==comment_parent_id)
         {
-            var element_data='<div class="CommentItem"><div><div class="CommentItem-meta"><span class="UserLink CommentItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+comment_author_id+'"><img class="Avatar UserLink-avatar" width="24" height="24" src="'+comment_author_avatar+'" alt="'+comment_author_name+'"></a></span><span class="UserLink"><a class="UserLink-link" target="_blank" href="'+comment_author_id+'">'+comment_author_name+'</a></span><span class="CommentItem-time">'+comment_pub_date+'</span></div><div class="RichText ztext CommentItem-content">'+comment_content+'</div><div class="CommentItem-footer"><button type="button" class="Button CommentItem-likeBtn Button--plain"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+comment_like_nums+'</button><button type="button" class="Button CommentItem-hoverBtn Button--plain"><svg viewBox="0 0 22 16" class="Icon Icon--reply Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M21.96 13.22c-1.687-3.552-5.13-8.062-11.637-8.65-.54-.053-1.376-.436-1.376-1.56V.677c0-.52-.635-.915-1.116-.52L.47 6.67C.18 6.947 0 7.334 0 7.763c0 .376.14.722.37.987 0 0 6.99 6.818 7.442 7.114.453.295 1.136.124 1.135-.5V13c.027-.814.703-1.466 1.532-1.466 1.185-.14 7.596-.077 10.33 2.396 0 0 .395.257.535.257.892 0 .614-.967.614-.967z"></path></g></svg>回复</button></div></div></div>';
+            var element_data='<div class="CommentItem" data-comment-id="'+comment_id+'" data-comment-author-name="'+comment_author_name+'"><div><div class="CommentItem-meta"><span class="UserLink CommentItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+comment_author_id+'"><img class="Avatar UserLink-avatar" width="24" height="24" src="'+comment_author_avatar+'" alt="'+comment_author_name+'"></a></span><span class="UserLink"><a class="UserLink-link" target="_blank" href="'+comment_author_id+'">'+comment_author_name+'</a></span><span class="CommentItem-time">'+comment_pub_date+'</span></div><div class="RichText ztext CommentItem-content">'+comment_content+'</div><div class="CommentItem-footer"><button type="button" class="Button CommentItem-likeBtn Button--plain"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+comment_like_nums+'</button><button type="button" class="Button CommentItem-hoverBtn Button--plain"><svg viewBox="0 0 22 16" class="Icon Icon--reply Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M21.96 13.22c-1.687-3.552-5.13-8.062-11.637-8.65-.54-.053-1.376-.436-1.376-1.56V.677c0-.52-.635-.915-1.116-.52L.47 6.67C.18 6.947 0 7.334 0 7.763c0 .376.14.722.37.987 0 0 6.99 6.818 7.442 7.114.453.295 1.136.124 1.135-.5V13c.027-.814.703-1.466 1.532-1.466 1.185-.14 7.596-.077 10.33 2.396 0 0 .395.257.535.257.892 0 .614-.967.614-.967z"></path></g></svg>回复</button></div></div></div>';
             $(".CommentList").append(element_data);
         }
+        else
+        {
+            var element_data='<div class="CommentItem" data-comment-id="'+comment_id+'" data-comment-author-name="'+comment_author_name+'"><div><div class="CommentItem-meta"><span class="UserLink CommentItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+comment_author_id+'"><img class="Avatar UserLink-avatar" width="24" height="24" src="'+comment_author_avatar+'" alt="'+comment_author_name+'"></a></span><span class="UserLink"><a class="UserLink-link" target="_blank" href="'+comment_author_id+'">'+comment_author_name+'</a></span><span class="CommentItem-time">'+comment_pub_date+'</span></div><div class="RichText ztext CommentItem-content">'+comment_content+'</div><div class="CommentItem-footer"><button type="button" class="Button CommentItem-likeBtn Button--plain"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+comment_like_nums+'</button><button type="button" class="Button CommentItem-hoverBtn Button--plain"><svg viewBox="0 0 22 16" class="Icon Icon--reply Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M21.96 13.22c-1.687-3.552-5.13-8.062-11.637-8.65-.54-.053-1.376-.436-1.376-1.56V.677c0-.52-.635-.915-1.116-.52L.47 6.67C.18 6.947 0 7.334 0 7.763c0 .376.14.722.37.987 0 0 6.99 6.818 7.442 7.114.453.295 1.136.124 1.135-.5V13c.027-.814.703-1.466 1.532-1.466 1.185-.14 7.596-.077 10.33 2.396 0 0 .395.257.535.257.892 0 .614-.967.614-.967z"></path></g></svg>回复</button></div></div></div>';
+            $(".CommentList").append(element_data);
+            $(".CommentItem").each(function(){
+                if($(this).attr("data-comment-id")==comment_parent_id)
+                {
+                    parent_element=$(this);
+                }
+                else if($(this).attr("data-comment-id")==comment_id)
+                {
+                    var current_element=$(this);
+                    console.log(parent_element);
+                    //current_element.append(parent_element);
+                    parent_element.append(current_element);
+                }
+                //current_element.append(parent_element);
+            });
+        }
     }
+    checkCommentItem();
 }
 function getComments()
 {
