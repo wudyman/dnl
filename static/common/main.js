@@ -2169,6 +2169,9 @@ function getMoreData()
             var post_data='';
         }
     }
+    else{
+        return;
+    }
     if("true"==g_lock_ajax)
         return;
     g_lock_ajax="true";
@@ -2585,6 +2588,10 @@ function initData()
         g_followquestions_num=ext_data.followquestions_num;
         
         g_show_detailed="false";
+    }
+    else if("article"==g_module)
+    {
+        g_article_id=main_data.article_id;
     }
 } 
 
