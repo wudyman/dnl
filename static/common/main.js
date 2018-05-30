@@ -2494,6 +2494,31 @@ function initElement()
         //checkNextPage();
         checkHomePage();
     }
+    else if("article"==g_module)
+    {
+        var follow_text="关注她";
+        var button_follow_class="Button--blue";
+        var data_who="she";
+        if("f"!=g_er_sexual)
+        {
+            follow_text="关注他";
+            data_who="he";
+        }
+        if("true"==g_followed)
+        {
+            button_follow_class="Button--grey";
+            follow_text="已关注";
+        }
+        $(".FollowButton").addClass(button_follow_class).removeClass("is-hide").attr("data-er-id",g_er_id).attr("data-followed",g_followed).attr("data-who",data_who).children("span").text(follow_text);
+        
+        $(".Post-Header .UserLink-link").attr("href","/er/"+g_er_id+"/").attr("data-author-id",g_er_id);
+        
+        var pub_date_text="发布于 "+g_article_pub_date.split('.')[0];
+        $(".ContentItem-time>a").attr("href","/article/"+g_article_id+"/").children("span").attr("data-tooltip",pub_date_text).text(pub_date_text);
+        
+        $(".Comment--nums--nouse").empty().text(g_article_comment_nums);
+        $(".Article--likenums--nouse").empty().text(g_article_like_nums);
+    }
 }
 function initData()
 {
@@ -2563,10 +2588,6 @@ function initData()
         var str_ext_data=$("main").attr("data-dfs-ext");
         var ext_data=JSON.parse(str_ext_data);
 
-        g_user_id=main_data.user_id;
-        g_user_name=main_data.user_name;
-        g_user_avatar=main_data.user_avatar;
-
         g_er_id=main_data.er_id;
         g_er_name=main_data.er_name;
         g_er_avatar=main_data.er_avatar;
@@ -2592,6 +2613,12 @@ function initData()
     else if("article"==g_module)
     {
         g_article_id=main_data.article_id;
+        g_article_like_nums=main_data.article_like_nums;
+        g_article_comment_nums=main_data.article_comment_nums;
+        g_article_pub_date=main_data.article_pub_date;
+        g_er_id=main_data.er_id;
+        g_er_sexual=main_data.er_sexual;
+        g_followed=main_data.followed;
     }
 } 
 

@@ -784,6 +784,27 @@ label {
 html[data-theme=dark] .ContentItem-time a:hover{border-bottom:1px solid rgba(96,106,128,.72)}
 html[data-theme=dark] .ContentItem-time{color:#606a80}
 
+
+.RichContent-actions{background:#fff;width:100%;bottom:0;left:0}
+@media (min-width:690px){.RichContent-actions{margin-bottom:10px}
+}
+.RichContent-actions .ContentItem-actions{position:relative}
+.RichContent-actions.is-fixed{border-bottom:0 solid transparent;border-bottom-width:constant(safe-area-inset-bottom);border-bottom-width:env(safe-area-inset-bottom);color:#646464;background:#fff}
+@media (min-width:690px){.RichContent-actions.is-fixed{box-shadow:0 -1px 3px 0 rgba(26,26,26,.1);margin-bottom:0;width:100%!important;left:0!important}
+.RichContent-actions.is-fixed .ContentItem-actions{margin-left:auto;margin-right:auto;margin-bottom:0;max-width:690px}
+html[data-theme=dark] .RichContent-actions.is-fixed{box-shadow:0 -1px 3px 0 hsla(0,0%,60%,.1)}
+}
+@media (max-width:690px){.RichContent-actions.is-fixed .ContentItem-actions{margin-bottom:0;box-shadow:0 -1px 3px 0 rgba(26,26,26,.1)}
+}
+html[data-theme=dark] .RichContent-actions.is-fixed{color:#999;background:#1a1a1a}
+@media (max-width:690px){.RichContent-actions{font-weight:600;font-synthesis:style;box-shadow:none}
+html[data-ios] .RichContent-actions{font-weight:500}
+html[data-android] .RichContent-actions{font-weight:700}
+}
+html[data-theme=dark] .RichContent-actions{background:#1a1a1a}
+
+
+
 .TopicList{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:center;-ms-flex-align:center;align-items:center}
 .TopicList .Topic:not(:last-child){margin-right:5px}
 .TopicList .Topic+.Topic{vertical-align:middle}
@@ -933,6 +954,10 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
 .Post-Main .OpenInAppButton.is-shown{-webkit-transform:translate(-50%,-75px);transform:translate(-50%,-75px)}
 .Post-Main .OpenInAppButton{margin-bottom:constant(safe-area-inset-bottom);margin-bottom:env(safe-area-inset-bottom)}
 /*----for article----------------*/
+
+/************for comment****************/
+.CommentItem.CommentItem--border{border: 1px solid #ddd;background-color:#f6f6f6;}
+/****************************/
 
 
 

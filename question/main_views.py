@@ -276,11 +276,18 @@ class ArticleView(generic.ListView):
             self.template_name='question/t_article_mobile.html'
         article_id=self.kwargs.get('article_id')
         article=get_object_or_404(Article,pk=article_id)
+        
         user=request.user
         if user.is_authenticated:
-            return render(request,self.template_name,{'article':article,'logged':'true'})
+            logged='true'
+            if user.followto.filter(id=article.author.id).exists():
+                followed='true'
+            else:
+                followed='false'
         else:
-            return render(request,self.template_name,{'article':article,'logged':'false'})
+            logged='false'
+            followed='false'
+        return render(request,self.template_name,{'article':article,'article_pub_date':str(article.pub_date),'logged':logged,'followed':followed})
             
 class TradeView(LoginRequiredMixin,generic.ListView):
     login_url='/'
