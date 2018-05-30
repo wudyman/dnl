@@ -867,5 +867,20 @@ def comment(request):
                 comment.author=user
                 comment.article=article
                 comment.save()
-                to_json=json.dumps('success')
+                article.comment_nums+=1
+                article.save()
+                
+                comment_list=[]
+                temp=[]
+                temp.append(comment.id) #0
+                temp.append(comment.content) #1
+                temp.append(comment.like_nums) #2
+                temp.append(comment.parent_id) #3
+                temp.append(str(comment.pub_date)) #4
+                temp.append(comment.author.id) #5
+                temp.append(comment.author.first_name) #6
+                temp.append(comment.author.userprofile.avatar) #7
+                temp.append(comment.author.userprofile.mood) #8
+                comment_list.append(temp)
+                to_json=json.dumps(comment_list)
     return HttpResponse(to_json,content_type='application/json')
