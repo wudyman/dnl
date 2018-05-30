@@ -174,6 +174,8 @@ function uploadImage(type,file)
                     $("#summernote_question").summernote('insertImage', url, 'image name'); // the insertImage API
                 else if("forAnswer"==type)
                     $("#summernote_answer").summernote('insertImage', url, 'image name'); // the insertImage API
+                else if("forWrite"==type)
+                    $("#summernote_write").summernote('insertImage', url, 'image name'); // the insertImage API
                 else if(("forAvatar"==type)||("forTopicAvatar"==type))
                 {
                     $("#upAvatarModal").modal('hide');
@@ -2720,6 +2722,7 @@ SITE="知乎";
 STEP=10;
 g_lock_ajax="false";
 g_init_done="false";
+g_sticky_show="false";
 ENABLE_SCREEN_LOG="true";//"false"
 
 function hashChange()
