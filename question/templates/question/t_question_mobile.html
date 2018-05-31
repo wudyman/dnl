@@ -9,19 +9,29 @@
 <div>
 {% include 'question/header_mobile.html' %}
 </div>
-<main role="main" class="App-main"  data-module="question" data-answer-content="{{push_answer.content}}" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","question_id":"{{context_question.id}}","question_title":"{{context_question.title}}","question_answer_nums":"{{context_question.answer_nums}}","question_followed":"{{followed}}","answer_id":"{{push_answer.id}}","answer_like_nums":"{{push_answer.like_nums}}","author_id":"{{push_answer.author.id}}","author_name":"{{push_answer.author.first_name}}","author_avatar":"{{push_answer.author.userprofile.avatar}}","author_mood":"{{push_answer.author.userprofile.mood}}"}'>
+<main role="main" class="App-main"  data-module="question" data-question-detail="{{context_question.detail}}" data-answer-content="{{push_answer.content}}" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","question_id":"{{context_question.id}}","question_title":"{{context_question.title}}","question_answer_nums":"{{context_question.answer_nums}}","question_followed":"{{followed}}","answer_id":"{{push_answer.id}}","answer_like_nums":"{{push_answer.like_nums}}","author_id":"{{push_answer.author.id}}","author_name":"{{push_answer.author.first_name}}","author_avatar":"{{push_answer.author.userprofile.avatar}}","author_mood":"{{push_answer.author.userprofile.mood}}"}'>
 <div>
 
 
 <div class="QuestionHeader">
-<div class="QuestionStatus">
-</div>
+<div class="QuestionStatus"></div>
 <div class="Card QuestionHeader-content">
 <div class="QuestionHeader-tags">
+
+<div class="TopicList">
+{% for topic in context_question.topics.all %}
+<div class="Tag Topic">
+<span class="Tag-content">
+<a class="TopicLink TopicPopover" href="/topic/{{topic.id}}/" data-topic-id="{{topic.id}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{topic.name}}</a>
+</span>
+</div>
+{% endfor %}
+</div>
+
 </div>
 <div class="QuestionHeader-title"></div>
 <div class="RichContent RichContent--unescapable RichContent--withMask">
-<!--<div class="RichContent-inner"><span class="RichText CopyrightRichText-richText"></span></div>-->
+<div class="RichContent-inner"><span class="RichText CopyrightRichText-richText"></span></div>
 <div class="ContentItem-actions">
 <div class="MobileQuestionButtonGroup">
 <button class="Button FollowButton Button--primary Button--blue is-hide" type="button" data-follow-type="question"></button>
