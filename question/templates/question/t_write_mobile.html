@@ -1,15 +1,18 @@
 ﻿<!DOCTYPE html>
-<html lang="zh" data-hairline="true" data-theme="light" data-focus-method="pointer" style="">
+<html lang="zh" data-hairline="true" data-android="true" data-theme="light">
 {% include 'question/head_mobile.html' %}
-<body class="Entry-body">
+<body class="Mobile-body">
+<div id="root">
+<div class="App">
+<div class="LoadingBar">
+</div>
+<div>
 {% include 'question/header_mobile.html' %}
-
-<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 3px;">
 </div>
 
-
 <!--------------------main---------------------->
-<main role="main" class="App-main" data-module="write" data-dfs-main='{}'>
+<main role="main" class="App-main" data-module="write" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}"}'>
+<div class="Layout av-cardBackground">
 <div class="Layout-main av-card">
 <form method="post" action="/write/">
 {% csrf_token %}
@@ -81,7 +84,8 @@
 </div>
 -->
 </form>
-</div>       
+</div>
+</div>     
 </main>
 <!--------------------main end-------------------->
 

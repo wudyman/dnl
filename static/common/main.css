@@ -704,7 +704,11 @@ label {
     -moz-box-sizing: content-box;
     box-sizing: content-box;
 }
-
+/*----for write----------------*/
+.Layout {
+    background: #fff;
+    min-height: 660px;
+}
 .Layout-main {
     margin: 47px auto 0;
     padding: 0;
@@ -769,7 +773,7 @@ label {
 }
 
 .bs-searchbox .form-control {
-    width: 96%;
+    width: auto;
 }
 .form-control:focus{
     border-color: #aaa;
@@ -779,6 +783,12 @@ label {
 }
 
 /*----for article----------------*/
+.App-main{padding-bottom:46px}
+@media (max-width:690px){body{background:#fff}
+html[data-theme=dark] body{background:#1a1a1a}
+.App-main{padding:0}
+}
+
 .ContentItem-time{margin-top:10px;font-size:14px;color:#8590a6}
 .ContentItem-time a:hover{border-bottom:1px solid rgba(133,144,166,.72)}
 html[data-theme=dark] .ContentItem-time a:hover{border-bottom:1px solid rgba(96,106,128,.72)}
