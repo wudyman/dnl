@@ -298,6 +298,67 @@ function appendPopoverSearchElement(ret,keyword)
         $("#IdQuestion").append(data);
     }
 }
+function appendCommentsElement(ret)
+{
+    for( var i in ret)
+    {
+        var comment_id=ret[i][0];
+        var comment_content=ret[i][1];
+        var comment_like_nums=ret[i][2];
+        var comment_parent_id=ret[i][3];
+        var comment_pub_date=ret[i][4].split(".")[0];
+        var comment_author_id=ret[i][5];
+        var comment_author_name=ret[i][6];
+        var comment_author_avatar=ret[i][7];
+        var comment_author_mood=ret[i][8];
+        
+        if(0==comment_parent_id)
+        {
+                //<div class="CommentItem"><div><div class="CommentItem-meta"><span class="UserLink CommentItem-avatar"><a class="UserLink-link" target="_blank" href=""><img class="Avatar UserLink-avatar" width="24" height="24" src="" alt=""></a></span><span class="UserLink"><a class="UserLink-link" target="_blank" href="">千金</a></span><span class="CommentItem-time">3 天前</span></div><div class="RichText ztext CommentItem-content"><p>其实最感动的不是千奇百怪的工厂，而是一家人在小破屋里互相扶持，以及旺卡回去一片雪白的故乡找他爸爸的时候。</p></div><div class="CommentItem-footer"><button type="button" class="Button CommentItem-likeBtn Button--plain"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>24</button><button type="button" class="Button CommentItem-hoverBtn Button--plain"><svg viewBox="0 0 22 16" class="Icon Icon--reply Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M21.96 13.22c-1.687-3.552-5.13-8.062-11.637-8.65-.54-.053-1.376-.436-1.376-1.56V.677c0-.52-.635-.915-1.116-.52L.47 6.67C.18 6.947 0 7.334 0 7.763c0 .376.14.722.37.987 0 0 6.99 6.818 7.442 7.114.453.295 1.136.124 1.135-.5V13c.027-.814.703-1.466 1.532-1.466 1.185-.14 7.596-.077 10.33 2.396 0 0 .395.257.535.257.892 0 .614-.967.614-.967z"></path></g></svg>回复</button></div></div></div>
+
+            var element_data='<div class="CommentItem" data-comment-id="'+comment_id+'" data-comment-author-name="'+comment_author_name+'"><div><div class="CommentItem-meta"><span class="UserLink CommentItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+comment_author_id+'"><img class="Avatar UserLink-avatar" width="24" height="24" src="'+comment_author_avatar+'" alt="'+comment_author_name+'"></a></span><span class="UserLink"><a class="UserLink-link" target="_blank" href="'+comment_author_id+'">'+comment_author_name+'</a></span><span class="CommentItem-time">'+comment_pub_date+'</span></div><div class="RichText ztext CommentItem-content">'+comment_content+'</div><div class="CommentItem-footer"><button type="button" class="Button CommentItem-likeBtn Button--plain"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+comment_like_nums+'</button><button type="button" class="Button CommentItem-hoverBtn Button--plain"><svg viewBox="0 0 22 16" class="Icon Icon--reply Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M21.96 13.22c-1.687-3.552-5.13-8.062-11.637-8.65-.54-.053-1.376-.436-1.376-1.56V.677c0-.52-.635-.915-1.116-.52L.47 6.67C.18 6.947 0 7.334 0 7.763c0 .376.14.722.37.987 0 0 6.99 6.818 7.442 7.114.453.295 1.136.124 1.135-.5V13c.027-.814.703-1.466 1.532-1.466 1.185-.14 7.596-.077 10.33 2.396 0 0 .395.257.535.257.892 0 .614-.967.614-.967z"></path></g></svg>回复</button></div></div></div>';
+            $(".CommentList").append(element_data);
+        }
+        else
+        {
+            var element_data='<div class="CommentItem" data-comment-id="'+comment_id+'" data-comment-author-name="'+comment_author_name+'"><div><div class="CommentItem-meta"><span class="UserLink CommentItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+comment_author_id+'"><img class="Avatar UserLink-avatar" width="24" height="24" src="'+comment_author_avatar+'" alt="'+comment_author_name+'"></a></span><span class="UserLink"><a class="UserLink-link" target="_blank" href="'+comment_author_id+'">'+comment_author_name+'</a></span><span class="CommentItem-time">'+comment_pub_date+'</span></div><div class="RichText ztext CommentItem-content">'+comment_content+'</div><div class="CommentItem-footer"><button type="button" class="Button CommentItem-likeBtn Button--plain"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+comment_like_nums+'</button><button type="button" class="Button CommentItem-hoverBtn Button--plain"><svg viewBox="0 0 22 16" class="Icon Icon--reply Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M21.96 13.22c-1.687-3.552-5.13-8.062-11.637-8.65-.54-.053-1.376-.436-1.376-1.56V.677c0-.52-.635-.915-1.116-.52L.47 6.67C.18 6.947 0 7.334 0 7.763c0 .376.14.722.37.987 0 0 6.99 6.818 7.442 7.114.453.295 1.136.124 1.135-.5V13c.027-.814.703-1.466 1.532-1.466 1.185-.14 7.596-.077 10.33 2.396 0 0 .395.257.535.257.892 0 .614-.967.614-.967z"></path></g></svg>回复</button></div></div></div>';
+            $(".CommentList").append(element_data);
+            $(".CommentItem").each(function(){
+                if($(this).attr("data-comment-id")==comment_parent_id)
+                {
+                    parent_element=$(this);
+                }
+                else if($(this).attr("data-comment-id")==comment_id)
+                {
+                    var current_element=$(this);
+                    var parent_element_innerhtml=parent_element[0].innerHTML;
+                    var temp_comment_id=parent_element.attr("data-comment-id");
+                    var temp_comment_author_name=parent_element.attr("data-comment-author-name");
+                    var parent_element_html='<div class="CommentItem CommentItem--border" data-comment-id="'+temp_comment_id+'" data-comment-author-name="'+temp_comment_author_name+'">'+parent_element_innerhtml+'</div>';
+                    current_element.find(".CommentItem-meta").after(parent_element_html);
+                }
+            });
+        }
+    }
+    
+    if(ret.length>10)
+        $(".CommentEditor--nouse--bottom").removeClass("is-hide");
+    
+    $(".CommentItem-hoverBtn").off("click");
+    $(".CommentItem-hoverBtn").on("click",function(){
+        console.log("comment-reply click");
+        $(".CommentItem-footer").removeClass("is-hide");
+        $(".CommentItem-editor").remove();
+        
+        var comment_element=$(this).closest(".CommentItem");
+        var comment_id=comment_element.attr("data-comment-id");
+        var comment_author_name=comment_element.attr("data-comment-author-name");
+        var commentItem_editor='<div class="CommentItem-editor CommentEditor--inCommentItem CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">回复'+comment_author_name+'</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><div class="CommentEditor-actions"><button type="button" class="Button Button-comment-cancle Button--plain">取消</button><button disabled="" type="button" class="Button Button-comment-send Button--primary Button--blue">评论</button></div></div>';
+        comment_element.append(commentItem_editor);
+        comment_element.find(".CommentItem-footer").addClass("is-hide");
+        checkComment();
+    });
+}
 
 function appendAnswerElementList(ret,type,direction)
 {
@@ -357,6 +418,8 @@ function appendAnswerElementList(ret,type,direction)
                 var author_mood=ret[i][8];
                 var answer_content=ret[i][9];
                 var answer_like_nums=ret[i][10];
+                var answer_comment_nums=ret[i][11];
+                var answer_pub_date=ret[i][12].split(".")[0];
             }
             else if("homepage"==type)
             {
@@ -369,6 +432,7 @@ function appendAnswerElementList(ret,type,direction)
                 var question_title=ret[i][2];
                 var answer_content=ret[i][3];
                 var answer_like_nums=ret[i][4];
+                var answer_comment_nums=ret[i][5];
             }
             var index_img_url=getIndexImg(answer_content);
             var question_title_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>';
@@ -382,7 +446,7 @@ function appendAnswerElementList(ret,type,direction)
                                 </div>\
                                 <div class="ContentItem-actions">\
                                     <span><button class="AnswerLike Button LikeButton 1ContentItem-action" type="button" data-answer-id="'+answer_id+'"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'</button></span>\
-                                    <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>696 条评论</button>\
+                                    <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>'+answer_comment_nums+' 条评论</button>\
                                     <div class="Popover ShareMenu ContentItem-action">\
                                         <div class="" aria-haspopup="true" aria-expanded="false">\
                                             <img class="ShareMenu-fakeQRCode" src="" alt="微信二维码">\
@@ -395,7 +459,7 @@ function appendAnswerElementList(ret,type,direction)
         
         
         var appendElement='<div class="List-item ScrollIntoMark">\
-        <div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'">\
+        <div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'">\
         '+question_title_element+'\
         <div class="ContentItem-meta">\
         <div class="AnswerItem-meta AnswerItem-meta--related">\
@@ -434,6 +498,8 @@ function appendAnswerElementCard(ret,type,direction)
         var author_mood=ret[i][8];
         var answer_content=ret[i][9];
         var answer_like_nums=ret[i][10];
+        var answer_comment_nums=ret[i][11];
+        var answer_pub_date=ret[i][12].split(".")[0];
         if("has_topic_question_title"==type)
         {   
             var topic_element='<div class="Feed-title"><div class="Feed-meta"><span class="Feed-meta-item">来自话题:<span><a href="/topic/'+topic_id+'/" class="TopicPopover" data-topic-id="'+topic_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+topic_name+'</a></div></div>';
@@ -458,14 +524,14 @@ function appendAnswerElementCard(ret,type,direction)
                                         <div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div>\
                                     </div>\
                                 </div>\
-                                <div class="ContentItem AnswerItem">\
+                                <div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'">\
                                     '+question_element+'\
                                     <div class="RichContent is-collapsed">\
                                         <div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'">\
                                             <div class="RichContent-cover"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div></div>\
                                             <div class="RichContent-inner"><span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span></div>\
                                         </div>\
-                                        <div class="ContentItem-actions"><span><button class="AnswerLike Button LikeButton ContentItem-action" type="button" data-answer-id="'+answer_id+'"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'</button></span></div>\
+                                        <div class="ContentItem-actions"><span><button class="AnswerLike Button LikeButton ContentItem-action" type="button" data-answer-id="'+answer_id+'"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'</button></span>                                    <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>'+answer_comment_nums+' 条评论</button></div>\
                                     </div>\
                         </div></div>\
                     </div>';
@@ -2054,6 +2120,202 @@ function checkSelectOption()
         })
     });
 }
+
+
+function checkComment()
+{
+    var commpent_text="";
+    var input_lock="false";
+    $(".Button-comment-send.CommentEditor-singleButton").attr("disabled","");
+    $(".Comments-footer").find(".public-DraftEditorPlaceholder-inner").removeClass("is-hide");
+    $(".Comments-footer").find(".public-DraftEditor-content").empty();
+    
+    $(".Button-comment-send").off("mousedown");
+    $(".Button-comment-send").on("mousedown",function(){
+        console.log("mousedown");
+        var parent_comment_id=$(this).closest(".CommentItem").attr("data-comment-id");
+        if("article"==g_module)
+        {
+            var c_type="article";
+            var a_id=g_article_id;
+        }
+        else
+        {
+            var c_type="answer";
+            var a_id=$(this).parents(".ContentItem.AnswerItem").attr("data-answer-id");
+        }
+        if (typeof(parent_comment_id) == "undefined")
+        {
+            parent_comment_id=0;
+        }
+        console.log(a_id);
+        console.log(parent_comment_id);
+        var post_data={c_type:c_type,a_id:a_id,c_content:commpent_text,parent_comment_id:parent_comment_id};
+        $.post("/ajax/comment/",post_data,function(ret){
+            if("fail"!=ret)
+            {
+                console.log("comment success");
+                appendCommentsElement(ret);
+            }
+        });
+        
+        $(this).attr("disabled","");
+        $(this).parents(".Comments-footer").find(".public-DraftEditorPlaceholder-inner").removeClass("is-hide");
+        $(this).parents(".Comments-footer").find(".public-DraftEditor-content").empty();
+        
+        $(this).closest(".CommentItem").find(".CommentItem-footer").removeClass("is-hide");
+        $(this).closest(".CommentItem-editor").remove();
+    });
+    
+    $(".Button-comment-cancle").off("mousedown");
+    $(".Button-comment-cancle").on("mousedown",function(){
+        console.log("mousedown");
+        $(this).closest(".CommentItem").find(".CommentItem-footer").removeClass("is-hide");
+        $(this).closest(".CommentItem-editor").remove();
+    });
+    
+    $(".public-DraftEditor-content").off("click");
+    $(".public-DraftEditor-content").on("click",function(){
+        $(this).parents(".CommentEditor--nouse").addClass("CommentEditor--active");
+        $(this).parents(".CommentEditor-input").addClass("is-focus");
+        $(this).parents(".Input.Editable").addClass("Editable--focus");
+    });
+    
+    $(".public-DraftEditor-content").off("keyup");
+    $(".public-DraftEditor-content").on("keyup",function(){
+        $(this).parents(".DraftEditor-root").find(".public-DraftEditorPlaceholder-inner").addClass("is-hide");
+        if("false"==input_lock)
+        {
+            commpent_text=$(this).text();
+            console.log(commpent_text);
+            if(""!=commpent_text)
+            {
+                $(this).parents(".CommentEditor--nouse").find(".Button-comment-send").removeAttr("disabled");
+            }
+            else
+            {
+                $(this).parents(".CommentEditor--nouse").find(".Button-comment-send").attr("disabled","");
+            }
+        }
+    });
+    
+    $(".public-DraftEditor-content").off("compositionstart");
+    $(".public-DraftEditor-content").on("compositionstart",function(e){
+        input_lock="true";
+    });
+    
+    $(".public-DraftEditor-content").off("compositionend");
+    $(".public-DraftEditor-content").on("compositionend",function(e){
+        input_lock="false";
+        //$(".public-DraftEditor-content").trigger("keyup");
+    });
+    
+    $(".public-DraftEditor-content").off("blur");
+    $(".public-DraftEditor-content").on("blur",function(){
+        console.log("blur");
+        $(this).parents(".CommentEditor--nouse").removeClass("CommentEditor--active");
+        $(this).parents(".CommentEditor-input").removeClass("is-focus");
+        $(this).parents(".Input.Editable").removeClass("Editable--focus");
+        input_lock="false";
+    });
+    
+    $(".Comments-Packup-Button").off("click");
+    $(".Comments-Packup-Button").on("click",function(){
+        var parent_element=$(this).parents(".ContentItem.AnswerItem");
+        parent_element.find(".Comments-container").remove();
+        var answer_comment_nums=parent_element.attr("data-comment-nums");
+        var icon_element=parent_element.find(".Zi--Comment.Button-zi").closest("span");
+        parent_element.find(".Zi--Comment.Button-zi").closest("button").empty().append(icon_element).children("span").after(answer_comment_nums+" 条评论");
+        $(this).closest("span").remove();
+    });
+
+}
+
+function checkInteractionButton()
+{
+    $(".Zi--Comment.Button-zi").closest("button").off("click");
+    $(".Zi--Comment.Button-zi").closest("button").on("click",function(){
+        
+        if("article"==g_module)
+        {
+                console.log("scroll into comment");
+                document.getElementsByClassName("CommentList")[0].scrollIntoView();
+        }
+        else
+        {
+            var parent_element=$(this).parents(".ContentItem.AnswerItem");
+            if(parent_element.find(".Comments-container").length>0)
+            {
+                parent_element.find(".Comments-container").remove();
+                var answer_comment_nums=parent_element.attr("data-comment-nums");
+                var icon_element=$(this).children("span");
+                $(this).empty().append(icon_element).children("span").after(answer_comment_nums+" 条评论");
+                parent_element.find(".Comments-Packup-Button").closest("span").remove();
+            }
+            else
+            {
+                var answer_comment_nums=parent_element.attr("data-comment-nums");
+                var comment_list_element='<div class="Comments-container"><div class="Comments Comments--withEditor Comments-withPagination"><div class="Topbar CommentTopbar"><div class="Topbar-title"><h2 class="CommentTopbar-title">'+answer_comment_nums+' 条评论</h2></div><div class="Topbar-options"><button type="button" class="Button Button--plain Button--withIcon Button--withLabel"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Switch Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M13.004 7V4.232c0-.405.35-.733.781-.733.183 0 .36.06.501.17l6.437 5.033c.331.26.376.722.1 1.033a.803.803 0 0 1-.601.264H2.75a.75.75 0 0 1-.75-.75V7.75A.75.75 0 0 1 2.75 7h10.254zm-1.997 9.999v2.768c0 .405-.35.733-.782.733a.814.814 0 0 1-.5-.17l-6.437-5.034a.702.702 0 0 1-.1-1.032.803.803 0 0 1 .6-.264H21.25a.75.75 0 0 1 .75.75v1.499a.75.75 0 0 1-.75.75H11.007z" fill-rule="evenodd"></path></svg></span>切换为时间排序</button></div></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--blue">评论</button></div><div class="CommentList"></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse CommentEditor--nouse--bottom is-hide"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--blue">评论</button></div></div></div>';
+                parent_element.append(comment_list_element);
+                var answer_id=parent_element.attr("data-answer-id");
+                var type="answer";
+                getComments(type,answer_id);
+                var icon_element=$(this).children("span");
+                $(this).empty().append(icon_element).children("span").after("收起评论");
+                
+                
+                var packup_button_element='<span><button class="Comments-Packup-Button" style="left: 673px;">收起评论<svg viewBox="0 0 10 6" class="Icon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button></span>';
+                parent_element.append(packup_button_element);
+                checkComment();
+            }
+        }
+    });
+}
+function checkWrite()
+{
+    var title="";
+    var select_topic=[];
+    var content="";
+    function checkWriteValid()
+    {
+        if((""!=title)&&(select_topic.length>0)&&(content.length>=10))
+        {
+            $(".WritePost").removeAttr("disabled");
+        }
+        else
+        {
+            $(".WritePost").attr("disabled","");
+        }
+    }
+    function checkWriteTitle()
+    {
+        $(".WriteIndex-titleInput .Input").on("input",function(){
+            title=$("input[name='writeTitle']").val();
+            checkWriteValid();
+        });
+    }
+    function checkWriteSelect()
+    {
+        $('.selectpicker').on('changed.bs.select',function(e){
+            select_topic=$('.selectpicker').val();
+            console.log(select_topic.length);
+            checkWriteValid();
+        });
+    }
+    function checkWriteContent()
+    {
+        $('#summernote_write').on('summernote.change', function(we, contents, $editable) {
+            content=contents.replace("<p><br></p>","").replace("<p>","").replace("</p>","");
+            checkWriteValid();
+        });
+    }
+    $(".WritePost").click(function(){
+        console.log("post click");
+    });
+    checkWriteTitle();
+    checkWriteSelect();
+    checkWriteContent();
+}
 function checkSets()
 {
     checkFollow();
@@ -2062,9 +2324,20 @@ function checkSets()
     checkContentCollapse();
     checkPopoverShow();
     checkAnswerLike();
+    checkInteractionButton();
     //checkExpandBtn();
 }
-
+function getComments(type,id)
+{
+    var post_data={c_type:type,a_id:id};
+    $.post("/ajax/get_comments/",post_data,function(ret){
+        if("fail"!=ret)
+        {
+            console.log("get comments success");
+            appendCommentsElement(ret);
+        }
+    });
+}
 function getMoreData()
 {
     if($(".List-item.NoMoreData").length>0)
@@ -2520,6 +2793,38 @@ function initElement()
         
         $(".Comment--nums--nouse").empty().text(g_article_comment_nums);
         $(".Article--likenums--nouse").empty().text(g_article_like_nums);
+        
+        checkInteractionButton();
+        getComments("article",g_article_id);
+        checkComment();
+    }
+    else if("write"==g_module)
+    {
+        $('#summernote_write').summernote({
+            toolbar: [
+            // [groupName, [list of button]]
+            ['style', ['bold', 'italic', 'underline']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['para', ['paragraph']],
+            ['table', ['table']],
+            ['link', ['link']],
+            ['picture', ['picture']],
+            ['video', ['video']]
+            ],
+            height:null,
+            minHeight:500,
+            lang:'zh-CN',
+            placeholder:'请输入文章内容(至少100字)',
+            disableDragAndDrop:true,
+            callbacks: {
+                onImageUpload: function(files){
+                    scaleAndUploadImage("forWrite",files[0],720);
+                }
+            }
+        });
+        $(".note-statusbar").addClass("is-hide");
+        checkWrite();
     }
 }
 function initData()
@@ -2641,6 +2946,7 @@ function initCommon()
     notifications="null";
     messages="null";
     g_last_getmoredata_index=0;
+    g_sticky_show="false";
     $('#summernote_question').summernote({
         toolbar: [
         // [groupName, [list of button]]
@@ -2710,19 +3016,39 @@ $(document).click(function(e) {
     $("#searchInput").popover("hide");
 });
 window.onscroll = function (){ 
-//console.log(getScrollTop());
-//console.log(getClientHeight());
-//console.log(getScrollHeight());
-if (getScrollTop() + getClientHeight() +10 >= getScrollHeight()) {
-        if("true"==g_init_done)
-            getMoreData();
+    if("false"==g_init_done)
+        return;
+    if("article"==g_module)
+    {
+        if($(window).scrollTop()+$(window).height()>$(".Recommendations-Main").offset().top)
+        {
+            if("true"==g_sticky_show)
+            {
+                $(".Sticky.RichContent-actions").removeClass("is-fixed").attr("style","");
+                $(".Sticky--holder").remove();
+                 g_sticky_show="false";
+            }
+        }
+        else
+        {
+            if("false"==g_sticky_show)
+            {
+                $(".Sticky.RichContent-actions").addClass("is-fixed").attr("style","width: 690px; bottom: 0px; left: auto;");
+                $(".Sticky--holder").remove();
+                $(".RichContent-actions-nouse").after('<div class="Sticky--holder" style="position: static; top: auto; right: auto; bottom: 0px; left: 0px; display: block; float: none; margin: 0px 0px 10px; height: 54px;"></div>');
+                g_sticky_show="true";
+            }
+        }
     }
+    
+    if (getScrollTop() + getClientHeight() +10 >= getScrollHeight()) {
+                getMoreData();
+        }
 } 
 SITE="知乎";
 STEP=10;
 g_lock_ajax="false";
 g_init_done="false";
-g_sticky_show="false";
 ENABLE_SCREEN_LOG="true";//"false"
 
 function hashChange()

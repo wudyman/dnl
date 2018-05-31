@@ -301,7 +301,8 @@ def get_er_all(request,erid,command):
                 temp.append(answer.question.id)#1
                 temp.append(answer.question.title)#2
                 temp.append(answer.content)#3
-                temp.append(answer.like_nums)#4                
+                temp.append(answer.like_nums)#4
+                temp.append(answer.comment_nums)#5                
                 temp_list.append(temp)
             to_json=json.dumps(temp_list)
     elif 'asks'==command:
