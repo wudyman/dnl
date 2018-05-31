@@ -3,13 +3,9 @@
 {% include 'question/head.html' %}
 <body class="Entry-body">
 {% include 'question/header.html' %}
-
-<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 3px;">
-</div>
-
-
 <!--------------------main---------------------->
 <main role="main" class="App-main" data-module="write" data-dfs-main='{}'>
+<div class="Layout av-cardBackground">
 <div class="Layout-main av-card">
 <form method="post" action="/write/">
 {% csrf_token %}
@@ -81,7 +77,8 @@
 </div>
 -->
 </form>
-</div>       
+</div>
+</div>    
 </main>
 <!--------------------main end-------------------->
 
