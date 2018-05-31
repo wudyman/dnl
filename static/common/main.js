@@ -2525,15 +2525,27 @@ function initElement()
         $(".QuestionHeader-title").append('<a href="/question/'+g_question_id+'">'+g_question_title+'</a>');
         if("true"==g_question_followed)
         {
-            $(".FollowButton").removeClass("Button--blue").addClass("Button--grey").attr("data-question-id",g_question_id).attr("data-followed","true").text("已关注");
+            $(".QuestionButtonGroup .FollowButton").removeClass("Button--blue").addClass("Button--grey").attr("data-question-id",g_question_id).attr("data-followed","true").text("已关注");
         }
         else
         {
-            $(".FollowButton").removeClass("Button--grey").addClass("Button--blue").attr("data-question-id",g_question_id).attr("data-followed","false").text("关注问题");
+            $(".QuestionButtonGroup .FollowButton").removeClass("Button--grey").addClass("Button--blue").attr("data-question-id",g_question_id).attr("data-followed","false").text("关注问题");
         }
         
+        var g_question_detail_scale_imge=addClassImg(g_question_detail,'class="origin_image"');
+        $(".QuestionHeader-detail .RichText").html(g_question_detail_scale_imge);
+        
         var g_push_answer_content_scale_imge=addClassImg(g_push_answer_content,'class="origin_image"');
-        $(".RichText.CopyrightRichText-richText").html(g_push_answer_content_scale_imge);
+        $(".ContentItem.AnswerItem .RichText.CopyrightRichText-richText").html(g_push_answer_content_scale_imge);
+        
+        $(".AnswerToolbar .AuthorInfo-avatar").attr("src",g_user_avatar).attr("alt",g_user_name);
+        $(".AnswerToolbar .AuthorInfo-name").empty().text(g_user_name);
+        $(".AnswerCard .ContentItem.AnswerItem").attr("data-answer-id",g_push_answer_id).attr("data-comment-nums",g_push_answer_comment_nums);
+        $(".AnswerCard .AuthorInfo-avatarWrapper .UserLink-link").attr("href","/er/"+g_author_id).attr("data-author-id",g_author_id).children("img").attr("alt",g_author_name).attr("src",g_author_avatar);
+        $(".AnswerCard .AuthorInfo-name .UserLink-link").attr("href","/er/"+g_author_id).empty().text(g_author_name);
+        $(".AnswerCard .Voters").children("button").empty().text(g_push_answer_like_nums+" 人赞同了该回答");
+        $(".QuestionMainAction").attr("href","/question/"+g_question_id).empty().text("查看全部 "+g_question_answer_nums+" 个回答");
+        $(".List-headerText").empty().text("全部 "+g_question_answer_nums+" 个回答");
         appendAuthorCard();
     }
     else if("topic"==g_module)
@@ -2846,10 +2858,12 @@ function initData()
     {
         g_question_id=main_data.question_id;
         g_question_title=main_data.question_title;
+        g_question_detail=$("main").attr("data-question-detail");
         g_question_answer_nums=main_data.question_answer_nums;
         g_question_followed=main_data.question_followed;
         g_push_answer_id=main_data.answer_id;
         g_push_answer_like_nums=main_data.answer_like_nums;
+        g_push_answer_comment_nums=main_data.answer_comment_nums;
         g_push_answer_content=$("main").attr("data-answer-content");
         g_author_id=main_data.author_id;
         g_author_name=main_data.author_name;

@@ -951,7 +951,15 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
     position: relative;
 }
 .CommentItem.CommentItem--border{border: 1px solid #ddd;background-color:#f6f6f6;}
-/****************************/
+/************for question page****************/
+.MobileQuestionButtonGroup .Button {
+    margin-right: 10px;
+}
+
+.QuestionHeader .Topic {
+    padding-bottom: 0px !important;
+    margin-bottom: 10px;
+}
 
 
 
