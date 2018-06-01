@@ -241,26 +241,35 @@ def get_question_answers(request,question_id,order,start,end):
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
-def like_answer(request,answer_id):
+def like(request):
     to_json=json.dumps('fail')
-    user=request.user #get_object_or_404(User,username=request.user)
-    #if user.is_authenticated:
-    answer=get_object_or_404(Answer,pk=answer_id)
-    if answer:
-        temp=answer.like_nums
-        anwer_like_id='al'+str(answer.id)
-        if anwer_like_id in request.COOKIES:
-            if time.time()-float(request.COOKIES[anwer_like_id])>864000: #24*60*60=864000
-                answer.like_nums+=1
-        else:
-            answer.like_nums+=1   
-        to_json=json.dumps(answer.like_nums)
-    response=HttpResponse(to_json,content_type='application/json')
-
-    if temp!=answer.like_nums:
-        response.set_cookie(anwer_like_id,time.time(),max_age=864000) #24*60*60=864000
-        answer.save()
-    return response
+    likeType=request.POST.get('l_type')
+    lId=request.POST.get('l_id')
+    if("article"==likeType):
+        article=get_object_or_404(Article,pk=lId)
+        if article:
+            article.like_nums+=1
+            article.save()
+            to_json=json.dumps(article.like_nums)
+    elif("answer"==likeType):
+        answer=get_object_or_404(Answer,pk=lId)
+        if answer:
+            answer.like_nums+=1
+            answer.save()
+            to_json=json.dumps(answer.like_nums)
+    elif("comment_answer"==likeType):
+        comment=get_object_or_404(AnswerComment,pk=lId)
+        if comment:
+            comment.like_nums+=1
+            comment.save()
+            to_json=json.dumps(comment.like_nums)
+    elif("comment_article"==likeType):
+        comment=get_object_or_404(ArticleComment,pk=lId)
+        if comment:
+            comment.like_nums+=1
+            comment.save()
+            to_json=json.dumps(comment.like_nums)
+    return HttpResponse(to_json,content_type='application/json')
 
 @csrf_exempt
 def get_erinfo(request,erid):
