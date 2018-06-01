@@ -4,28 +4,28 @@
 <body class="">
 {% include 'question/header.html' %}
 <div class="LoadingBar"></div>
-<main role="main" class="App-main" data-module="article" data-article-content="{{article.content}}" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","article_id":"{{article.id}}","article_like_nums":"{{article.like_nums}}","article_comment_nums":"{{article.comment_nums}}","article_pub_date":"{{article_pub_date}}","followed":"{{followed}}","er_id":"{{article.author.id}}","er_sexual":"{{article.author.userprofile.sexual}}"}'>
+<main role="main" class="App-main" data-module="article" data-article-content="{{article.content}}" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","article_id":"{{article.id}}","article_title":"{{article.title}}","article_like_nums":"{{article.like_nums}}","article_comment_nums":"{{article.comment_nums}}","article_pub_date":"{{article_pub_date}}","followed":"{{followed}}","author_id":"{{article.author.id}}","author_name":"{{article.author.first_name}}","author_avatar":"{{article.author.userprofile.avatar}}","author_mood":"{{article.author.userprofile.mood}}","author_sexual":"{{article.author.userprofile.sexual}}"}'>
 
 <div class="Post-content">
 <!--<img class="TitleImage" src="https://pic4.zhimg.com/v2-5368965cefafe9e71d2c26705e780dc4_1200x500.jpg" alt="“上帝”摩根弗里曼一夜间变性骚扰臭老头">-->
 <article class="Post-Main Post-NormalMain">
 
 <header class="Post-Header">
-<h1 class="Post-Title">{{article.title}}</h1>
+<h1 class="Post-Title"></h1>
 <div class="Post-Author">
 <div class="AuthorInfo">
 <span class="UserLink AuthorInfo-avatarWrapper">
-<a class="UserLink-link PeoplePopover" target="_blank" href="" data-author-id="" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">
-<img class="Avatar Avatar--round AuthorInfo-avatar" width="38" height="38" src="{{article.author.userprofile.avatar}}" alt="{{article.author.first_name}}">
+<a class="UserLink-link PeoplePopover" target="_blank" href="" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">
+<img class="Avatar Avatar--round AuthorInfo-avatar" width="38" height="38" src="" alt="">
 </a>
 </span>
 <div class="AuthorInfo-content">
 <div class="AuthorInfo-head">
 <span class="UserLink AuthorInfo-name">
-<a class="UserLink-link 1PeoplePopover" target="_blank" href="" data-author-id="" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">{{article.author.first_name}}</a>
+<a class="UserLink-link 1PeoplePopover" target="_blank" href="" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"></a>
 </span>
 </div>
-<div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText ztext AuthorInfo-badgeText">{{article.author.userprofile.mood}}</div></div></div>
+<div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText ztext AuthorInfo-badgeText"></div></div></div>
 </div>
 </div>
 <button type="button" class="Button FollowButton Button--primary is-hide" data-follow-type="people"><span></span></button>
@@ -60,7 +60,7 @@
 
 <div>
 <!--<div class="Sticky RichContent-actions is-bottom" style=""><div class="ContentItem-actions"><button type="button" class="Button LikeButton ContentItem-action"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like" style="height:16px;width:13px" width="13" height="16" aria-hidden="true"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg><span class="Article--likenums--nouse"></span></button><button type="button" class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel"><span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span><span class="Comment--nums--nouse"></span> 条评论</button><div class="Popover ShareMenu ContentItem-action"><div class="" id="Popover-67766-14575-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-67766-14575-content"><img class="ShareMenu-fakeQRCode" src="https://www.zhihu.com/qrcode?url=https%3A%2F%2Fzhuanlan.zhihu.com%2Fp%2F37320311%23showWechatShareTip" alt="微信二维码"><button type="button" class="Button Button--plain Button--withIcon Button--withLabel"><span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button></div></div></div></div>-->
-<div class="Sticky RichContent-actions is-bottom" style=""><div class="ContentItem-actions"><button type="button" class="Button LikeButton ContentItem-action"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like" style="height:16px;width:13px" width="13" height="16" aria-hidden="true"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg><span class="Article--likenums--nouse"></span></button><button type="button" class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel"><span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span><span class="Comment--nums--nouse"></span> 条评论</button><div class="Popover ShareMenu ContentItem-action"><div class="" id="Popover-83863-14084-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-83863-14084-content"><button type="button" class="Button Button--plain Button--withIcon Button--withLabel"><span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button></div></div></div></div>
+<div class="Sticky RichContent-actions is-bottom" style=""><div class="ContentItem-actions"><button type="button" class="Button-like-nouse Button Button--plain" data-like-type="article" data-like-id=""><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like" style="height:16px;width:13px" width="13" height="16" aria-hidden="true"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg><span class="Article--likenums--nouse"></span></button><button type="button" class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel"><span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span><span class="Comment--nums--nouse"></span> 条评论</button><div class="Popover ShareMenu ContentItem-action"><div class="" id="Popover-83863-14084-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-83863-14084-content"><button type="button" class="Button Button--plain Button--withIcon Button--withLabel"><span style="display:inline-flex;align-items:center">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button></div></div></div></div>
 </div>
 <div class="RichContent-actions-anchor"></div>
 <div class="Recommendations-Main" style="width: auto">
@@ -114,204 +114,5 @@
 
 </main>
 
-<script>
-/*
-function checkComment()
-{
-    var commpent_text="";
-    var input_lock="false";
-    $(".Button-comment-send.CommentEditor-singleButton").attr("disabled","");
-    $(".Comments-footer").find(".public-DraftEditorPlaceholder-inner").removeClass("is-hide");
-    $(".Comments-footer").find(".public-DraftEditor-content").empty();
-    
-    $(".Button-comment-send").off("mousedown");
-    $(".Button-comment-send").on("mousedown",function(){
-        console.log("mousedown");
-        var parent_comment_id=$(this).closest(".CommentItem").attr("data-comment-id");
-        if (typeof(parent_comment_id) == "undefined")
-        {
-            parent_comment_id=0;
-        }
-        console.log(parent_comment_id);
-        var post_data={c_type:"article",a_id:g_article_id,c_content:commpent_text,parent_comment_id:parent_comment_id};
-        $.post("/ajax/comment/",post_data,function(ret){
-            if("fail"!=ret)
-            {
-                console.log("comment success");
-                appendCommentsElement(ret);
-            }
-        });
-        
-        $(this).attr("disabled","");
-        $(this).parents(".Comments-footer").find(".public-DraftEditorPlaceholder-inner").removeClass("is-hide");
-        $(this).parents(".Comments-footer").find(".public-DraftEditor-content").empty();
-        
-        $(this).closest(".CommentItem").find(".CommentItem-footer").removeClass("is-hide");
-        $(this).closest(".CommentItem-editor").remove();
-    });
-    
-    $(".Button-comment-cancle").off("mousedown");
-    $(".Button-comment-cancle").on("mousedown",function(){
-        console.log("mousedown");
-        $(this).closest(".CommentItem").find(".CommentItem-footer").removeClass("is-hide");
-        $(this).closest(".CommentItem-editor").remove();
-    });
-    
-    $(".public-DraftEditor-content").off("click");
-    $(".public-DraftEditor-content").on("click",function(){
-        $(this).parents(".CommentEditor--nouse").addClass("CommentEditor--active");
-        $(this).parents(".CommentEditor-input").addClass("is-focus");
-        $(this).parents(".Input.Editable").addClass("Editable--focus");
-    });
-    
-    $(".public-DraftEditor-content").off("keyup");
-    $(".public-DraftEditor-content").on("keyup",function(){
-        $(this).parents(".DraftEditor-root").find(".public-DraftEditorPlaceholder-inner").addClass("is-hide");
-        if("false"==input_lock)
-        {
-            commpent_text=$(this).text();
-            console.log(commpent_text);
-            if(""!=commpent_text)
-            {
-                $(this).parents(".CommentEditor--nouse").find(".Button-comment-send").removeAttr("disabled");
-            }
-            else
-            {
-                $(this).parents(".CommentEditor--nouse").find(".Button-comment-send").attr("disabled","");
-            }
-        }
-    });
-    
-    $(".public-DraftEditor-content").off("compositionstart");
-    $(".public-DraftEditor-content").on("compositionstart",function(e){
-        input_lock="true";
-    });
-    
-    $(".public-DraftEditor-content").off("compositionend");
-    $(".public-DraftEditor-content").on("compositionend",function(e){
-        input_lock="false";
-        //$(".public-DraftEditor-content").trigger("keyup");
-    });
-    
-    $(".public-DraftEditor-content").off("blur");
-    $(".public-DraftEditor-content").on("blur",function(){
-        console.log("blur");
-        $(this).parents(".CommentEditor--nouse").removeClass("CommentEditor--active");
-        $(this).parents(".CommentEditor-input").removeClass("is-focus");
-        $(this).parents(".Input.Editable").removeClass("Editable--focus");
-        input_lock="false";
-    });
-    
-    $(".Zi--Comment.Button-zi").closest("button").off("click");
-    $(".Zi--Comment.Button-zi").closest("button").on("click",function(){
-        console.log("scroll into comment");
-        document.getElementsByClassName("CommentList")[0].scrollIntoView();
-    });
-
-}
-
-function appendCommentsElement(ret)
-{
-    for( var i in ret)
-    {
-        var comment_id=ret[i][0];
-        var comment_content=ret[i][1];
-        var comment_like_nums=ret[i][2];
-        var comment_parent_id=ret[i][3];
-        var comment_pub_date=ret[i][4].split(".")[0];
-        var comment_author_id=ret[i][5];
-        var comment_author_name=ret[i][6];
-        var comment_author_avatar=ret[i][7];
-        var comment_author_mood=ret[i][8];
-        
-        if(0==comment_parent_id)
-        {
-            var element_data='<div class="CommentItem" data-comment-id="'+comment_id+'" data-comment-author-name="'+comment_author_name+'"><div><div class="CommentItem-meta"><span class="UserLink CommentItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+comment_author_id+'"><img class="Avatar UserLink-avatar" width="24" height="24" src="'+comment_author_avatar+'" alt="'+comment_author_name+'"></a></span><span class="UserLink"><a class="UserLink-link" target="_blank" href="'+comment_author_id+'">'+comment_author_name+'</a></span><span class="CommentItem-time">'+comment_pub_date+'</span></div><div class="RichText ztext CommentItem-content">'+comment_content+'</div><div class="CommentItem-footer"><button type="button" class="Button CommentItem-likeBtn Button--plain"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+comment_like_nums+'</button><button type="button" class="Button CommentItem-hoverBtn Button--plain"><svg viewBox="0 0 22 16" class="Icon Icon--reply Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M21.96 13.22c-1.687-3.552-5.13-8.062-11.637-8.65-.54-.053-1.376-.436-1.376-1.56V.677c0-.52-.635-.915-1.116-.52L.47 6.67C.18 6.947 0 7.334 0 7.763c0 .376.14.722.37.987 0 0 6.99 6.818 7.442 7.114.453.295 1.136.124 1.135-.5V13c.027-.814.703-1.466 1.532-1.466 1.185-.14 7.596-.077 10.33 2.396 0 0 .395.257.535.257.892 0 .614-.967.614-.967z"></path></g></svg>回复</button></div></div></div>';
-            $(".CommentList").append(element_data);
-        }
-        else
-        {
-            var element_data='<div class="CommentItem" data-comment-id="'+comment_id+'" data-comment-author-name="'+comment_author_name+'"><div><div class="CommentItem-meta"><span class="UserLink CommentItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+comment_author_id+'"><img class="Avatar UserLink-avatar" width="24" height="24" src="'+comment_author_avatar+'" alt="'+comment_author_name+'"></a></span><span class="UserLink"><a class="UserLink-link" target="_blank" href="'+comment_author_id+'">'+comment_author_name+'</a></span><span class="CommentItem-time">'+comment_pub_date+'</span></div><div class="RichText ztext CommentItem-content">'+comment_content+'</div><div class="CommentItem-footer"><button type="button" class="Button CommentItem-likeBtn Button--plain"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+comment_like_nums+'</button><button type="button" class="Button CommentItem-hoverBtn Button--plain"><svg viewBox="0 0 22 16" class="Icon Icon--reply Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M21.96 13.22c-1.687-3.552-5.13-8.062-11.637-8.65-.54-.053-1.376-.436-1.376-1.56V.677c0-.52-.635-.915-1.116-.52L.47 6.67C.18 6.947 0 7.334 0 7.763c0 .376.14.722.37.987 0 0 6.99 6.818 7.442 7.114.453.295 1.136.124 1.135-.5V13c.027-.814.703-1.466 1.532-1.466 1.185-.14 7.596-.077 10.33 2.396 0 0 .395.257.535.257.892 0 .614-.967.614-.967z"></path></g></svg>回复</button></div></div></div>';
-            $(".CommentList").append(element_data);
-            $(".CommentItem").each(function(){
-                if($(this).attr("data-comment-id")==comment_parent_id)
-                {
-                    parent_element=$(this);
-                }
-                else if($(this).attr("data-comment-id")==comment_id)
-                {
-                    var current_element=$(this);
-                    //var parent_element_clone=jQuery.extend(true, {}, parent_element);
-                    //parent_element.addClass("CommentItem--border");
-                    var parent_element_innerhtml=parent_element[0].innerHTML;
-                    //var parent_element_html=parent_element[0].outerHTML;
-                    var temp_comment_id=parent_element.attr("data-comment-id");
-                    var temp_comment_author_name=parent_element.attr("data-comment-author-name");
-                    var parent_element_html='<div class="CommentItem CommentItem--border" data-comment-id="'+temp_comment_id+'" data-comment-author-name="'+temp_comment_author_name+'">'+parent_element_innerhtml+'</div>';
-                    current_element.find(".CommentItem-meta").after(parent_element_html);
-                    //parent_element.removeClass("CommentItem--border");
-                }
-            });
-        }
-    }
-    
-    if(ret.length>10)
-        $(".CommentEditor--nouse--bottom").removeClass("is-hide");
-    
-    $(".CommentItem-hoverBtn").off("click");
-    $(".CommentItem-hoverBtn").on("click",function(){
-        console.log("comment-reply click");
-        $(".CommentItem-footer").removeClass("is-hide");
-        $(".CommentItem-editor").remove();
-        
-        var comment_element=$(this).closest(".CommentItem");
-        var comment_id=comment_element.attr("data-comment-id");
-        var comment_author_name=comment_element.attr("data-comment-author-name");
-        var commentItem_editor='<div class="CommentItem-editor CommentEditor--inCommentItem CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">回复'+comment_author_name+'</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><div class="CommentEditor-actions"><button type="button" class="Button Button-comment-cancle Button--plain">取消</button><button disabled="" type="button" class="Button Button-comment-send Button--primary Button--blue">评论</button></div></div>';
-        comment_element.append(commentItem_editor);
-        comment_element.find(".CommentItem-footer").addClass("is-hide");
-        checkComment();
-    });
-}
-function getComments()
-{
-    var post_data={c_type:"article",a_id:g_article_id};
-    $.post("/ajax/get_comments/",post_data,function(ret){
-        if("fail"!=ret)
-        {
-            console.log("get comments success");
-            appendCommentsElement(ret);
-        }
-    });
-}
-$(function()
-{
-    getComments();
-    checkComment();
-});
-
-window.onscroll = function (){
-    if($(window).scrollTop()+$(window).height()>$(".Recommendations-Main").offset().top)
-    {
-        if("true"==g_sticky_show)
-        {
-            $(".Sticky.RichContent-actions").removeClass("is-fixed").attr("style","");
-            $(".Sticky--holder").remove();
-             g_sticky_show="false";
-        }
-    }
-    else
-    {
-        if("false"==g_sticky_show)
-        {
-            $(".Sticky.RichContent-actions").addClass("is-fixed").attr("style","width: 690px; bottom: 0px; left: auto;");
-            $(".Sticky--holder").remove();
-            $(".RichContent-actions-nouse").after('<div class="Sticky--holder" style="position: static; top: auto; right: auto; bottom: 0px; left: 0px; display: block; float: none; margin: 0px 0px 10px; height: 54px;"></div>');
-            g_sticky_show="true";
-        }
-    }
-} 
-*/
-</script>
 </body>
 </html>
