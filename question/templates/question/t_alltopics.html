@@ -8,26 +8,6 @@
 
 <!--------------------main---------------------->
 <main role="main" class="App-main" data-module="alltopics" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}"}'>
-
-<!--
-<div class="AppHeader">
-<div class="container">
-<div class="row">
-<div class="1col-md-offset-1 col-md-7">
-
-<div class="zm-topic-cat-sub">
-<div class="zh-general-list clearfix"  style="display: block;">
-<div id="appendArea">
-</div>
-
-</div>
-</div>
-
-</div>
-</div>
-</div>
-</div>
--->
 <div class="ContentLayout">
 <div class="ContentLayout-mainColumn">
 <div class="1Card">
@@ -47,106 +27,7 @@
 <!-- letter（Modal） -->
 <!-- append by js -->
 <!-- letter（Modal） -->
-<script>
-/*
-function followTopics()
-{
-    $("a[name='follow']").off("click");
-    $("a[name='follow']").on("click",function(){
-        var element=$(this);
-        var topic_id=element.attr("data-topic-id");
-        if("true"==element.attr("data-followed"))
-        {
-            $.post("/ajax/topic_follow/0/"+topic_id+"/",function(ret){
-                if("fail"!=ret)
-                {
-                    element.removeClass("zg-unfollow").addClass("zg-follow").text("关注");
-                    element.attr("data-followed","false");
-                    //updateValue("topic-followed",ret);
-                }
-            }); 
-        }
-        else
-        {
-            $.post("/ajax/topic_follow/1/"+topic_id+"/",function(ret){
-                if("fail"!=ret)
-                {
-                    element.removeClass("zg-follow").addClass("zg-unfollow").text("取消关注");
-                    element.attr("data-followed","true");
-                    //update_value("topic-followed",ret);
-                }
-            });  
-        }
-    });
-}
-function appendTopicElement(ret)
-{
-    for( var i in ret)
-    {
-        var topic_id=ret[i][0];
-        var topic_name=ret[i][1];
-        var topic_avatar=ret[i][2];
-        var topic_detail=ret[i][3];
-        var topic_question_nums=ret[i][4];
-        var topic_follower_nums=ret[i][5];
-        var topic_pub_date=ret[i][6];
-        var topic_followed=ret[i][7];
-        
-        if(topic_followed)
-            var a_data='<a href="javascript:;" class="follow meta-item zg-unfollow" name="follow" data-topic-id="'+topic_id+'" data-followed="true"><i class="z-icon-follow"></i>取消关注</a>';
-        else
-            var a_data='<a href="javascript:;" class="follow meta-item zg-follow" name="follow" data-topic-id="'+topic_id+'" data-followed="false"><i class="z-icon-follow"></i>关注</a>';
-        
-        if(topiclist_item_nums%2!=0)//odd
-        {
-            var data='<div class="item"><div class="blk">\
-                        <a target="_blank" href="/topic/'+topic_id+'">\
-                        <img src="'+topic_avatar+'" alt="'+topic_name+'">\
-                        <strong>'+topic_name+'</strong>\
-                        </a>\
-                        <p>'+topic_detail+'</p>\
-                        '+a_data+'\
-                        </div></div>';
-        }
-        else//even
-        {
-            var data='<div class="item even"><div class="blk">\
-                        <a target="_blank" href="/topic/'+topic_id+'">\
-                        <img src="'+topic_avatar+'" alt="'+topic_name+'">\
-                        <strong>'+topic_name+'</strong>\
-                        </a>\
-                        <p>'+topic_detail+'</p>\
-                        '+a_data+'\
-                        </div></div>';
-        }
-        $("#topiclist").append(data);
-        topiclist_item_nums++;
-    }
-} 
-function getMoreData(step) { 
-    var nums=g_last_getmoredata_index;///;;$('.item.even').length;
-    var bIsGetAll="0";//pub_date
-    var start=nums;
-    var end=start+step*20;
-    $.get('/ajax/topics/'+bIsGetAll+'/'+start+'/'+end+'/',function(ret){
-        if("fail"!=ret)
-        {
-            appendTopicElement(ret); 
-            followTopics();            
-            checkSets();
-            g_last_getmoredata_index+=STEP*20;
-        }
-        setLockScrollMoreData("false");
-    });
-} 
-function init()
-{
-    topiclist_item_nums=1;
-    getMoreData(20);
-    appendLetterModal();
-}
-*/
-</script>
+
 </body>
 
 </html>
