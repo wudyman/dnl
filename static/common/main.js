@@ -2535,17 +2535,22 @@ function initElement()
         var g_question_detail_scale_imge=addClassImg(g_question_detail,'class="origin_image"');
         $(".QuestionHeader-detail .RichText").html(g_question_detail_scale_imge);
         
+        $(".QuestionFollowStatus-counts .NumberBoard-value").empty().text(g_question_follower_nums);
         var g_push_answer_content_scale_imge=addClassImg(g_push_answer_content,'class="origin_image"');
-        $(".ContentItem.AnswerItem .RichText.CopyrightRichText-richText").html(g_push_answer_content_scale_imge);
+        $(".AnswerCard .ContentItem.AnswerItem .RichText.CopyrightRichText-richText").html(g_push_answer_content_scale_imge);
         
         $(".AnswerToolbar .AuthorInfo-avatar").attr("src",g_user_avatar).attr("alt",g_user_name);
         $(".AnswerToolbar .AuthorInfo-name").empty().text(g_user_name);
         $(".AnswerCard .ContentItem.AnswerItem").attr("data-answer-id",g_push_answer_id).attr("data-comment-nums",g_push_answer_comment_nums);
+        $(".AnswerCard .ContentItem.AnswerItem .LikeButton>svg").after(g_push_answer_like_nums);
+        $(".AnswerCard .ContentItem.AnswerItem .Zi--Comment").parent().after(g_push_answer_comment_nums);
+        
         $(".AnswerCard .AuthorInfo-avatarWrapper .UserLink-link").attr("href","/er/"+g_author_id).attr("data-author-id",g_author_id).children("img").attr("alt",g_author_name).attr("src",g_author_avatar);
         $(".AnswerCard .AuthorInfo-name .UserLink-link").attr("href","/er/"+g_author_id).empty().text(g_author_name);
+        $(".AnswerCard .AuthorInfo-detail .AuthorInfo-badgeText").empty().text(g_author_mood);
         $(".AnswerCard .Voters").children("button").empty().text(g_push_answer_like_nums+" 人赞同了该回答");
         $(".QuestionMainAction").attr("href","/question/"+g_question_id).empty().text("查看全部 "+g_question_answer_nums+" 个回答");
-        $(".List-headerText").empty().text("全部 "+g_question_answer_nums+" 个回答");
+        $(".Card.AllAnswers .List-headerText").empty().text("全部 "+g_question_answer_nums+" 个回答");
         appendAuthorCard();
     }
     else if("topic"==g_module)
@@ -2859,6 +2864,7 @@ function initData()
         g_question_id=main_data.question_id;
         g_question_title=main_data.question_title;
         g_question_detail=$("main").attr("data-question-detail");
+        g_question_follower_nums=main_data.question_follower_nums;
         g_question_answer_nums=main_data.question_answer_nums;
         g_question_followed=main_data.question_followed;
         g_push_answer_id=main_data.answer_id;
