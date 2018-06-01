@@ -5,7 +5,7 @@ import django.utils.timezone as timezone
 # Create your models here.
 class Question(models.Model):
     title=models.CharField(max_length=100)
-    detail=models.CharField(max_length=100,null=True,blank=True)
+    detail=models.CharField(max_length=500,null=True,blank=True)
     quizzer=models.ForeignKey(User,related_name='selfquestions',on_delete=models.CASCADE)
     answer_nums=models.IntegerField(default=0)
     follower=models.ManyToManyField(User,related_name='followquestions',blank=True)
@@ -34,7 +34,7 @@ class Article(models.Model):
 class Topic(models.Model):
     name=models.CharField(max_length=100)
     avatar=models.CharField(max_length=100,default='/media/avatar/default.jpg',verbose_name='peoplehead')
-    detail=models.CharField(max_length=100,null=True,blank=True)
+    detail=models.CharField(max_length=500,null=True,blank=True)
     question=models.ManyToManyField(Question,related_name='topics',blank=True)
     question_nums=models.IntegerField(default=0)
     article=models.ManyToManyField(Article,related_name='topics',blank=True)
@@ -60,7 +60,7 @@ class Answer(models.Model):
 class AnswerComment(models.Model):
     #id=models.BigAutoField(primary_key=True)
     author=models.ForeignKey(User,related_name='answercomments',on_delete=models.CASCADE)
-    content=models.CharField(max_length=1000)
+    content=models.CharField(max_length=500)
     answer=models.ForeignKey(Answer,related_name='comments',on_delete=models.CASCADE)
     like_nums=models.IntegerField(default=0)
     #parent_id=models.BigIntegerField(default=0)
@@ -72,7 +72,7 @@ class AnswerComment(models.Model):
 class ArticleComment(models.Model):
     #id=models.BigAutoField(primary_key=True)
     author=models.ForeignKey(User,related_name='articlecomments',on_delete=models.CASCADE)
-    content=models.CharField(max_length=1000)
+    content=models.CharField(max_length=500)
     article=models.ForeignKey(Article,related_name='comments',on_delete=models.CASCADE)
     like_nums=models.IntegerField(default=0)
     #parent_id=models.BigIntegerField(default=0)
@@ -86,7 +86,7 @@ class UserProfile(models.Model):
     avatar=models.CharField(max_length=100,default='/media/avatar/default.jpg',verbose_name='peoplehead')
     mood=models.CharField(default='no do no die',max_length=100)
     phone=models.CharField(default='0',max_length=11)
-    intro=models.CharField(default='brief introduce myself',max_length=100)
+    intro=models.CharField(default='brief introduce myself',max_length=500)
     follower=models.ManyToManyField(User,related_name='followto',blank=True)
     follower_nums=models.IntegerField(default=0)
     sexual=models.CharField(default='f',max_length=1)
@@ -126,7 +126,7 @@ class Conversation(models.Model):
 class Message(models.Model):
     #id=models.BigAutoField(primary_key=True)
     conversation=models.ForeignKey(Conversation,related_name='messages',on_delete=models.CASCADE)
-    content=models.CharField(max_length=100)
+    content=models.CharField(max_length=500)
     sender=models.ForeignKey(User,related_name='message_sends',on_delete=models.CASCADE)
     receiver=models.ForeignKey(User,related_name='message_receives',on_delete=models.CASCADE)
     delete_id=models.IntegerField(default=-1)
