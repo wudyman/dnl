@@ -35,7 +35,7 @@
 <div class="ContentItem-actions">
 <div class="MobileQuestionButtonGroup">
 <button class="Button FollowButton Button--primary Button--blue is-hide" type="button" data-follow-type="question"></button>
-<button class="Button Button--blue" type="button" onclick="showAnswerToolbar()">写回答</button>
+<button class="ShowAnswerBar-nouse Button Button--blue" type="button">写回答</button>
 <button class="Button Button--blue" type="button" onclick="showInvite()">邀请回答</button>
 </div>
 </div>
@@ -58,7 +58,7 @@
 </div>   
 </div>       
 <div>
-<button  class="Button Button--plain" type="button" onclick="hideAnswerToolbar()">
+<button class="HideAnswerBar-nouse Button Button--plain" type="button">
 <svg class="Zi Zi--Close " fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>
 </div>       
 </div>       
@@ -70,7 +70,7 @@
 <div class="AnswerForm-footerContent AnswerForm-container">
 <div class="AnswerForm-status"></div>
 <div class="AnswerForm-footerRight">
-<button class="AnswerForm-submit  btn btn-success" type="button" onclick="submitAnswer()">提交回答</button>
+<button class="AnswerForm-submit  Button Button--primary Button--blue" type="button" disabled>提交回答</button>
 </div>
 </div>
 </div>

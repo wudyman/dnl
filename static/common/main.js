@@ -996,44 +996,6 @@ function setLetterReceiver(id,name)
     $(".Messages-receiverInfo").text(name);
 }
 
-function submitAnswer()
-{
-    var url="/ajax/question_answer/"+g_question_id+"/";
-    var content=$('#summernote_answer').summernote('code');
-    var data=new FormData();
-    data.append("content",content);
-    $.ajax({
-        data:data,
-        type:"POST",
-        url:url,
-        cache:false,
-        contentType:false,
-        processData:false,
-        success:function(ret){
-            if("fail"!=ret)
-            {
-                appendAnswerElementList(ret,g_list_type,"prepend")
-                hideAnswerToolbar();                
-                checkSets();
-            }
-        }
-    });
-}
-
-function showAnswerToolbar()
-{
-    $(".AnswerToolbar").removeClass("is-hide");
-    $(".AnswerToolbar .AuthorInfo-avatar").attr("src",g_user_avatar).attr("alt",g_user_name);
-    $(".AnswerToolbar .AuthorInfo-name").empty().append(g_user_name);
-}
-
-function hideAnswerToolbar()
-{
-    $(".AnswerToolbar").addClass("is-hide");
-}
-
-
-
 function checkFollow()
 {
     $(".FollowButton").off("click");
@@ -2122,12 +2084,17 @@ function checkComment()
         }
         console.log(a_id);
         console.log(parent_comment_id);
+        if(commpent_text.length>MIDDLE_TEXT_MAX_LENGTH)
+        {
+            commpent_text=commpent_text.substr(0,MIDDLE_TEXT_MAX_LENGTH-1);
+        }
         var post_data={c_type:c_type,a_id:a_id,c_content:commpent_text,parent_comment_id:parent_comment_id};
         $.post("/ajax/comment/",post_data,function(ret){
             if("fail"!=ret)
             {
                 console.log("comment success");
                 appendCommentsElement(ret);
+                checkComment();
             }
         });
         
@@ -2200,6 +2167,36 @@ function checkComment()
         parent_element.find(".Zi--Comment.Button-zi").closest("button").empty().append(icon_element).children("span").after(answer_comment_nums+" 条评论");
         $(this).closest("span").remove();
     });
+    
+    $(".Button-like-nouse").off("click");
+    $(".Button-like-nouse").each(function(){
+        $(this).click(function(){
+            var button_element=$(this);
+            var l_type=button_element.attr("data-like-type");
+            var l_id=button_element.attr("data-like-id");
+            if("comment"==l_type)
+            {
+                if(button_element.closest(".ContentItem.AnswerItem").length>0)
+                    l_type="comment_answer";
+                else
+                    l_type="comment_article";
+            }
+            console.log(l_type);
+            console.log(l_id);
+            var post_data={l_type:l_type,l_id:l_id};
+            if("true"==g_lock_ajax)
+                return;
+            g_lock_ajax="true";
+            $.post("/ajax/like/",post_data,function(ret){
+                if("fail"!=ret)
+                {
+                    var like_icon=button_element.children("svg");
+                    button_element.attr("disabled","").empty().append(like_icon).append(ret);
+                }
+                g_lock_ajax="false";
+            });
+        });
+    });
 
 }
 
@@ -2260,22 +2257,140 @@ function checkInteractionButton()
                 var answer_comment_nums=parent_element.attr("data-comment-nums");
                 var comment_list_element='<div class="Comments-container"><div class="Comments Comments--withEditor Comments-withPagination"><div class="Topbar CommentTopbar"><div class="Topbar-title"><h2 class="CommentTopbar-title">'+answer_comment_nums+' 条评论</h2></div><div class="Topbar-options"><button type="button" class="Button Button--plain Button--withIcon Button--withLabel"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Switch Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M13.004 7V4.232c0-.405.35-.733.781-.733.183 0 .36.06.501.17l6.437 5.033c.331.26.376.722.1 1.033a.803.803 0 0 1-.601.264H2.75a.75.75 0 0 1-.75-.75V7.75A.75.75 0 0 1 2.75 7h10.254zm-1.997 9.999v2.768c0 .405-.35.733-.782.733a.814.814 0 0 1-.5-.17l-6.437-5.034a.702.702 0 0 1-.1-1.032.803.803 0 0 1 .6-.264H21.25a.75.75 0 0 1 .75.75v1.499a.75.75 0 0 1-.75.75H11.007z" fill-rule="evenodd"></path></svg></span>切换为时间排序</button></div></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--blue">评论</button></div><div class="CommentList"></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse CommentEditor--nouse--bottom is-hide"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--blue">评论</button></div></div></div>';
                 parent_element.append(comment_list_element);
+
+                var icon_element=$(this).children("span");
+                $(this).empty().append(icon_element).children("span").after("收起评论");                
+                
+                var packup_button_element='<span><button class="Comments-Packup-Button" style="left: 673px;z-index:999;">收起评论<svg viewBox="0 0 10 6" class="Icon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button></span>';
+                parent_element.append(packup_button_element);
                 var answer_id=parent_element.attr("data-answer-id");
                 var type="answer";
                 getComments(type,answer_id);
-                var icon_element=$(this).children("span");
-                $(this).empty().append(icon_element).children("span").after("收起评论");
-                
-                
-                var packup_button_element='<span><button class="Comments-Packup-Button" style="left: 673px;">收起评论<svg viewBox="0 0 10 6" class="Icon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button></span>';
-                parent_element.append(packup_button_element);
-                checkComment();
             }
         }
     });
 }
+function checkAnswerQuestion()
+{
+    var content="";
+    function checkAnswerButtonValid()
+    {
+        if((content.length>=TEXT_MIN_LENGTH_LOW))
+        {
+            $(".AnswerForm-submit").removeAttr("disabled");
+        }
+        else
+        {
+            $(".AnswerForm-submit").attr("disabled","");
+        }
+    }
+
+    $('#summernote_answer').on('summernote.change', function(we, contents, $editable) {
+        content=contents.replace("<p><br></p>","").replace("<p>","").replace("</p>","");
+        checkAnswerButtonValid();
+    });
+    
+    $(".ShowAnswerBar-nouse").off("click");
+    $(".ShowAnswerBar-nouse").on("click",function(){
+        if($(".AnswerToolbar").hasClass("is-hide"))
+        {
+            $(".AnswerToolbar").removeClass("is-hide");
+            $(".AnswerToolbar .AuthorInfo-avatar").attr("src",g_user_avatar).attr("alt",g_user_name);
+            $(".AnswerToolbar .AuthorInfo-name").empty().append(g_user_name);
+        }
+        else
+        {
+            $(".AnswerToolbar").addClass("is-hide");
+        }
+    });
+    $(".HideAnswerBar-nouse").off("click");
+    $(".HideAnswerBar-nouse").on("click",function(){
+        $(".AnswerToolbar").addClass("is-hide");
+    });
+
+    $(".AnswerForm-submit").off("click");
+    $(".AnswerForm-submit").on("click",function(){
+        var url="/ajax/question_answer/"+g_question_id+"/";
+        var content=$('#summernote_answer').summernote('code');
+        if(content>LARGE_TEXT_MAX_LENGTH)
+        {
+            content=content.substr(0,LARGE_TEXT_MAX_LENGTH-1);
+        }      
+        var data=new FormData();
+        data.append("content",content);
+        $.ajax({
+            data:data,
+            type:"POST",
+            url:url,
+            cache:false,
+            contentType:false,
+            processData:false,
+            success:function(ret){
+                if("fail"!=ret)
+                {
+                    appendAnswerElementList(ret,g_list_type,"prepend")
+                    $(".AnswerToolbar").addClass("is-hide");               
+                    checkSets();
+                }
+            }
+        });
+    });
+}
+
 function checkAsk()
 {
+    var title="";
+    var select_topic=[];
+    var content="";
+    function checkAskValid()
+    {
+        if((""!=title)&&(select_topic.length>0))
+        {
+            $("#askModal .QuestionAsk-buttonGroup>button").removeAttr("disabled");
+        }
+        else
+        {
+            $("#askModal .QuestionAsk-buttonGroup>button").attr("disabled","");
+        }
+    }
+    function checkAskTitle()
+    {
+        $("#askModal .QuestionAsk-title textarea").on("input",function(){
+            title=$("textarea[name='title']").val();
+            checkAskValid();
+        });
+    }
+    function checkAskSelect()
+    {
+        $('.selectpicker').on('changed.bs.select',function(e){
+            select_topic=$('.selectpicker').val();
+            console.log(select_topic.length);
+            checkAskValid();
+        });
+    }
+    function checkAskDetail()
+    {
+        $('#summernote_question').on('summernote.change', function(we, contents, $editable) {
+            content=contents.replace("<p><br></p>","").replace("<p>","").replace("</p>","");
+        });
+    }
+    $("#askModal .QuestionAsk-buttonGroup>button").click(function(){
+        if(title.length>LITTLE_TEXT_MAX_LENGTH)
+        {
+            title=title.substr(0,LITTLE_TEXT_MAX_LENGTH-1);
+            $("textarea[name='title']").val(title);
+        }
+        if(content.length>MIDDLE_TEXT_MAX_LENGTH)
+        {
+            content=content.substr(0,MIDDLE_TEXT_MAX_LENGTH-1);
+        }
+        $("input[name='detail']").val(content);
+        $(this).closest("form").submit();
+    });
+    checkAskTitle();
+    checkAskSelect();
+    checkAskDetail();   
+    
     $('#askModal').on('shown.bs.modal', function(){
         $("#askModal").off('click.dismiss.bs.modal','[data-dismiss="modal"]');
         $("#askModal").on('click.dismiss.bs.modal','[data-dismiss="modal"]',function(){
@@ -2303,7 +2418,7 @@ function checkWrite()
     var content="";
     function checkWriteValid()
     {
-        if((""!=title)&&(select_topic.length>0)&&(content.length>=10))
+        if((""!=title)&&(select_topic.length>0)&&(content.length>=TEXT_MIN_LENGTH_HIGH))
         {
             $(".WritePost").removeAttr("disabled");
         }
@@ -2335,7 +2450,17 @@ function checkWrite()
         });
     }
     $(".WritePost").click(function(){
-        console.log("post click");
+        if(title.length>LITTLE_TEXT_MAX_LENGTH)
+        {
+            title=title.substr(0,LITTLE_TEXT_MAX_LENGTH-1);
+            $("input[name='writeTitle']").val(title);
+        }
+        if(content.length>LARGE_TEXT_MAX_LENGTH)
+        {
+            content=content.substr(0,LARGE_TEXT_MAX_LENGTH-1);
+        }
+        $("input[name='writeContent']").val(content);
+        $(this).closest("form").submit();
     });
     checkWriteTitle();
     checkWriteSelect();
@@ -2350,18 +2475,23 @@ function checkSets()
     checkContentCollapse();
     checkPopoverShow();
     checkInteractionButton();
+    checkAnswerQuestion();
     //checkExpandBtn();
 }
 function getComments(type,id)
 {
     var post_data={c_type:type,a_id:id};
+    if("true"==g_lock_ajax)
+        return;
+    g_lock_ajax="true";
     $.post("/ajax/get_comments/",post_data,function(ret){
         if("fail"!=ret)
         {
             console.log("get comments success");
             appendCommentsElement(ret);
-            checkInteractionButton();
         }
+        checkComment();
+        g_lock_ajax="false";
     });
 }
 function getMoreData()
@@ -2830,7 +2960,6 @@ function initElement()
         }
         $(".FollowButton").addClass(button_follow_class).removeClass("is-hide").attr("data-er-id",g_article_author_id).attr("data-followed",g_followed).attr("data-who",data_who).children("span").text(follow_text);
         
-        //$(".Post-Author .UserLink-link").attr("href","/er/"+g_article_author_id+"/").attr("data-author-id",g_article_author_id);
         $(".Post-Author .AuthorInfo-avatarWrapper .UserLink-link").attr("href","/er/"+g_article_author_id).attr("data-author-id",g_article_author_id).children("img").attr("alt",g_article_author_name).attr("src",g_article_author_avatar);
         $(".Post-Author .AuthorInfo-name .UserLink-link").attr("href","/er/"+g_article_author_id).empty().text(g_article_author_name);
         $(".Post-Author .AuthorInfo-detail .AuthorInfo-badgeText").empty().text(g_article_author_mood);
@@ -2844,7 +2973,6 @@ function initElement()
         
         checkInteractionButton();
         getComments("article",g_article_id);
-        checkComment();
     }
     else if("write"==g_module)
     {
@@ -2998,6 +3126,12 @@ function init()
 }
 function initCommon()
 {
+    LARGE_TEXT_MAX_LENGTH=10000;
+    MIDDLE_TEXT_MAX_LENGTH=500;
+    LITTLE_TEXT_MAX_LENGTH=100;
+    TEXT_MIN_LENGTH_HIGH=100;
+    TEXT_MIN_LENGTH_MID=50;
+    TEXT_MIN_LENGTH_LOW=10;
     notifications="null";
     messages="null";
     g_last_getmoredata_index=0;
@@ -3005,9 +3139,8 @@ function initCommon()
     $('#summernote_question').summernote({
         toolbar: [
         // [groupName, [list of button]]
-        ['style', ['bold', 'italic', 'underline']],
-        ['font', ['strikethrough', 'superscript', 'subscript']],
-        ['fontsize', ['fontsize']],
+        ['style', ['italic']],
+        ['font', ['superscript', 'subscript']],
         ['table', ['table']],
         ['link', ['link']],
         ['picture', ['picture']],
