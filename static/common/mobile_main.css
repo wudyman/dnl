@@ -963,7 +963,8 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
     margin-right: 7px;
     fill: currentColor;
 }
-
+/************for topic page****************/
+.FollowButton.TopicCard-followButton{padding:0;}
 /************for question page****************/
 .MobileQuestionButtonGroup .Button {
     margin-right: 16px;
@@ -975,7 +976,37 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
     padding-bottom: 0px !important;
     margin-bottom: 10px;
 }
+#inviteModal .Topbar {
+    height: auto;
+    padding: 0;
+}
+/************for ask modal****************/
+#askModal .Modal-title {
+    margin-top: 20px;
+    line-height: 1.7;
+}
+#askModal .Modal-content {
+    padding: 0 5px 20px;
+    margin-top: 20px;
+    line-height: 1.7;
+    opacity: 1;
+}
+#askModal .QuestionAsk-buttonGroup{
+    display:flex;
+    justify-content:center;
+}
+/************for 3rd modal****************/
+.note-editor .modal-dialog .form-control{
+    -webkit-box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    box-sizing: border-box !important;
+    height:unset;
+}
 
+.btn-primary{background:#0f88eb;border: 1px solid #0f88eb;}
+.btn-primary:hover{background-color:#0d79d1;border: 1px solid #0d79d1;}
+.btn-primary:disabled{background:#0f88eb;}
+.btn-primary:disabled:hover{background:#2b6a9e;border: 1px solid #2b6a9e;}
 
 
 

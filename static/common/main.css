@@ -979,6 +979,24 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
     margin-right: 7px;
     fill: currentColor;
 }
+/************for 3rd modal****************/
+.note-editor .modal-dialog .form-control{
+    -webkit-box-sizing: border-box !important;
+    -moz-box-sizing: border-box !important;
+    box-sizing: border-box !important;
+    height:unset;
+}
+
+#askModal .note-editor .modal-dialog{
+    width:96%;
+}
+
+
+
+.btn-primary{background:#0f88eb;border: 1px solid #0f88eb;}
+.btn-primary:hover{background-color:#0d79d1;border: 1px solid #0d79d1;}
+.btn-primary:disabled{background:#0f88eb;}
+.btn-primary:disabled:hover{background:#2b6a9e;border: 1px solid #2b6a9e;}
 
 
 
