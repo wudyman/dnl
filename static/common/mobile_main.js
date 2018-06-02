@@ -1874,6 +1874,28 @@ function checkInteractionButton()
         }
     });
 }
+function checkAsk()
+{
+    $('#askModal').on('shown.bs.modal', function(){
+        $("#askModal").off('click.dismiss.bs.modal','[data-dismiss="modal"]');
+        $("#askModal").on('click.dismiss.bs.modal','[data-dismiss="modal"]',function(){
+            $('#askModal .modal').modal('hide');
+            $('#askModal').modal('hide');
+        });
+    });
+     
+    $("#askModal .note-editor button.close").off("mousedown");
+    $("#askModal .note-editor button.close").on("mousedown",function(event){
+        $("#askModal").off('click.dismiss.bs.modal','[data-dismiss="modal"]');
+        event.preventDefault();
+        setTimeout(function(){
+            $("#askModal").on('click.dismiss.bs.modal','[data-dismiss="modal"]',function(){
+                $('#askModal .modal').modal('hide');
+                $('#askModal').modal('hide');
+            });
+        },1000);
+    });
+}
 function checkWrite()
 {
     var title="";
@@ -1921,6 +1943,7 @@ function checkWrite()
 }
 function checkSets()
 {
+    checkAsk();
     checkFollow();
     checkContentClick();
     checkContentExpand();
@@ -2507,44 +2530,49 @@ function initCommon()
     $('#summernote_question').summernote({
         toolbar: [
         // [groupName, [list of button]]
-        ['style', ['bold', 'italic', 'underline']],
-        ['font', ['strikethrough', 'superscript', 'subscript']],
-        ['fontsize', ['fontsize']],
+        ['style', ['italic']],
+        ['font', ['superscript', 'subscript']],
         ['table', ['table']],
         ['link', ['link']],
         ['picture', ['picture']],
         ['video', ['video']]
         ],
-        height:120,
+        minHeight:150,
         lang:'zh-CN',
         placeholder:'问题背景、条件等详细信息',
         callbacks: {
             onImageUpload: function(files){
                 scaleAndUploadImage("forQuestion",files[0],720);
+            },
+            onInit:function(){
+                $(".note-statusbar").addClass("is-hide");
             }
         }
     });
     
     $('#summernote_answer').summernote({
     toolbar: [
-    // [groupName, [list of button]]
-    ['style', ['bold', 'italic', 'underline']],
-    ['font', ['strikethrough', 'superscript', 'subscript']],
-    ['fontsize', ['fontsize']],
-    ['para', ['paragraph']],
-    ['table', ['table']],
-    ['link', ['link']],
-    ['picture', ['picture']],
-    ['video', ['video']]
-    ],
-    height:200,
-    lang:'zh-CN',
-    placeholder:'写回答...',
-    callbacks: {
-        onImageUpload: function(files){
-            scaleAndUploadImage("forAnswer",files[0],720);
+        // [groupName, [list of button]]
+        ['style', ['bold', 'italic']],
+        ['font', ['superscript', 'subscript']],
+        ['fontsize', ['fontsize']],
+        ['para', ['paragraph']],
+        ['table', ['table']],
+        ['link', ['link']],
+        ['picture', ['picture']],
+        ['video', ['video']]
+        ],
+        minHeight:150,
+        lang:'zh-CN',
+        placeholder:'写回答...',
+        callbacks: {
+            onImageUpload: function(files){
+                scaleAndUploadImage("forAnswer",files[0],720);
+            },
+            onInit:function(){
+                $(".note-statusbar").addClass("is-hide");
+            }
         }
-    }
     });
     
     checkSelectOption();
