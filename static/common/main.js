@@ -346,7 +346,7 @@ function appendCommentsElement(ret)
         var comment_element=$(this).closest(".CommentItem");
         var comment_id=comment_element.attr("data-comment-id");
         var comment_author_name=comment_element.attr("data-comment-author-name");
-        var commentItem_editor='<div class="CommentItem-editor CommentEditor--inCommentItem CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">回复'+comment_author_name+'</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><div class="CommentEditor-actions"><button type="button" class="Button Button-comment-cancle Button--plain">取消</button><button disabled="" type="button" class="Button Button-comment-send Button--primary Button--blue">评论</button></div></div>';
+        var commentItem_editor='<div class="CommentItem-editor CommentEditor--inCommentItem CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">回复'+comment_author_name+'</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><div class="CommentEditor-actions"><button type="button" class="Button Button-comment-cancle Button--plain">取消</button><button disabled="" type="button" class="Button Button-comment-send Button--primary Button--green">评论</button></div></div>';
         comment_element.append(commentItem_editor);
         comment_element.find(".CommentItem-footer").addClass("is-hide");
         checkComment();
@@ -550,7 +550,7 @@ function appendTopicElement(ret)
         if(topic_followed)
             var follow_button_data='<button class="Button Button--grey FollowButton" type="button" data-follow-type="topic" data-topic-id="'+topic_id+'" data-followed="true">已关注</button>';
         else
-            var follow_button_data='<button class="Button Button--blue FollowButton" type="button" data-follow-type="topic" data-topic-id="'+topic_id+'" data-followed="false">关注话题</button>';
+            var follow_button_data='<button class="Button Button--green FollowButton" type="button" data-follow-type="topic" data-topic-id="'+topic_id+'" data-followed="false">关注话题</button>';
 
         var data='<div class="List-item">\
                     <div class="ContentItem">\
@@ -622,7 +622,7 @@ function appendInviteElement(ret)
                     </div>\
                     </div>\
                     <div class="ContentItem-extra">\
-                    <button class="Button Button--blue Invite" type="button" data-receiver="'+adept_id+'">邀请回答</button>\
+                    <button class="Button Button--green Invite" type="button" data-receiver="'+adept_id+'">邀请回答</button>\
                     </div>\
                     </div>\
                     </div>\
@@ -850,7 +850,7 @@ function appendLetterModal()
         </div>\
         <span class="Messages-warning"></span>\
         <div class="ModalButtonGroup ModalButtonGroup--vertical">\
-        <button class="Button Messages-sendButton Button--primary Button--blue" type="button" onclick="sendLetterViaModal()">发送</button>\
+        <button class="Button Messages-sendButton Button--primary Button--green" type="button" onclick="sendLetterViaModal()">发送</button>\
         </div>\
         </div>\
         </div>\
@@ -914,7 +914,7 @@ function appendAuthorCard()
                 if (author_followed)
                     var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="true" data-who="'+who+'">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
                 else
-                    var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--blue" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="false" data-who="'+who+'">关注'+who_han+'</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
+                    var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="false" data-who="'+who+'">关注'+who_han+'</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
                 var data=data1+data2;
                 $(".Card.AnswerAuthor").append(data);
                 setLetterReceiver(author_id,author_name);
@@ -1049,17 +1049,17 @@ function checkFollow()
                     if("true"==button.attr("data-followed"))
                     {
                         if("alltopics"==g_module)
-                            button.removeClass("zg-unfollow").addClass("zg-follow").text("关注话题");
+                            button.removeClass("zg-unfollow").addClass("zg-follow").removeClass("Button--grey").addClass("Button--green").text(follow_tips);
                         else
-                            button.removeClass("Button--grey").addClass("Button--blue").text(follow_tips);
+                            button.removeClass("Button--grey").addClass("Button--green").text(follow_tips);
                         button.attr("data-followed","false");
                     }
                     else
                     {
                         if("alltopics"==g_module)
-                            button.removeClass("zg-follow").addClass("zg-unfollow").text("已关注");
+                            button.removeClass("zg-follow").addClass("zg-unfollow").removeClass("Button--green").addClass("Button--grey").text("已关注");
                         else
-                            button.removeClass("Button--blue").addClass("Button--grey").text("已关注");
+                            button.removeClass("Button--green").addClass("Button--grey").text("已关注");
                         button.attr("data-followed","true");
                     }
                     updateFollowValue(update_value_type,ret);
@@ -1719,7 +1719,7 @@ function checkNextPage()
         console.log(this);
         g_subcmd=$(this).attr("data-next-page-type");
         g_cache_page=$("main").html();
-        var head='<div class="Card Profile-datalist" id="Profile-datalist"><div id="appendArea" class=""><div class="ProfileHeader-expandActions ProfileEdit-expandActions"><button class="Button--blue ReturnHomePage" style="margin:3px" type="button">返回我的主页</button></div></div></div>';
+        var head='<div class="Card Profile-datalist" id="Profile-datalist"><div id="appendArea" class=""><div class="ProfileHeader-expandActions ProfileEdit-expandActions"><button class="Button--green ReturnHomePage" style="margin:3px" type="button">返回我的主页</button></div></div></div>';
         $("main").empty().append(head);
         getMoreData();
         checkReturnHomePage();
@@ -1973,31 +1973,31 @@ function checkHomePage()
             var field_type=$(this).parents(".Field-content").attr("data-field-type");
             if("nickname"==field_type)
             {
-                var data='<div><div class="HeadlineField-input Input-wrapper"><input name="nickname" class="Input" value="'+g_er_name+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+                var data='<div><div class="HeadlineField-input Input-wrapper"><input name="nickname" class="Input" value="'+g_er_name+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--green save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
             }
             else if("sexual"==field_type)
             {
                 if("f"==g_er_sexual)
-                    var data='<div><input type="radio" name="sexual" value="m"> 男<input type="radio" name="sexual" value="f" checked style="margin-left: 30px;"> 女<div class="ButtonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div></div>';
+                    var data='<div><input type="radio" name="sexual" value="m"> 男<input type="radio" name="sexual" value="f" checked style="margin-left: 30px;"> 女<div class="ButtonGroup"><button class="Button Button--primary Button--green save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div></div>';
                 else
-                    var data='<div><input type="radio" name="sexual" value="m" checked> 男<input type="radio" name="sexual" value="f" style="margin-left: 30px;"> 女<div class="ButtonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div></div>';
+                    var data='<div><input type="radio" name="sexual" value="m" checked> 男<input type="radio" name="sexual" value="f" style="margin-left: 30px;"> 女<div class="ButtonGroup"><button class="Button Button--primary Button--green save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div></div>';
             }
             else if("mood"==field_type)
             {
-                var data='<div><div class="HeadlineField-input Input-wrapper"><input name="mood" class="Input" value="'+g_er_mood+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+                var data='<div><div class="HeadlineField-input Input-wrapper"><input name="mood" class="Input" value="'+g_er_mood+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--green save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
             }
             else if("residence"==field_type)
             {
-                var data='<div><div class="HeadlineField-input Input-wrapper"><input name="residence" class="Input" value="'+g_er_residence+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+                var data='<div><div class="HeadlineField-input Input-wrapper"><input name="residence" class="Input" value="'+g_er_residence+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--green save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
                 $(this).parents(".Field-content").empty().append(data);
             }
             else if("job"==field_type)
             {
-                var data='<div><div class="HeadlineField-input Input-wrapper"><input name="job" class="Input" value="'+g_er_job+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+                var data='<div><div class="HeadlineField-input Input-wrapper"><input name="job" class="Input" value="'+g_er_job+'"></div><div class="HeadlineField-actions"><div class="ButtonGroup HeadlineField-buttonGroup"><button class="Button Button--primary Button--green save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
             }
             else if("intro"==field_type)
             {
-                var data='<div><textarea name="intro" rows="3" class="DescriptionField-input TextArea">'+g_er_intro+'</textarea><div class="DescriptionField-actions"><div class="ButtonGroup DescriptionField-buttonGroup"><button class="Button Button--primary Button--blue save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
+                var data='<div><textarea name="intro" rows="3" class="DescriptionField-input TextArea">'+g_er_intro+'</textarea><div class="DescriptionField-actions"><div class="ButtonGroup DescriptionField-buttonGroup"><button class="Button Button--primary Button--green save" type="button">保存</button><button class="Button Button--grey cancle" type="button">取消</button></div><span class="MaxLength"></span></div></div>';
             }
             $(this).parents(".Field-content").empty().append(data);
             checkProfileSave();
@@ -2255,7 +2255,7 @@ function checkInteractionButton()
             else
             {
                 var answer_comment_nums=parent_element.attr("data-comment-nums");
-                var comment_list_element='<div class="Comments-container"><div class="Comments Comments--withEditor Comments-withPagination"><div class="Topbar CommentTopbar"><div class="Topbar-title"><h2 class="CommentTopbar-title">'+answer_comment_nums+' 条评论</h2></div><div class="Topbar-options"><button type="button" class="Button Button--plain Button--withIcon Button--withLabel"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Switch Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M13.004 7V4.232c0-.405.35-.733.781-.733.183 0 .36.06.501.17l6.437 5.033c.331.26.376.722.1 1.033a.803.803 0 0 1-.601.264H2.75a.75.75 0 0 1-.75-.75V7.75A.75.75 0 0 1 2.75 7h10.254zm-1.997 9.999v2.768c0 .405-.35.733-.782.733a.814.814 0 0 1-.5-.17l-6.437-5.034a.702.702 0 0 1-.1-1.032.803.803 0 0 1 .6-.264H21.25a.75.75 0 0 1 .75.75v1.499a.75.75 0 0 1-.75.75H11.007z" fill-rule="evenodd"></path></svg></span>切换为时间排序</button></div></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--blue">评论</button></div><div class="CommentList"></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse CommentEditor--nouse--bottom is-hide"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--blue">评论</button></div></div></div>';
+                var comment_list_element='<div class="Comments-container"><div class="Comments Comments--withEditor Comments-withPagination"><div class="Topbar CommentTopbar"><div class="Topbar-title"><h2 class="CommentTopbar-title">'+answer_comment_nums+' 条评论</h2></div><div class="Topbar-options"><button type="button" class="Button Button--plain Button--withIcon Button--withLabel"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Switch Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M13.004 7V4.232c0-.405.35-.733.781-.733.183 0 .36.06.501.17l6.437 5.033c.331.26.376.722.1 1.033a.803.803 0 0 1-.601.264H2.75a.75.75 0 0 1-.75-.75V7.75A.75.75 0 0 1 2.75 7h10.254zm-1.997 9.999v2.768c0 .405-.35.733-.782.733a.814.814 0 0 1-.5-.17l-6.437-5.034a.702.702 0 0 1-.1-1.032.803.803 0 0 1 .6-.264H21.25a.75.75 0 0 1 .75.75v1.499a.75.75 0 0 1-.75.75H11.007z" fill-rule="evenodd"></path></svg></span>切换为时间排序</button></div></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--green">评论</button></div><div class="CommentList"></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse CommentEditor--nouse--bottom is-hide"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--green">评论</button></div></div></div>';
                 parent_element.append(comment_list_element);
 
                 var icon_element=$(this).children("span");
@@ -2681,11 +2681,11 @@ function initElement()
         $(".QuestionHeader-title").append('<a href="/question/'+g_question_id+'">'+g_question_title+'</a>');
         if("true"==g_question_followed)
         {
-            $(".QuestionButtonGroup .FollowButton").removeClass("Button--blue").addClass("Button--grey").attr("data-question-id",g_question_id).attr("data-followed","true").text("已关注");
+            $(".QuestionButtonGroup .FollowButton").removeClass("Button--green").addClass("Button--grey").attr("data-question-id",g_question_id).attr("data-followed","true").text("已关注");
         }
         else
         {
-            $(".QuestionButtonGroup .FollowButton").removeClass("Button--grey").addClass("Button--blue").attr("data-question-id",g_question_id).attr("data-followed","false").text("关注问题");
+            $(".QuestionButtonGroup .FollowButton").removeClass("Button--grey").addClass("Button--green").attr("data-question-id",g_question_id).attr("data-followed","false").text("关注问题");
         }
         
         var g_question_detail_scale_imge=addClassImg(g_question_detail,'class="origin_image"');
@@ -2715,9 +2715,9 @@ function initElement()
         $(".TopicCard-description>.RichText").text(g_topic_detail);
         $(".NumberBoard-value").append(g_topic_follower_nums);
         if("true"==g_topic_followed)
-            $(".FollowButton.TopicCard-followButton").removeClass("Button--blue").addClass("Button--grey").attr("data-topic-id",g_topic_id).attr("data-followed","true").text("已关注");
+            $(".FollowButton.TopicCard-followButton").removeClass("Button--green").addClass("Button--grey").attr("data-topic-id",g_topic_id).attr("data-followed","true").text("已关注");
         else
-            $(".FollowButton.TopicCard-followButton").removeClass("Button--grey").addClass("Button--blue").attr("data-topic-id",g_topic_id).attr("data-followed","false").text("关注话题");   
+            $(".FollowButton.TopicCard-followButton").removeClass("Button--grey").addClass("Button--green").attr("data-topic-id",g_topic_id).attr("data-followed","false").text("关注话题");   
     }
     else if("mytopic"==g_module)
     {
@@ -2763,13 +2763,13 @@ function initElement()
         });
         if("conversation_messages"==g_setting_type)
         {
-            var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">'+g_parter_name+'</span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="4"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--blue" type="button" onclick="sendLetter()">发送</button></div></div></div>';
+            var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">'+g_parter_name+'</span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="4"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--green" type="button" onclick="sendLetter()">发送</button></div></div></div>';
             $('#appendArea').prepend(data);
         }
         else if("settings"==g_setting_type)
         {
-            var data='<div class="List-item"><div><label><input type="radio" name="notification-receive" value="all" checked="">允许接收通知</label>&nbsp;<label><input type="radio" name="notification-receive" value="all" checked="">禁止接收通知</label></div><button type="submit" class="Button Button--primary Button--blue">保存</button></div>\
-                        <div class="List-item"><div><label><input type="radio" name="inboxmsg-receive" value="all" checked="">允许接收私信</label>&nbsp;<label><input type="radio" name="inboxmsg-receive" value="all" checked="">禁止接收私信</label></div><button type="submit" class="Button Button--primary Button--blue">保存</button></div>';;
+            var data='<div class="List-item"><div><label><input type="radio" name="notification-receive" value="all" checked="">允许接收通知</label>&nbsp;<label><input type="radio" name="notification-receive" value="all" checked="">禁止接收通知</label></div><button type="submit" class="Button Button--primary Button--green">保存</button></div>\
+                        <div class="List-item"><div><label><input type="radio" name="inboxmsg-receive" value="all" checked="">允许接收私信</label>&nbsp;<label><input type="radio" name="inboxmsg-receive" value="all" checked="">禁止接收私信</label></div><button type="submit" class="Button Button--primary Button--green">保存</button></div>';;
             $('#appendArea').prepend(data);
         }
         checkSettingPage();
@@ -2862,7 +2862,7 @@ function initElement()
             g_who="me";
             g_who_han="我";
             var data='<button class="Button ProfileHeader-expandButton Button--plain" type="button"><svg viewBox="0 0 10 6" class="Icon ProfileHeader-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>查看详细资料</button>\
-            <div class="ProfileButtonGroup ProfileHeader-buttons"><button class="ProfileEditButton Button Button--blue" type="button">编辑个人资料</button></div>';
+            <div class="ProfileButtonGroup ProfileHeader-buttons"><button class="ProfileEditButton Button Button--green" type="button">编辑个人资料</button></div>';
         }
         else
         {
@@ -2875,7 +2875,7 @@ function initElement()
             else
             {
                 var followed_status="false";
-                var followed_button_class="Button--blue";
+                var followed_button_class="Button--green";
             }
             var data='<button class="Button ProfileHeader-expandButton Button--plain" type="button"><svg viewBox="0 0 10 6" class="Icon ProfileHeader-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>查看详细资料</button>\
                         <div class="MemberButtonGroup ProfileButtonGroup ProfileHeader-buttons">\
@@ -2946,7 +2946,7 @@ function initElement()
         var article_content=$("main").attr("data-article-content");
         $(".Post-RichText").empty().append(addClassImg(article_content,'class="origin_image zh-lightbox-thumb lazy"'));
         var follow_text="关注她";
-        var button_follow_class="Button--blue";
+        var button_follow_class="Button--green";
         var data_who="she";
         if("f"!=g_article_author_sexual)
         {
