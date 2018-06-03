@@ -633,7 +633,6 @@ label {
 .zu-noti7-all .spinner{height:22px;display:block;background:url(/static/revved/img/spinner2.a45a3423.gif);background-repeat:no-repeat;background-position:0 3px;width:22px;text-indent:999px;overflow:hidden;margin-bottom:-8px}
 .zu-noti7-all .zm-noti7-expandable .zm-noti7-content-item,.zu-noti7-all .unfold{border-top:1px dashed #eee}
 .zu-noti7-all .loading,.zu-noti7-all .empty{padding:60px;text-align:center}
-.zu-noti7-all .day a{color:#259}
 
 .pull-left,.note-placeholder{
     color:#8590a6;
@@ -1010,6 +1009,14 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
 /************for 3rd modal****************/
 
 /************for green config****************/
+.btn:disabled{cursor:default;opacity:.2}
+.btn-primary{background:#228b22;border: 1px solid #228b22;}
+.btn-primary:hover{background-color:#006400;border: 1px solid #006400;}
+.btn-primary:disabled{background:#228b22;}
+.btn-primary:disabled:hover{background:#228b22;}
+
+.Button--grey {color: #bbbbbb;border-color: #bbbbbb;}
+
 .Button--green{color:#228b22;border:1px solid #228b22}
 .Button--green:hover{background-color:rgba(0,100,0,.06)}
 .Button--green:disabled{background-color:transparent;background-color:initial}
@@ -1050,6 +1057,22 @@ a.QuestionMainAction:hover{color:#228b22}
 
 .MobileAppHeader-logo {fill: #228b22;}
 .MobileAppHeader-actions {color: #228b22;}
+
+.ContentItem-statusItem {color: #888b88;}
+
+#settings a{color:#228b22;}
+#settings a:hover{color:#006400;}
+
+.PushNotifications-item a{color:#228b22;}
+.PushNotifications-item a:hover{color:#006400;}
+
+.SignFlowHeader-slogen {color:#228b22;}
+.SignFlow-smsInputButton {color:#228b22;}
+.SignContainer-switch span {color:#228b22;}
+button.CountingDownButton {color: #228b22;border: 1px solid #228b22;}
+.SignFlowHeader {background: #228b22;}
+
+/************for green config****************/
 
 
 

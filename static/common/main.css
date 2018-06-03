@@ -1000,6 +1000,15 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
 /************for 3rd modal****************/
 
 /************for green config****************/
+.btn:disabled{cursor:default;opacity:.2}
+.btn-primary{background:#228b22;border: 1px solid #228b22;}
+.btn-primary:hover{background-color:#006400;border: 1px solid #006400;}
+.btn-primary:disabled{background:#228b22;}
+.btn-primary:disabled:hover{background:#228b22;}
+
+.Button:disabled{cursor:default;opacity:.2}
+.Button--grey {color: #888888;border-color: #888888;}
+
 .Button--green{color:#228b22;border:1px solid #228b22}
 .Button--green:hover{background-color:rgba(0,100,0,.06)}
 .Button--green:disabled{background-color:transparent;background-color:initial}
@@ -1014,9 +1023,15 @@ a:visited {text-decoration: none}
 a:active {text-decoration: none} 
 a:hover{color:#228b22;text-decoration: none}
 
+a.AppHeader-navItem:hover{color:#228b22;}
+
 .Tag{color:#228b22; background: rgba(0,100,0,.05);}
 .Tag:hover{color:#228b22; text-decoration: none;background: rgba(0,100,0,.08);}
 .Tag-content:hover{border-bottom:none}
+
+.Tag.current{background: #006400;border-color:#006400;color: #fff;}
+.Tag.current:hover{color: #fff;}
+.Tag.current a:hover{color: #fff;}
 
 .RichContent--unescapable.is-collapsed .ContentItem-rightButton {color: #228b22;}
 
@@ -1038,6 +1053,22 @@ a.QuestionMainAction:hover{color:#228b22}
 .Icon{fill:currentColor;}
 .SiteLogo {fill: #228b22;}
 
+#settings a{color:#228b22;}
+#settings a:hover{color:#006400;}
+
+.PushNotifications-item a{color:#228b22;}
+.PushNotifications-item a:hover{color:#006400;}
+
+.SignFlowHeader-slogen {color:#228b22;}
+.SignFlow-smsInputButton {color:#228b22;}
+.SignContainer-switch span {color:#228b22;}
+
+.settings-link a{color:#228b22;}
+
+.bs-searchbox .form-control:focus {
+    border:1px solid #228b22;-webkit-box-shadow:none;box-shadow:none;
+
+}
 
 /************for green config****************/
 
