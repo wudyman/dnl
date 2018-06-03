@@ -994,6 +994,11 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
     display:flex;
     justify-content:center;
 }
+/*********for header************/
+.Header-Icon{position: relative; padding: 0 10px;}
+.Header-Icon:after {position: absolute;top: 50%;right: 0;-webkit-transform: translateY(-50%);transform: translateY(-50%);display: block;width: 0;height: 16px;border-left: 1px solid #ebebeb;content: "";}
+.Header-Icon .Header-Icon-Item{padding: 0 10px;}
+/*********for header************/
 /************for 3rd modal****************/
 .note-editor .modal-dialog .form-control{
     -webkit-box-sizing: border-box !important;
@@ -1071,6 +1076,13 @@ a.QuestionMainAction:hover{color:#228b22}
 .SignContainer-switch span {color:#228b22;}
 button.CountingDownButton {color: #228b22;border: 1px solid #228b22;}
 .SignFlowHeader {background: #228b22;}
+
+.settings-link a{color:#228b22;}
+
+.bs-searchbox .form-control:focus {
+    border:1px solid #228b22;-webkit-box-shadow:none;box-shadow:none;
+
+}
 
 /************for green config****************/
 

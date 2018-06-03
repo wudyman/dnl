@@ -48,14 +48,17 @@ class TopicView(generic.ListView):
             self.template_name='question/t_topic_mobile.html'
         topic_id=self.kwargs.get('topic_id')
         topic=get_object_or_404(Topic,pk=topic_id)
-        user=request.user
-        if user.is_authenticated:
-            logged='true'
-            if topic.follower.filter(pk=user.pk).exists():
-                followed='true'
+        if topic:
+            type=self.kwargs.get('type')
+            user=request.user
+            if user.is_authenticated:
+                logged='true'
+                if topic.follower.filter(pk=user.pk).exists():
+                    followed='true'
+                else:
+                    followed='false'
             else:
+                logged='false'
                 followed='false'
-        else:
-            logged='false'
-            followed='false'
-        return render(request,self.template_name,{'context_topic':topic,'followed':followed,'logged':logged})
+            return render(request,self.template_name,{'context_topic':topic,'type':type,'followed':followed,'logged':logged})
+        return HttpResponse('no this page')

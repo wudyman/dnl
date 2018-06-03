@@ -1,11 +1,13 @@
 ﻿<!DOCTYPE html>
-<html lang="zh" data-hairline="true" data-theme="light" data-focus-method="pointer" style="">
-{% include 'question/head.html' %}
-<body class="Entry-body">
-{% include 'question/header.html' %}
-
-<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 3px;"></div>
-
+<html lang="zh" data-hairline="true" data-android="true" data-theme="light">
+{% include 'question/head_mobile.html' %}
+<body class="Mobile-body">
+<div id="root">
+<div class="App">
+<div class="LoadingBar"></div>
+<div>
+{% include 'question/header_mobile.html' %}
+</div>
 <!--------------------main---------------------->
 <main role="main" class="App-main" data-module="answer_page" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","type":"{{type}}"}'>
 <div class="ContentLayout">
@@ -35,7 +37,8 @@
 
 </div>
 </main>
-<!--------------------main end-------------------->
+</div>
+</div>
 
 <!-- ask（Modal） -->
 {% include 'question/ask_modal.html' %}

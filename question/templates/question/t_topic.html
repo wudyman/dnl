@@ -4,7 +4,7 @@
 <body class="Entry-body">
 {% include 'question/header.html' %}
 
-<main role="main" class="App-main" data-module="topic" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","topic_id":"{{context_topic.id}}","topic_name":"{{context_topic.name}}","topic_avatar":"{{context_topic.avatar}}","topic_detail":"{{context_topic.detail}}","topic_follower_nums":"{{context_topic.follower_nums}}","topic_followed":"{{followed}}"}'>
+<main role="main" class="App-main" data-module="topic" data-dfs-main='{"logged":"{{logged}}","type":"{{type}}","user_id":"{{user.id}}","topic_id":"{{context_topic.id}}","topic_name":"{{context_topic.name}}","topic_avatar":"{{context_topic.avatar}}","topic_detail":"{{context_topic.detail}}","topic_follower_nums":"{{context_topic.follower_nums}}","topic_followed":"{{followed}}"}'>
 <div class="ContentLayout">
 
 <div class="ContentLayout-mainColumn">
@@ -64,10 +64,16 @@
 
 </div>
 
-<div class="Sticky" style=""></div>
+
 </div>
 
 <div class="Card">
+<div class="Topic-bar">
+<ul role="tablist" class="Tabs Topic-tabs">
+<!--append-->
+</ul>
+</div>
+<div class="Sticky" style="margin:10px 0px;border-top: 1px solid #e7eaf1;"></div>
 <div id="appendArea" class="List"></div>
 </div>
 </div>
