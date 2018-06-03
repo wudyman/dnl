@@ -671,6 +671,27 @@ function appendSettingPageElement(ret)
     }
     checkSettingPage();
 }
+function appendInvitedQuestionElement(ret)
+{
+    for ( var i in ret)
+    {
+        var notification_id=ret[i][0];
+        var notification_type=ret[i][1];
+        var notification_active_id=ret[i][2];
+        var notification_status=ret[i][3];
+        var notification_pub_date=ret[i][4].split('.')[0];
+        var notification_sender_id=ret[i][5];
+        var notification_sender_first_name=ret[i][6];
+        var question_title=ret[i][7];
+        var question_answer_nums=ret[i][8];
+        var question_follower_nums=ret[i][9]; 
+        
+        var data='<div class="List-item">\
+                        <div class="ContentItem"><h3 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+notification_active_id+'" target="_blank">'+question_title+'</a></div></h3><div class="ContentItem-status"><span class="ContentItem-statusItem"><a href="/er/'+notification_sender_id+'">'+notification_sender_first_name+'</a></span><span class="ContentItem-statusItem">邀请你回答</span><span class="ContentItem-statusItem">'+notification_pub_date+' </span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div>\
+                    </div>';
+        $("#appendArea").append(data);
+    }
+}
 function appendQuestionElement(ret)
 {
     for (var i in ret)
@@ -2135,7 +2156,7 @@ function getMoreData()
             var start=nums;
             var end=start+STEP;
             var url="/ajax/topic/"+g_topic_id+"/"+order+"/"+start+"/"+end+"/";
-            var post_data='';
+            var post_data={type:g_type};
     }
     else if("mytopic"==g_module)
     {
@@ -2194,7 +2215,17 @@ function getMoreData()
             var post_data='';
         }
     }
-    else{
+    else if("answer_page"==g_module)
+    {
+        var nums=g_last_getmoredata_index;
+        var order=1;//pub_date
+        var start=nums;
+        var end=start+STEP;
+        var url='/ajax/answer_page/'+g_type+'/'+order+'/'+start+'/'+end+'/';
+        var post_data='';
+    }
+    else
+    {
         return;
     }
     if("true"==g_lock_ajax)
@@ -2221,7 +2252,10 @@ function getMoreData()
             }
             else if("topic"==g_module)
             {
-                appendAnswerElementList(ret,"topic","append");
+                if("unanswered"==g_type)
+                    appendQuestionElement(ret);
+                else
+                    appendAnswerElementList(ret,"topic","append");
             }
             else if("mytopic"==g_module)
             {
@@ -2249,6 +2283,13 @@ function getMoreData()
                 {
                     appendFollowOrMoreElement(ret);
                 }
+            }
+            else if("answer_page"==g_module)
+            {
+                if("invited"==g_type)
+                    appendInvitedQuestionElement(ret)
+                else
+                    appendQuestionElement(ret);
             }
             checkSets();
             g_last_getmoredata_index+=STEP;
@@ -2296,7 +2337,18 @@ function initElement()
     }
     else if("topic"==g_module)
     {
-        $(".Tabs.Topic-tabs").append('<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-hot"><a class="Tabs-link is-active" href="/topic/'+g_topic_id+'/hot">讨论</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-top"><a class="Tabs-link" href="/topic/'+g_topic_id+'/top-answers">精华</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-wait"><a class="Tabs-link" href="/topic/'+g_topic_id+'/unanswered">等待回答</a></li>');
+        var hot_active_class="";
+        var unanswered_active_class="";
+        if("hot"==g_type)
+            hot_active_class="is-active";
+        else if("unanswered"==g_type)
+            unanswered_active_class="is-active";
+        else
+        {
+            g_type="hot";
+            hot_active_class="is-active";
+        }
+        $(".Tabs.Topic-tabs").append('<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-hot"><a class="Tabs-link '+hot_active_class+'" href="/topic/'+g_topic_id+'/hot">讨论</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-wait"><a class="Tabs-link '+unanswered_active_class+'" href="/topic/'+g_topic_id+'/unanswered">等待回答</a></li>');
         $(".TopicCard-image").empty().append('<img alt="'+g_topic_name+'" src="'+g_topic_avatar+'">');
         $(".TopicCard-title").append(g_topic_name);
         $(".TopicCard-description").append(g_topic_detail);
@@ -2472,6 +2524,20 @@ function initElement()
         checkNextPage();
         checkHomePage();
     }
+    else if("answer_page"==g_module)
+    {
+        $(".ContentLayout-mainColumn .Tabs-item").each(function(){
+            if(g_type==$(this).attr("data-type"))
+                $(this).children(".Tabs-link").addClass("is-active");
+        });
+        if("all"==g_type)
+            var lists_header_text='全站的问题';
+        else if("invited"==g_type)
+            var lists_header_text='邀请我回答的问题';
+        else
+            var lists_header_text='为你推荐的问题';
+        $(".ContentLayout-mainColumn .Card .List .List-headerText").empty().append(lists_header_text);
+    }
     else if("article"==g_module)
     {
         $(".Post-Title").empty().append(g_article_title);
@@ -2577,6 +2643,7 @@ function initData()
         g_topic_detail=main_data.topic_detail;
         g_topic_follower_nums=main_data.topic_follower_nums;
         g_topic_followed=main_data.topic_followed;
+        g_type=main_data.type;
     }
     else if("mytopic"==g_module)
     {
@@ -2634,6 +2701,10 @@ function initData()
         g_article_author_mood=main_data.author_mood;
         g_article_author_sexual=main_data.author_sexual;
         g_followed=main_data.followed;
+    }
+    else if("answer_page"==g_module)
+    {
+        g_type=main_data.type;
     }
 } 
 

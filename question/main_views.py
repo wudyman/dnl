@@ -185,6 +185,11 @@ class AnswerView(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         return
     def get(self,request,*args,**kwargs):
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print('is moblie:',is_mobile)
+        if is_mobile:
+            self.template_name='question/t_answer_mobile.html'
         user=request.user
         if user.is_authenticated:
             logged='true'

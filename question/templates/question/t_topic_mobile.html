@@ -21,7 +21,7 @@
 </div>
 -->
 
-<main role="main" class="App-main" data-module="topic" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","topic_id":"{{context_topic.id}}","topic_name":"{{context_topic.name}}","topic_avatar":"{{context_topic.avatar}}","topic_detail":"{{context_topic.detail}}","topic_follower_nums":"{{context_topic.follower_nums}}","topic_followed":"{{followed}}"}'>
+<main role="main" class="App-main" data-module="topic" data-dfs-main='{"logged":"{{logged}}","type":"{{type}}","user_id":"{{user.id}}","topic_id":"{{context_topic.id}}","topic_name":"{{context_topic.name}}","topic_avatar":"{{context_topic.avatar}}","topic_detail":"{{context_topic.detail}}","topic_follower_nums":"{{context_topic.follower_nums}}","topic_followed":"{{followed}}"}'>
 <div class="Topic">
 <div class="Card">
 <div class="TopicCard">
@@ -43,20 +43,16 @@
 <button class="Button FollowButton TopicCard-followButton Button--primary" type="button" data-follow-type="topic"></button>
 </div>
 </div>
-<div>
-<div>
-<div class="Sticky" style=""></div>
 </div>
-</div>
+<div class="Topic-main" id="TopicMain"><div>
+<div class="Card">
+
 <div class="Topic-bar">
 <ul role="tablist" class="Tabs Topic-tabs">
 <!--append-->
 </ul>
 </div>
-</div>
-<div class="Topic-main" id="TopicMain"><div>
-<div class="Card">
-
+<div class="Sticky" style="margin:10px 0px;border-top: 1px solid #e7eaf1;"></div>
 <!--
 <div class="List-item TopicFeedList-header is-hide">
 <div class="TopicFeedList-sort">热门排序</div>

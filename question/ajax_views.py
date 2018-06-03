@@ -149,6 +149,7 @@ def get_topicinfo(request,topic_id):
 @csrf_exempt
 def get_topic_questions(request,topic_id,order,start,end):
     to_json=json.dumps('fail')
+    type=request.POST.get('type')
     topic=get_object_or_404(Topic,pk=topic_id)
     question_list=[]
     questions=topic.question.order_by('-pub_date')[int(start):int(end)]
@@ -156,24 +157,33 @@ def get_topic_questions(request,topic_id,order,start,end):
         for question in questions:
             print(question.title)
             temp=[]
-            temp.append(question.id) #0
-            temp.append(question.title) #1
-            temp.append(question.prima_topic_id) #2
-            temp.append(question.prima_topic_name) #3
-            if question.push_answer_id!=-1:
-                temp.append(question.push_answer_id) #4
-                answer=get_object_or_404(Answer,pk=question.push_answer_id)
-                if answer:
-                    print('has push answer')
-                    temp.append(answer.author.id) #5
-                    temp.append(answer.author.first_name) #6
-                    temp.append(answer.author.userprofile.avatar) #7
-                    temp.append(answer.author.userprofile.mood) #8
-                    temp.append(answer.content) #9
-                    temp.append(answer.like_nums) #10
-                    temp.append(answer.comment_nums) #11
-                    temp.append(str(answer.pub_date)) #12
+            if 'unanswered'==type:
+                if question.answer_nums<1:
+                    temp.append(question.id) #0
+                    temp.append(question.title) #1
+                    temp.append(str(question.pub_date))#2
+                    temp.append(question.answer_nums)#3
+                    temp.append(question.follower_nums)#4
                     question_list.append(temp)
+            else:
+                temp.append(question.id) #0
+                temp.append(question.title) #1
+                temp.append(question.prima_topic_id) #2
+                temp.append(question.prima_topic_name) #3
+                if question.push_answer_id!=-1:
+                    temp.append(question.push_answer_id) #4
+                    answer=get_object_or_404(Answer,pk=question.push_answer_id)
+                    if answer:
+                        print('has push answer')
+                        temp.append(answer.author.id) #5
+                        temp.append(answer.author.first_name) #6
+                        temp.append(answer.author.userprofile.avatar) #7
+                        temp.append(answer.author.userprofile.mood) #8
+                        temp.append(answer.content) #9
+                        temp.append(answer.like_nums) #10
+                        temp.append(answer.comment_nums) #11
+                        temp.append(str(answer.pub_date)) #12
+                        question_list.append(temp)
         to_json=json.dumps(question_list)
     return HttpResponse(to_json,content_type='application/json')
     
@@ -323,7 +333,7 @@ def get_er_all(request,erid,command):
                 temp.append(question.id)#0
                 temp.append(question.title)#1
                 temp.append(str(question.pub_date))#2
-                temp.append(question.be_answers.count())#3
+                temp.append(question.answer_nums)#3
                 temp.append(question.follower_nums)#4
                 temp_list.append(temp)
             to_json=json.dumps(temp_list)
