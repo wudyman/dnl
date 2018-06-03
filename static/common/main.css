@@ -997,7 +997,47 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
 .btn-primary:hover{background-color:#0d79d1;border: 1px solid #0d79d1;}
 .btn-primary:disabled{background:#0f88eb;}
 .btn-primary:disabled:hover{background:#2b6a9e;border: 1px solid #2b6a9e;}
+/************for 3rd modal****************/
+
+/************for green config****************/
+.Button--green{color:#228b22;border:1px solid #228b22}
+.Button--green:hover{background-color:rgba(0,100,0,.06)}
+.Button--green:disabled{background-color:transparent;background-color:initial}
+.Button--primary.Button--green{color:#fff;border-color:#228b22}
+.Button--primary.Button--green:hover{background-color:#006400}
+.Button--primary.Button--green,.Button--primary.Button--green:disabled{background:#228b22}
+.Button--blue .Button-icon,.Button--green .Button-icon,.Button--red .Button-icon{fill:currentColor}
+
+/*a:hover{color:#96b97d;}*/
+a:link {text-decoration: none} 
+a:visited {text-decoration: none} 
+a:active {text-decoration: none} 
+a:hover{color:#228b22;text-decoration: none}
+
+.Tag{color:#228b22; background: rgba(0,100,0,.05);}
+.Tag:hover{color:#228b22; text-decoration: none;background: rgba(0,100,0,.08);}
+.Tag-content:hover{border-bottom:none}
+
+.RichContent--unescapable.is-collapsed .ContentItem-rightButton {color: #228b22;}
+
+a.QuestionMainAction:hover{color:#228b22}
+
+.ContentItem-title a:hover{color:#228b22;text-decoration: none}
+
+    /******for green likebutton******/
+.Button-like-nouse:disabled{color:#228b22;opacity:unset}
+.Button-like-nouse:disabled:hover{color:#228b22;opacity:unset}
+
+.Tabs-link.is-active:after{background:#228b22;}
+.Button--link {color:#228b22;}
+
+.SimilarQuestions-item .Button {color: #2e8b57;}
+/*.SimilarQuestions-item .Button:hover {color: #228b22;border-bottom:1px solid rgba(34,119,34,.72);}*/
+.SimilarQuestions-item .Button:hover {color: #006400;border-bottom:1px solid rgba(00,100,00,.72);}
+
+.Icon{fill:currentColor;}
+.SiteLogo {fill: #228b22;}
 
 
-
+/************for green config****************/
 
