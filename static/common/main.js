@@ -1840,27 +1840,40 @@ function checkSettingPage()
         });
     });
 }
+cache_topics="";
+selectpicker_init="false";
 function checkSelectOption()
 {
     $('.selectpicker').on('show.bs.select', function (e) {
-        var bIsGetAll="1";
-        if("true"==g_lock_ajax)
-            return;
-        g_lock_ajax="true";
-        $.post("/ajax/topics/"+bIsGetAll+"/0/0/", function(ret){
-            if("fail"!=ret)
-            {
-                $('.selectpicker').empty();
-                for (var i in ret)
+        if("false"==selectpicker_init)
+        {
+            var bIsGetAll="1";
+            if("true"==g_lock_ajax)
+                return;
+            g_lock_ajax="true";
+            $.post("/ajax/topics/"+bIsGetAll+"/0/0/", function(ret){
+                if("fail"!=ret)
                 {
-                    var topic_id=ret[i][0];
-                    var topic_name=ret[i][1];
-                    $('.selectpicker').append("<option value=" + topic_id + ":" + topic_name + ">" + topic_name + "</option>");
-                }   
-                $('.selectpicker').selectpicker('refresh');
-            }  
-            g_lock_ajax="false";            
-        })
+                    //$('.selectpicker').empty();
+                    for (var i in ret)
+                    {
+                        var topic_id=ret[i][0];
+                        var topic_name=ret[i][1];
+                        $('.selectpicker').append("<option value=" + topic_id + ":" + topic_name + ">" + topic_name + "</option>");
+                        
+                    } 
+                    $('.selectpicker').selectpicker('refresh');
+                    selectpicker_init="true";
+                    cache_topics=ret;
+                }  
+                g_lock_ajax="false";            
+            });
+        }
+        else
+        {
+            console.log("select has init");
+        }
+        
     });
 }
 
@@ -2171,10 +2184,11 @@ function checkAsk()
     }
     function checkAskSelect()
     {
-        $('.selectpicker').on('changed.bs.select',function(e){
-            select_topic=$('.selectpicker').val();
+        $('.QuestionAsk .selectpicker').on('changed.bs.select',function(e){
+            select_topic=$('.QuestionAsk .selectpicker').val();
             console.log(select_topic.length);
             checkAskValid();
+            $(".bootstrap-select .dropdown-menu").trigger("click");
         });
     }
     function checkAskDetail()
@@ -2245,10 +2259,11 @@ function checkWrite()
     }
     function checkWriteSelect()
     {
-        $('.selectpicker').on('changed.bs.select',function(e){
-            select_topic=$('.selectpicker').val();
+        $('.Wirte-select .selectpicker').on('changed.bs.select',function(e){
+            select_topic=$('.Wirte-select .selectpicker').val();
             console.log(select_topic.length);
             checkWriteValid();
+            $(".bootstrap-select .dropdown-menu").trigger("click");
         });
     }
     function checkWriteContent()
