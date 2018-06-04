@@ -20,6 +20,65 @@ function delCookie(name)
     if(cval!=null)
         document.cookie= name + "="+cval+";expires="+exp.toGMTString();
 }
+
+
+function getDateDiff(dateStr) {
+    var timestamp = Date.parse(new Date(dateStr));
+    var publishTime = timestamp / 1000,
+    d_seconds,
+    d_minutes,
+    d_hours,
+    d_days,
+    timeNow = parseInt(new Date().getTime() / 1000),
+    d, 
+    date = new Date(publishTime * 1000),
+    Y = date.getFullYear(),
+    M = date.getMonth() + 1,
+    D = date.getDate(),
+    H = date.getHours(),
+    m = date.getMinutes(),
+    s = date.getSeconds();
+    //小于10的在前面补0
+    if (M < 10) {
+    M = '0' + M;
+    }
+    if (D < 10) {
+    D = '0' + D;
+    }
+    if (H < 10) {
+    H = '0' + H;
+    }
+    if (m < 10) {
+    m = '0' + m;
+    }
+    if (s < 10) {
+    s = '0' + s;
+    }
+ 
+    d = timeNow - publishTime;
+    d_days = parseInt(d / 86400);
+    d_hours = parseInt(d / 3600);
+    d_minutes = parseInt(d / 60);
+    d_seconds = parseInt(d);
+
+    if (d_days > 0 && d_days < 3) {
+    return d_days + '天前';
+    } else if (d_days <= 0 && d_hours > 0) {
+    return d_hours + '小时前';
+    } else if (d_hours <= 0 && d_minutes > 0) {
+    return d_minutes + '分钟前';
+    } else if (d_seconds < 60) {
+    if (d_seconds <= 0) {
+      return '刚刚';
+    } else {
+      return d_seconds + '秒前';
+    }
+    } else if (d_days >= 3 && d_days < 30) {
+    return M + '-' + D;// + ' ' + H + ':' + m;
+    } else if (d_days >= 30) {
+    return Y + '-' + M + '-' + D;// + ' ' + H + ':' + m;
+    }
+}
 function countDown()
 {
     if(0==g_countdown_secs)
@@ -87,11 +146,11 @@ function uploadImage(type,file)
             if("fail"!=url)
             {
                 if("forQuestion"==type)
-                $("#summernote_question").summernote('insertImage', url, 'image name'); // the insertImage API
+                    $("#summernote_question").summernote('insertImage', url, 'image name');
                 else if("forAnswer"==type)
-                    $("#summernote_answer").summernote('insertImage', url, 'image name'); // the insertImage API
+                    $("#summernote_answer").summernote('insertImage', url, 'image name');
                 else if("forWrite"==type)
-                    $("#summernote_write").summernote('insertImage', url, 'image name'); // the insertImage API
+                    $("#summernote_write").summernote('insertImage', url, 'image name');
                 else if(("forAvatar"==type)||("forTopicAvatar"==type))
                 {
                     $("#id_avatar").attr("src",url).attr("srcset",url);  
@@ -221,13 +280,13 @@ function appendCommentsElement(ret)
         var comment_content=ret[i][1];
         var comment_like_nums=ret[i][2];
         var comment_parent_id=ret[i][3];
-        var comment_pub_date=ret[i][4].split(".")[0];
+        var comment_pub_date=ret[i][4];//.split(".")[0];
         var comment_author_id=ret[i][5];
         var comment_author_name=ret[i][6];
         var comment_author_avatar=ret[i][7];
         var comment_author_mood=ret[i][8];
         
-        var element_data='<div class="CommentItem" data-comment-id="'+comment_id+'" data-comment-author-name="'+comment_author_name+'"><div><div class="CommentItem-meta"><span class="UserLink CommentItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+comment_author_id+'"><img class="Avatar UserLink-avatar" width="24" height="24" src="'+comment_author_avatar+'" alt="'+comment_author_name+'"></a></span><span class="UserLink"><a class="UserLink-link" target="_blank" href="'+comment_author_id+'">'+comment_author_name+'</a></span><span class="CommentItem-time">'+comment_pub_date+'</span></div><div class="RichText ztext CommentItem-content">'+comment_content+'</div><div class="CommentItem-footer"><button type="button" class="Button-like-nouse Button CommentItem-likeBtn Button--plain" data-like-type="comment" data-like-id="'+comment_id+'"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+comment_like_nums+'</button><button type="button" class="Button CommentItem-hoverBtn Button--plain"><svg viewBox="0 0 22 16" class="Icon Icon--reply Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M21.96 13.22c-1.687-3.552-5.13-8.062-11.637-8.65-.54-.053-1.376-.436-1.376-1.56V.677c0-.52-.635-.915-1.116-.52L.47 6.67C.18 6.947 0 7.334 0 7.763c0 .376.14.722.37.987 0 0 6.99 6.818 7.442 7.114.453.295 1.136.124 1.135-.5V13c.027-.814.703-1.466 1.532-1.466 1.185-.14 7.596-.077 10.33 2.396 0 0 .395.257.535.257.892 0 .614-.967.614-.967z"></path></g></svg>回复</button></div></div></div>';
+        var element_data='<div class="CommentItem" data-comment-id="'+comment_id+'" data-comment-author-name="'+comment_author_name+'"><div><div class="CommentItem-meta"><span class="UserLink CommentItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+comment_author_id+'"><img class="Avatar UserLink-avatar" width="24" height="24" src="'+comment_author_avatar+'" alt="'+comment_author_name+'"></a></span><span class="UserLink"><a class="UserLink-link" target="_blank" href="'+comment_author_id+'">'+comment_author_name+'</a></span><span class="CommentItem-time">'+getDateDiff(comment_pub_date)+'</span></div><div class="RichText ztext CommentItem-content">'+comment_content+'</div><div class="CommentItem-footer"><button type="button" class="Button-like-nouse Button CommentItem-likeBtn Button--plain" data-like-type="comment" data-like-id="'+comment_id+'">'+like_icon_svg+comment_like_nums+'</button><button type="button" class="Button CommentItem-hoverBtn Button--plain"><svg viewBox="0 0 22 16" class="Icon Icon--reply Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M21.96 13.22c-1.687-3.552-5.13-8.062-11.637-8.65-.54-.053-1.376-.436-1.376-1.56V.677c0-.52-.635-.915-1.116-.52L.47 6.67C.18 6.947 0 7.334 0 7.763c0 .376.14.722.37.987 0 0 6.99 6.818 7.442 7.114.453.295 1.136.124 1.135-.5V13c.027-.814.703-1.466 1.532-1.466 1.185-.14 7.596-.077 10.33 2.396 0 0 .395.257.535.257.892 0 .614-.967.614-.967z"></path></g></svg>回复</button></div></div></div>';
         $(".CommentList").append(element_data);
         if(0!=comment_parent_id)
         {
@@ -304,9 +363,9 @@ function appendAnswerElementList(ret,type,direction)
                                 <button class="'+expand_btn_class+'" type="button">展开阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
                                 </div>\
                                 <div class="ContentItem-actions">\
-                                    <span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'</button></span>\
-                                    <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button" data-answer-id="'+answer_id+'"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>'+answer_comment_nums+' 条评论</button>\
-                                    <div class="Popover ShareMenu ContentItem-action"><div class="" aria-haspopup="true" aria-expanded="false"><img class="ShareMenu-fakeQRCode" src="" alt="微信二维码"><button class="Button Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button></div></div>\
+                                    <span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span>\
+                                    <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button" data-answer-id="'+answer_id+'"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>\
+                                    '+share_button+'\
                                     <button class="'+collapse_btn_class+'" type="button"><span class="RichContent-collapsedText">收起</span><svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
                                 </div>\
                                 </div>';
@@ -352,11 +411,9 @@ function appendAnswerElementList(ret,type,direction)
                                 </div>\
                                 </div>\
                                 <div class="ContentItem-actions">\
-                                <span>\
-                                <button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'</button>\
-                                </span>\
-                                <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>'+answer_comment_nums+' 条评论</button>\
-                                <div class="Popover ShareMenu ContentItem-action"><div class="" aria-haspopup="true" aria-expanded="false"><img class="ShareMenu-fakeQRCode" src="" alt="微信二维码"><button class="Button Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button></div></div>\
+                                    <span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span>\
+                                    <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>\
+                                    '+share_button+'\
                                 </div>\
                                 </div>';
         }
@@ -442,13 +499,8 @@ function appendAnswerElementCard(ret,type,direction)
             <span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span>\
             </div>\
             </div>\
-            <div class="ContentItem-actions">\
-            <span>\
-            <button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'"><svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon 1Icon--like" style="height:16px;width:13px;" width="13" height="16" aria-hidden="true" data-reactid="433"><title data-reactid="434"></title><g data-reactid="435"><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>'+answer_like_nums+'</button>\
-            </span>\
-            <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>'+answer_comment_nums+' 条评论</button>\
-            <div class="Popover ShareMenu ContentItem-action"><div class="" aria-haspopup="true" aria-expanded="false"><img class="ShareMenu-fakeQRCode" src="" alt="微信二维码"><button class="Button Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button></div></div>\
-            </div></div></div></div>\
+            <div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>'+share_button+'</div>\
+            </div></div></div>\
             </div>';
                            
         if("prepend"==direction)
@@ -1475,12 +1527,12 @@ function checkHomePage()
             </div>\
             <div class="Profile-data">\
             <div class="Profile-datalist">\
-			<div class="Field List-item"><h6>昵称</h6><div class="Field-content" data-field-type="nickname"><div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>性别</h6><div class="Field-content" data-field-type="sexual"><div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content" data-field-type="mood"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>居住地</h6><div class="Field-content" data-field-type="residence"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>所在行业</h6><div class="Field-content" data-field-type="job"><div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
-			<div class="Field List-item"><h6>个人简介</h6><div class="Field-content" data-field-type="intro"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div></div></div>\
+			<div class="Field List-item"><h6>昵称</h6><div class="Field-content" data-field-type="nickname"><div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div>\
+			<div class="Field List-item"><h6>性别</h6><div class="Field-content" data-field-type="sexual"><div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div>\
+			<div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content" data-field-type="mood"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div>\
+			<div class="Field List-item"><h6>居住地</h6><div class="Field-content" data-field-type="residence"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div>\
+			<div class="Field List-item"><h6>所在行业</h6><div class="Field-content" data-field-type="job"><div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div>\
+			<div class="Field List-item"><h6>个人简介</h6><div class="Field-content" data-field-type="intro"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div>\
             </div></div>\
 			</div>';
             
@@ -1511,7 +1563,7 @@ function checkHomePage()
                     if("nickname"==field_type)
                     {
                         g_er_name=ret;
-                        var data='<div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                        var data='<div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div>';
                         $(".ProfileHeader-name").empty().append(g_er_name);                    
                     }
                     else if("sexual"==field_type)
@@ -1526,28 +1578,28 @@ function checkHomePage()
                             g_er_sexual="he";
                             g_er_sexual_han="男";
                         }
-                        var data='<div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                        var data='<div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div>';
                     }
                     else if("mood"==field_type)
                     {
                         g_er_mood=ret;
-                        var data='<div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                        var data='<div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div>';
                     }
                     else if("residence"==field_type)
                     {
                         g_er_residence=ret; 
-                        var data='<div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                        var data='<div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div>';
 
                     }
                     else if("job"==field_type)
                     {
                         g_er_job=ret;
-                        var data='<div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                        var data='<div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div>';
                     }
                     else if("intro"==field_type)
                     {
                         g_er_intro=ret;
-                        var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                        var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div>';
  
                     }
                     _this.parents(".Field-content").empty().append(data);
@@ -1562,27 +1614,27 @@ function checkHomePage()
             var field_type=$(this).parents(".Field-content").attr("data-field-type")
             if("nickname"==field_type)
             {
-                var data='<div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                var data='<div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div>';
             }
             else if("sexual"==field_type)
             {			
-                var data='<div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                var data='<div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div>';
             }
             else if("mood"==field_type)
             {
-                var data='<div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                var data='<div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div>';
             }
             else if("residence"==field_type)
             {
-                var data='<div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                var data='<div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div>';
             }
             else if("job"==field_type)
             {
-                var data='<div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                var data='<div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div>';
             }
             else if("intro"==field_type)
             {
-                var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button"><svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>修改</button></div>';
+                var data='<div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div>';
             }
             $(this).parents(".Field-content").empty().append(data);
             checkProfileModify();
@@ -2732,6 +2784,11 @@ function initCommon()
     messages="null";
     g_last_getmoredata_index=0;
     g_sticky_show="false";
+    
+    modify_icon_svg='<svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>';
+    like_icon_svg='<svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>';
+    comment_icon_svg='<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg>'
+    share_button='<div class="Popover ShareMenu ContentItem-action"><div class="" aria-haspopup="true" aria-expanded="false"><img class="ShareMenu-fakeQRCode" src="" alt="微信二维码"><button class="Button Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button></div></div>';
     $('#summernote_question').summernote({
         toolbar: [
         // [groupName, [list of button]]
