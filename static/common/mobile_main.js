@@ -99,31 +99,28 @@ function countDown()
 
 function getScrollTop() 
 { 
-var scrollTop = 0; 
-if (document.documentElement && document.documentElement.scrollTop) { 
-scrollTop = document.documentElement.scrollTop; 
-} 
-else if (document.body) { 
-scrollTop = document.body.scrollTop; 
-} 
-return scrollTop; 
+    var scrollTop = 0; 
+    if (document.documentElement && document.documentElement.scrollTop) { 
+    scrollTop = document.documentElement.scrollTop; 
+    } 
+    else if (document.body) { 
+    scrollTop = document.body.scrollTop; 
+    } 
+    return scrollTop; 
 } 
 function getClientHeight() { 
-var clientHeight = 0; 
-if (document.body.clientHeight && document.documentElement.clientHeight) { 
-clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight); 
-} 
-else { 
-clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight); 
-} 
-return clientHeight; 
+    var clientHeight = 0; 
+    if (document.body.clientHeight && document.documentElement.clientHeight) { 
+    clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight); 
+    } 
+    else { 
+    clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight); 
+    } 
+    return clientHeight; 
 } 
 function getScrollHeight() { 
-return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); 
+    return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); 
 } 
-
-
-
 
 function uploadImage(type,file)
 {
@@ -181,7 +178,6 @@ function scaleAndUploadImage(type,file,scale_value){
         img.src=this.result;              
         }
 }
-
 
 function getIndexImg(content){
     var imgReg=/<img.*?(?:>|\/>)/gi;
@@ -257,10 +253,7 @@ function appendNotificationElement(ret)
 
 function appendPopoverSearchElement(ret,keyword)
 {
-    var data='<div class="Popover-content Popover-content--bottom Popover-content--fixed Popover-content-enter Popover-content-enter-active" style="left: 212.4px; top: 43px;"><div class="Menu AutoComplete-menu SearchBar-menu" role="listbox">\
-        <div id="IdQuestion" class="AutoComplete-group"></div>\
-        <div class="AutoComplete-group"><div role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div><a class="SearchBar-searchLink" data-za-not-track-link="true" href="/search?type=all&amp;q='+keyword+'" target="_blank">查看全部搜索结果</a></div></div></div></div></div>\
-        </div></div>';
+    var data='<div class="Popover-content Popover-content--bottom Popover-content--fixed Popover-content-enter Popover-content-enter-active" style="left: 212.4px; top: 43px;"><div class="Menu AutoComplete-menu SearchBar-menu" role="listbox"><div id="IdQuestion" class="AutoComplete-group"></div><div class="AutoComplete-group"><div role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div><a class="SearchBar-searchLink" data-za-not-track-link="true" href="/search?type=all&amp;q='+keyword+'" target="_blank">查看全部搜索结果</a></div></div></div></div></div></div></div>';
     $('#searchInput').attr("data-content",data);
     $('#searchInput').popover('show');
     for (var i in ret)
@@ -356,19 +349,10 @@ function appendAnswerElementList(ret,type,direction)
                 var expand_btn_class="Button ContentItem-more ContentItem-rightButton Button--plain";
                 var collapse_btn_class="Button ContentItem-less ContentItem-rightButton Button--plain is-hide";
             }
-            var question_title_element="";                
-            var rich_content='<div class="RichContent '+richContent_class+'">\
-                                <div class="RichContent-expand">\
-                                <div class="RichContent-inner" '+RichContent_inner_attr+'><span class="RichText CopyrightRichText-richText">'+addClassImg(answer_content,'class="origin_image"')+'</span></div>\
-                                <button class="'+expand_btn_class+'" type="button">展开阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
-                                </div>\
-                                <div class="ContentItem-actions">\
-                                    <span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span>\
-                                    <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button" data-answer-id="'+answer_id+'"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>\
-                                    '+share_button+'\
-                                    <button class="'+collapse_btn_class+'" type="button"><span class="RichContent-collapsedText">收起</span><svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>\
-                                </div>\
-                                </div>';
+            var question_title_element="";
+            var expand_icon_svg='<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';
+            var collapsed_icon_svg='<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';            
+            var rich_content='<div class="RichContent '+richContent_class+'"><div class="RichContent-expand"><div class="RichContent-inner" '+RichContent_inner_attr+'><span class="RichText CopyrightRichText-richText">'+addClassImg(answer_content,'class="origin_image"')+'</span></div><button class="'+expand_btn_class+'" type="button">展开阅读全文'+expand_icon_svg+'</button></div><div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button" data-answer-id="'+answer_id+'"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>'+share_button+'<button class="'+collapse_btn_class+'" type="button"><span class="RichContent-collapsedText">收起</span>'+collapsed_icon_svg+'</button></div></div>';
         }
         else if(("topic"==type)||("homepage"==type))
         {
@@ -403,37 +387,11 @@ function appendAnswerElementList(ret,type,direction)
             }
             var index_img_url=getIndexImg(answer_content);
             var question_title_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>';
-            var rich_content='<div class="RichContent is-collapsed RichContent--withMask">\
-                                <div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'">\
-                                <div class="RichContent-cover RichContent-cover--mobile"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div></div>\
-                                <div class="RichContent-inner RichContent-inner--collapsed">\
-                                <span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span>\
-                                </div>\
-                                </div>\
-                                <div class="ContentItem-actions">\
-                                    <span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span>\
-                                    <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>\
-                                    '+share_button+'\
-                                </div>\
-                                </div>';
+            var rich_content='<div class="RichContent is-collapsed RichContent--withMask"><div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'"><div class="RichContent-cover RichContent-cover--mobile"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div></div><div class="RichContent-inner RichContent-inner--collapsed"><span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span></div></div><div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>'+share_button+'</div></div>';
         }
         
         
-        var appendElement='<div class="List-item ScrollIntoMark">\
-                <div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'">\
-                '+question_title_element+'\
-                <div class="ContentItem-meta">\
-                <div class="AuthorInfo AnswerItem-authorInfo AuthorInfo--plain">\
-                <span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/"><img class="Avatar AuthorInfo-avatar" width="24" height="24" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span>\
-                <div class="AuthorInfo-content">\
-                <div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/">'+author_name+'</a></span></div>\
-                <div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div>\
-                </div>\
-                </div>\
-                </div>\
-                '+rich_content+'\
-                </div>\
-                </div>';
+        var appendElement='<div class="List-item ScrollIntoMark"><div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'">'+question_title_element+'<div class="ContentItem-meta"><div class="AuthorInfo AnswerItem-authorInfo AuthorInfo--plain"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/"><img class="Avatar AuthorInfo-avatar" width="24" height="24" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/">'+author_name+'</a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div>'+rich_content+'</div></div>';
         
         if("prepend"==direction)
             $("#appendArea").prepend(appendElement);
@@ -474,34 +432,9 @@ function appendAnswerElementCard(ret,type,direction)
         var index_img_url=getIndexImg(answer_content);
         
         
-        
-        var appendElement='<div class="Card TopstoryItem TopstoryItem--experimentExpand ScrollIntoMark">\
-            <div class="Feed">\
-            <div class="FeedSource">\
-            <div class="FeedSource-firstline">来自话题: <span><a class="TopicLink" href="/topic/'+topic_id+'/" target="_blank">'+topic_name+'</a></span></div>\
-            <div class="AuthorInfo FeedSource-byline AuthorInfo--plain">\
-            <span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/"><img class="Avatar AuthorInfo-avatar" width="24" height="24" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span>\
-            <div class="AuthorInfo-content">\
-            <div class="AuthorInfo-head">\
-            <span class="UserLink AuthorInfo-name">\
-            <a class="UserLink-link" target="_blank" href="/er/'+author_id+'/">'+author_name+'</a>\
-            <a class="UserLink-badge" 111data-tooltip="优秀回答者" href="/er/'+author_id+'/" target="_blank"><svg viewBox="0 0 20 20" class="Icon Icon--badgeGlorious" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title>用户标识</title><g><g fill="none" fill-rule="evenodd">     <path d="M.64 11.39c1.068.895 1.808 2.733 1.66 4.113l.022-.196c-.147 1.384.856 2.4 2.24 2.278l-.198.016c1.387-.12 3.21.656 4.083 1.735l-.125-.154c.876 1.085 2.304 1.093 3.195.028l-.127.152c.895-1.068 2.733-1.808 4.113-1.66l-.198-.022c1.386.147 2.402-.856 2.28-2.238l.016.197c-.12-1.388.656-3.212 1.735-4.084l-.154.125c1.084-.876 1.093-2.304.028-3.195l.152.127c-1.068-.895-1.808-2.732-1.66-4.113l-.022.198c.147-1.386-.856-2.4-2.24-2.28l.198-.016c-1.387.122-3.21-.655-4.083-1.734l.125.153C10.802-.265 9.374-.274 8.483.79L8.61.64c-.895 1.068-2.733 1.808-4.113 1.662l.198.02c-1.386-.147-2.4.857-2.28 2.24L2.4 4.363c.12 1.387-.656 3.21-1.735 4.084l.154-.126C-.265 9.2-.274 10.626.79 11.517L.64 11.39z" fill="#FF9500"></path>     <path d="M10.034 12.96L7.38 14.58c-.47.286-.747.09-.618-.45l.72-3.024-2.36-2.024c-.418-.357-.318-.68.235-.725l3.1-.25 1.195-2.87c.21-.508.55-.513.763 0l1.195 2.87 3.1.25c.547.043.657.365.236.725l-2.362 2.024.72 3.025c.13.535-.143.74-.616.45l-2.654-1.62z" fill="#FFF"></path>   </g></g></svg></a>\
-            </span></div>\
-            <div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div>\
-            <div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'"><h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>\
-            <div class="ContentItem-meta"></div>\
-            <div class="RichContent is-collapsed RichContent--withMask">\
-            <div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'">\
-            <div class="RichContent-cover RichContent-cover--mobile">\
-            <div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div>\
-            </div>\
-            <div class="RichContent-inner RichContent-inner--collapsed" style="1max-height:400px">\
-            <span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span>\
-            </div>\
-            </div>\
-            <div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>'+share_button+'</div>\
-            </div></div></div>\
-            </div>';
+        var author_info_element='<div class="AuthorInfo FeedSource-byline AuthorInfo--plain"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/"><img class="Avatar AuthorInfo-avatar" width="24" height="24" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/">'+author_name+'</a><a class="UserLink-badge" 111data-tooltip="优秀回答者" href="/er/'+author_id+'/" target="_blank"><svg viewBox="0 0 20 20" class="Icon Icon--badgeGlorious" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title>用户标识</title><g><g fill="none" fill-rule="evenodd">     <path d="M.64 11.39c1.068.895 1.808 2.733 1.66 4.113l.022-.196c-.147 1.384.856 2.4 2.24 2.278l-.198.016c1.387-.12 3.21.656 4.083 1.735l-.125-.154c.876 1.085 2.304 1.093 3.195.028l-.127.152c.895-1.068 2.733-1.808 4.113-1.66l-.198-.022c1.386.147 2.402-.856 2.28-2.238l.016.197c-.12-1.388.656-3.212 1.735-4.084l-.154.125c1.084-.876 1.093-2.304.028-3.195l.152.127c-1.068-.895-1.808-2.732-1.66-4.113l-.022.198c.147-1.386-.856-2.4-2.24-2.28l.198-.016c-1.387.122-3.21-.655-4.083-1.734l.125.153C10.802-.265 9.374-.274 8.483.79L8.61.64c-.895 1.068-2.733 1.808-4.113 1.662l.198.02c-1.386-.147-2.4.857-2.28 2.24L2.4 4.363c.12 1.387-.656 3.21-1.735 4.084l.154-.126C-.265 9.2-.274 10.626.79 11.517L.64 11.39z" fill="#FF9500"></path>     <path d="M10.034 12.96L7.38 14.58c-.47.286-.747.09-.618-.45l.72-3.024-2.36-2.024c-.418-.357-.318-.68.235-.725l3.1-.25 1.195-2.87c.21-.508.55-.513.763 0l1.195 2.87 3.1.25c.547.043.657.365.236.725l-2.362 2.024.72 3.025c.13.535-.143.74-.616.45l-2.654-1.62z" fill="#FFF"></path>   </g></g></svg></a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div>';
+        var answer_element='<div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'"><h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2><div class="ContentItem-meta"></div><div class="RichContent is-collapsed RichContent--withMask"><div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'"><div class="RichContent-cover RichContent-cover--mobile"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div></div><div class="RichContent-inner RichContent-inner--collapsed" style="1max-height:400px"><span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span></div></div><div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>'+share_button+'</div></div>';
+        var appendElement='<div class="Card TopstoryItem TopstoryItem--experimentExpand ScrollIntoMark"><div class="Feed"><div class="FeedSource"><div class="FeedSource-firstline">来自话题: <span><a class="TopicLink" href="/topic/'+topic_id+'/" target="_blank">'+topic_name+'</a></span></div>'+author_info_element+answer_element+'</div></div></div>';
                            
         if("prepend"==direction)
             $("#appendArea").prepend(appendElement);
@@ -527,37 +460,7 @@ function appendTopicElement(ret)
         else
             var follow_button_data='<button class="Button Button--green FollowButton" type="button" data-follow-type="topic" data-topic-id="'+topic_id+'" data-followed="false">关注话题</button>';
 
-        var data='<div class="List-item">\
-                    <div class="ContentItem">\
-                    <div class="ContentItem-main">\
-                    <div class="ContentItem-image">\
-                    <span class="TopicLink TopicItem-avatar">\
-                    <a class="TopicLink-link" target="_blank" href="/topic/'+topic_id+'">\
-                    <img class="Avatar Avatar--large TopicLink-avatar" width="60" height="60" src="'+topic_avatar+'"  alt="'+topic_name+'" data-author-id="'+topic_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">\
-                    </a>\
-                    </span>\
-                    </div>\
-                    <div class="ContentItem-head">\
-                    <h2 class="ContentItem-title">\
-                    <div class="TopicItem-title">\
-                    <span class="TopicLink TopicItem-name">\
-                    <a class="TopicLink-link" target="_blank" href="/er/'+topic_id+'"><span class="RichText">'+topic_name+'</span></a>\
-                    </span>\
-                    </div>\
-                    </h2>\
-                    <div class="ContentItem-meta">\
-                    <div>\
-                    <div class="ContentItem-status">\
-                    <div class="ContentItem-statusItem">'+topic_detail+'</div>\
-                    </div>\
-                    </div>\
-                    </div>\
-                    </div>\
-                    <div class="ContentItem-extra">'+follow_button_data+'</div>\
-                    </div>\
-                    </div>\
-                    </div>\
-                    ';
+        var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="TopicLink TopicItem-avatar"><a class="TopicLink-link" target="_blank" href="/topic/'+topic_id+'"><img class="Avatar Avatar--large TopicLink-avatar" width="60" height="60" src="'+topic_avatar+'"  alt="'+topic_name+'" data-author-id="'+topic_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true"></a></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="TopicItem-title"><span class="TopicLink TopicItem-name"><a class="TopicLink-link" target="_blank" href="/er/'+topic_id+'"><span class="RichText">'+topic_name+'</span></a></span></div></h2><div class="ContentItem-meta"><div><div class="ContentItem-status"><div class="ContentItem-statusItem">'+topic_detail+'</div></div></div></div></div><div class="ContentItem-extra">'+follow_button_data+'</div></div></div></div>';
         $("#appendArea").append(data);
     }
 } 
@@ -570,39 +473,7 @@ function appendInviteElement(ret)
         var adept_avatar=ret[i][2];
         var adept_mood=ret[i][3];
 
-        var data='<div class="List-item">\
-                    <div class="ContentItem">\
-                    <div class="ContentItem-main">\
-                    <div class="ContentItem-image">\
-                    <span class="UserLink UserItem-avatar">\
-                    <a class="UserLink-link" target="_blank" href="/er/'+adept_id+'">\
-                    <img class="Avatar Avatar--large UserLink-avatar PeoplePopover" width="60" height="60" src="'+adept_avatar+'" srcset="'+adept_avatar+'" alt="'+adept_name+'" data-author-id="'+adept_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">\
-                    </a>\
-                    </span>\
-                    </div>\
-                    <div class="ContentItem-head">\
-                    <h2 class="ContentItem-title">\
-                    <div class="UserItem-title">\
-                    <span class="UserLink UserItem-name">\
-                    <a class="UserLink-link" target="_blank" href="/er/'+adept_id+'"><span class="RichText">'+adept_name+'</span></a>\
-                    </span>\
-                    </div>\
-                    </h2>\
-                    <div class="ContentItem-meta">\
-                    <div>\
-                    <div class="ContentItem-status">\
-                    <div class="ContentItem-statusItem">'+adept_mood+'</div>\
-                    </div>\
-                    </div>\
-                    </div>\
-                    </div>\
-                    <div class="ContentItem-extra">\
-                    <button class="Button Button--green Invite" type="button" data-receiver="'+adept_id+'">邀请回答</button>\
-                    </div>\
-                    </div>\
-                    </div>\
-                    </div>\
-                    ';
+        var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+adept_id+'"><img class="Avatar Avatar--large UserLink-avatar PeoplePopover" width="60" height="60" src="'+adept_avatar+'" srcset="'+adept_avatar+'" alt="'+adept_name+'" data-author-id="'+adept_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true"></a></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><a class="UserLink-link" target="_blank" href="/er/'+adept_id+'"><span class="RichText">'+adept_name+'</span></a></span></div></h2><div class="ContentItem-meta"><div><div class="ContentItem-status"><div class="ContentItem-statusItem">'+adept_mood+'</div></div></div></div></div><div class="ContentItem-extra"><button class="Button Button--green Invite" type="button" data-receiver="'+adept_id+'">邀请回答</button></div></div></div></div>';
         $(".QuestionInvitation-content.List").append(data);
     }
 }
@@ -623,17 +494,7 @@ function pushOneConversationMessagesElement(message_id)
     var message_content=$("#letterText").val();
     var date = new Date();
     var time=date.toLocaleTimeString(); 
-    var data='<div class="List-item Conversation-messages-item" data-action="delete_conversation_message" data-action-id="'+message_id+'">\
-        <a class="zm-item-link-avatar50" href="/er/'+g_user_id+'">\
-        <img class="zm-item-img-avatar50" src="'+g_user_avatar+'">\
-        </a>\
-        <div class="zm-pm-item-main"><a class="pm-touser author-link" title="verna wu" href="/er/'+g_user_id+'">我</a>：'+message_content+'</div>\
-        <div class="zg-gray zu-pm-item-meta">\
-        <span class="zg-gray zg-left">'+time+'</span>\
-        <a class="zg-link-litblue" href="javascript:;" name="delete">删除</a>\
-        </div>\
-        </div>\
-        ';   
+    var data='<div class="List-item Conversation-messages-item" data-action="delete_conversation_message" data-action-id="'+message_id+'"><a class="zm-item-link-avatar50" href="/er/'+g_user_id+'"><img class="zm-item-img-avatar50" src="'+g_user_avatar+'"></a><div class="zm-pm-item-main"><a class="pm-touser author-link" title="verna wu" href="/er/'+g_user_id+'">我</a>：'+message_content+'</div><div class="zg-gray zu-pm-item-meta"><span class="zg-gray zg-left">'+time+'</span><a class="zg-link-litblue" href="javascript:;" name="delete">删除</a></div></div>';   
     $(".List-item.Conversation-messages-head").after(data);
     checkSettingPage();
 }
@@ -654,21 +515,7 @@ function appendSettingPageElement(ret)
             if (conversation_delete_id==g_user_id) //user have delete this message
                 continue;
 
-            var data='<div class="List-item Conversations-item" data-action="delete_conversation" data-action-id="'+conversation_id+'">\
-                <a class="zm-item-link-avatar50" href="/er/'+er_id+'">\
-                <img class="zm-item-img-avatar50" src="'+er_avatar+'">\
-                </a>\
-                <div class="zm-pm-item-main"><a class="pm-touser author-link" title="verna wu" href="/er/'+er_id+'">'+er_name+'</a>：'+message_content+'</div>\
-                <div class="zg-gray zu-pm-item-meta">\
-                <span class="zg-gray zg-left">'+conversation_update+'</span>\
-                <a class="zg-link-litblue" href="/conversations/?i='+conversation_id+'">查看对话</a>\
-                <span class="zg-bull">|</span>\
-                <a class="zg-link-litblue" href="javascript:;" name="reply" data-receiver-id="'+er_id+'"  data-receiver-name="'+er_name+'" data-toggle="modal" data-target="#letterModal">回复</a>\
-                <span class="zg-bull">|</span>\
-                <a class="zg-link-litblue" href="javascript:;" name="delete">删除</a>\
-                </div>\
-                </div>\
-                ';
+            var data='<div class="List-item Conversations-item" data-action="delete_conversation" data-action-id="'+conversation_id+'"><a class="zm-item-link-avatar50" href="/er/'+er_id+'"><img class="zm-item-img-avatar50" src="'+er_avatar+'"></a><div class="zm-pm-item-main"><a class="pm-touser author-link" title="verna wu" href="/er/'+er_id+'">'+er_name+'</a>：'+message_content+'</div><div class="zg-gray zu-pm-item-meta"><span class="zg-gray zg-left">'+conversation_update+'</span><a class="zg-link-litblue" href="/conversations/?i='+conversation_id+'">查看对话</a><span class="zg-bull">|</span><a class="zg-link-litblue" href="javascript:;" name="reply" data-receiver-id="'+er_id+'"  data-receiver-name="'+er_name+'" data-toggle="modal" data-target="#letterModal">回复</a><span class="zg-bull">|</span><a class="zg-link-litblue" href="javascript:;" name="delete">删除</a></div></div>';
 
             $('#appendArea').append(data);
         }
@@ -689,17 +536,7 @@ function appendSettingPageElement(ret)
             if(er_id==g_user_id)
             er_name="我";
 
-            var data='<div class="List-item Conversation-messages-item" data-action="delete_conversation_message" data-action-id="'+message_id+'">\
-            <a class="zm-item-link-avatar50" href="/er/'+er_id+'">\
-            <img class="zm-item-img-avatar50" src="'+er_avatar+'">\
-            </a>\
-            <div class="zm-pm-item-main"><a class="pm-touser author-link" title="verna wu" href="/er/'+er_id+'">'+er_name+'</a>：'+message_content+'</div>\
-            <div class="zg-gray zu-pm-item-meta">\
-            <span class="zg-gray zg-left">'+message_pub_date+'</span>\
-            <a class="zg-link-litblue" href="javascript:;" name="delete">删除</a>\
-            </div>\
-            </div>\
-            ';
+            var data='<div class="List-item Conversation-messages-item" data-action="delete_conversation_message" data-action-id="'+message_id+'"><a class="zm-item-link-avatar50" href="/er/'+er_id+'"><img class="zm-item-img-avatar50" src="'+er_avatar+'"></a><div class="zm-pm-item-main"><a class="pm-touser author-link" title="verna wu" href="/er/'+er_id+'">'+er_name+'</a>：'+message_content+'</div><div class="zg-gray zu-pm-item-meta"><span class="zg-gray zg-left">'+message_pub_date+'</span><a class="zg-link-litblue" href="javascript:;" name="delete">删除</a></div></div>';
 
             $('#appendArea').append(data);
         }
@@ -738,9 +575,7 @@ function appendInvitedQuestionElement(ret)
         var question_answer_nums=ret[i][8];
         var question_follower_nums=ret[i][9]; 
         
-        var data='<div class="List-item">\
-                        <div class="ContentItem"><h3 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+notification_active_id+'" target="_blank">'+question_title+'</a></div></h3><div class="ContentItem-status"><span class="ContentItem-statusItem"><a href="/er/'+notification_sender_id+'">'+notification_sender_first_name+'</a></span><span class="ContentItem-statusItem">邀请你回答</span><span class="ContentItem-statusItem">'+notification_pub_date+' </span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div>\
-                    </div>';
+        var data='<div class="List-item"><div class="ContentItem"><h3 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+notification_active_id+'" target="_blank">'+question_title+'</a></div></h3><div class="ContentItem-status"><span class="ContentItem-statusItem"><a href="/er/'+notification_sender_id+'">'+notification_sender_first_name+'</a></span><span class="ContentItem-statusItem">邀请你回答</span><span class="ContentItem-statusItem">'+notification_pub_date+' </span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
         $("#appendArea").append(data);
     }
 }
@@ -780,9 +615,7 @@ function appendFollowOrMoreElement(ret)
                 var followed_each_html='<span class="FollowStatus">相互关注</span>';
             else
                 var followed_each_html='';
-            var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><div class="Popover"><div id="Popover-28784-64463-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-64463-content"><a class="UserLink-link" target="_blank" href="/er/'+people_id+'">\
-                    <img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+people_avatar+'" srcset="'+people_avatar+'" alt="'+people_name+'"></a></div></div></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><div class="Popover"><div id="Popover-28784-44728-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-44728-content"><a class="UserLink-link" data-za-detail-view-element_name="User" target="_blank" href="/er/'+people_id+'">'+people_name+'</a></div></div></span>'+followed_each_html+'</div></h2><div class="ContentItem-meta"><div><div class="RichText">'+people_mood+'</div>\
-                    <div class="ContentItem-status"><span class="ContentItem-statusItem">'+people_anwser_nums+' 回答</span><span class="ContentItem-statusItem">0 文章</span><span class="ContentItem-statusItem">'+people_follower_nums+' 关注者</span></div></div></div></div><div class="ContentItem-extra">'+followed_html+'</div></div></div></div>';
+            var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><div class="Popover"><div id="Popover-28784-64463-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-64463-content"><a class="UserLink-link" target="_blank" href="/er/'+people_id+'"><img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+people_avatar+'" srcset="'+people_avatar+'" alt="'+people_name+'"></a></div></div></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><div class="Popover"><div id="Popover-28784-44728-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-44728-content"><a class="UserLink-link" data-za-detail-view-element_name="User" target="_blank" href="/er/'+people_id+'">'+people_name+'</a></div></div></span>'+followed_each_html+'</div></h2><div class="ContentItem-meta"><div><div class="RichText">'+people_mood+'</div><div class="ContentItem-status"><span class="ContentItem-statusItem">'+people_anwser_nums+' 回答</span><span class="ContentItem-statusItem">0 文章</span><span class="ContentItem-statusItem">'+people_follower_nums+' 关注者</span></div></div></div></div><div class="ContentItem-extra">'+followed_html+'</div></div></div></div>';
             $("#appendArea").append(data);
         }
         else if("topics"==g_subcmd)
@@ -803,47 +636,21 @@ function appendFollowOrMoreElement(ret)
             var question_answer_nums=ret[i][3];
             var question_follower_nums=ret[i][4];
             var data='\
-                    <div class="List-item">\
-                    <div class="ContentItem" ><h2 class="ContentItem-title"><div class="QuestionItem-title">\
-                    <a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2>\
-                    <div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>\
-                    ';
+                    <div class="List-item"><div class="ContentItem" ><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
             $("#appendArea").append(data);
         }
     }
 }
 function appendFollowOrMoreHead()
 {       
-    var data='<div class="List-item NextPage" data-next-page-type="questions"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的问题</h2></div><div class="ContentItem-extra">'+g_followquestions_num+'</div></div></div></div>\
-                    <div class="List-item NextPage" data-next-page-type="topics"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的话题</h2></div><div class="ContentItem-extra">'+g_followtopics_num+'</div></div></div></div>';
+    var data='<div class="List-item NextPage" data-next-page-type="questions"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的问题</h2></div><div class="ContentItem-extra">'+g_followquestions_num+'</div></div></div></div><div class="List-item NextPage" data-next-page-type="topics"><div class="ContentItem"><div class="ContentItem-main"><div class="1ContentItem-head"><h2 class="1ContentItem-title">关注的话题</h2></div><div class="ContentItem-extra">'+g_followtopics_num+'</div></div></div></div>';
     $("#appendArea").append(data);
     checkNextPage();
 }
 function appendLetterModal()
 {
-    var data='<div class="modal fade" id="letterModal" tabindex="0" role="dialog" aria-labelledby="letterModalLabel" aria-hidden="true">\
-        <div class="modal-dialog lettermodal">\
-        <div class="Modal-inner">\
-        <h3 class="Modal-title">发送私信</h3>\
-        <div class="Modal-content">\
-        <div class="Messages-newDialog">\
-        <div class="Messages-receiver">\
-        <span class="Messages-receiverInfo" data-receiver-id="">who</span>\
-        </div>\
-        <div class="Messages-sendContent Input-wrapper Input-wrapper--spread Input-wrapper--multiline">\
-        <textarea id="letterTextModal" rows="5" class="Input" placeholder="私信内容"></textarea>\
-        </div>\
-        <span class="Messages-warning"></span>\
-        <div class="ModalButtonGroup ModalButtonGroup--vertical">\
-        <button class="Button Messages-sendButton Button--primary Button--green" type="button" onclick="sendLetterViaModal()">发送</button>\
-        </div>\
-        </div>\
-        </div>\
-        </div>\
-        <button class="Button Modal-closeButton Button--plain" data-dismiss="modal" aria-label="关闭" type="button"><svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg></button>\
-        </div>\
-        </div>\
-        ';
+    var close_icon_svg='<svg class="Zi Zi--Close Modal-closeIcon" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg>';
+    var data='<div class="modal fade" id="letterModal" tabindex="0" role="dialog" aria-labelledby="letterModalLabel" aria-hidden="true"><div class="modal-dialog lettermodal"><div class="Modal-inner"><h3 class="Modal-title">发送私信</h3><div class="Modal-content"><div class="Messages-newDialog"><div class="Messages-receiver"><span class="Messages-receiverInfo" data-receiver-id="">who</span></div><div class="Messages-sendContent Input-wrapper Input-wrapper--spread Input-wrapper--multiline"><textarea id="letterTextModal" rows="5" class="Input" placeholder="私信内容"></textarea></div><span class="Messages-warning"></span><div class="ModalButtonGroup ModalButtonGroup--vertical"><button class="Button Messages-sendButton Button--primary Button--green" type="button" onclick="sendLetterViaModal()">发送</button></div></div></div></div><button class="Button Modal-closeButton Button--plain" data-dismiss="modal" aria-label="关闭" type="button">'+close_icon_svg+'</button></div></div>';
 
     $("body").append(data);
     
@@ -1123,13 +930,7 @@ function checkExpandBtn(){
         {
             var svg='<svg class="Zi Zi--Close" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M13.486 12l5.208-5.207a1.048 1.048 0 0 0-.006-1.483 1.046 1.046 0 0 0-1.482-.005L12 10.514 6.793 5.305a1.048 1.048 0 0 0-1.483.005 1.046 1.046 0 0 0-.005 1.483L10.514 12l-5.208 5.207a1.048 1.048 0 0 0 .006 1.483 1.046 1.046 0 0 0 1.482.005L12 13.486l5.207 5.208a1.048 1.048 0 0 0 1.483-.006 1.046 1.046 0 0 0 .005-1.482L13.486 12z" fill-rule="evenodd"></path></svg>';
             $('.MobileAppHeader-expandBtn').empty().append(svg);
-            var data='<div><div class="MobileAppHeader-expandContainer"><span><div class="MobileAppHeader-expand">\
-                        <a href="/topic"><svg class="Zi Zi--Home" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M3 3.99C3 2.892 3.893 2 4.995 2h14.01C20.107 2 21 2.898 21 3.99v16.02c0 1.099-.893 1.99-1.995 1.99H4.995A1.997 1.997 0 0 1 3 20.01V3.99zM6 7c0 .556.449 1 1.002 1h9.996a.999.999 0 1 0 0-2H7.002C6.456 6 6 6.448 6 7zm0 5c0 .556.449 1 1.002 1h9.996a.999.999 0 1 0 0-2H7.002C6.456 11 6 11.448 6 12zm0 5c0 .556.446 1 .997 1h6.006c.544 0 .997-.448.997-1 0-.556-.446-1-.997-1H6.997C6.453 16 6 16.448 6 17z"></path></svg>话题</a>\
-                        <a href="/search/"><svg class="Zi Zi--Search" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M17.068 15.58a8.377 8.377 0 0 0 1.774-5.159 8.421 8.421 0 1 0-8.42 8.421 8.38 8.38 0 0 0 5.158-1.774l3.879 3.88c.957.573 2.131-.464 1.488-1.49l-3.879-3.878zm-6.647 1.157a6.323 6.323 0 0 1-6.316-6.316 6.323 6.323 0 0 1 6.316-6.316 6.323 6.323 0 0 1 6.316 6.316 6.323 6.323 0 0 1-6.316 6.316z" fill-rule="evenodd"></path></svg>搜索&nbsp;<span style="color:#cbcbcb">|</span>&nbsp;提问</a>\
-                        <a href="/notifications"><svg viewBox="0 0 24 24" class="Zi Zi--Setting" width="24" height="26" fill="#8590a6" style="height: 26px; width: 24px;"><title></title><g><path d="M18.868 15.185c-.164.096-.315.137-.452.137-.123 0-1.397-.26-1.617-.233-1.355.013-1.782 1.275-1.836 1.74-.055.454 0 .893.19 1.304.138.29.125.577-.067.85-.863.893-2.165 1.016-2.357 1.016-.123 0-.247-.055-.356-.15-.11-.097-.685-1.14-1.07-1.47-1.303-.954-2.246-.328-2.63 0-.397.33-.67.7-.835 1.126-.07.18-.18.302-.33.37-1.354.426-2.918-.92-3.014-1.056-.082-.11-.123-.22-.123-.356-.014-.138.383-1.276.342-1.688-.342-1.9-1.836-1.687-2.096-1.673-.303.014-.604.068-.92.178-.205.056-.396.03-.588-.054-.888-.462-1.137-2.332-1.11-2.51.055-.315.192-.52.438-.604.425-.164.81-.452 1.15-.85.932-1.262.344-2.25 0-2.634-.34-.356-.725-.645-1.15-.81-.137-.04-.233-.15-.328-.315C-.27 6.07.724 4.95.978 4.733c.255-.22.6-.055.723 0 .426.164.878.22 1.344.15C4.7 4.636 4.784 3.14 4.81 2.908c.015-.247-.11-1.29-.136-1.4-.027-.123-.014-.22.027-.315C5.318.178 7.073 0 7.223 0c.178 0 .33.055.44.178.108.124.63 1.11 1 1.4.398.338 1.582.83 2.588.013.398-.273.96-1.288 1.083-1.412.123-.123.26-.178.384-.178 1.56 0 2.33 1.03 2.438 1.22.083.124.096.248.07.37-.03.152-.33 1.153-.262 1.606.366 1.537 1.384 1.742 1.89 1.783.494.027 1.645-.357 1.81-.344.164.014.315.083.424.206.535.31.85 1.715.905 2.14.027.233-.014.44-.11.562-.11.138-1.165.714-1.48 1.112-.855.982-.342 2.25-.068 2.606.26.37 1.22.905 1.288.96.15.137.26.302.315.494.146 1.413-.89 2.387-1.07 2.47zm-8.905-.535c.644 0 1.246-.123 1.822-.356.575-.248 1.082-.59 1.493-1.016.425-.425.754-.92 1-1.495.247-.562.357-1.18.357-1.81 0-.66-.11-1.262-.356-1.825-.248-.562-.577-1.056-1.002-1.48-.41-.427-.918-.756-1.493-1.003-.576-.233-1.178-.357-1.822-.357-.644 0-1.247.124-1.81.357-.56.247-1.067.576-1.478 1.002-.425.425-.768.92-1 1.48-.247.564-.37 1.167-.37 1.826 0 .644.123 1.248.37 1.81.232.563.575 1.07 1 1.495.424.426.917.768 1.48 1.016.56.233 1.164.356 1.808.356z"></path></g></svg>通知&nbsp;<span style="color:#cbcbcb">|</span>&nbsp;私信&nbsp;<span style="color:#cbcbcb">|</span>&nbsp;设置</a>\
-                        <a href="/er/'+g_user_id+'"><svg class="Zi Zi--Profile" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M15.417 12.923c-.376.653-.837 1.281-.763 1.863.292 2.273 5.562 1.77 6.78 3.048.566.595.566.664.566 4.164-6.611-.07-13.363 0-20 0 .027-3.5 0-3.478.62-4.164 1.303-1.44 6.581-.715 6.78-3.133.045-.545-.38-1.114-.763-1.778C6.511 9.233 5.697 2 12 2s5.422 7.443 3.417 10.923z" fill-rule="evenodd"></path></svg>我的主页</a>\
-                        <a href="/exit/"><svg class="Zi Zi--Logout" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M2 11.999c0-2.756 1.154-5.417 3.167-7.3a1.266 1.266 0 0 1 1.73 1.847 7.396 7.396 0 0 0-2.367 5.453c0 4.119 3.35 7.47 7.47 7.47 4.119 0 7.47-3.351 7.47-7.47a7.41 7.41 0 0 0-2.279-5.37 1.266 1.266 0 0 1 1.76-1.819A9.923 9.923 0 0 1 22 12c0 5.513-4.486 10-10 10s-10-4.487-10-10zm8.699-.482V3.26a1.26 1.26 0 1 1 2.52 0v8.257a1.26 1.26 0 1 1-2.52 0z" fill-rule="evenodd"></path></svg>退出帐号</a>\
-                        <div class="MobileAppHeader-expandBackdrop"></div></div></span></div></div>';
+            var data='<div><div class="MobileAppHeader-expandContainer"><span><div class="MobileAppHeader-expand"><a href="/topic"><svg class="Zi Zi--Home" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M3 3.99C3 2.892 3.893 2 4.995 2h14.01C20.107 2 21 2.898 21 3.99v16.02c0 1.099-.893 1.99-1.995 1.99H4.995A1.997 1.997 0 0 1 3 20.01V3.99zM6 7c0 .556.449 1 1.002 1h9.996a.999.999 0 1 0 0-2H7.002C6.456 6 6 6.448 6 7zm0 5c0 .556.449 1 1.002 1h9.996a.999.999 0 1 0 0-2H7.002C6.456 11 6 11.448 6 12zm0 5c0 .556.446 1 .997 1h6.006c.544 0 .997-.448.997-1 0-.556-.446-1-.997-1H6.997C6.453 16 6 16.448 6 17z"></path></svg>话题</a><a href="/search/"><svg class="Zi Zi--Search" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M17.068 15.58a8.377 8.377 0 0 0 1.774-5.159 8.421 8.421 0 1 0-8.42 8.421 8.38 8.38 0 0 0 5.158-1.774l3.879 3.88c.957.573 2.131-.464 1.488-1.49l-3.879-3.878zm-6.647 1.157a6.323 6.323 0 0 1-6.316-6.316 6.323 6.323 0 0 1 6.316-6.316 6.323 6.323 0 0 1 6.316 6.316 6.323 6.323 0 0 1-6.316 6.316z" fill-rule="evenodd"></path></svg>搜索&nbsp;<span style="color:#cbcbcb">|</span>&nbsp;提问</a><a href="/notifications"><svg viewBox="0 0 24 24" class="Zi Zi--Setting" width="24" height="26" fill="#8590a6" style="height: 26px; width: 24px;"><title></title><g><path d="M18.868 15.185c-.164.096-.315.137-.452.137-.123 0-1.397-.26-1.617-.233-1.355.013-1.782 1.275-1.836 1.74-.055.454 0 .893.19 1.304.138.29.125.577-.067.85-.863.893-2.165 1.016-2.357 1.016-.123 0-.247-.055-.356-.15-.11-.097-.685-1.14-1.07-1.47-1.303-.954-2.246-.328-2.63 0-.397.33-.67.7-.835 1.126-.07.18-.18.302-.33.37-1.354.426-2.918-.92-3.014-1.056-.082-.11-.123-.22-.123-.356-.014-.138.383-1.276.342-1.688-.342-1.9-1.836-1.687-2.096-1.673-.303.014-.604.068-.92.178-.205.056-.396.03-.588-.054-.888-.462-1.137-2.332-1.11-2.51.055-.315.192-.52.438-.604.425-.164.81-.452 1.15-.85.932-1.262.344-2.25 0-2.634-.34-.356-.725-.645-1.15-.81-.137-.04-.233-.15-.328-.315C-.27 6.07.724 4.95.978 4.733c.255-.22.6-.055.723 0 .426.164.878.22 1.344.15C4.7 4.636 4.784 3.14 4.81 2.908c.015-.247-.11-1.29-.136-1.4-.027-.123-.014-.22.027-.315C5.318.178 7.073 0 7.223 0c.178 0 .33.055.44.178.108.124.63 1.11 1 1.4.398.338 1.582.83 2.588.013.398-.273.96-1.288 1.083-1.412.123-.123.26-.178.384-.178 1.56 0 2.33 1.03 2.438 1.22.083.124.096.248.07.37-.03.152-.33 1.153-.262 1.606.366 1.537 1.384 1.742 1.89 1.783.494.027 1.645-.357 1.81-.344.164.014.315.083.424.206.535.31.85 1.715.905 2.14.027.233-.014.44-.11.562-.11.138-1.165.714-1.48 1.112-.855.982-.342 2.25-.068 2.606.26.37 1.22.905 1.288.96.15.137.26.302.315.494.146 1.413-.89 2.387-1.07 2.47zm-8.905-.535c.644 0 1.246-.123 1.822-.356.575-.248 1.082-.59 1.493-1.016.425-.425.754-.92 1-1.495.247-.562.357-1.18.357-1.81 0-.66-.11-1.262-.356-1.825-.248-.562-.577-1.056-1.002-1.48-.41-.427-.918-.756-1.493-1.003-.576-.233-1.178-.357-1.822-.357-.644 0-1.247.124-1.81.357-.56.247-1.067.576-1.478 1.002-.425.425-.768.92-1 1.48-.247.564-.37 1.167-.37 1.826 0 .644.123 1.248.37 1.81.232.563.575 1.07 1 1.495.424.426.917.768 1.48 1.016.56.233 1.164.356 1.808.356z"></path></g></svg>通知&nbsp;<span style="color:#cbcbcb">|</span>&nbsp;私信&nbsp;<span style="color:#cbcbcb">|</span>&nbsp;设置</a><a href="/er/'+g_user_id+'"><svg class="Zi Zi--Profile" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M15.417 12.923c-.376.653-.837 1.281-.763 1.863.292 2.273 5.562 1.77 6.78 3.048.566.595.566.664.566 4.164-6.611-.07-13.363 0-20 0 .027-3.5 0-3.478.62-4.164 1.303-1.44 6.581-.715 6.78-3.133.045-.545-.38-1.114-.763-1.778C6.511 9.233 5.697 2 12 2s5.422 7.443 3.417 10.923z" fill-rule="evenodd"></path></svg>我的主页</a><a href="/exit/"><svg class="Zi Zi--Logout" fill="#8590a6" viewBox="0 0 24 24" width="24" height="24"><path d="M2 11.999c0-2.756 1.154-5.417 3.167-7.3a1.266 1.266 0 0 1 1.73 1.847 7.396 7.396 0 0 0-2.367 5.453c0 4.119 3.35 7.47 7.47 7.47 4.119 0 7.47-3.351 7.47-7.47a7.41 7.41 0 0 0-2.279-5.37 1.266 1.266 0 0 1 1.76-1.819A9.923 9.923 0 0 1 22 12c0 5.513-4.486 10-10 10s-10-4.487-10-10zm8.699-.482V3.26a1.26 1.26 0 1 1 2.52 0v8.257a1.26 1.26 0 1 1-2.52 0z" fill-rule="evenodd"></path></svg>退出帐号</a><div class="MobileAppHeader-expandBackdrop"></div></div></span></div></div>';
             $("body").addClass("MobileAppHeader-noScrollBody").append(data);
             
         }
@@ -1493,48 +1294,13 @@ function checkHomePage()
         g_cache_page=$("main").html();
         if($(this).hasClass("Profile-infosOia"))
         {
-            var data='\
-			<div class="Card">\
-            <div class="ProfileHeader-expandActions ProfileEdit-expandActions">\
-			<button class="1Button 1Button--primary Button--green ReturnHomePage" style="margin:3px" type="button">返回我的主页</button>\
-			</div>\
-            <div class="Profile-intro">\
-            <img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt="">\
-            </div>\
-            <div class="Profile-data">\
-            <div class="Profile-datalist">\
-			<div class="Field List-item"><h6>昵称</h6><div class="Field-content"><div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span></div></div></div>\
-			<div class="Field List-item"><h6>性别</h6><div class="Field-content"><div><span class="Field-text">'+g_er_sexual_han+'</span></div></div></div>\
-			<div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span></div></div></div>\
-			<div class="Field List-item"><h6>居住地</h6><div class="Field-content"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span></div></div></div>\
-			<div class="Field List-item"><h6>所在行业</h6><div class="Field-content"><div><span class="Field-text">'+g_er_job+'</span></div></div></div>\
-			<div class="Field List-item"><h6>个人简介</h6><div class="Field-content"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span></div></div></div>\
-            </div></div>\
-			</div>';
+            var data='<div class="Card"><div class="ProfileHeader-expandActions ProfileEdit-expandActions"><button class="1Button 1Button--primary Button--green ReturnHomePage" style="margin:3px" type="button">返回我的主页</button></div><div class="Profile-intro"><img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt=""></div><div class="Profile-data"><div class="Profile-datalist"><div class="Field List-item"><h6>昵称</h6><div class="Field-content"><div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span></div></div></div><div class="Field List-item"><h6>性别</h6><div class="Field-content"><div><span class="Field-text">'+g_er_sexual_han+'</span></div></div></div><div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span></div></div></div><div class="Field List-item"><h6>居住地</h6><div class="Field-content"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span></div></div></div><div class="Field List-item"><h6>所在行业</h6><div class="Field-content"><div><span class="Field-text">'+g_er_job+'</span></div></div></div><div class="Field List-item"><h6>个人简介</h6><div class="Field-content"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span></div></div></div></div></div></div>';
             $("main").empty().append(data);
             checkReturnHomePage();
         }
         else
         {
-            var data='\
-			<div class="Card">\
-            <div class="ProfileHeader-expandActions ProfileEdit-expandActions">\
-			<button class="1Button 1Button--primary Button--green ReturnHomePage" style="margin:3px" type="button">返回我的主页</button>\
-			</div>\
-            <div class="Profile-intro">\
-            <img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt="">\
-            <input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/>\
-            </div>\
-            <div class="Profile-data">\
-            <div class="Profile-datalist">\
-			<div class="Field List-item"><h6>昵称</h6><div class="Field-content" data-field-type="nickname"><div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div>\
-			<div class="Field List-item"><h6>性别</h6><div class="Field-content" data-field-type="sexual"><div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div>\
-			<div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content" data-field-type="mood"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div>\
-			<div class="Field List-item"><h6>居住地</h6><div class="Field-content" data-field-type="residence"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div>\
-			<div class="Field List-item"><h6>所在行业</h6><div class="Field-content" data-field-type="job"><div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div>\
-			<div class="Field List-item"><h6>个人简介</h6><div class="Field-content" data-field-type="intro"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div>\
-            </div></div>\
-			</div>';
+            var data='<div class="Card"><div class="ProfileHeader-expandActions ProfileEdit-expandActions"><button class="1Button 1Button--primary Button--green ReturnHomePage" style="margin:3px" type="button">返回我的主页</button></div><div class="Profile-intro"><img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt=""><input id="id_avatar_input" name="file" type="file" accept="image/png,image/jpeg" style="display: none;"/></div><div class="Profile-data"><div class="Profile-datalist"><div class="Field List-item"><h6>昵称</h6><div class="Field-content" data-field-type="nickname"><div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>性别</h6><div class="Field-content" data-field-type="sexual"><div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content" data-field-type="mood"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>居住地</h6><div class="Field-content" data-field-type="residence"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>所在行业</h6><div class="Field-content" data-field-type="job"><div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>个人简介</h6><div class="Field-content" data-field-type="intro"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div></div></div></div>';
             
             $("main").empty().append(data);
             checkReturnHomePage();
