@@ -1015,11 +1015,9 @@ function checkSearchSelect()
     $(".Menu-item").on("mouseenter mouseleave",function(event){
         if(event.type=="mouseenter")
         {
-            console.log(".Menu-item  enter");
             $(this).addClass("is-active");
         }
         else if(event.type=="mouseleave"){
-            console.log(".Menu-item  leave");
             $(this).removeClass("is-active");
         }
     
@@ -1027,38 +1025,57 @@ function checkSearchSelect()
 }
 function checkSearch()
 {
-    $("#searchInput").on("input",function(){
-        var keyword=$(this).val();
-        g_search_keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
-        if (""!=g_search_keyword)
+    var input_lock="false";
+    
+    $("#searchInput").off("keyup click");
+    $("#searchInput").on("keyup click",function(){
+        if("false"==input_lock)
         {
-            console.log("can search");
-            $(".Icon.Icon--search").css({"fill":"#0084ff"});
-            $("#search_button").on("click",function(e){
-                e.stopPropagation();
+            var keyword=$(this).val();
+            g_search_keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
+            if (""!=g_search_keyword)
+            {
+                $(".Icon.Icon--search").css({"fill":"#228b22"});
                 var type="all";
                 var order=1;
                 var start=0;
                 var end=5;
+                if("true"==g_lock_ajax)
+                    return;
+                g_lock_ajax="true";
                 $.post('/ajax/search/'+type+'/'+order+'/'+start+'/'+end+'/',{keyword:g_search_keyword},function(ret)
                 {
-                    console.log(ret);
                     if("fail"!=ret)
                     {                        
                         appendPopoverSearchElement(ret,g_search_keyword);
                         checkSearchSelect();
                     }
+                    g_lock_ajax="false";
                 });
-            });
-            
-
+            }
+            else
+            {
+                $(".Icon.Icon--search").css({"fill":"#afbdcf"});
+                $('#searchInput').popover('hide');
+            }
         }
-        else
-        {
-            console.log("can`t search");
-            $(".Icon.Icon--search").css({"fill":"#afbdcf"});
-            $('#searchInput').popover('hide');
-        }
+    });
+    
+        
+    $("#searchInput").off("blur");
+    $("#searchInput").on("blur",function(){
+        input_lock="false";
+        $("#searchInput").popover("hide");
+    });
+        
+    $("#searchInput").off("compositionstart");
+    $("#searchInput").on("compositionstart",function(e){
+        input_lock="true";
+    });
+    
+    $("#searchInput").off("compositionend");
+    $("#searchInput").on("compositionend",function(e){
+        input_lock="false";
     });    
 }
 
@@ -2324,6 +2341,7 @@ function checkSets()
     checkPopoverShow();
     checkInteractionButton();
     checkAnswerQuestion();
+    checkSearch();
     //checkExpandBtn();
 }
 function getComments(type,id)
@@ -3099,7 +3117,7 @@ $(document).click(function(e) {
     $("#NotificationPopover").popover("hide");
     $("#MessagePopover").popover("hide");
     $("#MenuPopover").popover("hide");
-    $("#searchInput").popover("hide");
+    //$("#searchInput").popover("hide");
 });
 window.onscroll = function (){ 
     if("false"==g_init_done)
