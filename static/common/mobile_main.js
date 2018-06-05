@@ -878,41 +878,56 @@ function checkSearchSelect()
     $(".Menu-item").on("mouseenter mouseleave",function(event){
         if(event.type=="mouseenter")
         {
-            console.log(".Menu-item  enter");
             $(this).addClass("is-active");
         }
         else if(event.type=="mouseleave"){
-            console.log(".Menu-item  leave");
             $(this).removeClass("is-active");
         }
     
     });
 }
 function checkSearch()
-{
-    $("#searchInput").on("input",function(){
-        var keyword=$(this).val();
-        g_search_keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
-        if (""!=g_search_keyword)
+{   
+    var input_lock="false";
+    
+    $("#searchInput").off("keyup click");
+    $("#searchInput").on("keyup click",function(){
+        if("false"==input_lock)
         {
-            console.log("can search");
-            $(".Icon.Icon--search").css({"fill":"#0084ff"});
-        }
-        else
-        {
-            console.log("can`t search");
-            $(".Icon.Icon--search").css({"fill":"#afbdcf"});
+            var keyword=$(this).val();
+            g_search_keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
+            if (""!=g_search_keyword)
+            {
+                $(".Icon.Icon--search").css({"fill":"#228b22"});
+                $("#appendArea").empty();
+                g_last_getmoredata_index=0;
+                getMoreData();
+            }
+            else
+            {
+                $(".Icon.Icon--search").css({"fill":"#afbdcf"});
+            }
         }
     });
     
-    $("#search_button").on("click",function(){
-        $("#appendArea").empty();
-        g_last_getmoredata_index=0;
-        getMoreData();
+        
+    $("#searchInput").off("blur");
+    $("#searchInput").on("blur",function(){
+        input_lock="false";
+    });
+        
+    $("#searchInput").off("compositionstart");
+    $("#searchInput").on("compositionstart",function(e){
+        input_lock="true";
     });
     
-    //$(".Tabs-link").off("click");
-    $(".Tabs-link").click(function(){
+    $("#searchInput").off("compositionend");
+    $("#searchInput").on("compositionend",function(e){
+        input_lock="false";
+    });  
+    
+    $(".Tabs-link").off("click");
+    $(".Tabs-link").on("click",function(){
         $(".Tabs-link").removeClass("is-active");
         $(this).addClass("is-active");
         g_search_type=$(this).attr("data-search-type");
@@ -920,6 +935,7 @@ function checkSearch()
         g_last_getmoredata_index=0;
         getMoreData();
     });
+    
 }
 
 function checkExpandBtn(){

@@ -678,6 +678,9 @@ label {
     -moz-box-sizing: content-box;
     box-sizing: content-box;
 }
+/*********for search*****************/
+.Highlight em{font-style:normal;color:#f75659}
+/**************************/
 /*----for write----------------*/
 .Layout {
     background: #fff;
@@ -1083,7 +1086,8 @@ button.CountingDownButton {color: #228b22;border: 1px solid #228b22;}
     border:1px solid #228b22;-webkit-box-shadow:none;box-shadow:none;
 
 }
-
+.MobileSearchPage input{position:absolute; padding:7px 50px 7px 10px;width:100%;font-size:14px;line-height:17px;background-color:#e1eaf2;border:1px solid;border-radius:4px;box-sizing:border-box;}
+.MobileSearchPage input:focus{border:1px solid #228b22;outline:none}
 /************for green config****************/
 
 

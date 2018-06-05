@@ -672,7 +672,6 @@ def search(request,type,order,start,end):
     to_json=json.dumps('fail')
     keyword=request.POST.get('keyword')
     if keyword:
-        print(keyword)
         if type=='all' or type=='question':
             questions=Question.objects.filter(title__contains=keyword)[int(start):int(end)]
             if questions:
