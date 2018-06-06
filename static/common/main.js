@@ -752,6 +752,7 @@ function appendLetterModal()
         $(".PeoplePopover").popover("hide");
     });
 }
+/*
 function appendAuthorCard()
 {
     if("more"==g_list_type)
@@ -789,6 +790,7 @@ function appendAuthorCard()
         });
     }
 }
+*/
 function invite()
 {
     $(".Invite").each(function(index,element){
@@ -2382,6 +2384,7 @@ function getMoreData()
             var end=2;
             var url='/ajax/answers/'+g_question_id+'/'+order+'/'+start+'/'+end+'/';
             var post_data='';
+            return;
         }
         else
         {
@@ -2577,7 +2580,8 @@ function initElement()
         var g_question_detail_scale_imge=addClassImg(g_question_detail,'class="origin_image"');
         $(".QuestionHeader-detail .RichText").html(g_question_detail_scale_imge);
         
-        $(".QuestionFollowStatus-counts .NumberBoard-value").empty().text(g_question_follower_nums);
+        $(".QuestionFollowStatus-counts .NumberBoard-value:first").empty().text(g_question_follower_nums);
+        $(".QuestionFollowStatus-counts .NumberBoard-value:last").empty().text(g_question_click_nums);
         var g_push_answer_content_scale_imge=addClassImg(g_push_answer_content,'class="origin_image"');
         $(".AnswerCard .ContentItem.AnswerItem .RichText.CopyrightRichText-richText").html(g_push_answer_content_scale_imge);
         
@@ -2591,7 +2595,7 @@ function initElement()
         $(".AnswerCard .Voters").children("button").empty().text(g_push_answer_like_nums+" 人赞同了该回答");
         $(".QuestionMainAction").attr("href","/question/"+g_question_id).empty().text("查看全部 "+g_question_answer_nums+" 个回答");
         $(".Card.AllAnswers .List-headerText").empty().text("全部 "+g_question_answer_nums+" 个回答");
-        appendAuthorCard();
+        //appendAuthorCard();
     }
     else if("topic"==g_module)
     {
@@ -2921,6 +2925,7 @@ function initData()
         g_question_detail=$("main").attr("data-question-detail");
         g_question_follower_nums=main_data.question_follower_nums;
         g_question_answer_nums=main_data.question_answer_nums;
+        g_question_click_nums=main_data.question_click_nums;
         g_question_followed=main_data.question_followed;
         g_push_answer_id=main_data.answer_id;
         g_push_answer_like_nums=main_data.answer_like_nums;
