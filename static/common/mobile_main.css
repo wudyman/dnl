@@ -1015,6 +1015,37 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
 .btn-primary:disabled{background:#0f88eb;}
 .btn-primary:disabled:hover{background:#2b6a9e;border: 1px solid #2b6a9e;}
 /************for 3rd modal****************/
+/********fro homepage edit***************/
+.MaskAvatar {
+    z-index: 1;
+    -webkit-transition: opacity .2s ease-in;
+    transition: opacity .2s ease-in;
+    margin-top:-124px;
+    /*margin-left:100px;*/
+    margin-bottom:30px;
+}
+.MaskAvatar-content {
+    z-index: 5;
+    opacity: .9;
+    color: #fff;
+    text-align: center;
+    margin-top:-100px;
+}
+.MaskAvatar-cameraIcon {
+    margin-bottom: 0px;
+    fill: #fff;
+}
+.MaskAvatar-black {
+    z-index: -1;
+    opacity: .4;
+    width:120px;
+    height:120px;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background: #000;
+}
 
 /************for green config****************/
 .btn:disabled{cursor:default;opacity:.2}
