@@ -72,6 +72,8 @@ class QuestionView(generic.ListView):
             self.template_name='question/t_question_mobile.html'
         question_id=self.kwargs.get('question_id')
         question=get_object_or_404(Question,pk=question_id)
+        question.click_nums+=1
+        question.save()
         user=request.user
         if user.is_authenticated:
             logged='true'
@@ -85,6 +87,11 @@ class QuestionView(generic.ListView):
         push_answer_id=request.GET.get('ans')
         if push_answer_id:
             push_answer=get_object_or_404(Answer,pk=push_answer_id)
-            return render(request,self.template_name,{'user':user,'context_question':question,'followed':followed,'push_answer':push_answer,'logged':logged})
+            more_answers=question.be_answers.filter(push_index__gte=0).exclude(id=push_answer_id)[0:2]
+            if more_answers:
+                return render(request,self.template_name,{'user':user,'context_question':question,'followed':followed,'push_answer':push_answer,'more_answers':more_answers,'logged':logged})
+            else:
+                return render(request,self.template_name,{'user':user,'context_question':question,'followed':followed,'push_answer':push_answer,'logged':logged})
         else:
             return render(request,self.template_name,{'user':user,'context_question':question,'followed':followed,'logged':logged})
+                

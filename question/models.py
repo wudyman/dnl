@@ -4,13 +4,14 @@ import django.utils.timezone as timezone
 
 # Create your models here.
 class Question(models.Model):
+    push_index=models.IntegerField(default=0)
     title=models.CharField(max_length=100)
     detail=models.CharField(max_length=500,null=True,blank=True)
     quizzer=models.ForeignKey(User,related_name='selfquestions',on_delete=models.CASCADE)
     answer_nums=models.IntegerField(default=0)
     follower=models.ManyToManyField(User,related_name='followquestions',blank=True)
     follower_nums=models.IntegerField(default=0)
-    hot=models.IntegerField(default=0)
+    click_nums=models.IntegerField(default=0)
     prima_topic_id=models.IntegerField(default=-1)
     prima_topic_name=models.CharField(max_length=100,default='null')
     push_answer_id=models.IntegerField(default=-1)
@@ -19,10 +20,11 @@ class Question(models.Model):
         return self.title
         
 class Article(models.Model):
+    push_index=models.IntegerField(default=0)
     title=models.CharField(max_length=100)
     content=models.CharField(default='',max_length=10000)
     author=models.ForeignKey(User,related_name='selfarticles',on_delete=models.CASCADE)
-    hot=models.IntegerField(default=0)
+    click_nums=models.IntegerField(default=0)
     prima_topic_id=models.IntegerField(default=-1)
     prima_topic_name=models.CharField(max_length=100,default='null')
     like_nums=models.IntegerField(default=0)
@@ -48,6 +50,7 @@ class Topic(models.Model):
 
 class Answer(models.Model):
     #id=models.BigAutoField(primary_key=True)
+    push_index=models.IntegerField(default=0)
     question=models.ForeignKey(Question,related_name='be_answers',on_delete=models.CASCADE)
     author=models.ForeignKey(User,related_name='answers',on_delete=models.CASCADE)
     content=models.CharField(default='',max_length=10000)
