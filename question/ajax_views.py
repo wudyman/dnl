@@ -14,10 +14,86 @@ from PIL import Image
 from django.db import connection
 from . import dysms
 import uuid
+#from itertools import chain
 
 @csrf_exempt
 def get_questions(request,order,start,end):
     to_json=json.dumps('fail')
+    #querysets_test=Question.objects.order_by('pub_date')[0:5].values_list("topics__name","id","title","be_answers__content","be_answers__like_nums","be_answers__comment_nums"
+    #,"be_answers__pub_date","be_answers__author__id","be_answers__author__first_name","be_answers__author__userprofile__avatar","be_answers__author__userprofile__avatar")
+    print('start')
+    questions=Question.objects.order_by('pub_date').exclude(push_answer_id=-1)[int(start):int(end)].values_list("id","title","topics__id","topics__name")
+    #print(questions1.values_list("push_answer_id",flat=True))
+    questions_list=[]
+    temp_question=[]
+
+    topic_list=[]
+    last_question_id=0
+    '''
+    tmp=[]
+    length=len(questions)
+    for i,question in enumerate(questions):
+        if last_question_id!=question[0]:
+            if i!=0:
+                questions_list.append(tmp)                
+            tmp=[]
+            tmp.append(question)
+            last_question_id=question[0]
+            if i==length-1:
+                questions_list.append(tmp)
+        else:
+            tmp.append(question)
+            if i==length-1:
+                questions_list.append(tmp)
+    '''
+    tmp=[]
+    length=len(questions)
+    for i,question in enumerate(questions):
+        if last_question_id!=question[0]:
+            if i!=0:
+                item.append(topic_list)
+                questions_list.append(item)                
+            #tmp=[]
+            item=[]
+            item.append(question[0])
+            item.append(question[1])
+            topic_list=[]
+            topic=[]
+            topic.append(question[2])
+            topic.append(question[3])
+            topic_list.append(topic)
+            
+            if i==length-1:
+                #questions_list.append(tmp)
+                item.append(topic_list)
+                questions_list.append(item)  
+                
+            last_question_id=question[0]
+        else:
+            topic=[]
+            topic.append(question[2])
+            topic.append(question[3])
+            topic_list.append(topic)
+            #tmp.append(question)
+            if i==length-1:
+                #questions_list.append(tmp)
+                item.append(topic_list)
+                questions_list.append(item)                
+        
+            
+    print(questions_list)
+    #print(topic_list)
+    '''
+    push_answers_id_list=[]
+    for question in questions1:
+        push_answers_id_list.append(question.push_answer_id)
+    push_answers=Answer.objects.filter(pk__in=push_answers_id_list).values_list("id","content","like_nums","comment_nums"
+    ,"pub_date","author__id","author__first_name","author__userprofile__avatar","author__userprofile__avatar")
+    print(questions1)
+    print(push_answers)
+    '''
+    print('end')
+    
     questions=Question.objects.order_by('-pub_date')[int(start):int(end)]
     if questions:
         question_list=[]

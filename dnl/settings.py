@@ -106,6 +106,26 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#print sqlite
+LOGGING = {
+
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+    }
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
