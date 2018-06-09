@@ -122,6 +122,9 @@ function getScrollHeight() {
     return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight); 
 } 
 
+
+
+
 function uploadImage(type,file)
 {
     if("forAvatar"==type)
@@ -178,6 +181,7 @@ function scaleAndUploadImage(type,file,scale_value){
         img.src=this.result;              
         }
 }
+
 
 function getIndexImg(content){
     var imgReg=/<img.*?(?:>|\/>)/gi;
@@ -324,7 +328,7 @@ function appendAnswerElementList(ret,type,direction)
 {
     for(i in ret)
     {
-        if(("all"==type)||("more"==type))
+        if(("all"==type))
         {
             var answer_id=ret[i][0];
             var answer_content=ret[i][1]+"<p>&nbsp;</p><p>&nbsp;</p>";
@@ -335,20 +339,12 @@ function appendAnswerElementList(ret,type,direction)
             var author_name=ret[i][6];
             var author_avatar=ret[i][7];
             var author_mood=ret[i][8];
-            if("all"==type)
-            {
+
                 var richContent_class="RichContent--unescapable";
                 var RichContent_inner_attr="";
                 var expand_btn_class="Button ContentItem-more ContentItem-rightButton Button--plain is-hide";
                 var collapse_btn_class="Button ContentItem-less ContentItem-rightButton Button--plain";
-            }
-            else if("more"==type)
-            {
-                var richContent_class="RichContent--unescapable is-collapsed";
-                var RichContent_inner_attr='style="max-height:400px"';
-                var expand_btn_class="Button ContentItem-more ContentItem-rightButton Button--plain";
-                var collapse_btn_class="Button ContentItem-less ContentItem-rightButton Button--plain is-hide";
-            }
+
             var question_title_element="";
             var expand_icon_svg='<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';
             var collapsed_icon_svg='<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';            
@@ -360,17 +356,25 @@ function appendAnswerElementList(ret,type,direction)
             {
                 var question_id=ret[i][0];
                 var question_title=ret[i][1];
-                var topic_id=ret[i][2];
-                var topic_name=ret[i][3];
+                var question_push_answer_id=ret[i][2];
+                var topics=ret[i][3];
                 var answer_id=ret[i][4];
-                var author_id=ret[i][5];
-                var author_name=ret[i][6];
-                var author_avatar=ret[i][7];
-                var author_mood=ret[i][8];
-                var answer_content=ret[i][9];
-                var answer_like_nums=ret[i][10];
-                var answer_comment_nums=ret[i][11];
-                var answer_pub_date=ret[i][12].split(".")[0];
+                var answer_push_index=ret[i][5];
+                var answer_content=ret[i][6];
+                var answer_like_nums=ret[i][7];
+                var answer_comment_nums=ret[i][8];
+                var author_id=ret[i][9];
+                var author_name=ret[i][10];
+                var author_avatar=ret[i][11];
+                var author_mood=ret[i][12];
+                var author_sexual=ret[i][13];
+                var author_question_nums=ret[i][14];
+                var author_article_nums=ret[i][15];
+                var author_answer_nums=ret[i][16];
+                var author_followto_nums=ret[i][17];
+                var author_follower_nums=ret[i][18];
+                var author_followtopic_nums=ret[i][19];
+                var author_followquestion_nums=ret[i][20];
             }
             else if("homepage"==type)
             {
@@ -405,36 +409,43 @@ function appendAnswerElementCard(ret,type,direction)
     {
         var question_id=ret[i][0];
         var question_title=ret[i][1];
-        var topic_id=ret[i][2];
-        var topic_name=ret[i][3];
+        var question_push_answer_id=ret[i][2];
+        var topics=ret[i][3];
         var answer_id=ret[i][4];
-        var author_id=ret[i][5];
-        var author_name=ret[i][6];
-        var author_avatar=ret[i][7];
-        var author_mood=ret[i][8];
-        var answer_content=ret[i][9];
-        var answer_like_nums=ret[i][10];
-        var answer_comment_nums=ret[i][11];
-        var answer_pub_date=ret[i][12].split(".")[0];
-        if("has_topic_question_title"==type)
-        {   
-            var topic_element='<div class="Feed-title"><div class="Feed-meta"><span class="Feed-meta-item">来自话题:<span><a href="/topic/'+topic_id+'/" class="TopicPopover" data-topic-id="'+topic_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+topic_name+'</a></div></div>';
-            var question_element='<h2 class="ContentItem-title"><a href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></h2>';
-        }
-        else if("has_question_title"==type)
+        var answer_push_index=ret[i][5];
+        var answer_content=ret[i][6];
+        var answer_like_nums=ret[i][7];
+        var answer_comment_nums=ret[i][8];
+        var author_id=ret[i][9];
+        var author_name=ret[i][10];
+        var author_avatar=ret[i][11];
+        var author_mood=ret[i][12];
+        var author_sexual=ret[i][13];
+        var author_question_nums=ret[i][14];
+        var author_article_nums=ret[i][15];
+        var author_answer_nums=ret[i][16];
+        var author_followto_nums=ret[i][17];
+        var author_follower_nums=ret[i][18];
+        var author_followtopic_nums=ret[i][19];
+        var author_followquestion_nums=ret[i][20];
+        
+        var topics_data='';
+        for(i in topics)
         {
-            var topic_element='';
-            var question_element='<h2 class="ContentItem-title"><a href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></h2>';
+            var topic_id=topics[i][0];
+            var topic_name=topics[i][1];
+            topics_data+='<span style="margin-right:15px;"><a href="/topic/'+topic_id+'/" class="1TopicPopover" data-topic-id="'+topic_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+topic_name+'</a></span>';
         }
-    
-        //for(var j=0;j<100;j++)
-        //    answer_content=answer_content+"&nbsp;";
+        //var topic_element='<div class="Feed-title"><div class="Feed-meta"><span class="Feed-meta-item">'+topics_data+'</span></div></div>';
+        var topic_element='<div class="FeedSource-firstline"><span>'+topics_data+'</span></div>';
+        var question_element='<h2 class="ContentItem-title"><a href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></h2>';
+
         var index_img_url=getIndexImg(answer_content);
         
-        
+        //<div class="FeedSource-firstline">来自话题: <span><a class="TopicLink" href="/topic/'+topic_id+'/" target="_blank">'+topic_name+'</a></span></div>
         var author_info_element='<div class="AuthorInfo FeedSource-byline AuthorInfo--plain"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/"><img class="Avatar AuthorInfo-avatar" width="24" height="24" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/">'+author_name+'</a><a class="UserLink-badge" 111data-tooltip="优秀回答者" href="/er/'+author_id+'/" target="_blank"><svg viewBox="0 0 20 20" class="Icon Icon--badgeGlorious" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title>用户标识</title><g><g fill="none" fill-rule="evenodd">     <path d="M.64 11.39c1.068.895 1.808 2.733 1.66 4.113l.022-.196c-.147 1.384.856 2.4 2.24 2.278l-.198.016c1.387-.12 3.21.656 4.083 1.735l-.125-.154c.876 1.085 2.304 1.093 3.195.028l-.127.152c.895-1.068 2.733-1.808 4.113-1.66l-.198-.022c1.386.147 2.402-.856 2.28-2.238l.016.197c-.12-1.388.656-3.212 1.735-4.084l-.154.125c1.084-.876 1.093-2.304.028-3.195l.152.127c-1.068-.895-1.808-2.732-1.66-4.113l-.022.198c.147-1.386-.856-2.4-2.24-2.28l.198-.016c-1.387.122-3.21-.655-4.083-1.734l.125.153C10.802-.265 9.374-.274 8.483.79L8.61.64c-.895 1.068-2.733 1.808-4.113 1.662l.198.02c-1.386-.147-2.4.857-2.28 2.24L2.4 4.363c.12 1.387-.656 3.21-1.735 4.084l.154-.126C-.265 9.2-.274 10.626.79 11.517L.64 11.39z" fill="#FF9500"></path>     <path d="M10.034 12.96L7.38 14.58c-.47.286-.747.09-.618-.45l.72-3.024-2.36-2.024c-.418-.357-.318-.68.235-.725l3.1-.25 1.195-2.87c.21-.508.55-.513.763 0l1.195 2.87 3.1.25c.547.043.657.365.236.725l-2.362 2.024.72 3.025c.13.535-.143.74-.616.45l-2.654-1.62z" fill="#FFF"></path>   </g></g></svg></a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div>';
         var answer_element='<div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'"><h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2><div class="ContentItem-meta"></div><div class="RichContent is-collapsed RichContent--withMask"><div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'"><div class="RichContent-cover RichContent-cover--mobile"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div></div><div class="RichContent-inner RichContent-inner--collapsed" style="1max-height:400px"><span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span></div></div><div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>'+share_button+'</div></div>';
-        var appendElement='<div class="Card TopstoryItem TopstoryItem--experimentExpand ScrollIntoMark"><div class="Feed"><div class="FeedSource"><div class="FeedSource-firstline">来自话题: <span><a class="TopicLink" href="/topic/'+topic_id+'/" target="_blank">'+topic_name+'</a></span></div>'+author_info_element+answer_element+'</div></div></div>';
+        var appendElement='<div class="Card TopstoryItem TopstoryItem--experimentExpand ScrollIntoMark"><div class="Feed"><div class="FeedSource">'+topic_element+author_info_element+answer_element+'</div></div></div>';
                            
         if("prepend"==direction)
             $("#appendArea").prepend(appendElement);
@@ -585,9 +596,9 @@ function appendQuestionElement(ret)
     {
         var question_id=ret[i][0];
         var question_title=ret[i][1];
-        var question_pubdate=ret[i][2].split(".")[0];
-        var question_answer_nums=ret[i][3];
-        var question_follower_nums=ret[i][4];
+        var question_answer_nums=ret[i][2];
+        var question_follower_nums=ret[i][3];
+        var question_pubdate=ret[i][4].split(".")[0];
         
         var data='<div class="List-item"><div class="ContentItem"><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
         $("#appendArea").append(data);
@@ -2004,15 +2015,7 @@ function getMoreData()
     }
     else if("question"==g_module)
     {
-        if("more"==g_list_type)
-        {
-            var order=1;
-            var start=0;
-            var end=2;
-            var url='/ajax/answers/'+g_question_id+'/'+order+'/'+start+'/'+end+'/';
-            var post_data='';
-        }
-        else
+        if("all"==g_list_type)
         {
             var nums=g_last_getmoredata_index;
             var order=1;//pub_date
@@ -2021,6 +2024,8 @@ function getMoreData()
             var url='/ajax/answers/'+g_question_id+'/'+order+'/'+start+'/'+end+'/';
             var post_data='';
         }
+        else
+            return;
     }
     else if("topic"==g_module)
     {
@@ -2113,12 +2118,7 @@ function getMoreData()
             }
             else if("question"==g_module)
             {
-                if("more"==g_list_type)
-                {
-                    appendAnswerElementList(ret,"more","append");
-                    $("#appendArea").append('<div class="List-item NoMoreData is-hide"><div class="ContentItem" ><div class="ContentItem-status"  style="text-align:center">没有更多内容</div></div></div>');
-                }
-                else
+                if("all"==g_list_type)
                 {
                     appendAnswerElementList(ret,"all","append");
                 }
@@ -2181,9 +2181,10 @@ function initElement()
 {
     if("question"==g_module)
     {
+        
         $('title').text(g_question_title+" - "+SITE);
-        $(".QuestionHeader-title").append('<a href="/question/'+g_question_id+'">'+g_question_title+'</a>');
-        if("true"==g_question_followed)
+        $(".QuestionHeader-title").empty().append('<a href="/question/'+g_question_id+'">'+g_question_title+'</a>');
+        if($.inArray(""+g_question_id,g_user_follow_questions_list)>=0)//if("true"==g_question_followed)
         {
             $(".FollowButton").removeClass("Button--green is-hide").addClass("Button--grey").attr("data-question-id",g_question_id).attr("data-followed","true").text("已关注");
         }
@@ -2191,22 +2192,37 @@ function initElement()
         {
             $(".FollowButton").removeClass("Button--grey is-hide").addClass("Button--green").attr("data-question-id",g_question_id).attr("data-followed","false").text("关注问题");
         }
-        var g_question_detail_scale_imge=addClassImg(g_question_detail,'class="origin_image"');
-        $(".QuestionHeader .RichText.CopyrightRichText-richText").html(g_question_detail_scale_imge);
         
-        var g_push_answer_content_scale_imge=addClassImg(g_push_answer_content,'class="origin_image"');
-        $(".AnswerCard .ContentItem.AnswerItem .RichText.CopyrightRichText-richText").html(g_push_answer_content_scale_imge);
+        $(".RichText img").addClass("origin_image");
         
-        $(".AnswerCard .ContentItem.AnswerItem").attr("data-answer-id",g_push_answer_id).attr("data-comment-nums",g_push_answer_comment_nums);
-        $(".AnswerCard .ContentItem.AnswerItem .Button-like-nouse").attr("data-like-type","answer").attr("data-like-id",g_push_answer_id).children("svg").after(g_push_answer_like_nums);
-        $(".AnswerCard .ContentItem.AnswerItem .Zi--Comment").parent().after(g_push_answer_comment_nums);
+        $(".QuestionFollowStatus-counts .NumberBoard-value:first").empty().text(g_question_follower_nums);
+        $(".QuestionFollowStatus-counts .NumberBoard-value:last").empty().text(g_question_click_nums);
+
+        var follow_botton=$(".Card.AnswerAuthor .FollowButton");
+        var author_id=follow_botton.attr("data-er-id");
+        var author_sexual=follow_botton.attr("data-er-sexual");
+        console.log(author_id);
+        console.log(author_sexual);
+        if("f"==author_sexual)
+        {
+            var who="she";
+            var who_han="她";
+        }
+        else
+        {
+            var who="he";
+            var who_han="他";
+        }
+        if($.inArray(""+author_id,g_user_follow_peoples_list)>=0)
+        {
+            follow_botton.removeClass("Button--green").addClass("Button--grey").attr("data-followed","true").attr("data-who",who).text("已关注");
+        }
+        else
+        {
+            follow_botton.removeClass("Button--grey").addClass("Button--green").attr("data-followed","false").attr("data-who",who).text("关注"+who_han);
+        }
         
-        $(".AnswerCard .AuthorInfo-avatarWrapper .UserLink-link").attr("href","/er/"+g_author_id).attr("data-author-id",g_author_id).children("img").attr("alt",g_author_name).attr("src",g_author_avatar);
-        $(".AnswerCard .AuthorInfo-name .UserLink-link").attr("href","/er/"+g_author_id).empty().text(g_author_name);
-        $(".AnswerCard .AuthorInfo-detail .AuthorInfo-badgeText").empty().text(g_author_mood);
-        $(".AnswerCard .Voters").children("button").empty().text(g_push_answer_like_nums+" 人赞同了该回答");
-        $(".QuestionMainAction").attr("href","/question/"+g_question_id).empty().text("查看全部 "+g_question_answer_nums+" 个回答");
-        $(".Card.AllAnswers .List-headerText").empty().text("全部 "+g_question_answer_nums+" 个回答");
+        
     }
     else if("topic"==g_module)
     {
@@ -2485,6 +2501,43 @@ function initData()
         g_user_id=main_data.user_id;
         g_user_name=main_data.user_name;
         g_user_avatar=main_data.user_avatar;
+        
+        g_user_follow_peoples_list=[];
+        g_user_follow_topics_list=[];
+        g_user_follow_questions_list=[];
+        
+        var user_token=g_user_id.substr(g_user_id.length-3,g_user_id.length);       
+        
+        var user_follow_peoples=getCookie("ufp"+user_token);
+        var user_follow_topics=getCookie("uft"+user_token);
+        var user_follow_questions=getCookie("ufq"+user_token);
+        if((null==user_follow_peoples)||(null==user_follow_questions)||(null==user_follow_topics))
+        {
+            console.log("no follows");            
+            var url='/ajax/user_follows/'+g_user_id+'/';
+            $.post(url,function(ret){
+                if("fail"!=ret)
+                {
+                    console.log(ret);
+                    var expire=1*10;//7*24*60*60
+                    setCookie("ufp"+user_token,String(ret[0]).replace(",","A"),expire);
+                    setCookie("uft"+user_token,String(ret[1]).replace(",","A"),expire);
+                    setCookie("ufq"+user_token,String(ret[2]).replace(",","A"),expire);
+                    
+                    initData();
+                    initElement();
+                }
+            });
+        }
+        else
+        {
+            g_user_follow_peoples_list=user_follow_peoples.split("A");
+            g_user_follow_topics_list=user_follow_topics.split("A");
+            g_user_follow_questions_list=user_follow_questions.split("A");
+            if($.inArray(""+g_user_id,g_user_follow_peoples_list)>=0)
+                console.log("true");
+        }
+
     }
     if("question"==g_module)
     {
@@ -2493,17 +2546,9 @@ function initData()
         g_question_detail=$("main").attr("data-question-detail");
         g_question_follower_nums=main_data.question_follower_nums;
         g_question_answer_nums=main_data.question_answer_nums;
-        g_question_followed=main_data.question_followed;
-        g_push_answer_id=main_data.answer_id;
-        g_push_answer_like_nums=main_data.answer_like_nums;
-        g_push_answer_comment_nums=main_data.answer_comment_nums;
-        g_push_answer_content=$("main").attr("data-answer-content");
-        g_author_id=main_data.author_id;
-        g_author_name=main_data.author_name;
-        g_author_avatar=main_data.author_avatar;
-        g_author_mood=main_data.author_mood;
+        g_question_click_nums=main_data.question_click_nums;
 
-        if(""!=g_push_answer_id)
+        if($(".Question-main .Card.AnswerCard").length>0)
             g_list_type="more";
         else
             g_list_type="all";
