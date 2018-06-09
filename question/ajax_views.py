@@ -212,8 +212,9 @@ def get_topic_questions(request,topic_id,order,start,end):
                         item.append(topic_list)
                         questions_list.append(item)                
                             
-            push_answers=Answer.objects.filter(pk__in=push_answers_id_list).values_list("id","content","like_nums","comment_nums"
-            ,"author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood")
+            push_answers=Answer.objects.filter(pk__in=push_answers_id_list).values_list("id","push_index","content","like_nums","comment_nums"
+            ,"author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums"
+            ,"author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
             
             questions_list_len=len(questions_list)
             push_answers_len=len(push_answers)

@@ -2929,7 +2929,6 @@ function initData()
         g_question_follower_nums=main_data.question_follower_nums;
         g_question_answer_nums=main_data.question_answer_nums;
         g_question_click_nums=main_data.question_click_nums;
-        g_question_followed=main_data.question_followed;
 
         if($(".Question-main .Card.AnswerCard").length>0)
             g_list_type="more";
