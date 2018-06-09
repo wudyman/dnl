@@ -12,8 +12,6 @@ class Question(models.Model):
     follower=models.ManyToManyField(User,related_name='followquestions',blank=True)
     follower_nums=models.IntegerField(default=0)
     click_nums=models.IntegerField(default=0)
-    prima_topic_id=models.IntegerField(default=-1)
-    prima_topic_name=models.CharField(max_length=100,default='null')
     push_answer_id=models.IntegerField(default=-1)
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):
@@ -91,10 +89,16 @@ class UserProfile(models.Model):
     phone=models.CharField(default='0',max_length=11)
     intro=models.CharField(default='brief introduce myself',max_length=500)
     follower=models.ManyToManyField(User,related_name='followto',blank=True)
-    follower_nums=models.IntegerField(default=0)
     sexual=models.CharField(default='f',max_length=1)
     residence=models.CharField(default='',max_length=100)
     job=models.CharField(default='',max_length=100)
+    question_nums=models.IntegerField(default=0)
+    article_nums=models.IntegerField(default=0)
+    answer_nums=models.IntegerField(default=0)
+    followto_nums=models.IntegerField(default=0)
+    follower_nums=models.IntegerField(default=0)
+    followtopic_nums=models.IntegerField(default=0)
+    followquestion_nums=models.IntegerField(default=0)
     def __str__(self):
         return self.user.username
 

@@ -37,16 +37,13 @@ class IndexView(generic.ListView):
             return HttpResponseRedirect('/signinup/')
         else:
             quizzer=request.user #get_object_or_404(User,username=request.user)
-            topics=request.POST.getlist('topics_selected')#('topics')#
-            prima_topic_array=topics[0].split(':')
+            topics=request.POST.getlist('topics_selected')#('topics')
 
             question=Question()
             question.title=request.POST.get('title')
             #question.topic=request.POST.get('topics')
             question.detail=request.POST.get('detail')
-            question.quizzer=quizzer
-            question.prima_topic_id=int(prima_topic_array[0])
-            question.prima_topic_name=prima_topic_array[1]            
+            question.quizzer=quizzer         
             question.save()
             
             for topic_str in topics:
@@ -71,27 +68,29 @@ class QuestionView(generic.ListView):
         if is_mobile:
             self.template_name='question/t_question_mobile.html'
         question_id=self.kwargs.get('question_id')
+        push_answer_id=request.GET.get('ans')
+        #question_data=Question.filter(id=question_id).values_list("id","title")
         question=get_object_or_404(Question,pk=question_id)
-        question.click_nums+=1
-        question.save()
+        #question.click_nums+=1
+        #question.save()
         user=request.user
         if user.is_authenticated:
             logged='true'
-            if question.follower.filter(pk=user.pk).exists():
-                followed='true'
-            else:
-                followed='false'
         else:
             logged='false'
-            followed='false'
         push_answer_id=request.GET.get('ans')
         if push_answer_id:
-            push_answer=get_object_or_404(Answer,pk=push_answer_id)
-            more_answers=question.be_answers.filter(push_index__gte=0).exclude(id=push_answer_id)[0:2]
-            if more_answers:
-                return render(request,self.template_name,{'user':user,'context_question':question,'followed':followed,'push_answer':push_answer,'more_answers':more_answers,'logged':logged})
-            else:
-                return render(request,self.template_name,{'user':user,'context_question':question,'followed':followed,'push_answer':push_answer,'logged':logged})
+            push_index=question.push_index
+            more_answers_sets=question.be_answers.filter(push_index__gte=0).values("id","push_index","content","like_nums","comment_nums","pub_date"
+            ,"author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums"
+            ,"author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")[0:3]
+            
+            push_answer_sets=question.be_answers.filter(id=push_answer_id).values("id","push_index","content","like_nums","comment_nums","pub_date"
+            ,"author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums"
+            ,"author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
+            more_answers=''
+            push_answer=push_answer_sets[0]
+            return render(request,self.template_name,{'user':user,'context_question':question,'push_answer':push_answer,'more_answers':more_answers_sets,'logged':logged})
         else:
-            return render(request,self.template_name,{'user':user,'context_question':question,'followed':followed,'logged':logged})
+            return render(request,self.template_name,{'user':user,'context_question':question,'logged':logged})
                 
