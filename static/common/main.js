@@ -413,7 +413,7 @@ function appendAnswerElementList(ret,type,direction)
 {
     for(i in ret)
     {
-        if(("all"==type)||("more"==type))
+        if(("all"==type))
         {
             var answer_id=ret[i][0];
             var answer_content=ret[i][1]+"<p>&nbsp;</p><p>&nbsp;</p>";
@@ -424,20 +424,12 @@ function appendAnswerElementList(ret,type,direction)
             var author_name=ret[i][6];
             var author_avatar=ret[i][7];
             var author_mood=ret[i][8];
-            if("all"==type)
-            {
-                var richContent_class="RichContent--unescapable";
-                var RichContent_inner_attr="";
-                var expand_btn_class="Button ContentItem-more ContentItem-rightButton Button--plain is-hide";
-                var collapse_btn_class="Button ContentItem-less ContentItem-rightButton Button--plain";
-            }
-            else if("more"==type)
-            {
-                var richContent_class="RichContent--unescapable is-collapsed";
-                var RichContent_inner_attr='style="max-height:400px"';
-                var expand_btn_class="Button ContentItem-more ContentItem-rightButton Button--plain";
-                var collapse_btn_class="Button ContentItem-less ContentItem-rightButton Button--plain is-hide";
-            }
+
+            var richContent_class="RichContent--unescapable";
+            var RichContent_inner_attr="";
+            var expand_btn_class="Button ContentItem-more ContentItem-rightButton Button--plain is-hide";
+            var collapse_btn_class="Button ContentItem-less ContentItem-rightButton Button--plain";
+
             var question_title_element="";
             var expand_icon_svg='<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';
             var collapsed_icon_svg='<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';
@@ -449,17 +441,25 @@ function appendAnswerElementList(ret,type,direction)
             {
                 var question_id=ret[i][0];
                 var question_title=ret[i][1];
-                var topic_id=ret[i][2];
-                var topic_name=ret[i][3];
+                var question_push_answer_id=ret[i][2];
+                var topics=ret[i][3];
                 var answer_id=ret[i][4];
-                var author_id=ret[i][5];
-                var author_name=ret[i][6];
-                var author_avatar=ret[i][7];
-                var author_mood=ret[i][8];
-                var answer_content=ret[i][9];
-                var answer_like_nums=ret[i][10];
-                var answer_comment_nums=ret[i][11];
-                var answer_pub_date=ret[i][12].split(".")[0];
+                var answer_push_index=ret[i][5];
+                var answer_content=ret[i][6];
+                var answer_like_nums=ret[i][7];
+                var answer_comment_nums=ret[i][8];
+                var author_id=ret[i][9];
+                var author_name=ret[i][10];
+                var author_avatar=ret[i][11];
+                var author_mood=ret[i][12];
+                var author_sexual=ret[i][13];
+                var author_question_nums=ret[i][14];
+                var author_article_nums=ret[i][15];
+                var author_answer_nums=ret[i][16];
+                var author_followto_nums=ret[i][17];
+                var author_follower_nums=ret[i][18];
+                var author_followtopic_nums=ret[i][19];
+                var author_followquestion_nums=ret[i][20];
             }
             else if("homepage"==type)
             {
@@ -480,8 +480,8 @@ function appendAnswerElementList(ret,type,direction)
             var rich_content='<div class="RichContent is-collapsed"><div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'"><div class="RichContent-cover"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div><div class="RichContent-cover-play is-hide">'+play_icon_svg+'</div></div><div class="RichContent-inner"><span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span></div></div><div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>'+share_button+'</div></div>';
         }
         
-        
-        var appendElement='<div class="List-item ScrollIntoMark"><div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'">'+question_title_element+'<div class="ContentItem-meta"><div class="AnswerItem-meta AnswerItem-meta--related"><div class="AuthorInfo"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link PeoplePopover" href="/er/'+author_id+'"  data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"><img class="Avatar AuthorInfo-avatar" width="40" height="40" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div></div>'+rich_content+'</div></div>';
+        var people_popover_data='data-author-id="'+author_id+'" data-author-name="'+author_name+'" data-author-avatar="'+author_avatar+'" data-author-mood="'+author_mood+'" data-author-sexual="'+author_sexual+'" data-author-answer-nums="'+author_answer_nums+'" data-author-article-nums="'+author_article_nums+'" data-author-follower-nums="'+author_follower_nums+'"';
+        var appendElement='<div class="List-item ScrollIntoMark"><div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'">'+question_title_element+'<div class="ContentItem-meta"><div class="AnswerItem-meta AnswerItem-meta--related"><div class="AuthorInfo"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link PeoplePopover" href="/er/'+author_id+'" '+people_popover_data+' data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"><img class="Avatar AuthorInfo-avatar" width="40" height="40" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div></div>'+rich_content+'</div></div>';
         
         if("prepend"==direction)
             $("#appendArea").prepend(appendElement);
@@ -495,32 +495,39 @@ function appendAnswerElementCard(ret,type,direction)
     {
         var question_id=ret[i][0];
         var question_title=ret[i][1];
-        var topic_id=ret[i][2];
-        var topic_name=ret[i][3];
+        var question_push_answer_id=ret[i][2];
+        var topics=ret[i][3];
         var answer_id=ret[i][4];
-        var author_id=ret[i][5];
-        var author_name=ret[i][6];
-        var author_avatar=ret[i][7];
-        var author_mood=ret[i][8];
-        var answer_content=ret[i][9];
-        var answer_like_nums=ret[i][10];
-        var answer_comment_nums=ret[i][11];
-        var answer_pub_date=ret[i][12].split(".")[0];
-        if("has_topic_question_title"==type)
-        {   
-            var topic_element='<div class="Feed-title"><div class="Feed-meta"><span class="Feed-meta-item">来自话题:<span><a href="/topic/'+topic_id+'/" class="TopicPopover" data-topic-id="'+topic_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+topic_name+'</a></div></div>';
-            var question_element='<h2 class="ContentItem-title"><a href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></h2>';
-        }
-        else if("has_question_title"==type)
+        var answer_push_index=ret[i][5];
+        var answer_content=ret[i][6];
+        var answer_like_nums=ret[i][7];
+        var answer_comment_nums=ret[i][8];
+        var author_id=ret[i][9];
+        var author_name=ret[i][10];
+        var author_avatar=ret[i][11];
+        var author_mood=ret[i][12];
+        var author_sexual=ret[i][13];
+        var author_question_nums=ret[i][14];
+        var author_article_nums=ret[i][15];
+        var author_answer_nums=ret[i][16];
+        var author_followto_nums=ret[i][17];
+        var author_follower_nums=ret[i][18];
+        var author_followtopic_nums=ret[i][19];
+        var author_followquestion_nums=ret[i][20];
+        
+        var topics_data='';
+        for(i in topics)
         {
-            var topic_element='';
-            var question_element='<h2 class="ContentItem-title"><a href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></h2>';
+            var topic_id=topics[i][0];
+            var topic_name=topics[i][1];
+            topics_data+='<span style="margin-right:15px;"><a href="/topic/'+topic_id+'/" class="1TopicPopover" data-topic-id="'+topic_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+topic_name+'</a></span>';
         }
-    
-        //for(var j=0;j<100;j++)
-        //    answer_content=answer_content+"&nbsp;";
+        var topic_element='<div class="Feed-title"><div class="Feed-meta"><span class="Feed-meta-item">'+topics_data+'</span></div></div>';
+        var question_element='<h2 class="ContentItem-title"><a href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></h2>';
+
         var index_img_url=getIndexImg(answer_content);
-        var author_info_element='<div class="AuthorInfo Feed-meta-author AuthorInfo--plain"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link PeoplePopover" href="/er/'+author_id+'/" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"><img src="'+author_avatar+'" width="40" height="40"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a href="/er/'+author_id+'/" class="UserLink-link 1PeoplePopover" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">'+author_name+'</a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div>';
+        var people_popover_data='data-author-id="'+author_id+'" data-author-name="'+author_name+'" data-author-avatar="'+author_avatar+'" data-author-mood="'+author_mood+'" data-author-sexual="'+author_sexual+'" data-author-answer-nums="'+author_answer_nums+'" data-author-article-nums="'+author_article_nums+'" data-author-follower-nums="'+author_follower_nums+'"';
+        var author_info_element='<div class="AuthorInfo Feed-meta-author AuthorInfo--plain"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link PeoplePopover" href="/er/'+author_id+'/" '+people_popover_data+' data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"><img src="'+author_avatar+'" width="40" height="40"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a href="/er/'+author_id+'/" class="UserLink-link 1PeoplePopover" data-author-id="'+author_id+'" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">'+author_name+'</a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div>';
         var answer_element='<div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'">'+question_element+'<div class="RichContent is-collapsed"><div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'"><div class="RichContent-cover"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div></div><div class="RichContent-inner"><span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span></div></div><div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>'+share_button+'</div></div></div>';
         var appendElement='<div class="Card QuestionFrame ScrollIntoMark"><div class="Feed">'+topic_element+author_info_element+answer_element+'</div></div>';
         if("prepend"==direction)
@@ -672,9 +679,9 @@ function appendQuestionElement(ret)
     {
         var question_id=ret[i][0];
         var question_title=ret[i][1];
-        var question_pubdate=ret[i][2].split(".")[0];
-        var question_answer_nums=ret[i][3];
-        var question_follower_nums=ret[i][4];
+        var question_answer_nums=ret[i][2];
+        var question_follower_nums=ret[i][3];
+        var question_pubdate=ret[i][4].split(".")[0];
         
         var data='<div class="List-item"><div class="ContentItem"><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
         $("#appendArea").append(data);
@@ -752,45 +759,7 @@ function appendLetterModal()
         $(".PeoplePopover").popover("hide");
     });
 }
-/*
-function appendAuthorCard()
-{
-    if("more"==g_list_type)
-    {
-        $.post("/ajax/er/"+g_author_id+"/",function(ret){
-            if("fail"!=ret)
-            {
-                var author_id=ret[0];
-                var author_name=ret[1];
-                var author_avatar=ret[2];
-                var author_mood=ret[3];
-                var author_answer_nums=ret[4];
-                var author_follower_nums=ret[5];
-                var author_followed=ret[6];
-                var author_sexual=ret[7];
-                if("f"==author_sexual)
-                {
-                    var who="she";
-                    var who_han="她";
-                }
-                else
-                {
-                    var who="he";
-                    var who_han="他";
-                }
-                var data1='<div class="Card-header AnswerAuthor-title"><div class="Card-headerText">关于作者</div></div><div class="Card-section"><div class="AnswerAuthor-user"><div class="AnswerAuthor-user-avatar"><span class="UserLink"><a class="UserLink-link" href="/er/'+author_id+'"><img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span></div><div class="AnswerAuthor-user-content"><div class="AnswerAuthor-user-name"><span class="UserLink"><a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a></span></div><div class="AnswerAuthor-user-headline"><div class="RichText">'+author_mood+'</div></div>\</div></div></div><div class="Card-section"><div class="AnswerAuthor-counts"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+author_answer_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">10</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="people-followed">'+author_follower_nums+'</div></a></div></div>';
-                if (author_followed)
-                    var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="true" data-who="'+who+'">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
-                else
-                    var data2='<div class="MemberButtonGroup AnswerAuthor-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="false" data-who="'+who+'">关注'+who_han+'</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">发私信</button></div></div>';
-                var data=data1+data2;
-                $(".Card.AnswerAuthor").append(data);
-                setLetterReceiver(author_id,author_name);
-            }
-        });
-    }
-}
-*/
+
 function invite()
 {
     $(".Invite").each(function(index,element){
@@ -1087,45 +1056,42 @@ function checkPopoverShow(){
     $('.PeoplePopover').on("mouseenter mouseleave",function(event){
         if(event.type=="mouseenter")
         {
-                var element=$(this);//.children(".PeoplePopover");
-                var author_id=element.attr("data-author-id");
-                $.get("/ajax/er/"+author_id+"/",function(ret){
-                    if("fail"!=ret)
-                    {
-                        er_id=ret[0];
-                        er_name=ret[1];
-                        er_avatar=ret[2];
-                        er_mood=ret[3];
-                        er_answer_nums=ret[4];
-                        er_follower_nums=ret[5];
-                        er_followed=ret[6];
-                        er_sexual=ret[7];                        
-                        if("f"==er_sexual)
-                        {
-                            var who="she";
-                            var who_han="她";
-                        }
-                        else
-                        {
-                            var who="he";
-                            var who_han="他";
-                        }
-                        
-                        var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+er_avatar+'" srcset="'+er_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><span><a href="/er/'+er_id+'">'+er_name+'</a></span></div><div class="HoverCard-subtitle"><span class="RichText">'+er_mood+'</span></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+er_answer_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">0</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+er_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="people-followed">'+er_follower_nums+'</div></a></div>';
-                        if(er_followed)
-                            var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="true" data-who="'+who+'">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">'+letter_icon_svg+'<span>发私信</span></button></div></div>';
-                        else
-                            var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-er-id="'+er_id+'" data-follow-type="people" data-followed="false" data-who="'+who+'">关注'+who_han+'</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">'+letter_icon_svg+'<span>发私信</span></button></div></div>';
-                        var data=data1+data2;
-                        element.attr("data-content",data);
-                        element.popover('show');                    
-                        setLetterReceiver(er_id,er_name);
-                        checkFollow(); 
-                        $(".popover").on("mouseleave",function(){
-                            element.popover('hide'); 
-                        });
-                    }
-                });
+            var element=$(this);//.children(".PeoplePopover");
+            var author_id=element.attr("data-author-id");
+            var author_name=element.attr("data-author-name");
+            var author_avatar=element.attr("data-author-avatar");
+            var author_mood=element.attr("data-author-mood");
+            var author_sexual=element.attr("data-author-sexual");
+            var author_answer_nums=element.attr("data-author-answer-nums");
+            var author_article_nums=element.attr("data-author-article-nums");
+            var author_follower_nums=element.attr("data-author-follower-nums");
+                           
+            if("f"==author_sexual)
+            {
+                var who="she";
+                var who_han="她";
+            }
+            else
+            {
+                var who="he";
+                var who_han="他";
+            }
+            
+            var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+author_avatar+'" srcset="'+author_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><span><a href="/er/'+author_id+'">'+author_name+'</a></span></div><div class="HoverCard-subtitle"><span class="RichText">'+author_mood+'</span></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+author_answer_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">'+author_article_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="people-followed">'+author_follower_nums+'</div></a></div>';
+            if($.inArray(""+author_id,g_user_follow_peoples_list)>=0)
+                var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="true" data-who="'+who+'">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">'+letter_icon_svg+'<span>发私信</span></button></div></div>';
+            else
+                var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--green" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="false" data-who="'+who+'">关注'+who_han+'</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">'+letter_icon_svg+'<span>发私信</span></button></div></div>';
+            var data=data1+data2;
+            element.attr("data-content",data);
+            element.popover('show');                    
+            setLetterReceiver(author_id,author_name);
+            checkFollow(); 
+            $(".popover").on("mouseleave",function(){
+                element.popover('hide'); 
+            });
+                    
+              
         }
         else if(event.type=="mouseleave"){
             var element=$(this);
@@ -2377,16 +2343,7 @@ function getMoreData()
     }
     else if("question"==g_module)
     {
-        if("more"==g_list_type)
-        {
-            var order=1;
-            var start=0;
-            var end=2;
-            var url='/ajax/answers/'+g_question_id+'/'+order+'/'+start+'/'+end+'/';
-            var post_data='';
-            return;
-        }
-        else
+        if("all"==g_list_type)
         {
             var nums=g_last_getmoredata_index;
             var order=1;//pub_date
@@ -2395,6 +2352,8 @@ function getMoreData()
             var url='/ajax/answers/'+g_question_id+'/'+order+'/'+start+'/'+end+'/';
             var post_data='';
         }
+        else
+            return;
     }
     else if("topic"==g_module)
     {
@@ -2494,12 +2453,7 @@ function getMoreData()
             }
             else if("question"==g_module)
             {
-                if("more"==g_list_type)
-                {
-                    appendAnswerElementList(ret,"more","append");
-                    $("#appendArea").append('<div class="List-item NoMoreData is-hide"><div class="ContentItem" ><div class="ContentItem-status"  style="text-align:center">没有更多内容</div></div></div>');
-                }
-                else
+                if("all"==g_list_type)
                 {
                     appendAnswerElementList(ret,"all","append");
                 }
@@ -2566,9 +2520,10 @@ function initElement()
 {
     if("question"==g_module)
     {
+        
         $('title').text(g_question_title+" - "+SITE);
-        $(".QuestionHeader-title").append('<a href="/question/'+g_question_id+'">'+g_question_title+'</a>');
-        if("true"==g_question_followed)
+        $(".QuestionHeader-title").empty().append('<a href="/question/'+g_question_id+'">'+g_question_title+'</a>');
+        if($.inArray(""+g_question_id,g_user_follow_questions_list)>=0)//if("true"==g_question_followed)
         {
             $(".QuestionButtonGroup .FollowButton").removeClass("Button--green").addClass("Button--grey").attr("data-question-id",g_question_id).attr("data-followed","true").text("已关注");
         }
@@ -2577,25 +2532,36 @@ function initElement()
             $(".QuestionButtonGroup .FollowButton").removeClass("Button--grey").addClass("Button--green").attr("data-question-id",g_question_id).attr("data-followed","false").text("关注问题");
         }
         
-        var g_question_detail_scale_imge=addClassImg(g_question_detail,'class="origin_image"');
-        $(".QuestionHeader-detail .RichText").html(g_question_detail_scale_imge);
+        $(".RichText img").addClass("origin_image");
         
         $(".QuestionFollowStatus-counts .NumberBoard-value:first").empty().text(g_question_follower_nums);
         $(".QuestionFollowStatus-counts .NumberBoard-value:last").empty().text(g_question_click_nums);
-        var g_push_answer_content_scale_imge=addClassImg(g_push_answer_content,'class="origin_image"');
-        $(".AnswerCard .ContentItem.AnswerItem .RichText.CopyrightRichText-richText").html(g_push_answer_content_scale_imge);
-        
-        $(".AnswerCard .ContentItem.AnswerItem").attr("data-answer-id",g_push_answer_id).attr("data-comment-nums",g_push_answer_comment_nums);
-        $(".AnswerCard .ContentItem.AnswerItem .Button-like-nouse").attr("data-like-type","answer").attr("data-like-id",g_push_answer_id).children("svg").after(g_push_answer_like_nums);
-        $(".AnswerCard .ContentItem.AnswerItem .Zi--Comment").parent().after(g_push_answer_comment_nums);
-        
-        $(".AnswerCard .AuthorInfo-avatarWrapper .UserLink-link").attr("href","/er/"+g_author_id).attr("data-author-id",g_author_id).children("img").attr("alt",g_author_name).attr("src",g_author_avatar);
-        $(".AnswerCard .AuthorInfo-name .UserLink-link").attr("href","/er/"+g_author_id).empty().text(g_author_name);
-        $(".AnswerCard .AuthorInfo-detail .AuthorInfo-badgeText").empty().text(g_author_mood);
-        $(".AnswerCard .Voters").children("button").empty().text(g_push_answer_like_nums+" 人赞同了该回答");
-        $(".QuestionMainAction").attr("href","/question/"+g_question_id).empty().text("查看全部 "+g_question_answer_nums+" 个回答");
-        $(".Card.AllAnswers .List-headerText").empty().text("全部 "+g_question_answer_nums+" 个回答");
-        //appendAuthorCard();
+
+        var follow_botton=$(".Card.AnswerAuthor .FollowButton");
+        var author_id=follow_botton.attr("data-er-id");
+        var author_sexual=follow_botton.attr("data-er-sexual");
+        console.log(author_id);
+        console.log(author_sexual);
+        if("f"==author_sexual)
+        {
+            var who="she";
+            var who_han="她";
+        }
+        else
+        {
+            var who="he";
+            var who_han="他";
+        }
+        if($.inArray(""+author_id,g_user_follow_peoples_list)>=0)
+        {
+            follow_botton.removeClass("Button--green").addClass("Button--grey").attr("data-followed","true").attr("data-who",who).text("已关注");
+        }
+        else
+        {
+            follow_botton.removeClass("Button--grey").addClass("Button--green").attr("data-followed","false").attr("data-who",who).text("关注"+who_han);
+        }
+       
+   
     }
     else if("topic"==g_module)
     {
@@ -2917,6 +2883,43 @@ function initData()
         g_user_id=main_data.user_id;
         g_user_name=main_data.user_name;
         g_user_avatar=main_data.user_avatar;
+        
+        g_user_follow_peoples_list=[];
+        g_user_follow_topics_list=[];
+        g_user_follow_questions_list=[];
+        
+        var user_token=g_user_id.substr(g_user_id.length-3,g_user_id.length);       
+        
+        var user_follow_peoples=getCookie("ufp"+user_token);
+        var user_follow_topics=getCookie("uft"+user_token);
+        var user_follow_questions=getCookie("ufq"+user_token);
+        if((null==user_follow_peoples)||(null==user_follow_questions)||(null==user_follow_topics))
+        {
+            console.log("no follows");            
+            var url='/ajax/user_follows/'+g_user_id+'/';
+            $.post(url,function(ret){
+                if("fail"!=ret)
+                {
+                    console.log(ret);
+                    var expire=1*10;//7*24*60*60
+                    setCookie("ufp"+user_token,String(ret[0]).replace(",","A"),expire);
+                    setCookie("uft"+user_token,String(ret[1]).replace(",","A"),expire);
+                    setCookie("ufq"+user_token,String(ret[2]).replace(",","A"),expire);
+                    
+                    initData();
+                    initElement();
+                }
+            });
+        }
+        else
+        {
+            g_user_follow_peoples_list=user_follow_peoples.split("A");
+            g_user_follow_topics_list=user_follow_topics.split("A");
+            g_user_follow_questions_list=user_follow_questions.split("A");
+            if($.inArray(""+g_user_id,g_user_follow_peoples_list)>=0)
+                console.log("true");
+        }
+
     }
     if("question"==g_module)
     {
@@ -2927,16 +2930,8 @@ function initData()
         g_question_answer_nums=main_data.question_answer_nums;
         g_question_click_nums=main_data.question_click_nums;
         g_question_followed=main_data.question_followed;
-        g_push_answer_id=main_data.answer_id;
-        g_push_answer_like_nums=main_data.answer_like_nums;
-        g_push_answer_comment_nums=main_data.answer_comment_nums;
-        g_push_answer_content=$("main").attr("data-answer-content");
-        g_author_id=main_data.author_id;
-        g_author_name=main_data.author_name;
-        g_author_avatar=main_data.author_avatar;
-        g_author_mood=main_data.author_mood;
 
-        if(""!=g_push_answer_id)
+        if($(".Question-main .Card.AnswerCard").length>0)
             g_list_type="more";
         else
             g_list_type="all";

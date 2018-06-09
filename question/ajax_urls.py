@@ -34,4 +34,5 @@ urlpatterns= [
     url(r'^reset_pwd/$',views.reset_pwd,name='reset_pwd'),
     url(r'^get_comments/$',views.get_comments,name='get_comments'),
     url(r'^comment/$',views.comment,name='comment'),
+    url(r'^user_follows/(?P<userid>[0-9]+)/$',views.user_follows,name='user_follows'),
 ]
