@@ -43,7 +43,7 @@ class IndexView(generic.ListView):
             question.title=request.POST.get('title')
             #question.topic=request.POST.get('topics')
             question.detail=request.POST.get('detail')
-            question.quizzer=quizzer         
+            question.quizzer=quizzer 
             question.save()
             
             for topic_str in topics:
@@ -57,9 +57,7 @@ class IndexView(generic.ListView):
 
 class QuestionView(generic.ListView):
     template_name='question/t_question.html'
-    #context_object_name='context_question'
-    #_question = get_object_or_404(Question,pk=question_id)
-    def get_queryset(self):
+    def get1_queryset(self):
         pass
     def get(self,request,*args,**kwargs):
         ua=request.META['HTTP_USER_AGENT']
@@ -69,8 +67,6 @@ class QuestionView(generic.ListView):
             self.template_name='question/t_question_mobile.html'
         question_id=self.kwargs.get('question_id')
         push_answer_id=request.GET.get('ans')
-        #question_data=Question.filter(id=question_id).values_list("id","title")
-        question=get_object_or_404(Question,pk=question_id)
         #question.click_nums+=1
         #question.save()
         user=request.user
@@ -78,8 +74,8 @@ class QuestionView(generic.ListView):
             logged='true'
         else:
             logged='false'
-        push_answer_id=request.GET.get('ans')
         if push_answer_id:
+            question=get_object_or_404(Question,pk=question_id)
             push_index=question.push_index
             more_answers_sets=question.be_answers.filter(push_index__gte=0).values("id","push_index","content","like_nums","comment_nums","pub_date"
             ,"author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums"
@@ -88,9 +84,24 @@ class QuestionView(generic.ListView):
             push_answer_sets=question.be_answers.filter(id=push_answer_id).values("id","push_index","content","like_nums","comment_nums","pub_date"
             ,"author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums"
             ,"author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
-            more_answers=''
             push_answer=push_answer_sets[0]
-            return render(request,self.template_name,{'user':user,'context_question':question,'push_answer':push_answer,'more_answers':more_answers_sets,'logged':logged})
+            
+            question_data=Question.objects.filter(id=question_id).values_list("id","title","detail","answer_nums","follower_nums","click_nums",
+            "topics__id","topics__name","topics__avatar","topics__detail","topics__question_nums","topics__article_nums","topics__follower_nums")
+            topics_list=[]
+            for item in question_data:
+                question=item[0:6]
+                topic=item[6:13]
+                topics_list.append(topic)
+            return render(request,self.template_name,{'user':user,'question':question,'topics_list':topics_list,'push_answer':push_answer,'more_answers':more_answers_sets,'logged':logged})
         else:
-            return render(request,self.template_name,{'user':user,'context_question':question,'logged':logged})
+            question_data=Question.objects.filter(id=question_id).values_list("id","title","detail","answer_nums","follower_nums","click_nums",
+            "topics__id","topics__name","topics__avatar","topics__detail","topics__question_nums","topics__article_nums","topics__follower_nums")
+            #question=question_data[0][0:6]
+            topics_list=[]
+            for item in question_data:
+                question=item[0:6]
+                topic=item[6:13]
+                topics_list.append(topic)
+            return render(request,self.template_name,{'user':user,'question':question,'topics_list':topics_list,'logged':logged})
                 
