@@ -14,7 +14,17 @@ from PIL import Image
 from django.db import connection
 from . import dysms
 import uuid
+from datetime import datetime
 #from itertools import chain
+
+class CJsonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.strftime('%Y-%m-%d %H:%M:%S')
+        elif isinstance(obj, date):
+            return obj.strftime("%Y-%m-%d")
+        else:
+            return json.JSONEncoder.default(self, obj)
 
 @csrf_exempt
 def get_questions(request,order,start,end):
@@ -68,25 +78,86 @@ def get_questions(request,order,start,end):
             print(questions_list)
             to_json=json.dumps(questions_list)
     return HttpResponse(to_json,content_type='application/json')            
-
+    
 @csrf_exempt
-def follow_question(request,follow,question_id):
+def follow(request):
     to_json=json.dumps('fail')
     user=request.user
     if user.is_authenticated:
-        question=get_object_or_404(Question,pk=question_id)
-        if question:
-            follower=request.user #get_object_or_404(User,username=request.user)
-            #if '1'==follow:
-            if int(follow):
-                question.follower.add(follower)
-            else:
-                question.follower.remove(follower)
-            question.follower_nums=question.follower.count()
-            question.save()
-            temp=question.follower_nums
-            to_json=json.dumps(temp)
+        follow_type=request.POST.get('follow_type')
+        follow_id=request.POST.get('follow_id')
+        follow_action=request.POST.get('follow_action')
+        if 'question'==follow_type:
+            question=get_object_or_404(Question,pk=follow_id)
+            if question:
+                if int(follow_action):
+                    question.follower.add(user)
+                    question.follower_nums+=1
+                else:
+                    question.follower.remove(user)
+                    if question.follower_nums>0:
+                        question.follower_nums-=1
+                    else:
+                        question.follower_nums=question.follower.count()
+                question.save()
+                ret_data=[]
+                ret_data.append(question.follower_nums)
+                follow_questions=user.followquestions.values_list("id",flat=True)
+                temp=[]
+                temp.extend(follow_questions)
+                ret_data.append(temp)
+                to_json=json.dumps(ret_data)
+        elif 'people'==follow_type:
+            er=get_object_or_404(User,pk=follow_id)
+            if er:
+                if int(follow_action):
+                    er.userprofile.follower.add(user)
+                    er.userprofile.follower_nums+=1
+                    user.followto.add(er.userprofile)
+                    user.userprofile.followto_nums+=1
+                else:
+                    er.userprofile.follower.remove(user)
+                    if er.userprofile.follower_nums>0:
+                        er.userprofile.follower_nums-=1
+                    else:
+                        er.userprofile.follower_nums=er.userprofile.follower.count()
+                        
+                    user.followto.remove(er.userprofile)
+                    if user.userprofile.followto_nums>0:
+                        user.userprofile.followto_nums-=1
+                    else:
+                        user.userprofile.followto_nums=user.followto.count()
+                er.userprofile.save()
+                user.save()
+                ret_data=[]
+                ret_data.append(er.userprofile.follower_nums)
+                follow_peoples=user.followto.all().values_list("id",flat=True)
+                temp=[]
+                temp.extend(follow_peoples)
+                ret_data.append(temp)
+                to_json=json.dumps(ret_data)
+        elif 'topic'==follow_type:
+            topic=get_object_or_404(Topic,pk=follow_id)
+            if topic:
+                if int(follow_action):
+                    topic.follower.add(user)
+                    topic.follower_nums+=1
+                else:
+                    topic.follower.remove(user)
+                    if topic.follower_nums>0:
+                        topic.follower_nums-=1
+                    else:
+                        topic.follower_nums=topic.follower.count()
+                topic.save()
+                ret_data=[]
+                ret_data.append(topic.follower_nums)
+                follow_topics=user.followtopics.values_list("id",flat=True)
+                temp=[]
+                temp.extend(follow_topics)
+                ret_data.append(temp)
+                to_json=json.dumps(ret_data)
     return HttpResponse(to_json,content_type='application/json')
+
 
 @csrf_exempt
 def answer_question(request,question_id):
@@ -111,10 +182,19 @@ def answer_question(request,question_id):
             temp.append(answer.author.first_name) #6
             temp.append(answer.author.userprofile.avatar) #7
             temp.append(answer.author.userprofile.mood) #8
+            temp.append(answer.author.userprofile.sexual) #9
+            temp.append(answer.author.userprofile.question_nums) #10
+            temp.append(answer.author.userprofile.article_nums) #11
+            temp.append(answer.author.userprofile.answer_nums) #12
+            temp.append(answer.author.userprofile.followto_nums) #13
+            temp.append(answer.author.userprofile.follower_nums) #14
+            temp.append(answer.author.userprofile.followtopic_nums) #15
+            temp.append(answer.author.userprofile.followquestion_nums) #16
             answer_list.append(temp)
+    
             to_json=json.dumps(answer_list)
             
-            question.answer_nums=question.be_answers.count();
+            question.answer_nums+=1#question.be_answers.count();
             question.push_answer_id=answer.id
             question.save()
     return HttpResponse(to_json,content_type='application/json')
@@ -127,7 +207,6 @@ def get_topics(request,bIsGetAll,start,end):
     else:
         topics=Topic.objects.order_by('pub_date')[int(start):int(end)]
     if topics:
-        user=request.user
         topic_list=[]
         for topic in topics:
             temp=[]
@@ -138,38 +217,9 @@ def get_topics(request,bIsGetAll,start,end):
             temp.append(topic.question_nums)#4
             temp.append(topic.follower_nums)#5
             temp.append(str(topic.pub_date))#6
-            if user.is_authenticated:
-                if user.followtopics.filter(pk=topic.pk).exists():
-                    temp.append(1)#7
-                else:
-                    temp.append(0)#7
-            else:
-                temp.append(0)#7
             topic_list.append(temp)
         to_json=json.dumps(topic_list)
-    return HttpResponse(to_json,content_type='application/json')
-    
-@csrf_exempt
-def get_topicinfo(request,topic_id):
-    to_json=json.dumps('fail')
-    topic=get_object_or_404(Topic,pk=topic_id)
-    if topic:
-        temp=[]
-        temp.append(topic.id)#0
-        temp.append(topic.name)#1
-        temp.append(topic.avatar)#2
-        temp.append(topic.question_nums)#3
-        temp.append(topic.follower_nums)#4
-        user=request.user
-        if user.is_authenticated:
-            if user.followtopics.filter(pk=topic.pk).exists():
-                temp.append(1)#5
-            else:
-                temp.append(0)#5
-        else:
-            temp.append(0)#5
-        to_json=json.dumps(temp)
-    return HttpResponse(to_json,content_type='application/json')
+    return HttpResponse(to_json,content_type='application/json')    
     
 @csrf_exempt
 def get_topic_questions(request,topic_id,order,start,end):
@@ -238,26 +288,7 @@ def get_topic_questions(request,topic_id,order,start,end):
                 questions_list.append(temp)
             to_json=json.dumps(questions_list)
     return HttpResponse(to_json,content_type='application/json')
-    
-@csrf_exempt
-def follow_topic(request,follow,topic_id):
-    to_json=json.dumps('fail')
-    user=request.user
-    if user.is_authenticated:
-        topic=get_object_or_404(Topic,pk=topic_id)
-        if topic:
-            follower=request.user #get_object_or_404(User,username=request.user)
-            #if '1'==follow:
-            if int(follow):
-                topic.follower.add(follower)
-            else:
-                topic.follower.remove(follower)
-            topic.follower_nums=topic.follower.count()
-            topic.save()
-            temp=topic.follower_nums
-            to_json=json.dumps(temp)
-    return HttpResponse(to_json,content_type='application/json')
-    
+       
 @csrf_exempt
 def get_topic_adept(request):
     to_json=json.dumps('fail')
@@ -283,23 +314,16 @@ def get_topic_adept(request):
 @csrf_exempt
 def get_question_answers(request,question_id,order,start,end):
     to_json=json.dumps('fail')
-    question=get_object_or_404(Question,pk=question_id)
-    answer_list=[]
-    answers=question.be_answers.order_by('-pub_date')[int(start):int(end)]
+    answers=Question.objects.filter(id=question_id).values_list("be_answers__id","be_answers__content","be_answers__like_nums","be_answers__comment_nums","be_answers__pub_date",
+    "be_answers__author__id","be_answers__author__first_name","be_answers__author__userprofile__avatar","be_answers__author__userprofile__mood",
+    "be_answers__author__userprofile__sexual","be_answers__author__userprofile__question_nums","be_answers__author__userprofile__article_nums","be_answers__author__userprofile__answer_nums",
+    "be_answers__author__userprofile__followto_nums","be_answers__author__userprofile__follower_nums","be_answers__author__userprofile__followtopic_nums","be_answers__author__userprofile__followquestion_nums")[int(start):int(end)]
+    #question=get_object_or_404(Question,pk=question_id)
+    answer_list=list(answers)
+    #answers=question.be_answers.order_by('-pub_date')[int(start):int(end)]
     if answers:
-        for answer in answers:
-            temp=[]
-            temp.append(answer.id) #0
-            temp.append(answer.content) #1
-            temp.append(answer.like_nums) #2
-            temp.append(answer.comment_nums) #3
-            temp.append(str(answer.pub_date)) #4
-            temp.append(answer.author.id) #5
-            temp.append(answer.author.first_name) #6
-            temp.append(answer.author.userprofile.avatar) #7
-            temp.append(answer.author.userprofile.mood) #8
-            answer_list.append(temp)
-        to_json=json.dumps(answer_list)
+        answer_list=list(answers)
+        to_json=json.dumps(answer_list,cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
@@ -331,31 +355,6 @@ def like(request):
             comment.like_nums+=1
             comment.save()
             to_json=json.dumps(comment.like_nums)
-    return HttpResponse(to_json,content_type='application/json')
-
-@csrf_exempt
-def get_erinfo(request,erid):
-    to_json=json.dumps('fail')
-    er=get_object_or_404(User,pk=erid)
-    user=request.user
-    if er:
-        temp=[]
-        temp.append(er.id) #0
-        temp.append(er.first_name) #1
-        temp.append(er.userprofile.avatar) #2
-        temp.append(er.userprofile.mood) #3
-        temp.append(er.answers.count()) #4
-        temp.append(er.userprofile.follower_nums) #5
-        if user.is_authenticated:
-            if user.followto.filter(pk=er.userprofile.pk).exists():
-                temp.append(1)#6
-            else:
-                temp.append(0)#6
-        else:
-            temp.append(0)#6
-            
-        temp.append(er.userprofile.sexual)#7
-        to_json=json.dumps(temp)
     return HttpResponse(to_json,content_type='application/json')
         
 @csrf_exempt
@@ -475,27 +474,6 @@ def get_er_following_all(request,erid,subcmd):
                 temp.append(question.follower_nums)#2
                 temp_list.append(temp)
             to_json=json.dumps(temp_list)
-    return HttpResponse(to_json,content_type='application/json')
-        
-@csrf_exempt
-def follow_er(request,follow,er_id):
-    to_json=json.dumps('fail')
-    user=request.user #get_object_or_404(User,username=request.user)
-    if user.is_authenticated:
-        er=get_object_or_404(User,pk=er_id)
-        if er:
-            if int(follow):
-                er.userprofile.follower.add(user)
-                er.userprofile.follower_nums=er.userprofile.follower.count()
-                user.followto.add(er.userprofile)
-            else:
-                er.userprofile.follower.remove(user)
-                er.userprofile.follower_nums=er.userprofile.follower.count()
-                user.followto.remove(er.userprofile)
-            er.userprofile.save()
-            user.save()
-            temp=er.userprofile.follower_nums
-            to_json=json.dumps(temp)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt

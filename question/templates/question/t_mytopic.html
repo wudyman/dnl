@@ -10,13 +10,13 @@
 <div class="Card">
 <div class="Card-header">
 <div class="Card-headerText">
-<a target="_blank" href="/er/1/following/topics/">已关注的话题</a> 
+<a target="_blank" href="/er/{{user.id}}/following/topics/">已关注的话题</a> 
 </div>
 </div>
 <div class="Card-section">
 {% if mytopic_list %}
 {% for topic in mytopic_list %}
-<div class="Tag FollowedTopic 1QuestionTopic" data-topic-id="{{ topic.id }}">
+<div class="Tag FollowedTopic" data-topic-id="{{ topic.id }}" data-topic-name="{{ topic.name }}" data-topic-avatar="{{ topic.avatar }}" data-topic-detail="{{ topic.detail }}">
 <span class="Tag-content">
 <a class="1TopicLink" href="#{{ topic.id }}">{{ topic.name }}</a>
 </span>
@@ -27,8 +27,17 @@
 </div>
 
 <div class="Card">
-<div id="appendArea" class="List">
+
+<div class="Card-section  Topic--current">
+<div class="ContentItem">
+<div class="ContentItem-main">
+<div class="ContentItem-image"><span class="TopicLink TopicItem-avatar"><a class="TopicLink-link" target="_blank" href=""><img class="Avatar Avatar--large TopicLink-avatar" width="60" height="60" src="" alt=""></a></span></div>
+<div class="ContentItem-head"><h2 class="ContentItem-title"><div class="TopicItem-title"><span class="TopicLink TopicItem-name"><a class="TopicLink-link" target="_blank" href=""><span class="RichText"></span></a></span></div></h2><div class="ContentItem-meta"><div><div class="ContentItem-status"><div class="ContentItem-statusItem"></div></div></div></div></div>
 </div>
+</div>
+</div>
+
+<div id="appendArea" class="List"></div>
 </div>
 
 </div>

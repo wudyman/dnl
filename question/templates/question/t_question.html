@@ -9,7 +9,7 @@
 
 
 <!--------------------main---------------------->
-<main role="main" class="App-main"  data-module="question" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","question_id":"{{context_question.id}}","question_title":"{{context_question.title}}","question_follower_nums":"{{context_question.follower_nums}}","question_click_nums":"{{context_question.click_nums}}","question_answer_nums":"{{context_question.answer_nums}}"}'>
+<main role="main" class="App-main"  data-module="question" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","user_avatar":"{{user.userprofile.avatar}}","question_id":"{{question.0}}","question_title":"{{question.1}}","question_detail":"{{question.2}}","question_answer_nums":"{{question.3}}","question_follower_nums":"{{question.4}}","question_click_nums":"{{question.5}}"}'>
         
 <div class="QuestionPage">
     <div>
@@ -22,10 +22,10 @@
         <div class="QuestionHeader-tags">
         <div class="QuestionHeader-topics">
         
-        {% for topic in context_question.topics.all %}
+        {% for topic in topics_list %}
         <div class="Tag QuestionTopic">
         <span class="Tag-content">
-        <a class="TopicLink TopicPopover" style="text-decoration:none;" href="/topic/{{topic.id}}/" data-topic-id="{{topic.id}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{topic.name}}</a>
+        <a class="TopicLink TopicPopover" style="text-decoration:none;" href="/topic/{{topic.0}}/" data-topic-id="{{topic.0}}" data-topic-name="{{topic.1}}" data-topic-avatar="{{topic.2}}" data-topic-detail="{{topic.3}}" data-topic-question-nums="{{topic.4}}" data-topic-article-nums="{{topic.5}}" data-topic-follower-nums="{{topic.6}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{topic.1}}</a>
         </span>
         </div>
         {% endfor %}
@@ -34,7 +34,7 @@
         </div>
         
         <h1 class="QuestionHeader-title"></h1>
-        <div class="QuestionHeader-detail"><div class="QuestionRichText QuestionRichText--collapsed"><div><span class="RichText">{{context_question.detail}}</span></div></div></div>
+        <div class="QuestionHeader-detail"><div class="QuestionRichText QuestionRichText--collapsed"><div><span class="RichText">{{question.2}}</span></div></div></div>
         </div>
         
         <div class="QuestionHeader-side">
@@ -135,11 +135,12 @@
         <div id="listArea">
         {% if push_answer %}
         <div class="Card">
-        <a class="QuestionMainAction" href="/question/{{context_question.id}}">查看全部 {{context_question.answer_nums}} 个回答</a>
+        <a class="QuestionMainAction" href="/question/{{question.0}}">查看全部 {{question.3}} 个回答</a>
         </div>
 
         <div class="Card AnswerCard">
         <div class="QuestionAnswer-content">
+        <div class="ScrollIntoMark">
         <div class="ContentItem AnswerItem" data-answer-id="{{push_answer.id}}" data-comment-nums="{{push_answer.comment_nums}}">
         <div class="ContentItem-meta">
         <div class="AnswerItem-meta AnswerItem-meta--related">
@@ -170,7 +171,7 @@
         
         <div class="RichContent RichContent--unescapable">
          <div class="RichContent-expand">
-            <div class="RichContent-inner">
+            <div class="RichContent-inner" style="max-height:400px;">
                 <span class="RichText CopyrightRichText-richText">{{push_answer.content|safe}}</span>
             </div>
             <button class="Button ContentItem-more ContentItem-rightButton Button--plain is-hide" type="button">展开阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
@@ -183,13 +184,14 @@
                 </span>
                 <button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button" data-answer-id="{{push_answer.id}}"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg></span>{{push_answer.comment_nums}} 条评论</button>
                 <div class="Popover ShareMenu ContentItem-action"><div class="" aria-haspopup="true" aria-expanded="false"><img class="ShareMenu-fakeQRCode" src="" alt="微信二维码"><button class="Button Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button></div></div>
-                <button class="Button ContentItem-less ContentItem-rightButton Button--plain" type="button">
+                <button class="Button ContentItem-less ContentItem-rightButton Button--plain is-hide" type="button">
                     <span class="RichContent-collapsedText">收起</span>
                     <svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>
                 </button>
             </div>
         </div>
                 
+        </div>
         </div>
         </div>
         </div>
@@ -206,7 +208,7 @@
         
         {% if more_answers %}
         {% for answer in more_answers %}
-        <div class="List-item ScrollIntoMark" id="0.15356782296108706">
+        <div class="List-item ScrollIntoMark">
         <div class="ContentItem AnswerItem" data-answer-id="{{answer.id}}" data-comment-nums="{{answer.comment_nums}}">
         <div class="ContentItem-meta">
         <div class="AnswerItem-meta AnswerItem-meta--related">
@@ -219,10 +221,10 @@
         </div>
         </div>
         </div>
-        <div class="RichContent RichContent--unescapable is-collapsed">
+        <div class="RichContent RichContent--unescapable">
         <div class="RichContent-expand">
         <div class="RichContent-inner" style="max-height:400px"><span class="RichText CopyrightRichText-richText">{{answer.content|safe}}</span></div>
-        <button class="Button ContentItem-more ContentItem-rightButton Button--plain" type="button">展开阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
+        <button class="Button ContentItem-more ContentItem-rightButton Button--plain is-hide" type="button">展开阅读全文<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
         </div>
         <div class="ContentItem-actions">
         <span>
@@ -243,13 +245,13 @@
         </div>
                 
         <div class="Card">
-        <a class="QuestionMainAction" href="/question/{{context_question.id}}">查看全部 {{context_question.answer_nums}} 个回答</a>
+        <a class="QuestionMainAction" href="/question/{{question.0}}">查看全部 {{question.3}} 个回答</a>
         </div>
         {% else %}
         <div class="Card AllAnswers">
         <div class="List">
         <div class="List-header">
-        <h4 class="List-headerText">全部 {{context_question.answer_nums}} 个回答</h4>
+        <h4 class="List-headerText">全部 {{question.3}} 个回答</h4>
         <div class="List-headerOptions">
         </div>
         </div>
