@@ -918,26 +918,33 @@ def user_data(request,userid):
     user=request.user
     if user.is_authenticated:
         type=request.POST.get('type')
-        if 'follow'==type:
-            follows_list=[]
+        if 'all'==type:
+            ret_list=[]
 
             follow_peoples=user.followto.all().values_list("id",flat=True)
             follow_topics=user.followtopics.values_list("id",flat=True)
             follow_questions=user.followquestions.values_list("id",flat=True)
-            temp=[]
-            temp.extend(follow_peoples)
-            follows_list.append(temp)
-            temp=[]
-            temp.extend(follow_topics)
-            follows_list.append(temp)
-            temp=[]
-            temp.extend(follow_questions)
-            follows_list.append(temp)
-            to_json=json.dumps(follows_list)
+            user_profile=[user.id,user.first_name,user.userprofile.avatar,user.userprofile.mood]
+
+            ret_list.append(list(follow_peoples))
+            ret_list.append(list(follow_topics))
+            ret_list.append(list(follow_questions))
+            ret_list.append(user_profile)
+            to_json=json.dumps(ret_list)
+        elif 'follow'==type:
+            ret_list=[]
+
+            follow_peoples=user.followto.all().values_list("id",flat=True)
+            follow_topics=user.followtopics.values_list("id",flat=True)
+            follow_questions=user.followquestions.values_list("id",flat=True)
+            
+            ret_list.append(list(follow_peoples))
+            ret_list.append(list(follow_topics))
+            ret_list.append(list(follow_questions))
+            to_json=json.dumps(ret_list)
         elif 'userprofile'==type:
             user_profile=[user.id,user.first_name,user.userprofile.avatar,user.userprofile.mood,user.userprofile.phone,user.userprofile.sexual,
             user.userprofile.residence,user.userprofile.job,user.userprofile.question_nums,user.userprofile.article_nums,user.userprofile.answer_nums,user.userprofile.followto_nums,
             user.userprofile.follower_nums,user.userprofile.followtopic_nums,user.userprofile.followquestion_nums]
-            print(user_profile)
             to_json=json.dumps(user_profile)       
     return HttpResponse(to_json,content_type='application/json')
