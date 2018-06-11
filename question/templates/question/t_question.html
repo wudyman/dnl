@@ -196,7 +196,7 @@
         </div>
         </div>
 
-        
+        {% if more_answers %}
         <div class="Card MoreAnswers">
         <div class="List">
         <div class="List-header">
@@ -206,7 +206,6 @@
         </div>
         <div id="appendArea">
         
-        {% if more_answers %}
         {% for answer in more_answers %}
         <div class="List-item ScrollIntoMark">
         <div class="ContentItem AnswerItem" data-answer-id="{{answer.id}}" data-comment-nums="{{answer.comment_nums}}">
@@ -238,11 +237,11 @@
         </div>
         </div>
         {% endfor %}
-        {% endif %}
         
         </div>
         </div>
         </div>
+        {% endif %}
                 
         <div class="Card">
         <a class="QuestionMainAction" href="/question/{{question.0}}">查看全部 {{question.3}} 个回答</a>
