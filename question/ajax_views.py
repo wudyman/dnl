@@ -68,15 +68,15 @@ def get_questions(request,order,start,end):
         push_answers=Answer.objects.filter(pk__in=push_answers_id_list).values_list("id","push_index","content","like_nums","comment_nums"
         ,"author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums"
         ,"author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
-        
-        questions_list_len=len(questions_list)
-        push_answers_len=len(push_answers)
-
-        if questions_list_len==questions_list_len:
-            for j in range(0,questions_list_len):
-                questions_list[j].extend(push_answers[j])
-            print(questions_list)
-            to_json=json.dumps(questions_list)
+           
+        if push_answers:
+            questions_answers_list=[]
+            for question in questions_list:
+                for answer in push_answers:
+                    if answer[0]==question[2]:
+                        question.extend(answer)
+                        questions_answers_list.append(question)
+            to_json=json.dumps(questions_answers_list)
     return HttpResponse(to_json,content_type='application/json')            
     
 @csrf_exempt
@@ -266,27 +266,19 @@ def get_topic_questions(request,topic_id,order,start,end):
             ,"author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums"
             ,"author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
             
-            questions_list_len=len(questions_list)
-            push_answers_len=len(push_answers)
-
-            if questions_list_len==questions_list_len:
-                for j in range(0,questions_list_len):
-                    questions_list[j].extend(push_answers[j])
-                print(questions_list)
-                to_json=json.dumps(questions_list)
+            if push_answers:
+                questions_answers_list=[]
+                for question in questions_list:
+                    for answer in push_answers:
+                        if answer[0]==question[2]:
+                            question.extend(answer)
+                            questions_answers_list.append(question)
+                to_json=json.dumps(questions_answers_list)
     elif 'unanswered'==type:
         questions=Question.objects.filter(topics__id=topic_id,answer_nums__lte=0)[int(start):int(end)].values("id","title","answer_nums","follower_nums","pub_date")
         if questions:
-            questions_list=[]
-            for question in questions:
-                temp=[]
-                temp.append(question['id'])
-                temp.append(question['title'])
-                temp.append(question['answer_nums'])
-                temp.append(question['follower_nums'])
-                temp.append(str(question['pub_date']))
-                questions_list.append(temp)
-            to_json=json.dumps(questions_list)
+            questions_list=list(questions)
+            to_json=json.dumps(questions_list,cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
        
 @csrf_exempt
@@ -319,11 +311,12 @@ def get_question_answers(request,question_id,order,start,end):
     "be_answers__author__userprofile__sexual","be_answers__author__userprofile__question_nums","be_answers__author__userprofile__article_nums","be_answers__author__userprofile__answer_nums",
     "be_answers__author__userprofile__followto_nums","be_answers__author__userprofile__follower_nums","be_answers__author__userprofile__followtopic_nums","be_answers__author__userprofile__followquestion_nums")[int(start):int(end)]
     #question=get_object_or_404(Question,pk=question_id)
-    answer_list=list(answers)
+    
     #answers=question.be_answers.order_by('-pub_date')[int(start):int(end)]
     if answers:
-        answer_list=list(answers)
-        to_json=json.dumps(answer_list,cls=CJsonEncoder)
+        if answers[0][0]!=None:
+            answer_list=list(answers)
+            to_json=json.dumps(answer_list,cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
@@ -360,39 +353,29 @@ def like(request):
 @csrf_exempt
 def get_er_all(request,erid,command):
     to_json=json.dumps('fail')
-    er=get_object_or_404(User,pk=erid)
+    start=request.POST.get('start')
+    end=request.POST.get('end')
+    #er=get_object_or_404(User,pk=erid)
     if 'answers'==command:
-        answers=er.answers.all()
+        answers=User.objects.filter(id=erid).values_list("answers__id","answers__question__id","answers__question__title","answers__content","answers__like_nums","answers__comment_nums","id","first_name","userprofile__avatar","userprofile__mood")[int(start):int(end)]
+        #answers=er.answers.all()
+        #answers=er.answers.values_list("id","question__id","question__title","content","like_nums","comment_nums")
         if answers:
-            temp_list=[]
-            for answer in answers:
-                temp=[]
-                temp.append(answer.id)#0
-                temp.append(answer.question.id)#1
-                temp.append(answer.question.title)#2
-                temp.append(answer.content)#3
-                temp.append(answer.like_nums)#4
-                temp.append(answer.comment_nums)#5                
-                temp_list.append(temp)
-            to_json=json.dumps(temp_list)
+            answers_list=list(answers)
+            to_json=json.dumps(answers_list)
     elif 'asks'==command:
-        questions=er.selfquestions.all()
+        #questions=er.selfquestions.all()
+        questions=User.objects.filter(id=erid).values_list("selfquestions__id","selfquestions__title","selfquestions__answer_nums","selfquestions__follower_nums","selfquestions__pub_date")[int(start):int(end)]
         if questions:
-            temp_list=[]
-            for question in questions:
-                temp=[]
-                temp.append(question.id)#0
-                temp.append(question.title)#1
-                temp.append(str(question.pub_date))#2
-                temp.append(question.answer_nums)#3
-                temp.append(question.follower_nums)#4
-                temp_list.append(temp)
-            to_json=json.dumps(temp_list)
+            questions_list=list(questions)
+            to_json=json.dumps(questions_list,cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
 def get_er_following_all(request,erid,subcmd):
     to_json=json.dumps('fail')
+    start=request.POST.get('start')
+    end=request.POST.get('end')
     er=get_object_or_404(User,pk=erid)
     user=request.user
     if 'followtos'==subcmd:
@@ -450,30 +433,15 @@ def get_er_following_all(request,erid,subcmd):
                 temp_list.append(temp)
             to_json=json.dumps(temp_list)
     elif 'topics'==subcmd:
-        topics=er.followtopics.all()
+        topics=er.followtopics.values_list("id","name","avatar","detail")[int(start):int(end)]
         if topics:
-            temp_list=[]
-            for topic in topics:
-                temp=[]
-                temp.append(topic.id)#0
-                temp.append(topic.name)#1
-                temp.append(topic.avatar)#2
-                temp.append(topic.detail)#3
-                temp_list.append(temp)
-            to_json=json.dumps(temp_list)
+            topics_list=list(topics)
+            to_json=json.dumps(topics_list,cls=CJsonEncoder)
     elif 'questions'==subcmd:
-        questions=er.followquestions.all()
+        questions=er.followquestions.values_list("id","title","answer_nums","follower_nums","pub_date")[int(start):int(end)]
         if questions:
-            temp_list=[]
-            for question in questions:
-                temp=[]
-                temp.append(question.id)#0
-                temp.append(question.title)#1
-                temp.append(str(question.pub_date))#2
-                temp.append(question.be_answers.count())#2
-                temp.append(question.follower_nums)#2
-                temp_list.append(temp)
-            to_json=json.dumps(temp_list)
+            questions_list=list(questions)
+            to_json=json.dumps(questions_list,cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
@@ -725,31 +693,15 @@ def answer_page(request,type,order,start,end):
     user=request.user
     if user.is_authenticated:
         if type=='recommend':
-            questions=Question.objects.filter(answer_nums__lte=0)[int(start):int(end)].values("id","title","answer_nums","follower_nums","pub_date")
+            questions=Question.objects.filter(answer_nums__lte=0)[int(start):int(end)].values_list("id","title","answer_nums","follower_nums","pub_date")
             if questions:
-                questions_list=[]
-                for question in questions:
-                    temp=[]
-                    temp.append(question['id'])
-                    temp.append(question['title'])
-                    temp.append(question['answer_nums'])
-                    temp.append(question['follower_nums'])
-                    temp.append(str(question['pub_date']))
-                    questions_list.append(temp)
-                to_json=json.dumps(questions_list)
+                questions_list=list(questions)
+                to_json=json.dumps(questions_list,cls=CJsonEncoder)
         elif type=='all':
-            questions=Question.objects.filter(answer_nums__lte=0)[int(start):int(end)].values("id","title","answer_nums","follower_nums","pub_date")
+            questions=Question.objects.filter(answer_nums__lte=0)[int(start):int(end)].values_list("id","title","answer_nums","follower_nums","pub_date")
             if questions:
-                questions_list=[]
-                for question in questions:
-                    temp=[]
-                    temp.append(question['id'])
-                    temp.append(question['title'])
-                    temp.append(question['answer_nums'])
-                    temp.append(question['follower_nums'])
-                    temp.append(str(question['pub_date']))
-                    questions_list.append(temp)
-                to_json=json.dumps(questions_list)
+                questions_list=list(questions)
+                to_json=json.dumps(questions_list,cls=CJsonEncoder)
         elif type=='invited':
             notifications=user.receives.filter(type='invite').order_by('-pub_date')[int(start):int(end)]
             if notifications:
@@ -961,21 +913,31 @@ def comment(request):
                 to_json=json.dumps(comment_list)
     return HttpResponse(to_json,content_type='application/json')
 @csrf_exempt
-def user_follows(request,userid):
+def user_data(request,userid):
     to_json=json.dumps('fail')
-    follows_list=[]
     user=request.user
-    follow_peoples=user.followto.all().values_list("id",flat=True)
-    follow_topics=user.followtopics.values_list("id",flat=True)
-    follow_questions=user.followquestions.values_list("id",flat=True)
-    temp=[]
-    temp.extend(follow_peoples)
-    follows_list.append(temp)
-    temp=[]
-    temp.extend(follow_topics)
-    follows_list.append(temp)
-    temp=[]
-    temp.extend(follow_questions)
-    follows_list.append(temp)
-    to_json=json.dumps(follows_list)
+    if user.is_authenticated:
+        type=request.POST.get('type')
+        if 'follow'==type:
+            follows_list=[]
+
+            follow_peoples=user.followto.all().values_list("id",flat=True)
+            follow_topics=user.followtopics.values_list("id",flat=True)
+            follow_questions=user.followquestions.values_list("id",flat=True)
+            temp=[]
+            temp.extend(follow_peoples)
+            follows_list.append(temp)
+            temp=[]
+            temp.extend(follow_topics)
+            follows_list.append(temp)
+            temp=[]
+            temp.extend(follow_questions)
+            follows_list.append(temp)
+            to_json=json.dumps(follows_list)
+        elif 'userprofile'==type:
+            user_profile=[user.id,user.first_name,user.userprofile.avatar,user.userprofile.mood,user.userprofile.phone,user.userprofile.sexual,
+            user.userprofile.residence,user.userprofile.job,user.userprofile.question_nums,user.userprofile.article_nums,user.userprofile.answer_nums,user.userprofile.followto_nums,
+            user.userprofile.follower_nums,user.userprofile.followtopic_nums,user.userprofile.followquestion_nums]
+            print(user_profile)
+            to_json=json.dumps(user_profile)       
     return HttpResponse(to_json,content_type='application/json')

@@ -2,7 +2,8 @@ function setCookie(name,value,secs)
 {
     var exp = new Date();
     exp.setTime(exp.getTime() + secs*1000);
-    document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString()+";path=/";
+    //document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString()+";path=/";
+    document.cookie = name + "="+ value + ";expires=" + exp.toGMTString()+";path=/";
 }
 function getCookie(name)
 {
@@ -470,16 +471,17 @@ function appendAnswerElementList(ret,type,direction)
             }
             else if("homepage"==type)
             {
-                var author_id=g_er_id;
-                var author_name=g_er_name;
-                var author_avatar=g_er_avatar;
-                var author_mood=g_er_mood;
                 var answer_id=ret[i][0];
                 var question_id=ret[i][1];
                 var question_title=ret[i][2];
                 var answer_content=ret[i][3];
                 var answer_like_nums=ret[i][4];
                 var answer_comment_nums=ret[i][5];
+                
+                var author_id=ret[i][6];
+                var author_name=ret[i][7];
+                var author_avatar=ret[i][8];
+                var author_mood=ret[i][9];
             }
             var index_img_url=getIndexImg(answer_content);
             var question_title_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>';
@@ -488,7 +490,7 @@ function appendAnswerElementList(ret,type,direction)
         }
         
         var people_popover_data='data-author-id="'+author_id+'" data-author-name="'+author_name+'" data-author-avatar="'+author_avatar+'" data-author-mood="'+author_mood+'" data-author-sexual="'+author_sexual+'" data-author-answer-nums="'+author_answer_nums+'" data-author-article-nums="'+author_article_nums+'" data-author-follower-nums="'+author_follower_nums+'"';
-        var appendElement='<div class="List-item ScrollIntoMark"><div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'">'+question_title_element+'<div class="ContentItem-meta"><div class="AnswerItem-meta AnswerItem-meta--related"><div class="AuthorInfo"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link PeoplePopover" href="/er/'+author_id+'" '+people_popover_data+' data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"><img class="Avatar AuthorInfo-avatar" width="40" height="40" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div></div>'+rich_content+'</div></div>';
+        var appendElement='<div class="List-item ScrollIntoMark"><div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'">'+question_title_element+'<div class="ContentItem-meta"><div class="AnswerItem-meta AnswerItem-meta--related"><div class="AuthorInfo"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link 1PeoplePopover" href="/er/'+author_id+'" '+people_popover_data+' data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"><img class="Avatar AuthorInfo-avatar" width="40" height="40" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div></div>'+rich_content+'</div></div>';
         
         if("prepend"==direction)
             $("#appendArea").prepend(appendElement);
@@ -733,9 +735,9 @@ function appendFollowOrMoreElement(ret)
         {
             var question_id=ret[i][0];
             var question_title=ret[i][1];
-            var question_pubdate=ret[i][2];
-            var question_answer_nums=ret[i][3];
-            var question_follower_nums=ret[i][4];
+            var question_answer_nums=ret[i][2];
+            var question_follower_nums=ret[i][3];
+            var question_pubdate=ret[i][4];
             var data='\
                     <div class="List-item"><div class="ContentItem" ><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
             $("#appendArea").append(data);
@@ -2449,17 +2451,17 @@ function getMoreData()
         if ("answers"==g_command)
         {
             var url="/ajax/er/"+g_er_id+"/answers/";
-            var post_data='';
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP};
         }
         else if ("asks"==g_command)
         {
             var url="/ajax/er/"+g_er_id+"/asks/";
-            var post_data='';
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP*10};
         }
         else if ("following"==g_command)
         {
             var url="/ajax/er/"+g_er_id+"/following/"+g_subcmd+"/";
-            var post_data='';
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP*10};
         }
     }
     else if("answer_page"==g_module)
@@ -2552,6 +2554,10 @@ function getMoreData()
 
 function initElement()
 {
+    if("true"==g_logged)
+    { 
+        $("#MenuPopover").attr("data-er-id",g_user_id).attr("data-er-avatar",g_user_avatar).find("img").attr("src",g_user_avatar).removeClass("is-hide");
+    }
     if("question"==g_module)
     {
         
@@ -2915,6 +2921,19 @@ function initElement()
         checkWrite();
     }
 }
+function utf8_to_b64(str) {   
+    //return window.btoa(encodeURIComponent(str));
+    return window.btoa(unescape(encodeURIComponent(str)));
+    //return encodeURIComponent(str);
+    //return encodeURI(str);
+}
+
+function b64_to_utf8(str) {
+    //return decodeURIComponent(window.atob(str));
+    return decodeURIComponent(escape(window.atob(str)));
+    //return decodeURIComponent(str);
+    //return decodeURI(str);
+}
 function initData()
 {
 	var str_main_data=$("main").attr("data-dfs-main");
@@ -2922,26 +2941,22 @@ function initData()
 	var main_data=JSON.parse(str_main_data);//str_main_data.parseJSON();
 	g_logged=main_data.logged;
     if("true"==g_logged)
-    {
+    {               
         g_user_id=main_data.user_id;
         g_user_name=main_data.user_name;
         g_user_avatar=main_data.user_avatar;
         
-        g_user_follow_peoples_list=[];
-        g_user_follow_topics_list=[];
-        g_user_follow_questions_list=[];
-        
         g_user_token=g_user_id.substr(g_user_id.length-3,g_user_id.length); 
         g_cookie_expire=1*24*60*60;        
-        
-                    
+                            
         var user_follow_peoples=getCookie("ufp"+g_user_token);
         var user_follow_topics=getCookie("uft"+g_user_token);
         var user_follow_questions=getCookie("ufq"+g_user_token);
         if((null==user_follow_peoples)||(null==user_follow_questions)||(null==user_follow_topics))
         {          
-            var url='/ajax/user_follows/'+g_user_id+'/';
-            $.post(url,function(ret){
+            var url='/ajax/user_data/'+g_user_id+'/';
+            var post_data={"type":"follow"};
+            $.post(url,post_data,function(ret){
                 if("fail"!=ret)
                 {
                     delCookie("ufp"+g_user_token);
@@ -2961,6 +2976,30 @@ function initData()
             g_user_follow_peoples_list=user_follow_peoples.split("o");
             g_user_follow_topics_list=user_follow_topics.split("o");
             g_user_follow_questions_list=user_follow_questions.split("o");
+        }
+        
+        var user_profile=getCookie("up"+g_user_token);
+        if(null==user_profile)
+        {
+            var url='/ajax/user_data/'+g_user_id+'/';
+            var post_data={"type":"userprofile"};
+            $.post(url,post_data,function(ret){
+                if("fail"!=ret)
+                {
+                    var cookie_data=utf8_to_b64(ret);
+                    delCookie("up"+g_user_token);                    
+                    setCookie("up"+g_user_token,cookie_data,g_cookie_expire);                    
+                    window.location.reload();
+                }
+            });
+        }
+        else
+        {
+            g_user_profile_list=b64_to_utf8(user_profile).split(",");
+            g_user_id=g_user_profile_list[0];
+            g_user_name=g_user_profile_list[1];
+            g_user_avatar=g_user_profile_list[2];
+            g_user_mood=g_user_profile_list[3];
         }
 
     }
@@ -3084,6 +3123,10 @@ function initCommon()
     cache_topics="";
     g_selectpicker_init="false";
     
+    g_user_follow_peoples_list=[];
+    g_user_follow_topics_list=[];
+    g_user_follow_questions_list=[];
+           
     modify_icon_svg='<svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>';
     like_icon_svg='<svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>';
     comment_icon_svg='<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg>'

@@ -92,7 +92,7 @@ class AllTopicsView(generic.ListView):
             followtopics_list=user.followtopics.all()
             return render(request,self.template_name,{'topics_list':topics_list,'followtopics_list':followtopics_list,'logged':'true'})
         else:
-            return render(request,self.template_name,{'topics_list':topics_list,'logged':'true'})
+            return render(request,self.template_name,{'topics_list':topics_list,'logged':'false'})
 
 class NotificationView(LoginRequiredMixin,generic.ListView):
     login_url='/'

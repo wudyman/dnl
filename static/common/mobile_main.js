@@ -650,9 +650,9 @@ function appendFollowOrMoreElement(ret)
         {
             var question_id=ret[i][0];
             var question_title=ret[i][1];
-            var question_pubdate=ret[i][2];
-            var question_answer_nums=ret[i][3];
-            var question_follower_nums=ret[i][4];
+            var question_answer_nums=ret[i][2];
+            var question_follower_nums=ret[i][3];
+            var question_pubdate=ret[i][4];
             var data='\
                     <div class="List-item"><div class="ContentItem" ><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
             $("#appendArea").append(data);
@@ -2115,12 +2115,12 @@ function getMoreData()
         if ("answers"==g_command)
         {
             var url="/ajax/er/"+g_er_id+"/answers/";
-            var post_data='';
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP};
         }
         else if ("asks"==g_command)
         {
             var url="/ajax/er/"+g_er_id+"/asks/";
-            var post_data='';
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP*10};
         }
         else if ("following"==g_command)
         {
@@ -2128,7 +2128,7 @@ function getMoreData()
             if($("main").find(".ReturnHomePage").length<=0)
                 return;
             var url="/ajax/er/"+g_er_id+"/following/"+g_subcmd+"/";
-            var post_data='';
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP*10};
         }
     }
     else if("answer_page"==g_module)
@@ -2537,11 +2537,7 @@ function initData()
     {
         g_user_id=main_data.user_id;
         g_user_name=main_data.user_name;
-        g_user_avatar=main_data.user_avatar;
-        
-        g_user_follow_peoples_list=[];
-        g_user_follow_topics_list=[];
-        g_user_follow_questions_list=[];
+        g_user_avatar=main_data.user_avatar;        
         
         g_user_token=g_user_id.substr(g_user_id.length-3,g_user_id.length); 
         g_cookie_expire=1*24*60*60;        
@@ -2688,6 +2684,10 @@ function initCommon()
     g_sticky_show="false";
     cache_topics="";
     g_selectpicker_init="false";
+    
+    g_user_follow_peoples_list=[];
+    g_user_follow_topics_list=[];
+    g_user_follow_questions_list=[];
     
     modify_icon_svg='<svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>';
     like_icon_svg='<svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>';

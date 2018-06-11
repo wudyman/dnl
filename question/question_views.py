@@ -77,23 +77,18 @@ class QuestionView(generic.ListView):
         if push_answer_id:
             question=get_object_or_404(Question,pk=question_id)
             push_index=question.push_index
-            more_answers_sets=question.be_answers.filter(push_index__gte=0).values("id","push_index","content","like_nums","comment_nums","pub_date"
+            more_answers_sets=question.be_answers.exclude(id=push_answer_id).filter(push_index__gte=0).values("id","push_index","content","like_nums","comment_nums","pub_date"
             ,"author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums"
-            ,"author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")[0:3]
+            ,"author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")[0:2]
             
             push_answer_sets=question.be_answers.filter(id=push_answer_id).values("id","push_index","content","like_nums","comment_nums","pub_date"
             ,"author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums"
             ,"author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
             push_answer=push_answer_sets[0]
             
-            question_data=Question.objects.filter(id=question_id).values_list("id","title","detail","answer_nums","follower_nums","click_nums",
-            "topics__id","topics__name","topics__avatar","topics__detail","topics__question_nums","topics__article_nums","topics__follower_nums")
-            topics_list=[]
-            for item in question_data:
-                question=item[0:6]
-                topic=item[6:13]
-                topics_list.append(topic)
-            return render(request,self.template_name,{'user':user,'question':question,'topics_list':topics_list,'push_answer':push_answer,'more_answers':more_answers_sets,'logged':logged})
+            question_data=[question.id,question.title,question.detail,question.answer_nums,question.follower_nums,question.click_nums]
+            topics_list=question.topics.values_list("id","name","avatar","detail","question_nums","article_nums","follower_nums")
+            return render(request,self.template_name,{'user':user,'question':question_data,'topics_list':topics_list,'push_answer':push_answer,'more_answers':more_answers_sets,'logged':logged})
         else:
             question_data=Question.objects.filter(id=question_id).values_list("id","title","detail","answer_nums","follower_nums","click_nums",
             "topics__id","topics__name","topics__avatar","topics__detail","topics__question_nums","topics__article_nums","topics__follower_nums")
