@@ -2554,6 +2554,8 @@ function getMoreData()
 
 function initElement()
 {
+    if("false"==g_init_data_done)
+        return;
     if("true"==g_logged)
     { 
         $("#MenuPopover").attr("data-er-id",g_user_id).attr("data-er-avatar",g_user_avatar).find("img").attr("src",g_user_avatar).removeClass("is-hide");
@@ -2628,28 +2630,38 @@ function initElement()
     }
     else if("mytopic"==g_module)
     {
-        //if("true"==g_logged)
-        //    $("#myfollow").attr("href","/er/"+g_user_id+"/following/topics/");
-        window.onhashchange=hashChange; 
+        window.onhashchange=hashChange;
+        var current_topic=null;
         if((location.hash!="")&&(location.hash!=undefined))
         {
-            hashChange();
+            g_topic_id=location.hash.replace("#","");
+            $(".FollowedTopic").each(function(){
+                if(g_topic_id==$(this).attr("data-topic-id"))
+                {
+                    $(this).addClass("current");
+                    current_topic=$(this);
+                }
+                else
+                    $(this).removeClass("current");
+                    
+            });
         }
         else
         {
-            var current_topic=$(".FollowedTopic:first");
-            g_topic_id=current_topic.addClass("current").attr("data-topic-id");
-            g_topic_name=current_topic.attr("data-topic-name");
-            g_topic_avatar=current_topic.attr("data-topic-avatar");
-            g_topic_detail=current_topic.attr("data-topic-detail");
-            
-            $(".Card-section.Topic--current .TopicLink-link").attr("href","/topic/"+g_topic_id+"/");
-            $(".Card-section.Topic--current img").attr("src",g_topic_avatar).attr("alt",g_topic_name);
-            $(".Card-section.Topic--current .RichText").empty().text(g_topic_name);
-            $(".Card-section.Topic--current .ContentItem-statusItem").empty().text(g_topic_detail);
-                
-            getMoreData();
+            current_topic=$(".FollowedTopic:first");
         }
+        g_topic_id=current_topic.addClass("current").attr("data-topic-id");
+        g_topic_name=current_topic.attr("data-topic-name");
+        g_topic_avatar=current_topic.attr("data-topic-avatar");
+        g_topic_detail=current_topic.attr("data-topic-detail");
+        
+        $(".Card-section.Topic--current .TopicLink-link").attr("href","/topic/"+g_topic_id+"/");
+        $(".Card-section.Topic--current img").attr("src",g_topic_avatar).attr("alt",g_topic_name);
+        $(".Card-section.Topic--current .RichText").empty().text(g_topic_name);
+        $(".Card-section.Topic--current .ContentItem-statusItem").empty().text(g_topic_detail);
+        $('#appendArea').empty();
+                
+        
 
     }
     else if("alltopics"==g_module)
@@ -2920,6 +2932,7 @@ function initElement()
         $(".note-statusbar").addClass("is-hide");
         checkWrite();
     }
+    g_init_element_done="true";
 }
 function utf8_to_b64(str) {   
     //return window.btoa(encodeURIComponent(str));
@@ -2940,69 +2953,7 @@ function initData()
 	console.log(str_main_data);
 	var main_data=JSON.parse(str_main_data);//str_main_data.parseJSON();
 	g_logged=main_data.logged;
-    if("true"==g_logged)
-    {               
-        g_user_id=main_data.user_id;
-        g_user_name=main_data.user_name;
-        g_user_avatar=main_data.user_avatar;
-        
-        g_user_token=g_user_id.substr(g_user_id.length-3,g_user_id.length); 
-        g_cookie_expire=1*24*60*60;        
-                            
-        var user_follow_peoples=getCookie("ufp"+g_user_token);
-        var user_follow_topics=getCookie("uft"+g_user_token);
-        var user_follow_questions=getCookie("ufq"+g_user_token);
-        if((null==user_follow_peoples)||(null==user_follow_questions)||(null==user_follow_topics))
-        {          
-            var url='/ajax/user_data/'+g_user_id+'/';
-            var post_data={"type":"follow"};
-            $.post(url,post_data,function(ret){
-                if("fail"!=ret)
-                {
-                    delCookie("ufp"+g_user_token);
-                    delCookie("uft"+g_user_token);
-                    delCookie("ufq"+g_user_token);
-                    
-                    setCookie("ufp"+g_user_token,String(ret[0]).replace(/,/g,"o"),g_cookie_expire);
-                    setCookie("uft"+g_user_token,String(ret[1]).replace(/,/g,"o"),g_cookie_expire);
-                    setCookie("ufq"+g_user_token,String(ret[2]).replace(/,/g,"o"),g_cookie_expire);
-                    
-                    window.location.reload();
-                }
-            });
-        }
-        else
-        {
-            g_user_follow_peoples_list=user_follow_peoples.split("o");
-            g_user_follow_topics_list=user_follow_topics.split("o");
-            g_user_follow_questions_list=user_follow_questions.split("o");
-        }
-        
-        var user_profile=getCookie("up"+g_user_token);
-        if(null==user_profile)
-        {
-            var url='/ajax/user_data/'+g_user_id+'/';
-            var post_data={"type":"userprofile"};
-            $.post(url,post_data,function(ret){
-                if("fail"!=ret)
-                {
-                    var cookie_data=utf8_to_b64(ret);
-                    delCookie("up"+g_user_token);                    
-                    setCookie("up"+g_user_token,cookie_data,g_cookie_expire);                    
-                    window.location.reload();
-                }
-            });
-        }
-        else
-        {
-            g_user_profile_list=b64_to_utf8(user_profile).split(",");
-            g_user_id=g_user_profile_list[0];
-            g_user_name=g_user_profile_list[1];
-            g_user_avatar=g_user_profile_list[2];
-            g_user_mood=g_user_profile_list[3];
-        }
 
-    }
     if("question"==g_module)
     {
         g_question_id=main_data.question_id;
@@ -3094,19 +3045,92 @@ function initData()
     {
         g_type=main_data.type;
     }
-} 
+    
+    if("true"==g_logged)
+    {               
+        g_user_id=main_data.user_id;
+        //g_user_name=main_data.user_name;
+        //g_user_avatar=main_data.user_avatar;
+        //g_user_mood=main_data.user_mood;
+        
+        g_user_token=g_user_id.substr(g_user_id.length-5,g_user_id.length); 
+        g_cookie_expire=10;//1*24*60*60;           
+                            
+        var user_follow_peoples=getCookie("ufp"+g_user_token);
+        var user_follow_topics=getCookie("uft"+g_user_token);
+        var user_follow_questions=getCookie("ufq"+g_user_token);
+        var user_profile=getCookie("up"+g_user_token);
+        if((null==user_follow_peoples)||(null==user_follow_questions)||(null==user_follow_topics)|(null==user_profile))
+        {          
+            var url='/ajax/user_data/'+g_user_id+'/';
+            var post_data={"type":"all"};
+            $.post(url,post_data,function(ret){
+                if("fail"!=ret)
+                {
+                    g_user_follow_peoples_list=String(ret[0]).split(",");
+                    g_user_follow_topics_list=String(ret[1]).split(",");
+                    g_user_follow_questions_list=String(ret[2]).split(",");
+                    g_user_profile_list=ret[3];
+                    
+                    //g_user_id=g_user_profile_list[0];
+                    g_user_name=g_user_profile_list[1];
+                    g_user_avatar=g_user_profile_list[2];
+                    g_user_mood=g_user_profile_list[3];
+                    
 
-function init()
+            
+                    delCookie("ufp"+g_user_token);
+                    delCookie("uft"+g_user_token);
+                    delCookie("ufq"+g_user_token);
+                    delCookie("up"+g_user_token);
+                    
+                    setCookie("ufp"+g_user_token,utf8_to_b64(ret[0]),g_cookie_expire);
+                    setCookie("uft"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
+                    setCookie("ufq"+g_user_token,utf8_to_b64(ret[2]),g_cookie_expire);
+                    setCookie("up"+g_user_token,utf8_to_b64(ret[3]),g_cookie_expire);  
+                    
+                    g_init_data_done="true";
+                    initElement()
+                    action();
+                }
+            });
+        }
+        else
+        {
+            g_user_follow_peoples_list=b64_to_utf8(user_follow_peoples).split(",");
+            g_user_follow_topics_list=b64_to_utf8(user_follow_topics).split(",");
+            g_user_follow_questions_list=b64_to_utf8(user_follow_questions).split(",");
+            g_user_profile_list=b64_to_utf8(user_profile).split(",");           
+            
+            //g_user_id=g_user_profile_list[0];
+            g_user_name=g_user_profile_list[1];
+            g_user_avatar=g_user_profile_list[2];
+            g_user_mood=g_user_profile_list[3];
+            
+            g_init_data_done="true";
+        }
+
+    }
+} 
+function action()
 {
-    g_module=$("main").attr("data-module");
-    initData();
-    initElement();
+    if("false"==g_init_element_done)
+        return;
     if(("sign"!=g_module)&&("misc"!=g_module)&&("nofeature"!=g_module))
     {
         getMoreData();
         checkSets();
         appendLetterModal();
     }
+    g_init_done="true";
+    console.log("init done");
+}
+function init()
+{
+    g_module=$("main").attr("data-module");
+    initData();
+    initElement();
+    action();
 }
 function initCommon()
 {
@@ -3122,6 +3146,8 @@ function initCommon()
     g_sticky_show="false";
     cache_topics="";
     g_selectpicker_init="false";
+    g_init_data_done="false";
+    g_init_element_done="false";
     
     g_user_follow_peoples_list=[];
     g_user_follow_topics_list=[];
@@ -3195,8 +3221,6 @@ $(document).ready(function() {
     console.log("init");
     initCommon();
     init();
-    g_init_done="true";
-    console.log("init done");
 });
 $(document).click(function(e) {
     $("#NotificationPopover").popover("hide");
@@ -3245,16 +3269,15 @@ function hashChange()
         g_last_getmoredata_index=0;
         g_topic_id=location.hash.replace("#","");
         $(".FollowedTopic").each(function(){
-            var item=$(this);
-            if(g_topic_id==item.attr("data-topic-id"))
+            if(g_topic_id==$(this).attr("data-topic-id"))
             {
-                item.addClass("current");
-                g_topic_name=item.attr("data-topic-name");
-                g_topic_avatar=item.attr("data-topic-avatar");
-                g_topic_detail=item.attr("data-topic-detail");
+                $(this).addClass("current");
+                g_topic_name=$(this).attr("data-topic-name");
+                g_topic_avatar=$(this).attr("data-topic-avatar");
+                g_topic_detail=$(this).attr("data-topic-detail");
             }
             else
-                item.removeClass("current");
+                $(this).removeClass("current");
                 
         });
         
