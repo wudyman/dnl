@@ -377,61 +377,17 @@ def get_er_following_all(request,erid,subcmd):
     start=request.POST.get('start')
     end=request.POST.get('end')
     er=get_object_or_404(User,pk=erid)
-    user=request.user
+    #user=request.user
     if 'followtos'==subcmd:
-        followtos=er.followto.all()
+        followtos=er.followto.values_list("user__id","user__first_name","avatar","mood","sexual","answer_nums","article_nums","follower_nums")
         if followtos:
-            temp_list=[]
-            for followto in followtos:
-                temp=[]
-                temp.append(followto.user.id)#0
-                temp.append(followto.user.first_name)#1
-                temp.append(followto.user.answers.count())#2
-                temp.append(followto.avatar)#3
-                temp.append(followto.mood)#4
-                temp.append(followto.follower.count())#5
-                if user.is_authenticated:
-                    if user.followto.filter(id=followto.id).exists():
-                        temp.append(1)#6
-                        if user.userprofile.follower.filter(id=followto.user.id).exists():
-                            temp.append(1)#7
-                        else:
-                            temp.append(0)#7
-                    else:
-                        temp.append(0)#6
-                        temp.append(0)#7
-                else:
-                    temp.append(0)#6
-                    temp.append(0)#7     
-                temp_list.append(temp)
-            to_json=json.dumps(temp_list)
+            followtos_list=list(followtos)
+            to_json=json.dumps(followtos_list)
     elif 'followers'==subcmd:
-        followers=er.userprofile.follower.all()
+        followers=er.userprofile.follower.values_list("id","first_name","userprofile__avatar","userprofile__mood","userprofile__sexual","userprofile__answer_nums","userprofile__article_nums","userprofile__follower_nums")
         if followers:
-            temp_list=[]
-            for follower in followers:
-                temp=[]
-                temp.append(follower.id)#0
-                temp.append(follower.first_name)#1
-                temp.append(follower.answers.count())#2
-                temp.append(follower.userprofile.avatar)#3
-                temp.append(follower.userprofile.mood)#4
-                temp.append(follower.userprofile.follower.count())#5
-                if user.is_authenticated:
-                    if user.followto.filter(id=follower.userprofile.id).exists():
-                        temp.append(1)#6
-                        if user.userprofile.follower.filter(id=follower.id).exists():
-                            temp.append(1)#7
-                        else:
-                            temp.append(0)#7
-                    else:
-                        temp.append(0)#6
-                        temp.append(0)#7
-                else:
-                    temp.append(0)#6
-                    temp.append(0)#7
-                temp_list.append(temp)
-            to_json=json.dumps(temp_list)
+            followers_list=list(followers)
+            to_json=json.dumps(followers_list)
     elif 'topics'==subcmd:
         topics=er.followtopics.values_list("id","name","avatar","detail")[int(start):int(end)]
         if topics:

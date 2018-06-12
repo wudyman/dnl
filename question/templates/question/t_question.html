@@ -146,7 +146,7 @@
         <div class="AnswerItem-meta AnswerItem-meta--related">
         <div class="AuthorInfo">
         <span class="UserLink AuthorInfo-avatarWrapper">
-        <a class="UserLink-link PeoplePopover" href="/er/{{push_answer.author__id}}" data-author-id="{{push_answer.author__id}}" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">
+        <a class="UserLink-link PeoplePopover" href="/er/{{push_answer.author__id}}" data-author-id="{{push_answer.author__id}}" data-author-name="{{push_answer.author__first_name}}" data-author-avatar="{{push_answer.author__userprofile__avatar}}" data-author-mood="{{push_answer.author__userprofile__mood}}" data-author-sexual="{{push_answer.author__userprofile__sexual}}" data-author-answer-nums="{{push_answer.author__userprofile__answer_nums}}" data-author-article-nums="{{push_answer.author__userprofile__article_nums}}" data-author-follower-nums="{{push_answer.author__userprofile__follower_nums}}" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">
         <img class="Avatar AuthorInfo-avatar" width="40" height="40" src="{{push_answer.author__userprofile__avatar}}" alt="{{push_answer.author__first_name}}">
         </a>
         </span>
@@ -213,7 +213,8 @@
         <div class="AnswerItem-meta AnswerItem-meta--related">
         <div class="AuthorInfo">
         <span class="UserLink AuthorInfo-avatarWrapper">
-        <a class="UserLink-link PeoplePopover" href="/er/{{answer.author__id}}" data-author-id="{{answer.author__id}}" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"><img class="Avatar AuthorInfo-avatar" width="40" height="40" src="{{answer.author__userprofile__avatar}}" alt="{{answer.author__first_name}}"></a>
+        <a class="UserLink-link PeoplePopover" href="/er/{{answer.author__id}}" data-author-id="{{answer.author__id}}" data-author-name="{{answer.author__first_name}}" data-author-avatar="{{answer.author__userprofile__avatar}}" data-author-mood="{{answer.author__userprofile__mood}}" data-author-sexual="{{answer.author__userprofile__sexual}}" data-author-answer-nums="{{answer.author__userprofile__answer_nums}}" data-author-article-nums="{{answer.author__userprofile__article_nums}}" data-author-follower-nums="{{answer.author__userprofile__follower_nums}}" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">
+        <img class="Avatar AuthorInfo-avatar" width="40" height="40" src="{{answer.author__userprofile__avatar}}" alt="{{answer.author__first_name}}"></a>
         </span>
         <div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" href="/er/{{answer.author__id}}">{{answer.author__first_name}}</a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">{{answer.author__userprofile__mood}}</div></div></div>
         </div>

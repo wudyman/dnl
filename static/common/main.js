@@ -704,21 +704,31 @@ function appendFollowOrMoreElement(ret)
         {
             var people_id=ret[i][0];
             var people_name=ret[i][1];
-            var people_anwser_nums=ret[i][2];
-            var people_avatar=ret[i][3];
-            var people_mood=ret[i][4];
-            var people_follower_nums=ret[i][5];
-            var people_followed=ret[i][6];
-            var people_followed_each=ret[i][7];
-            if("1"==people_followed)
-                var followed_html='<button class="Button FollowButton Button--primary Button--grey" type="button">已关注</button>';
+            var people_avatar=ret[i][2];
+            var people_mood=ret[i][3];
+            var people_sexual=ret[i][4];
+            var people_anwser_nums=ret[i][5];
+            var people_article_nums=ret[i][6];
+            var people_follower_nums=ret[i][7];
+            if("f"==people_sexual)
+            {
+                var who="she";
+                var who_han="她";
+            }
             else
-                var followed_html='<button class="Button FollowButton Button--primary Button--green" type="button">关注</button>';
-            if("1"==people_followed_each)
-                var followed_each_html='<span class="FollowStatus">相互关注</span>';
+            {
+                var who="he";
+                var who_han="他";
+            }
+            if($.inArray(""+people_id,g_user_follow_peoples_list)>=0)
+                var followed_html='<button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+people_id+'" data-er-sexual="'+people_sexual+'" data-follow-type="people" data-followed="true" data-who="'+who+'">已关注</button>';
             else
+                var followed_html='<button class="Button FollowButton Button--primary Button--green" type="button" data-er-id="'+people_id+'" data-er-sexual="'+people_sexual+'" data-follow-type="people" data-followed="false" data-who="'+who+'">关注'+who_han+'</button>';
+            //if("1"==people_followed_each)
+            //    var followed_each_html='<span class="FollowStatus">相互关注</span>';
+            //else
                 var followed_each_html='';
-            var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><div class="Popover"><div id="Popover-28784-64463-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-64463-content"><a class="UserLink-link" target="_blank" href="/er/'+people_id+'"><img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+people_avatar+'" srcset="'+people_avatar+'" alt="'+people_name+'"></a></div></div></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><div class="Popover"><div id="Popover-28784-44728-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-44728-content"><a class="UserLink-link" data-za-detail-view-element_name="User" target="_blank" href="/er/'+people_id+'">'+people_name+'</a></div></div></span>'+followed_each_html+'</div></h2><div class="ContentItem-meta"><div><div class="RichText">'+people_mood+'</div><div class="ContentItem-status"><span class="ContentItem-statusItem">'+people_anwser_nums+' 回答</span><span class="ContentItem-statusItem">0 文章</span><span class="ContentItem-statusItem">'+people_follower_nums+' 关注者</span></div></div></div></div><div class="ContentItem-extra">'+followed_html+'</div></div></div></div>';
+            var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><div class="Popover"><div id="Popover-28784-64463-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-64463-content"><a class="UserLink-link" target="_blank" href="/er/'+people_id+'"><img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+people_avatar+'" srcset="'+people_avatar+'" alt="'+people_name+'"></a></div></div></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><div class="Popover"><div id="Popover-28784-44728-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-44728-content"><a class="UserLink-link" data-za-detail-view-element_name="User" target="_blank" href="/er/'+people_id+'">'+people_name+'</a></div></div></span>'+followed_each_html+'</div></h2><div class="ContentItem-meta"><div><div class="RichText">'+people_mood+'</div><div class="ContentItem-status"><span class="ContentItem-statusItem">'+people_anwser_nums+' 回答</span><span class="ContentItem-statusItem">'+people_article_nums+' 文章</span><span class="ContentItem-statusItem">'+people_follower_nums+' 关注者</span></div></div></div></div><div class="ContentItem-extra">'+followed_html+'</div></div></div></div>';
             $("#appendArea").append(data);
         }
         else if("topics"==g_subcmd)
@@ -910,23 +920,23 @@ function checkFollow()
                     if("question"==follow_type)
                     {
                         delCookie("ufq"+g_user_token);
-                        setCookie("ufq"+g_user_token,String(ret[1]).replace(/,/g,"o"),g_cookie_expire);
+                        setCookie("ufq"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
                         var user_follow_questions=getCookie("ufq"+g_user_token);
-                        g_user_follow_questions_list=user_follow_questions.split("o");                      
+                        g_user_follow_questions_list=b64_to_utf8(user_follow_questions).split(",");                        
                     }
                     else if("people"==follow_type)
                     {
                         delCookie("ufp"+g_user_token);
-                        setCookie("ufp"+g_user_token,String(ret[1]).replace(/,/g,"o"),g_cookie_expire);
+                        setCookie("ufp"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
                         var user_follow_peoples=getCookie("ufp"+g_user_token);
-                        g_user_follow_peoples_list=user_follow_peoples.split("o");
+                        g_user_follow_peoples_list=b64_to_utf8(user_follow_peoples).split(",");
                     }
                     else if("topic"==follow_type)
                     {
                         delCookie("uft"+g_user_token);
-                        setCookie("uft"+g_user_token,String(ret[1]).replace(/,/g,"o"),g_cookie_expire);
+                        setCookie("uft"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
                         var user_follow_topics=getCookie("uft"+g_user_token);
-                        g_user_follow_topics_list=user_follow_topics.split("o");
+                        g_user_follow_topics_list=b64_to_utf8(user_follow_topics).split(",");
                     }
                     updateFollowValue(update_value_type,ret[0]);
                 }
@@ -3054,7 +3064,7 @@ function initData()
         //g_user_mood=main_data.user_mood;
         
         g_user_token=g_user_id.substr(g_user_id.length-5,g_user_id.length); 
-        g_cookie_expire=10;//1*24*60*60;           
+        g_cookie_expire=10;//1*24*60*60;        
                             
         var user_follow_peoples=getCookie("ufp"+g_user_token);
         var user_follow_topics=getCookie("uft"+g_user_token);
@@ -3088,11 +3098,10 @@ function initData()
                     setCookie("uft"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
                     setCookie("ufq"+g_user_token,utf8_to_b64(ret[2]),g_cookie_expire);
                     setCookie("up"+g_user_token,utf8_to_b64(ret[3]),g_cookie_expire);  
-                    
-                    g_init_data_done="true";
-                    initElement()
-                    action();
                 }
+                g_init_data_done="true";
+                initElement()
+                action();
             });
         }
         else
@@ -3110,6 +3119,10 @@ function initData()
             g_init_data_done="true";
         }
 
+    }
+    else
+    {
+        g_init_data_done="true";
     }
 } 
 function action()
