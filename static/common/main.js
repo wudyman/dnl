@@ -306,15 +306,33 @@ function appendMessageElement(ret)
     {
         var conversation_id=ret[i][0];
         var conversation_delete_id=ret[i][1];
-        var conversation_update=ret[i][2].split('.')[0];
-        var er_id=ret[i][3];
-        var er_name=ret[i][4];
-        var er_avatar=ret[i][5];
-        var message_content=ret[i][6];
+        var conversation_update=ret[i][2];
+        var initator_id=ret[i][3];
+        var initator_name=ret[i][4];
+        var initator_avatar=ret[i][5];
+        var parter_id=ret[i][6];
+        var parter_name=ret[i][7];
+        var parter_avatar=ret[i][8];
+        var latest_message_content=ret[i][9];
+    
         
         if (conversation_delete_id==user_id) //user have delete this message
             continue;
-        var data='<a href="/conversations/?i='+conversation_id+'" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="'+er_avatar+'" srcset="'+er_avatar+'" alt="'+er_name+'"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink">'+er_name+'</span></div><div class="Messages-itemContent">'+message_content+'</div></div></a>';
+                
+        if(initator_id!=g_user_id)
+        {
+            var er_id=initator_id;
+            var er_name=initator_name;
+            var er_avatar=initator_avatar;
+        }
+        else
+        {
+            var er_id=parter_id;
+            var er_name=parter_name;
+            var er_avatar=parter_avatar;
+        }
+            
+        var data='<a href="/conversations/?i='+conversation_id+'" class="Messages-item Messages-followItem"><span class="UserLink"><img class="Avatar Avatar--medium UserLink-avatar" width="40" height="40" src="'+er_avatar+'" alt="'+er_name+'"></span><div class="Messages-user"><div class="Messages-userName"><span class="UserLink">'+er_name+'</span></div><div class="Messages-itemContent">'+latest_message_content+'</div></div></a>';
         $(".Messages-list").append(data);
     }
 }
@@ -609,16 +627,32 @@ function appendSettingPageElement(ret)
         {
             var conversation_id=ret[i][0];
             var conversation_delete_id=ret[i][1];
-            var conversation_update=ret[i][2].split('.')[0];
-            var er_id=ret[i][3];
-            var er_name=ret[i][4];
-            var er_avatar=ret[i][5];
-            var message_content=ret[i][6];
+            var conversation_update=ret[i][2];
+            var initator_id=ret[i][3];
+            var initator_name=ret[i][4];
+            var initator_avatar=ret[i][5];
+            var parter_id=ret[i][6];
+            var parter_name=ret[i][7];
+            var parter_avatar=ret[i][8];
+            var latest_message_content=ret[i][9];
     
             if (conversation_delete_id==g_user_id) //user have delete this message
                 continue;
+                
+            if(initator_id!=g_user_id)
+            {
+                var er_id=initator_id;
+                var er_name=initator_name;
+                var er_avatar=initator_avatar;
+            }
+            else
+            {
+                var er_id=parter_id;
+                var er_name=parter_name;
+                var er_avatar=parter_avatar;
+            }
 
-            var data='<div class="List-item Conversations-item" data-action="delete_conversation" data-action-id="'+conversation_id+'"><a class="zm-item-link-avatar50" href="/er/'+er_id+'"><img class="zm-item-img-avatar50" src="'+er_avatar+'"></a><div class="zm-pm-item-main"><a class="pm-touser author-link" href="/er/'+er_id+'">'+er_name+'</a>：'+message_content+'</div><div class="zg-gray zu-pm-item-meta"><span class="zg-gray zg-left">'+conversation_update+'</span><a class="zg-link-litblue" href="/conversations/?i='+conversation_id+'">查看对话</a><span class="zg-bull">|</span><a class="zg-link-litblue" href="javascript:;" name="reply" data-receiver-id="'+er_id+'"  data-receiver-name="'+er_name+'" data-toggle="modal" data-target="#letterModal">回复</a><span class="zg-bull">|</span><a class="zg-link-litblue" href="javascript:;" name="delete">删除</a></div></div>';
+            var data='<div class="List-item Conversations-item" data-action="delete_conversation" data-action-id="'+conversation_id+'" data-receiver-id="'+er_id+'"  data-receiver-name="'+er_name+'"><a class="zm-item-link-avatar50" href="/er/'+er_id+'"><img class="zm-item-img-avatar50" src="'+er_avatar+'"></a><div class="zm-pm-item-main"><a class="pm-touser author-link" href="/er/'+er_id+'">'+er_name+'</a>：'+latest_message_content+'</div><div class="zg-gray zu-pm-item-meta"><span class="zg-gray zg-left">'+conversation_update+'</span><a class="zg-link-litblue" href="javascript:;" name="messages">查看对话</a><span class="zg-bull">|</span><a class="zg-link-litblue" href="javascript:;" name="reply" data-receiver-id="'+er_id+'"  data-receiver-name="'+er_name+'" data-toggle="modal" data-target="#letterModal">回复</a><span class="zg-bull">|</span><a class="zg-link-litblue" href="javascript:;" name="delete">删除</a></div></div>';
 
             $('#appendArea').append(data);
         }
@@ -628,18 +662,31 @@ function appendSettingPageElement(ret)
             var message_content=ret[i][1];
             var message_status=ret[i][2];
             var message_delete_id=ret[i][3];
-            var message_pub_date=ret[i][4].split('.')[0];
-            var er_id=ret[i][5];
-            var er_name=ret[i][6];
-            var er_avatar=ret[i][7];
+            var message_pub_date=ret[i][4];
+            var sender_id=ret[i][5];
+            var sender_name=ret[i][6];
+            var sender_avatar=ret[i][7];
+            var receiver_id=ret[i][8];
+            var receiver_name=ret[i][9];
+            var receiver_avatar=ret[i][10];
 
             if (message_delete_id==g_user_id) //user have delete this message
             continue;
 
-            if(er_id==g_user_id)
-            er_name="我";
-
-            var data='<div class="List-item Conversation-messages-item" data-action="delete_conversation_message" data-action-id="'+message_id+'"><a class="zm-item-link-avatar50" href="/er/'+er_id+'"><img class="zm-item-img-avatar50" src="'+er_avatar+'"></a><div class="zm-pm-item-main"><a class="pm-touser author-link" href="/er/'+er_id+'">'+er_name+'</a>：'+message_content+'</div><div class="zg-gray zu-pm-item-meta"><span class="zg-gray zg-left">'+message_pub_date+'</span><a class="zg-link-litblue" href="javascript:;" name="delete">删除</a></div></div>';
+            if(sender_id==g_user_id)
+            {
+                var sender_name="我";
+                var letter_id=receiver_id;
+                var letter_name=receiver_name;
+            }
+            else
+            {
+                var letter_id=sender_id;
+                var letter_name=sender_name;
+            }
+            $(".Conversation-messages-head .zg-gray-darker").text(letter_name);
+            $(".Conversation-messages-head #letterText").attr("data-receiver-id",letter_id);
+            var data='<div class="List-item Conversation-messages-item" data-action="delete_conversation_message" data-action-id="'+message_id+'"><a class="zm-item-link-avatar50" href="/er/'+sender_id+'"><img class="zm-item-img-avatar50" src="'+sender_avatar+'"></a><div class="zm-pm-item-main"><a class="pm-touser author-link" href="/er/'+sender_id+'">'+sender_name+'</a>：'+message_content+'</div><div class="zg-gray zu-pm-item-meta"><span class="zg-gray zg-left">'+message_pub_date+'</span><a class="zg-link-litblue" href="javascript:;" name="delete">删除</a></div></div>';
 
             $('#appendArea').append(data);
         }
@@ -1846,9 +1893,19 @@ function checkHomePage()
 }
 function checkSettingPage()
 {
+    $("a[name='messages']").off("click");
+    $("a[name='messages']").on("click",function(){
+        var element=$(this).parents(".List-item");
+        console.log(element);
+        var conversation_id=element.attr("data-action-id");
+        var id=element.attr("data-receiver-id");
+        var name=element.attr("data-receiver-name");
+        show_conversion_messages(conversation_id,id,name);
+    });
+    
     $("a[name='reply']").off("click");
     $("a[name='reply']").on("click",function(){
-        var element=$(this);
+        var element=$(this).parents(".List-item");
         console.log(element);
         var id=element.attr("data-receiver-id");
         var name=element.attr("data-receiver-name");
@@ -2561,7 +2618,35 @@ function getMoreData()
         //setLockScrollMoreData("false");
     });
 }
-
+function show_conversion_messages(conversation_id,er_id,er_name)
+{
+    var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">'+er_name+'</span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="'+er_id+'"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--green" type="button" onclick="sendLetter()">发送</button></div></div></div>';
+    $('#appendArea').empty().prepend(data);
+    g_last_getmoredata_index=0;
+    g_setting_type="conversation_messages";
+    var nums=g_last_getmoredata_index;//$('.Setting-item').length;
+    var order=1;//pub_date
+    var start=nums;
+    var end=start+STEP;
+    var url='/ajax/'+g_setting_type+'/'+conversation_id+'/'+order+'/'+start+'/'+end+'/';
+    var post_data='';
+    if("true"==g_lock_ajax)
+        return;
+    g_lock_ajax="true";
+    $.post(url,post_data,function(ret){
+        if("fail"!=ret)
+        {
+            g_last_getmoredata_index+=STEP;
+            appendSettingPageElement(ret);
+        }
+        else
+        {
+            console.log("no more data");
+            $("#appendArea").append('<div class="List-item NoMoreData"><div class="ContentItem" ><div class="ContentItem-status"  style="text-align:center">没有更多内容</div></div></div>');
+        }
+        g_lock_ajax="false";
+    });
+}
 function initElement()
 {
     if("false"==g_init_data_done)
@@ -2702,7 +2787,7 @@ function initElement()
         });
         if("conversation_messages"==g_setting_type)
         {
-            var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">'+g_parter_name+'</span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="4"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--green" type="button" onclick="sendLetter()">发送</button></div></div></div>';
+            var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker"></span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="4"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--green" type="button" onclick="sendLetter()">发送</button></div></div></div>';
             $('#appendArea').prepend(data);
         }
         else if("settings"==g_setting_type)
@@ -3004,7 +3089,6 @@ function initData()
     {
         g_setting_type=main_data.type;
         g_conversation_id=main_data.conversation_id;
-        g_parter_name=main_data.parter_name;
     }
     else if("misc"==g_module)
     {
@@ -3064,7 +3148,7 @@ function initData()
         //g_user_mood=main_data.user_mood;
         
         g_user_token=g_user_id.substr(g_user_id.length-5,g_user_id.length); 
-        g_cookie_expire=10;//1*24*60*60;        
+        g_cookie_expire=1*24*60*60;        
                             
         var user_follow_peoples=getCookie("ufp"+g_user_token);
         var user_follow_topics=getCookie("uft"+g_user_token);
