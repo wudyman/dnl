@@ -172,24 +172,9 @@ def answer_question(request,question_id):
             answer.question=question
             answer.save()
             answer_list=[]
-            temp=[]
-            temp.append(answer.id) #0
-            temp.append(answer.content) #1
-            temp.append(answer.like_nums) #2
-            temp.append(answer.comment_nums) #3
-            temp.append(str(answer.pub_date)) #4
-            temp.append(answer.author.id) #5
-            temp.append(answer.author.first_name) #6
-            temp.append(answer.author.userprofile.avatar) #7
-            temp.append(answer.author.userprofile.mood) #8
-            temp.append(answer.author.userprofile.sexual) #9
-            temp.append(answer.author.userprofile.question_nums) #10
-            temp.append(answer.author.userprofile.article_nums) #11
-            temp.append(answer.author.userprofile.answer_nums) #12
-            temp.append(answer.author.userprofile.followto_nums) #13
-            temp.append(answer.author.userprofile.follower_nums) #14
-            temp.append(answer.author.userprofile.followtopic_nums) #15
-            temp.append(answer.author.userprofile.followquestion_nums) #16
+            temp=[answer.id,answer.content,answer.like_nums,answer.comment_nums,str(answer.pub_date),answer.author.id,answer.author.first_name,answer.author.userprofile.avatar,
+            answer.author.userprofile.mood,answer.author.userprofile.sexual,answer.author.userprofile.question_nums,answer.author.userprofile.article_nums,answer.author.userprofile.answer_nums,
+            answer.author.userprofile.followto_nums,answer.author.userprofile.follower_nums,answer.author.userprofile.followtopic_nums,answer.author.userprofile.followquestion_nums]
             answer_list.append(temp)
     
             to_json=json.dumps(answer_list)
@@ -209,14 +194,7 @@ def get_topics(request,bIsGetAll,start,end):
     if topics:
         topic_list=[]
         for topic in topics:
-            temp=[]
-            temp.append(topic.id)#0
-            temp.append(topic.name)#1
-            temp.append(topic.avatar)#2
-            temp.append(topic.detail)#3
-            temp.append(topic.question_nums)#4
-            temp.append(topic.follower_nums)#5
-            temp.append(str(topic.pub_date))#6
+            temp=[topic.id,topic.name,topic.avatar,topic.detail,topic.question_nums,topic.follower_nums,str(topic.pub_date)]
             topic_list.append(temp)
         to_json=json.dumps(topic_list)
     return HttpResponse(to_json,content_type='application/json')    
@@ -505,24 +483,22 @@ def get_notifications(request,order,start,end):
 @csrf_exempt
 def send_message(request,receiver_id):
     to_json=json.dumps('fail')
-    sender=request.user
-    if sender.is_authenticated:
-        receiver=get_object_or_404(User,pk=receiver_id)
-        conversations=Conversation.objects.filter(initator__id=sender.id,parter__id=receiver_id)
-        if conversations:
-            conversation=conversations[0]
-        else:
-            conversations=Conversation.objects.filter(initator__id=receiver_id,parter__id=sender.id)
+    content=request.POST.get('content')
+    if content:
+        sender=request.user
+        if sender.is_authenticated:
+            receiver=get_object_or_404(User,pk=receiver_id)
+            conversations=Conversation.objects.filter(initator__id=sender.id,parter__id=receiver_id) | Conversation.objects.filter(initator__id=receiver_id,parter__id=sender.id)
             if conversations:
                 conversation=conversations[0]
             else:
                 conversation=Conversation(initator=sender,parter=receiver)
                 conversation.save()
-        content=request.POST.get('content')
-        if content:
+
             message=Message(conversation=conversation,content=content,sender=sender,receiver=receiver,delete_id=-1)
             message.save()
-            conversation.update_date=message.pub_date
+            #conversation.update_date=message.pub_date
+            conversation.latest_message_content=content
             conversation.delete_id=-1
             conversation.save()
             to_json=json.dumps(message.id) 
@@ -534,25 +510,11 @@ def get_conversations(request,order,start,end):
     user=request.user
     if user.is_authenticated:
         conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
-        conversations=conversations.order_by('-update_date')[int(start):int(end)]
+        conversations=conversations.order_by('-update_date')[int(start):int(end)].values_list("id","delete_id","update_date","initator__id","initator__first_name","initator__userprofile__avatar",
+        "parter__id","parter__first_name","parter__userprofile__avatar","latest_message_content")
         if conversations:
-            conversation_list=[]
-            for conversation in conversations:
-                temp=[]
-                temp.append(conversation.id)#0
-                temp.append(conversation.delete_id)#1
-                temp.append(str(conversation.update_date))#2
-                er=conversation.initator
-                if user.id==er.id:
-                    er=conversation.parter
-                temp.append(er.id)#3
-                temp.append(er.first_name)#4
-                temp.append(er.userprofile.avatar)#5
-                latest_message=conversation.messages.order_by('-pub_date')[0]
-                if latest_message:
-                    temp.append(latest_message.content)#6
-                    conversation_list.append(temp)
-            to_json=json.dumps(conversation_list)
+            conversation_list=list(conversations)
+            to_json=json.dumps(conversation_list,cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
@@ -562,30 +524,20 @@ def get_conversation_messages(request,conversation_id,order,start,end):
     if user.is_authenticated:
         conversation=get_object_or_404(Conversation,pk=conversation_id)
         if conversation:
-            messages=conversation.messages.order_by('-pub_date')[int(start):int(end)]
+            messages=conversation.messages.order_by('-pub_date')[int(start):int(end)].values_list("id","content","status","delete_id","pub_date",
+            "sender__id","sender__first_name","sender__userprofile__avatar","receiver__id","receiver__first_name","receiver__userprofile__avatar")
             if messages:
-                message_list=[]
-                for message in messages:
-                    temp=[]
-                    temp.append(message.id)#0
-                    temp.append(message.content)#1
-                    temp.append(message.status)#2
-                    temp.append(message.delete_id)#3
-                    temp.append(str(message.pub_date))#4
-                    temp.append(message.sender.id)#5
-                    temp.append(message.sender.first_name)#6
-                    temp.append(message.sender.userprofile.avatar)#7
-                    message_list.append(temp)
-                to_json=json.dumps(message_list)
+                message_list=list(messages)
+                to_json=json.dumps(message_list,cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
  
 @csrf_exempt
 def delete_conversation_message(request,message_id):
     to_json=json.dumps('fail')
-    if request.user.is_authenticated:
+    user=request.user
+    if user.is_authenticated:
         message=get_object_or_404(Message,pk=message_id)
         if message:
-            user=request.user
             if user.id==message.sender.id or user.id==message.receiver.id:
                 #Message.objects.filter(id=message_id).delete()
                 if message.delete_id==-1: #delete one side
@@ -599,10 +551,10 @@ def delete_conversation_message(request,message_id):
 @csrf_exempt
 def delete_conversation(request,conversation_id):
     to_json=json.dumps('fail')
-    if request.user.is_authenticated:
+    user=request.user
+    if user.is_authenticated:
         conversation=get_object_or_404(Conversation,pk=conversation_id)
         if conversation:
-            user=request.user
             if user.id==conversation.initator.id or user.id==conversation.parter.id:
                 #Conversation.objects.filter(id=message_id).delete()
                 if conversation.delete_id==-1: #delete one side
@@ -786,26 +738,14 @@ def get_comments(request):
     if "article"==commentType:
         article=get_object_or_404(Article,pk=aId)
         if article:       
-            comments=article.comments.order_by('pub_date')
+            comments=article.comments.order_by('pub_date').values_list("id","content","like_nums","parent_id","pub_date","author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood")
     elif "answer"==commentType:
         answer=get_object_or_404(Answer,pk=aId)
         if answer:
-            comments=answer.comments.order_by('pub_date')
+            comments=answer.comments.order_by('pub_date').values_list("id","content","like_nums","parent_id","pub_date","author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood")
     if comments:
-        comment_list=[]
-        for comment in comments:
-            temp=[]
-            temp.append(comment.id) #0
-            temp.append(comment.content) #1
-            temp.append(comment.like_nums) #2
-            temp.append(comment.parent_id) #3
-            temp.append(str(comment.pub_date)) #4
-            temp.append(comment.author.id) #5
-            temp.append(comment.author.first_name) #6
-            temp.append(comment.author.userprofile.avatar) #7
-            temp.append(comment.author.userprofile.mood) #8
-            comment_list.append(temp)
-        to_json=json.dumps(comment_list)
+        comment_list=list(comments)
+        to_json=json.dumps(comment_list,cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
@@ -829,18 +769,7 @@ def comment(request):
                 article.comment_nums+=1
                 article.save()
                 
-                comment_list=[]
-                temp=[]
-                temp.append(comment.id) #0
-                temp.append(comment.content) #1
-                temp.append(comment.like_nums) #2
-                temp.append(comment.parent_id) #3
-                temp.append(str(comment.pub_date)) #4
-                temp.append(comment.author.id) #5
-                temp.append(comment.author.first_name) #6
-                temp.append(comment.author.userprofile.avatar) #7
-                temp.append(comment.author.userprofile.mood) #8
-                comment_list.append(temp)
+                comment_list=[[comment.id,comment.content,comment.like_nums,comment.parent_id,str(comment.pub_date),comment.author.id,comment.author.first_name,comment.author.userprofile.avatar,comment.author.userprofile.mood]]
                 to_json=json.dumps(comment_list)
         elif "answer"==commentType:
             answer=get_object_or_404(Answer,pk=aId)
@@ -853,19 +782,8 @@ def comment(request):
                 comment.save()
                 answer.comment_nums+=1
                 answer.save()
-                
-                comment_list=[]
-                temp=[]
-                temp.append(comment.id) #0
-                temp.append(comment.content) #1
-                temp.append(comment.like_nums) #2
-                temp.append(comment.parent_id) #3
-                temp.append(str(comment.pub_date)) #4
-                temp.append(comment.author.id) #5
-                temp.append(comment.author.first_name) #6
-                temp.append(comment.author.userprofile.avatar) #7
-                temp.append(comment.author.userprofile.mood) #8
-                comment_list.append(temp)
+
+                comment_list=[[comment.id,comment.content,comment.like_nums,comment.parent_id,str(comment.pub_date),comment.author.id,comment.author.first_name,comment.author.userprofile.avatar,comment.author.userprofile.mood]]
                 to_json=json.dumps(comment_list)
     return HttpResponse(to_json,content_type='application/json')
 @csrf_exempt

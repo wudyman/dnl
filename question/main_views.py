@@ -132,15 +132,8 @@ class ConversationView(LoginRequiredMixin,generic.ListView):
         if user.is_authenticated:
             conversation_id=request.GET.get('i')
             if conversation_id:
-                conversation=get_object_or_404(Conversation,pk=conversation_id)
-                if conversation:
-                    self.type='conversation_messages'
-                    parter=conversation.initator
-                    if parter.id==user.id:
-                        parter=conversation.parter
-                    return render(request,self.template_name,{'type':self.type,'conversation_id':conversation_id,'parter':parter,'parter_name':parter.first_name,'logged':'true'})
-                else:
-                    return render(request,self.template_name,{'type':self.type,'conversation_id':'','logged':'true'})               
+                self.type='conversation_messages'
+                return render(request,self.template_name,{'type':self.type,'conversation_id':conversation_id,'logged':'true'})               
             else:
                 return render(request,self.template_name,{'type':self.type,'conversation_id':'','logged':'true'})
         else:

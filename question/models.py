@@ -127,13 +127,14 @@ class Conversation(models.Model):
     initator=models.ForeignKey(User,related_name='init_conversations',on_delete=models.CASCADE)
     parter=models.ForeignKey(User,related_name='join_conversations',on_delete=models.CASCADE)
     delete_id=models.IntegerField(default=-1)
-    update_date=models.DateTimeField('date published',default=timezone.now)
+    latest_message_content=models.CharField(default='',max_length=100)
+    update_date=models.DateTimeField('date published',auto_now=True)
     def __str__(self):
         return str(self.id)
 class Message(models.Model):
     #id=models.BigAutoField(primary_key=True)
     conversation=models.ForeignKey(Conversation,related_name='messages',on_delete=models.CASCADE)
-    content=models.CharField(max_length=500)
+    content=models.CharField(max_length=100)
     sender=models.ForeignKey(User,related_name='message_sends',on_delete=models.CASCADE)
     receiver=models.ForeignKey(User,related_name='message_receives',on_delete=models.CASCADE)
     delete_id=models.IntegerField(default=-1)
