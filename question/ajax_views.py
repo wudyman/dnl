@@ -171,6 +171,12 @@ def answer_question(request,question_id):
             answer.author=author
             answer.question=question
             answer.save()
+            question.answer_nums+=1#question.be_answers.count();
+            question.push_answer_id=answer.id
+            question.save()
+            to_json=json.dumps('/question/'+str(question.id)+'/?ans='+str(answer.id))
+
+            '''
             answer_list=[]
             temp=[answer.id,answer.content,answer.like_nums,answer.comment_nums,str(answer.pub_date),answer.author.id,answer.author.first_name,answer.author.userprofile.avatar,
             answer.author.userprofile.mood,answer.author.userprofile.sexual,answer.author.userprofile.question_nums,answer.author.userprofile.article_nums,answer.author.userprofile.answer_nums,
@@ -178,10 +184,9 @@ def answer_question(request,question_id):
             answer_list.append(temp)
     
             to_json=json.dumps(answer_list)
+            '''
             
-            question.answer_nums+=1#question.be_answers.count();
-            question.push_answer_id=answer.id
-            question.save()
+
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
@@ -291,10 +296,9 @@ def get_question_answers(request,question_id,order,start,end):
     #question=get_object_or_404(Question,pk=question_id)
     
     #answers=question.be_answers.order_by('-pub_date')[int(start):int(end)]
-    if answers:
-        if answers[0][0]!=None:
-            answer_list=list(answers)
-            to_json=json.dumps(answer_list,cls=CJsonEncoder)
+    if answers and answers[0][0]!=None:
+        answer_list=list(answers)
+        to_json=json.dumps(answer_list,cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
@@ -338,13 +342,13 @@ def get_er_all(request,erid,command):
         answers=User.objects.filter(id=erid).values_list("answers__id","answers__question__id","answers__question__title","answers__content","answers__like_nums","answers__comment_nums","id","first_name","userprofile__avatar","userprofile__mood")[int(start):int(end)]
         #answers=er.answers.all()
         #answers=er.answers.values_list("id","question__id","question__title","content","like_nums","comment_nums")
-        if answers:
+        if answers and answers[0][0]!=None:
             answers_list=list(answers)
             to_json=json.dumps(answers_list)
     elif 'asks'==command:
         #questions=er.selfquestions.all()
         questions=User.objects.filter(id=erid).values_list("selfquestions__id","selfquestions__title","selfquestions__answer_nums","selfquestions__follower_nums","selfquestions__pub_date")[int(start):int(end)]
-        if questions:
+        if questions and questions[0][0]!=None:
             questions_list=list(questions)
             to_json=json.dumps(questions_list,cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')

@@ -1929,9 +1929,10 @@ function checkAnswerQuestion()
             success:function(ret){
                 if("fail"!=ret)
                 {
-                    appendAnswerElementList(ret,"all","prepend")
-                    $(".AnswerToolbar").addClass("is-hide");               
-                    checkSets();
+                    location.href=ret;
+                    //appendAnswerElementList(ret,"all","prepend")
+                    //$(".AnswerToolbar").addClass("is-hide");               
+                    //checkSets();
                 }
             }
         });
@@ -2316,6 +2317,10 @@ function initElement()
 {
     if("false"==g_init_data_done)
         return;
+    if("true"==g_logged)
+    { 
+        appendLetterModal();
+    }
     if("question"==g_module)
     {
         
@@ -2809,7 +2814,6 @@ function action()
     {
         getMoreData();
         checkSets();
-        appendLetterModal();
     }
     g_init_done="true";
     console.log("init done");
