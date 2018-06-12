@@ -2252,9 +2252,10 @@ function checkAnswerQuestion()
             success:function(ret){
                 if("fail"!=ret)
                 {
-                    appendAnswerElementList(ret,"all","prepend")
-                    $(".AnswerToolbar").addClass("is-hide");               
-                    checkSets();
+                    location.href=ret;
+                    //appendAnswerElementList(ret,"all","prepend")
+                    //$(".AnswerToolbar").addClass("is-hide");               
+                    //checkSets();
                 }
             }
         });
@@ -2654,6 +2655,7 @@ function initElement()
     if("true"==g_logged)
     { 
         $("#MenuPopover").attr("data-er-id",g_user_id).attr("data-er-avatar",g_user_avatar).find("img").attr("src",g_user_avatar).removeClass("is-hide");
+        appendLetterModal();
     }
     if("question"==g_module)
     {
@@ -2675,8 +2677,9 @@ function initElement()
         $(".QuestionFollowStatus-counts .NumberBoard-value:last").empty().text(g_question_click_nums);
 
         var follow_botton=$(".Card.AnswerAuthor .FollowButton");
-        var author_id=follow_botton.attr("data-er-id");
-        var author_sexual=follow_botton.attr("data-er-sexual");
+        var author_id=follow_botton.attr("data-author-id");
+        var author_name=follow_botton.attr("data-author-name");
+        var author_sexual=follow_botton.attr("data-author-sexual");
         console.log(author_id);
         console.log(author_sexual);
         if("f"==author_sexual)
@@ -2697,7 +2700,7 @@ function initElement()
         {
             follow_botton.removeClass("Button--grey").addClass("Button--green").attr("data-followed","false").attr("data-who",who).text("关注"+who_han);
         }
-       
+        setLetterReceiver(author_id,author_name);
    
     }
     else if("topic"==g_module)
@@ -3217,7 +3220,6 @@ function action()
     {
         getMoreData();
         checkSets();
-        appendLetterModal();
     }
     g_init_done="true";
     console.log("init done");
