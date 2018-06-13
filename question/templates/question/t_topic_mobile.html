@@ -21,7 +21,7 @@
 </div>
 -->
 
-<main role="main" class="App-main" data-module="topic" data-dfs-main='{"logged":"{{logged}}","type":"{{type}}","user_id":"{{user.id}}","topic_id":"{{context_topic.id}}","topic_name":"{{context_topic.name}}","topic_avatar":"{{context_topic.avatar}}","topic_detail":"{{context_topic.detail}}","topic_follower_nums":"{{context_topic.follower_nums}}","topic_followed":"{{followed}}"}'>
+<main role="main" class="App-main" data-module="topic" data-dfs-main='{"logged":"{{logged}}","type":"{{type}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","topic_id":"{{topic.id}}","topic_name":"{{topic.name}}","topic_avatar":"{{topic.avatar}}","topic_detail":"{{topic.detail}}","topic_question_nums":"{{topic.question_nums}}","topic_article_nums":"{{topic.article_nums}}","topic_follower_nums":"{{topic.follower_nums}}"}'>
 <div class="Topic">
 <div class="Card">
 <div class="TopicCard">
@@ -56,11 +56,11 @@
 <!--
 <div class="List-item TopicFeedList-header is-hide">
 <div class="TopicFeedList-sort">热门排序</div>
-<a class="TopicFeedList-sortSwitch" href="/topic/{{context_topic.id}}/newest">切换为时间排序</a>
+<a class="TopicFeedList-sortSwitch" href="/topic/{{topic.id}}/newest">切换为时间排序</a>
 </div>
 <div class="List-item TopicFeedList-header">
 <div class="TopicFeedList-sort">时间排序</div>
-<a class="TopicFeedList-sortSwitch" href="/topic/{{context_topic.id}}/hot">切换为热门排序</a>
+<a class="TopicFeedList-sortSwitch" href="/topic/{{topic.id}}/hot">切换为热门排序</a>
 </div>
 -->
 

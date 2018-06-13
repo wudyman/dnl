@@ -47,18 +47,15 @@ class TopicView(generic.ListView):
         if is_mobile:
             self.template_name='question/t_topic_mobile.html'
         topic_id=self.kwargs.get('topic_id')
-        topic=get_object_or_404(Topic,pk=topic_id)
+        #topic=get_object_or_404(Topic,pk=topic_id)
+        topic=Topic.objects.filter(pk=topic_id).values("id","name","avatar","detail","question_nums","article_nums","follower_nums")
         if topic:
+            topic_data=topic[0]
             type=self.kwargs.get('type')
             user=request.user
             if user.is_authenticated:
                 logged='true'
-                if topic.follower.filter(pk=user.pk).exists():
-                    followed='true'
-                else:
-                    followed='false'
             else:
                 logged='false'
-                followed='false'
-            return render(request,self.template_name,{'context_topic':topic,'type':type,'followed':followed,'logged':logged})
+            return render(request,self.template_name,{'logged':logged,'topic':topic_data,'type':type})
         return HttpResponse('no this page')

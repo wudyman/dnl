@@ -23,8 +23,8 @@ class Article(models.Model):
     content=models.CharField(default='',max_length=10000)
     author=models.ForeignKey(User,related_name='selfarticles',on_delete=models.CASCADE)
     click_nums=models.IntegerField(default=0)
-    prima_topic_id=models.IntegerField(default=-1)
-    prima_topic_name=models.CharField(max_length=100,default='null')
+    #prima_topic_id=models.IntegerField(default=-1)
+    #prima_topic_name=models.CharField(max_length=100,default='null')
     like_nums=models.IntegerField(default=0)
     comment_nums=models.IntegerField(default=0)
     pub_date=models.DateTimeField('date published',default=timezone.now)
@@ -117,7 +117,8 @@ class Notification(models.Model):
     type=models.CharField(default='invite',max_length=11)
     sender=models.ForeignKey(User,related_name='sends',null=True,blank=True,on_delete=models.CASCADE)
     receiver=models.ForeignKey(User,related_name='receives',null=True,blank=True,on_delete=models.CASCADE)
-    active_id=models.IntegerField(default=-1,null=True,blank=True)# question_id,answer_id,comment_id,user_id
+    #active_id=models.IntegerField(default=-1,null=True,blank=True)# question_id,answer_id,comment_id,user_id
+    target=models.ForeignKey(Question,default=1,on_delete=models.CASCADE)
     status=models.IntegerField(default=0)
     pub_date=models.DateTimeField('date published',default=timezone.now)
     def __str__(self):

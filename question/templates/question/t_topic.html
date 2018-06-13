@@ -4,13 +4,13 @@
 <body class="Entry-body">
 {% include 'question/header.html' %}
 
-<main role="main" class="App-main" data-module="topic" data-dfs-main='{"logged":"{{logged}}","type":"{{type}}","user_id":"{{user.id}}","topic_id":"{{context_topic.id}}","topic_name":"{{context_topic.name}}","topic_avatar":"{{context_topic.avatar}}","topic_detail":"{{context_topic.detail}}","topic_follower_nums":"{{context_topic.follower_nums}}","topic_followed":"{{followed}}"}'>
+<main role="main" class="App-main" data-module="topic" data-dfs-main='{"logged":"{{logged}}","type":"{{type}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","topic_id":"{{topic.id}}","topic_name":"{{topic.name}}","topic_avatar":"{{topic.avatar}}","topic_detail":"{{topic.detail}}","topic_question_nums":"{{topic.question_nums}}","topic_article_nums":"{{topic.article_nums}}","topic_follower_nums":"{{topic.follower_nums}}"}'>
 <div class="ContentLayout">
 
 <div class="ContentLayout-mainColumn">
 <div class="Card">
 
-<div class="TopicCard" data-topic-id="{{context_topic.id}}">
+<div class="TopicCard" data-topic-id="{{topic.id}}">
 <div class="ContentItem TopicCard-content">
 
 <div class="ContentItem-main">
@@ -20,7 +20,7 @@
 {% else %}
 <div class="ImageWrapper TopicCard-image">
 {% endif %}
-<img id="id_avatar" alt="{{context_topic.name}}" src="{{context_topic.avatar}}" style="width:100px;height:100px;">
+<img id="id_avatar" alt="{{topic.name}}" src="{{topic.avatar}}" style="width:100px;height:100px;">
 
 <div class="Mask UserAvatarEditor-mask Mask-hidden">
 <div class="Mask-mask Mask-mask--black UserAvatarEditor-maskInner">
@@ -53,9 +53,9 @@
 <div class="TopicCard-actions">
 <div class="TopicActions">
 {% ifequal followed "true"%}
-<button class="Button FollowButton TopicActions-followButton Button--primary Button--grey" type="button" data-topic-id="{{context_topic.id}}" data-follow-type="topic" data-followed="true">已关注</button>
+<button class="Button FollowButton TopicActions-followButton Button--primary Button--grey" type="button" data-topic-id="{{topic.id}}" data-follow-type="topic" data-followed="true">已关注</button>
 {% else %}
-<button class="Button FollowButton TopicActions-followButton Button--primary Button--green" type="button" data-topic-id="{{context_topic.id}}" data-follow-type="topic" data-followed="false">关注</button>
+<button class="Button FollowButton TopicActions-followButton Button--primary Button--green" type="button" data-topic-id="{{topic.id}}" data-follow-type="topic" data-followed="false">关注</button>
 {% endifequal %}
 <div class="Popover ShareMenu TopicActions-shareMenu"><div class="" aria-haspopup="true" aria-expanded="false"><button class="Button Button--plain Button--withIcon Button--withLabel" type="button"><span style="display:inline-flex;align-items:center;">&#8203;<svg class="Zi Zi--Share Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="evenodd"></path></svg></span>分享</button></div></div>
 </div>
@@ -81,7 +81,7 @@
 
 <div class="ContentLayout-sideColumn">
 <div class="TopstorySideBar">
-    <div class="Card"><div class="NumberBoard NumberBoard--divider"><button class="Button NumberBoard-item TopicNumberBoard-item" type="button"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注者</div><strong class="NumberBoard-itemValue NumberBoard-value" data-update-value-type="topic-followed">{{context_topic.follower_nums}}</strong></div></button><a class="NumberBoard-item TopicNumberBoard-item" href="/topic/{{context_topic.id}}"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">问题数</div><strong class="NumberBoard-itemValue">{{context_topic.question_nums}}</strong></div></a></div></div>
+    <div class="Card"><div class="NumberBoard NumberBoard--divider"><button class="Button NumberBoard-item TopicNumberBoard-item" type="button"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注者</div><strong class="NumberBoard-itemValue NumberBoard-value" data-update-value-type="topic-followed">{{topic.follower_nums}}</strong></div></button><a class="NumberBoard-item TopicNumberBoard-item" href="/topic/{{topic.id}}"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">问题数</div><strong class="NumberBoard-itemValue">{{topic.question_nums}}</strong></div></a></div></div>
     <div class="Card">
         <ul class="TopstorySideBar-navList">
             <li class="TopstorySideBar-navItem TopstorySideBar-inviteItem"><a class="Button TopstorySideBar-navLink Button--plain" href="/notifications/" target="_blank" type="button"><svg class="Zi Zi--Invite TopstorySideBar-navIcon" fill="currentColor" viewBox="0 0 24 24" width="18" height="18"><path d="M17.53 21c-2.47 0-4.471-2.035-4.471-4.545s2.001-4.544 4.47-4.544C20 11.911 22 13.946 22 16.455 22 18.965 19.998 21 17.53 21zm.555-5.116s-.005-2.04 0-2.272c-.014-.753-1.13-.753-1.117 0-.014.724 0 2.272 0 2.272h-2.233c-.745.003-.745 1.14 0 1.14s2.233-.004 2.233-.004v2.272c0 .765 1.12.765 1.117 0-.004-.764 0-2.272 0-2.272s1.488.004 2.237.004c.748 0 .748-1.137-.004-1.14h-2.233zm-5.778-3.074a5.692 5.692 0 0 0-.561 6.936H8.408c-4.514 0-5.32-.154-5.408-1.57 0-2.45 2.42-5.407 5.408-5.407h3.49c.14 0 .271.031.409.041zm-2.33-1.437a4.187 4.187 0 1 1 0-8.373 4.187 4.187 0 0 1 0 8.373z" fill-rule="evenodd"></path></svg><span class="TopstorySideBar-navText">我的提醒</span></a></li>

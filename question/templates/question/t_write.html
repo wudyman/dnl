@@ -4,7 +4,7 @@
 <body class="Entry-body" style="background-color:#ffffff">
 {% include 'question/header.html' %}
 <!--------------------main---------------------->
-<main role="main" class="App-main" data-module="write" data-dfs-main='{}'>
+<main role="main" class="App-main" data-module="write" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}"}'>
 <div class="Layout av-cardBackground">
 <div class="Layout-main av-card">
 <form method="post" action="/write/">
