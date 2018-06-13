@@ -344,16 +344,16 @@ function appendNotificationElement(ret)
     {
         var notification_id=ret[i][0];
         var notification_type=ret[i][1];
-        var notification_active_id=ret[i][2];
-        var notification_status=ret[i][3];
-        var notification_pub_date=ret[i][4];
-        var notification_sender_id=ret[i][5];
-        var notification_sender_first_name=ret[i][6];
+        var notification_pub_date=ret[i][2];
+        var notification_sender_id=ret[i][3];
+        var notification_sender_first_name=ret[i][4];
+        var notification_target_id=ret[i][5];
+        var notification_target_title=ret[i][6];
+        var notification_status=ret[i][7];
         
         if("invite"==notification_type)
         {
-            var question_title=ret[i][7];
-            var data='<div class="PushNotifications-item"><span><span><span class="UserLink"><a class="UserLink-link" href="/er/'+notification_sender_id+'">'+notification_sender_first_name+'</a></span></span></span><span> 邀请你回答 </span><span><a href="/question/'+notification_active_id+'">'+question_title+'</a></span></div>';
+            var data='<div class="PushNotifications-item"><span><span><span class="UserLink"><a class="UserLink-link" href="/er/'+notification_sender_id+'">'+notification_sender_first_name+'</a></span></span></span><span> 邀请你回答 </span><span><a href="/question/'+notification_target_id+'">'+notification_target_title+'</a></span></div>';
         }
         $(".PushNotifications-list").append(data);
     }
@@ -694,16 +694,17 @@ function appendSettingPageElement(ret)
         {
             var notification_id=ret[i][0];
             var notification_type=ret[i][1];
-            var notification_active_id=ret[i][2];
-            var notification_status=ret[i][3];
-            var notification_pub_date=ret[i][4].split('.')[0];
-            var notification_sender_id=ret[i][5];
-            var notification_sender_first_name=ret[i][6];
+            var notification_pub_date=ret[i][2];
+            var notification_sender_id=ret[i][3];
+            var notification_sender_first_name=ret[i][4];
+            var notification_target_id=ret[i][5];
+            var notification_target_title=ret[i][6];
+            var notification_status=ret[i][7];
 
             if("invite"==notification_type)
             {
                 var question_title=ret[i][7];
-                var data='<div class="List-item day"><h3>'+notification_pub_date+'</h3><div><i></i><div><span><span><a href="/er/'+notification_sender_id+'" target="_blank">'+notification_sender_first_name+'</a></span>邀请你回答 <a href="/question/'+notification_active_id+'">'+question_title+'</a></span></div></div></div>';
+                var data='<div class="List-item day"><h3>'+notification_pub_date+'</h3><div><i></i><div><span><span><a href="/er/'+notification_sender_id+'" target="_blank">'+notification_sender_first_name+'</a></span>邀请你回答 <a href="/question/'+notification_target_id+'">'+notification_target_title+'</a></span></div></div></div>';
             }
             $("#appendArea").append(data);
         }
@@ -713,19 +714,19 @@ function appendSettingPageElement(ret)
 function appendInvitedQuestionElement(ret)
 {
     for ( var i in ret)
-    {
+    {       
         var notification_id=ret[i][0];
         var notification_type=ret[i][1];
-        var notification_active_id=ret[i][2];
-        var notification_status=ret[i][3];
-        var notification_pub_date=ret[i][4].split('.')[0];
-        var notification_sender_id=ret[i][5];
-        var notification_sender_first_name=ret[i][6];
-        var question_title=ret[i][7];
-        var question_answer_nums=ret[i][8];
-        var question_follower_nums=ret[i][9]; 
+        var notification_pub_date=ret[i][2];
+        var notification_sender_id=ret[i][3];
+        var notification_sender_first_name=ret[i][4];
+        var notification_question_id=ret[i][5];
+        var notification_question_title=ret[i][6];
+        var notification_question_answer_nums=ret[i][7];
+        var notification_question_follower_nums=ret[i][8];
+        var notification_status=ret[i][9];
         
-        var data='<div class="List-item"><div class="ContentItem"><h3 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+notification_active_id+'" target="_blank">'+question_title+'</a></div></h3><div class="ContentItem-status"><span class="ContentItem-statusItem"><a href="/er/'+notification_sender_id+'">'+notification_sender_first_name+'</a></span><span class="ContentItem-statusItem">邀请你回答</span><span class="ContentItem-statusItem">'+notification_pub_date+' </span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
+        var data='<div class="List-item"><div class="ContentItem"><h3 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+notification_question_id+'" target="_blank">'+notification_question_title+'</a></div></h3><div class="ContentItem-status"><span class="ContentItem-statusItem"><a href="/er/'+notification_sender_id+'">'+notification_sender_first_name+'</a></span><span class="ContentItem-statusItem">邀请你回答</span><span class="ContentItem-statusItem">'+notification_pub_date+' </span><span class="ContentItem-statusItem">'+notification_question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+notification_question_follower_nums+' 个关注</span></div></div></div>';
         $("#appendArea").append(data);
     }
 }
@@ -2721,7 +2722,7 @@ function initElement()
         $(".TopicCard-titleText").text(g_topic_name);
         $(".TopicCard-description>.RichText").text(g_topic_detail);
         $(".NumberBoard-value").append(g_topic_follower_nums);
-        if("true"==g_topic_followed)
+        if($.inArray(""+g_topic_id,g_user_follow_topics_list)>=0)
             $(".FollowButton.TopicCard-followButton").removeClass("Button--green").addClass("Button--grey").attr("data-topic-id",g_topic_id).attr("data-followed","true").text("已关注");
         else
             $(".FollowButton.TopicCard-followButton").removeClass("Button--grey").addClass("Button--green").attr("data-topic-id",g_topic_id).attr("data-followed","false").text("关注话题");   
@@ -2892,7 +2893,7 @@ function initElement()
         }
         else
         {
-            if("true"==g_followed)
+            if($.inArray(""+g_er_id,g_user_follow_peoples_list)>=0)
             {
                 var followed_text="已关注";
                 var followed_status="true";
@@ -2939,14 +2940,14 @@ function initElement()
         else 
             console.log("false");
         
-        var tabs='<li role="tab" class="Tabs-item" aria-controls="Profile-answers"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答<span class="Tabs-meta">'+g_answers_num+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-asks"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问<span class="Tabs-meta">'+g_questions_num+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-posts"><a class="Tabs-link '+posts_active+'" href="/er/'+g_er_id+'/posts/">文章<span class="Tabs-meta">0</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-following"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注<span class="Tabs-meta"><svg viewBox="0 0 10 6" class="Icon ProfileMain-tabIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></span></a></li>';
+        var tabs='<li role="tab" class="Tabs-item" aria-controls="Profile-answers"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答<span class="Tabs-meta">'+g_answer_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-asks"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问<span class="Tabs-meta">'+g_question_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-posts"><a class="Tabs-link '+posts_active+'" href="/er/'+g_er_id+'/posts/">文章<span class="Tabs-meta">0</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-following"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注<span class="Tabs-meta"><svg viewBox="0 0 10 6" class="Icon ProfileMain-tabIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></span></a></li>';
         $(".Tabs.ProfileMain-tabs").append(tabs);
         
         
-        var data='<div class="NumberBoard FollowshipCard-counts NumberBoard--divider"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+g_er_id+'/following/followtos"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注了</div><strong class="NumberBoard-itemValue">'+g_followtos_num+'</strong></div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+g_er_id+'/following/followers"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注者</div><strong class="NumberBoard-itemValue NumberBoard-value" data-update-value-type="people-followed">'+g_followers_num+'</strong></div></a></div>';
+        var data='<div class="NumberBoard FollowshipCard-counts NumberBoard--divider"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+g_er_id+'/following/followtos"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注了</div><strong class="NumberBoard-itemValue">'+g_followto_nums+'</strong></div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+g_er_id+'/following/followers"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注者</div><strong class="NumberBoard-itemValue NumberBoard-value" data-update-value-type="people-followed">'+g_follower_nums+'</strong></div></a></div>';
         $(".Card.FollowshipCard").append(data);
         
-        var data='<a class="Profile-lightItem" href="/er/'+g_er_id+'/following/topics"><span class="Profile-lightItemName">关注的话题</span><span class="Profile-lightItemValue">'+g_followtopics_num+'</span></a><a class="Profile-lightItem" href="/er/'+g_er_id+'/following/questions"><span class="Profile-lightItemName">关注的问题</span><span class="Profile-lightItemValue">'+g_followquestions_num+'</span></a>';
+        var data='<a class="Profile-lightItem" href="/er/'+g_er_id+'/following/topics"><span class="Profile-lightItemName">关注的话题</span><span class="Profile-lightItemValue">'+g_followtopic_nums+'</span></a><a class="Profile-lightItem" href="/er/'+g_er_id+'/following/questions"><span class="Profile-lightItemName">关注的问题</span><span class="Profile-lightItemValue">'+g_followquestion_nums+'</span></a>';
         
         $(".Profile-lightList").append(data);
         
@@ -2982,12 +2983,14 @@ function initElement()
             follow_text="关注他";
             data_who="he";
         }
-        if("true"==g_followed)
+        var followed="false";
+        if($.inArray(""+g_article_author_id,g_user_follow_peoples_list)>=0)
         {
             button_follow_class="Button--grey";
             follow_text="已关注";
+            followed="true";
         }
-        $(".FollowButton").addClass(button_follow_class).removeClass("is-hide").attr("data-er-id",g_article_author_id).attr("data-followed",g_followed).attr("data-who",data_who).children("span").text(follow_text);
+        $(".FollowButton").addClass(button_follow_class).removeClass("is-hide").attr("data-er-id",g_article_author_id).attr("data-followed",followed).attr("data-who",data_who).children("span").text(follow_text);
         
         $(".Post-Author .AuthorInfo-avatarWrapper .UserLink-link").attr("href","/er/"+g_article_author_id).attr("data-author-id",g_article_author_id).children("img").attr("alt",g_article_author_name).attr("src",g_article_author_avatar);
         $(".Post-Author .AuthorInfo-name .UserLink-link").attr("href","/er/"+g_article_author_id).empty().text(g_article_author_name);
@@ -3073,7 +3076,6 @@ function initData()
         g_topic_avatar=main_data.topic_avatar;
         g_topic_detail=main_data.topic_detail;
         g_topic_follower_nums=main_data.topic_follower_nums;
-        g_topic_followed=main_data.topic_followed;
         g_type=main_data.type;
     }
     else if("mytopic"==g_module)
@@ -3115,12 +3117,13 @@ function initData()
         g_command=main_data.command;
         g_subcmd=main_data.subcmd;
 
-        g_questions_num=ext_data.questions_num;
-        g_answers_num=ext_data.answers_num;
-        g_followtos_num=ext_data.followtos_num;
-        g_followers_num=ext_data.followers_num;
-        g_followtopics_num=ext_data.followtopics_num;
-        g_followquestions_num=ext_data.followquestions_num;
+        g_question_nums=ext_data.question_nums;
+        g_article_nums=ext_data.article_nums;
+        g_answer_nums=ext_data.answer_nums;
+        g_followto_nums=ext_data.followto_nums;
+        g_follower_nums=ext_data.follower_nums;
+        g_followtopic_nums=ext_data.followtopic_nums;
+        g_followquestion_nums=ext_data.followquestion_nums;
         
         g_show_detailed="false";
     }
@@ -3128,6 +3131,7 @@ function initData()
     {
         g_article_id=main_data.article_id;
         g_article_title=main_data.article_title;
+        g_article_click_nums=main_data.article_click_nums;
         g_article_like_nums=main_data.article_like_nums;
         g_article_comment_nums=main_data.article_comment_nums;
         g_article_pub_date=main_data.article_pub_date;
@@ -3136,7 +3140,6 @@ function initData()
         g_article_author_avatar=main_data.author_avatar;
         g_article_author_mood=main_data.author_mood;
         g_article_author_sexual=main_data.author_sexual;
-        g_followed=main_data.followed;
     }
     else if("answer_page"==g_module)
     {
@@ -3146,7 +3149,7 @@ function initData()
     if("true"==g_logged)
     {               
         g_user_id=main_data.user_id;
-        //g_user_name=main_data.user_name;
+        g_user_name=main_data.user_name;
         //g_user_avatar=main_data.user_avatar;
         //g_user_mood=main_data.user_mood;
         
@@ -3170,7 +3173,7 @@ function initData()
                     g_user_profile_list=ret[3];
                     
                     //g_user_id=g_user_profile_list[0];
-                    g_user_name=g_user_profile_list[1];
+                    //g_user_name=g_user_profile_list[1];
                     g_user_avatar=g_user_profile_list[2];
                     g_user_mood=g_user_profile_list[3];
                     
@@ -3199,7 +3202,7 @@ function initData()
             g_user_profile_list=b64_to_utf8(user_profile).split(",");           
             
             //g_user_id=g_user_profile_list[0];
-            g_user_name=g_user_profile_list[1];
+            //g_user_name=g_user_profile_list[1];
             g_user_avatar=g_user_profile_list[2];
             g_user_mood=g_user_profile_list[3];
             

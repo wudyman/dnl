@@ -103,9 +103,7 @@ def follow(request):
                 ret_data=[]
                 ret_data.append(question.follower_nums)
                 follow_questions=user.followquestions.values_list("id",flat=True)
-                temp=[]
-                temp.extend(follow_questions)
-                ret_data.append(temp)
+                ret_data.append(list(follow_questions))
                 to_json=json.dumps(ret_data)
         elif 'people'==follow_type:
             er=get_object_or_404(User,pk=follow_id)
@@ -132,9 +130,7 @@ def follow(request):
                 ret_data=[]
                 ret_data.append(er.userprofile.follower_nums)
                 follow_peoples=user.followto.all().values_list("id",flat=True)
-                temp=[]
-                temp.extend(follow_peoples)
-                ret_data.append(temp)
+                ret_data.append(list(follow_peoples))
                 to_json=json.dumps(ret_data)
         elif 'topic'==follow_type:
             topic=get_object_or_404(Topic,pk=follow_id)
@@ -152,9 +148,7 @@ def follow(request):
                 ret_data=[]
                 ret_data.append(topic.follower_nums)
                 follow_topics=user.followtopics.values_list("id",flat=True)
-                temp=[]
-                temp.extend(follow_topics)
-                ret_data.append(temp)
+                ret_data.append(list(follow_topics))
                 to_json=json.dumps(ret_data)
     return HttpResponse(to_json,content_type='application/json')
 
@@ -272,18 +266,9 @@ def get_topic_adept(request):
     print(topics)
     topics.pop()
     print(topics)
-    adepts=User.objects.all()
-    adept_list=[]
+    adepts=User.objects.all().values_list("id","first_name","userprofile__avatar","userprofile__mood")
     if adepts:
-        for adept in adepts:
-            temp=[]
-            temp.append(adept.id)#0
-            temp.append(adept.first_name)#1
-            temp.append(adept.userprofile.avatar)#2
-            temp.append(adept.userprofile.mood)#3
-            #temp.append(inviter.id)
-            adept_list.append(temp)
-        to_json=json.dumps(adept_list)
+        to_json=json.dumps(list(adepts))
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
@@ -452,9 +437,10 @@ def invite(request):
         #inviter.sendinvite.add(invitation)
                 
         invitee=get_object_or_404(User,pk=t)
+        question=get_object_or_404(Question,id=int(q))
         #invitee.receiveinvite.add(invitation)
         if invitee:
-            notification=Notification(type='invite',sender=inviter,receiver=invitee,active_id=q)
+            notification=Notification(type='invite',sender=inviter,receiver=invitee,target=question)
             notification.save()
             temp='success'
             to_json=json.dumps(temp)
@@ -465,8 +451,11 @@ def get_notifications(request,order,start,end):
     to_json=json.dumps('fail')
     user=request.user
     if user.is_authenticated:
-        notifications=user.receives.order_by('-pub_date')[int(start):int(end)]
+        notifications=user.receives.order_by('-pub_date')[int(start):int(end)].values_list("id","type","pub_date","sender__id","sender__first_name","target__id","target__title","status")
         if notifications:
+            notification_list=list(notifications)
+            to_json=json.dumps(notification_list,cls=CJsonEncoder)
+        '''
             notification_list=[]
             for notification in notifications:
                 temp=[]
@@ -482,6 +471,7 @@ def get_notifications(request,order,start,end):
                     temp.append(question.title)#7
                 notification_list.append(temp)
             to_json=json.dumps(notification_list)
+        '''
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
@@ -561,8 +551,10 @@ def delete_conversation(request,conversation_id):
         if conversation:
             if user.id==conversation.initator.id or user.id==conversation.parter.id:
                 #Conversation.objects.filter(id=message_id).delete()
-                if conversation.delete_id==-1: #delete one side
-                    messages=conversation.messages.all()
+                if conversation.delete_id==-1: #start to delete one side
+                    messages=conversation.messages.exclude(delete_id__in=[-1,user.id]).delete()
+                    messages=conversation.messages.update(delete_id=user.id)
+                    '''
                     if messages:
                         for message in messages: #delete all messages
                             if message.delete_id==-1: #delete one side
@@ -570,9 +562,11 @@ def delete_conversation(request,conversation_id):
                                 message.save()
                             elif message.delete_id!=user.id: #delete both side
                                 message.delete()
+                    '''
                     conversation.delete_id=user.id
                     conversation.save()
                 elif conversation.delete_id!=user.id:# delete both side,real delete.
+                    #conversation.messages.all().delete()
                     conversation.delete()
                 to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
@@ -583,16 +577,9 @@ def search(request,type,order,start,end):
     keyword=request.POST.get('keyword')
     if keyword:
         if type=='all' or type=='question':
-            questions=Question.objects.filter(title__contains=keyword)[int(start):int(end)]
+            questions=Question.objects.filter(title__contains=keyword)[int(start):int(end)].values_list("id","title","answer_nums")
             if questions:
-                question_list=[]
-                for question in questions:
-                    temp=[]
-                    temp.append(question.id) #0
-                    temp.append(question.title) #1
-                    temp.append(question.answer_nums) #2 
-                    question_list.append(temp)
-                to_json=json.dumps(question_list)
+                to_json=json.dumps(list(questions))
         elif type=='people':
             print(type)
         elif type=='topic':
@@ -615,24 +602,11 @@ def answer_page(request,type,order,start,end):
                 questions_list=list(questions)
                 to_json=json.dumps(questions_list,cls=CJsonEncoder)
         elif type=='invited':
-            notifications=user.receives.filter(type='invite').order_by('-pub_date')[int(start):int(end)]
+            notifications=user.receives.filter(type='invite').order_by('-pub_date')[int(start):int(end)].values_list("id","type","pub_date","sender__id","sender__first_name","target__id","target__title","target__answer_nums","target__follower_nums","status")           
             if notifications:
-                notification_list=[]
-                for notification in notifications:
-                    temp=[]
-                    temp.append(notification.id)#0
-                    temp.append(notification.type)#1
-                    temp.append(notification.active_id)#2
-                    temp.append(notification.status)#3
-                    temp.append(str(notification.pub_date))#4
-                    temp.append(notification.sender.id)#5
-                    temp.append(notification.sender.first_name)#6
-                    question=get_object_or_404(Question,pk=notification.active_id)
-                    temp.append(question.title)#7
-                    temp.append(question.be_answers.count())#8
-                    temp.append(question.follower_nums)#9
-                    notification_list.append(temp)
-                to_json=json.dumps(notification_list)
+                notification_list=list(notifications)
+                to_json=json.dumps(notification_list,cls=CJsonEncoder)
+            
     return HttpResponse(to_json,content_type='application/json')
 	
 @csrf_exempt

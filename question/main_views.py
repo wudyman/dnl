@@ -242,14 +242,14 @@ class WriteView(generic.ListView):
             return HttpResponseRedirect('/signinup/')
         else:
             topics=request.POST.getlist('topics_selected')#('topics')#
-            prima_topic_array=topics[0].split(':')
+            #prima_topic_array=topics[0].split(':')
 
             article=Article()
             article.title=request.POST.get('writeTitle')
             article.content=request.POST.get('writeContent')
             article.author=user
-            article.prima_topic_id=int(prima_topic_array[0])
-            article.prima_topic_name=prima_topic_array[1]            
+            #article.prima_topic_id=int(prima_topic_array[0])
+            #article.prima_topic_name=prima_topic_array[1]            
             article.save()
             
             for topic_str in topics:
@@ -272,20 +272,19 @@ class ArticleView(generic.ListView):
         print('is moblie:',is_mobile)
         if is_mobile:
             self.template_name='question/t_article_mobile.html'
-        article_id=self.kwargs.get('article_id')
-        article=get_object_or_404(Article,pk=article_id)
-        
+            
         user=request.user
         if user.is_authenticated:
             logged='true'
-            if user.followto.filter(id=article.author.id).exists():
-                followed='true'
-            else:
-                followed='false'
         else:
             logged='false'
-            followed='false'
-        return render(request,self.template_name,{'article':article,'article_pub_date':str(article.pub_date),'logged':logged,'followed':followed})
+        article_id=self.kwargs.get('article_id')
+        article=Article.objects.filter(pk=article_id).values("id","title","content","click_nums","like_nums","comment_nums","pub_date","author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood",'author__userprofile__sexual')
+        article_data=article[0]
+        article_data['pub_date']=str(article_data['pub_date'])
+        
+        topics=Article.objects.filter(pk=article_id).values("topics__id","topics__name","topics__avatar","topics__detail")
+        return render(request,self.template_name,{'logged':logged,'article':article_data,"topics":topics})
             
 class TradeView(LoginRequiredMixin,generic.ListView):
     login_url='/'

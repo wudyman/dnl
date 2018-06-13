@@ -25,25 +25,15 @@ class ActiveView(generic.ListView):
         if not subcmd:
             subcmd='followtos'
         erid=self.kwargs.get('erid')
-        er=get_object_or_404(User,pk=erid)
         
         user=request.user
         if user.is_authenticated:
             logged='true'
-            if user.followto.filter(id=er.id).exists():
-                followed='true'
-            else:
-                followed='false'
         else:
             logged='false'
-            followed='false'
-            
-        questions_num=er.selfquestions.count()
-        answers_num=er.answers.count()
-        followtos_num=er.followto.count()
-        followers_num=er.userprofile.follower.count()
-        followtopics_num=er.followtopics.count()
-        followquestions_num=er.followquestions.count()
         
-        ext_info={'questions_num':questions_num,'answers_num':answers_num,'followtos_num':followtos_num,'followers_num':followers_num,'followtopics_num':followtopics_num,'followquestions_num':followquestions_num}       
-        return render(request,self.template_name,{'logged':logged,'er':er,'user':user,'followed':followed,'command':command,'subcmd':subcmd,'ext_info':ext_info})
+        er_data=User.objects.filter(id=erid).values("id","first_name","userprofile__avatar","userprofile__avatar","userprofile__avatar","userprofile__avatar","userprofile__avatar"
+        ,"userprofile__mood","userprofile__intro","userprofile__sexual","userprofile__residence","userprofile__job","userprofile__question_nums","userprofile__article_nums","userprofile__answer_nums"
+        ,"userprofile__followto_nums","userprofile__follower_nums","userprofile__followtopic_nums","userprofile__followquestion_nums")
+
+        return render(request,self.template_name,{'logged':logged,'user':user,'command':command,'subcmd':subcmd,'er':er_data[0]})
