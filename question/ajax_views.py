@@ -16,6 +16,8 @@ from . import dysms
 import uuid
 from datetime import datetime
 #from itertools import chain
+import numpy as np
+from django.core.cache import cache
 
 class CJsonEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -25,59 +27,6 @@ class CJsonEncoder(json.JSONEncoder):
             return obj.strftime("%Y-%m-%d")
         else:
             return json.JSONEncoder.default(self, obj)
-
-@csrf_exempt
-def get_questions(request,order,start,end):
-    to_json=json.dumps('fail')
-    questions=Question.objects.order_by('pub_date').exclude(push_answer_id=-1)[int(start):int(end)].values("id","title","push_answer_id","topics__id","topics__name")
-    if questions:
-        questions_list=[]
-        last_question_id=0
-        push_answers_id_list=[]
-        length=len(questions)
-        for i,question in enumerate(questions):
-            if last_question_id!=question['id']:
-                if i!=0:
-                    item.append(topic_list)
-                    questions_list.append(item)                
-                item=[]
-                topic_list=[]
-                topic=[]
-                item.append(question['id'])
-                item.append(question['title'])
-                item.append(question['push_answer_id'])
-                push_answers_id_list.append(question['push_answer_id'])
-                topic.append(question['topics__id'])
-                topic.append(question['topics__name'])
-                topic_list.append(topic)
-                
-                if i==length-1:
-                    item.append(topic_list)
-                    questions_list.append(item)  
-                    
-                last_question_id=question['id']
-            else:
-                topic=[]
-                topic.append(question['topics__id'])
-                topic.append(question['topics__name'])
-                topic_list.append(topic)
-                if i==length-1:
-                    item.append(topic_list)
-                    questions_list.append(item)                
-                        
-        push_answers=Answer.objects.filter(pk__in=push_answers_id_list).values_list("id","push_index","content","like_nums","comment_nums"
-        ,"author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums"
-        ,"author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
-           
-        if push_answers:
-            questions_answers_list=[]
-            for question in questions_list:
-                for answer in push_answers:
-                    if answer[0]==question[2]:
-                        question.extend(answer)
-                        questions_answers_list.append(question)
-            to_json=json.dumps(questions_answers_list)
-    return HttpResponse(to_json,content_type='application/json')            
     
 @csrf_exempt
 def follow(request):
@@ -197,66 +146,6 @@ def get_topics(request,bIsGetAll,start,end):
             topic_list.append(temp)
         to_json=json.dumps(topic_list)
     return HttpResponse(to_json,content_type='application/json')    
-    
-@csrf_exempt
-def get_topic_questions(request,topic_id,order,start,end):
-    to_json=json.dumps('fail')
-    type=request.POST.get('type')
-    if 'hot'==type:
-        questions=Question.objects.filter(topics__id=topic_id,answer_nums__gte=1)[int(start):int(end)].values("id","title","push_answer_id","topics__id","topics__name")
-        if questions:
-            questions_list=[]
-            last_question_id=0
-            push_answers_id_list=[]
-            length=len(questions)
-            for i,question in enumerate(questions):
-                if last_question_id!=question['id']:
-                    if i!=0:
-                        item.append(topic_list)
-                        questions_list.append(item)                
-                    item=[]
-                    topic_list=[]
-                    topic=[]
-                    item.append(question['id'])
-                    item.append(question['title'])
-                    item.append(question['push_answer_id'])
-                    push_answers_id_list.append(question['push_answer_id'])
-                    topic.append(question['topics__id'])
-                    topic.append(question['topics__name'])
-                    topic_list.append(topic)
-                    
-                    if i==length-1:
-                        item.append(topic_list)
-                        questions_list.append(item)  
-                        
-                    last_question_id=question['id']
-                else:
-                    topic=[]
-                    topic.append(question['topics__id'])
-                    topic.append(question['topics__name'])
-                    topic_list.append(topic)
-                    if i==length-1:
-                        item.append(topic_list)
-                        questions_list.append(item)                
-                            
-            push_answers=Answer.objects.filter(pk__in=push_answers_id_list).values_list("id","push_index","content","like_nums","comment_nums"
-            ,"author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums"
-            ,"author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
-            
-            if push_answers:
-                questions_answers_list=[]
-                for question in questions_list:
-                    for answer in push_answers:
-                        if answer[0]==question[2]:
-                            question.extend(answer)
-                            questions_answers_list.append(question)
-                to_json=json.dumps(questions_answers_list)
-    elif 'unanswered'==type:
-        questions=Question.objects.filter(topics__id=topic_id,answer_nums__lte=0)[int(start):int(end)].values("id","title","answer_nums","follower_nums","pub_date")
-        if questions:
-            questions_list=list(questions)
-            to_json=json.dumps(questions_list,cls=CJsonEncoder)
-    return HttpResponse(to_json,content_type='application/json')
        
 @csrf_exempt
 def get_topic_adept(request):
@@ -800,3 +689,141 @@ def user_data(request,userid):
             user.userprofile.follower_nums,user.userprofile.followtopic_nums,user.userprofile.followquestion_nums]
             to_json=json.dumps(user_profile)       
     return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def get_topic_questions(request,topic_id,order,start,end):
+    to_json=json.dumps('fail')
+    type=request.POST.get('type')
+    if 'hot'==type:
+        cache_key='topic'+topic_id+'question'+'hot'+start
+        cache_value=cache.get(cache_key,'expired')
+        if cache_value=='expired':
+            questions_answers_list=get_questions_inner(topic_id,start,end)
+            cache.set(cache_key,questions_answers_list,10)
+            #to_json=json.dumps(questions_answers_list)   
+        else:
+            questions_answers_list=cache_value
+            #to_json=json.dumps(cache_value)
+               
+        cache_key='topic'+topic_id+'article'+'hot'+start
+        cache_value=cache.get(cache_key,'expired')
+        if cache_value=='expired':
+            articles_list=get_articles_inner(topic_id,start,end)
+            cache.set(cache_key,articles_list,10)
+        else:
+            articles_list=cache_value
+        
+        ret=[]
+        if questions_answers_list:
+            ret+=questions_answers_list
+        if articles_list:
+            ret+=articles_list
+        if ret:
+            to_json=json.dumps(ret)
+    elif 'unanswered'==type:
+        questions=Question.objects.filter(topics__id=topic_id,answer_nums__lte=0)[int(start):int(end)].values("id","title","answer_nums","follower_nums","pub_date")
+        if questions:
+            questions_list=list(questions)
+            to_json=json.dumps(questions_list,cls=CJsonEncoder)
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def get_questions(request,order,start,end):
+    to_json=json.dumps('fail')
+    cache_key='question'+'hot'+start
+    cache_value=cache.get(cache_key,'expired')
+    if cache_value=='expired':
+        questions_answers_list=get_questions_inner('',start,end)
+        cache.set(cache_key,questions_answers_list,10)
+        to_json=json.dumps(questions_answers_list)     
+    else:
+        to_json=json.dumps(cache_value)
+    return HttpResponse(to_json,content_type='application/json')
+
+def get_questions_inner(topic_id,start,end):
+    if ''==topic_id:
+        questions=Question.objects.order_by('pub_date').exclude(push_answer_id=-1)[int(start):int(end)].values("id","title","push_answer_id","topics__id","topics__name")
+    else:
+        questions=Question.objects.order_by('pub_date').filter(topics__id=topic_id,answer_nums__gte=1)[int(start):int(end)].values("id","title","push_answer_id","topics__id","topics__name")
+    if questions:
+        questions_list=[]
+        last_question_id=-1
+        push_answers_id_list=[]
+        length=len(questions)
+        for i,question in enumerate(questions):
+            if last_question_id!=question['id']:
+                if i!=0:
+                    item.append(topic_list)
+                    questions_list.append(item)                
+                topic_list=[]
+                item=[question['id'],question['title'],'question']
+                push_answers_id_list.append(question['push_answer_id'])
+                topic=[question['topics__id'],question['topics__name']]
+                topic_list.append(topic)
+                
+                if i==length-1:
+                    item.append(topic_list)
+                    questions_list.append(item)  
+                    
+                last_question_id=question['id']
+            else:
+                topic=[question['topics__id'],question['topics__name']]
+                topic_list.append(topic)
+                if i==length-1:
+                    item.append(topic_list)
+                    questions_list.append(item)
+        
+        push_answers=Answer.objects.filter(id__in=push_answers_id_list).extra(
+        select={'manual': 'FIELD(question_answer.id,%s)' % ','.join(map(str, push_answers_id_list))},order_by=['manual']).values_list(
+        "id","push_index","content","like_nums","comment_nums",
+        "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
+        "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
+        #answer_list=list(push_answers)
+        #questions_answers_list=[]
+        for i,answer in enumerate(push_answers):
+            questions_list[i].extend(answer)
+            #questions_answers_list.append(questions_list[i]) 
+        return questions_list#questions_answers_list
+        
+def get_articles_inner(topic_id,start,end):
+    if ''==topic_id:
+        articles=Article.objects.order_by('pub_date')[int(start):int(end)].values("id","title","topics__id","topics__name")
+    else:
+        articles=Article.objects.order_by('pub_date').filter(topics__id=topic_id)[int(start):int(end)].values("id","title","topics__id","topics__name")
+    if articles:
+        articles_list=[]
+        last_article_id=-1
+        article_id_list=[]
+        length=len(articles)
+        for i,article in enumerate(articles):
+            if last_article_id!=article['id']:
+                if i!=0:
+                    item.append(topic_list)
+                    articles_list.append(item)                
+                topic_list=[]
+                item=[article['id'],article['title'],'article']
+                article_id_list.append(article['id'])
+                topic=[article['topics__id'],article['topics__name']]
+                topic_list.append(topic)
+                
+                if i==length-1:
+                    item.append(topic_list)
+                    articles_list.append(item)  
+                    
+                last_article_id=article['id']
+            else:
+                topic=[article['topics__id'],article['topics__name']]
+                topic_list.append(topic)
+                if i==length-1:
+                    item.append(topic_list)
+                    articles_list.append(item)
+        
+        articles_ext=Article.objects.filter(id__in=article_id_list).extra(
+        select={'manual': 'FIELD(question_article.id,%s)' % ','.join(map(str, article_id_list))},order_by=['manual']).values_list(
+        "click_nums","push_index","content","like_nums","comment_nums",
+        "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
+        "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
+        for i,article_ext in enumerate(articles_ext):
+            articles_list[i].extend(article_ext)
+        return articles_list
+    
