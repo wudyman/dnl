@@ -16,7 +16,7 @@ from . import dysms
 import uuid
 from datetime import datetime
 #from itertools import chain
-import numpy as np
+#import numpy as np
 from django.core.cache import cache
 
 class CJsonEncoder(json.JSONEncoder):
@@ -599,6 +599,7 @@ def reset_pwd(request):
 @csrf_exempt
 def get_comments(request):
     to_json=json.dumps('fail')
+    comments=[]
     user=request.user
     commentType=request.POST.get('c_type')
     aId=request.POST.get('a_id')       
@@ -689,30 +690,20 @@ def user_data(request,userid):
             user.userprofile.follower_nums,user.userprofile.followtopic_nums,user.userprofile.followquestion_nums]
             to_json=json.dumps(user_profile)       
     return HttpResponse(to_json,content_type='application/json')
-    
+ 
+
+STEP=10
+LIST_NUM=10 
+CACHE_EXPIRED=30 
 @csrf_exempt
 def get_topic_questions(request,topic_id,order,start,end):
     to_json=json.dumps('fail')
+    int_start=int(start)
     type=request.POST.get('type')
     if 'hot'==type:
-        cache_key='topic'+topic_id+'question'+'hot'+start
-        cache_value=cache.get(cache_key,'expired')
-        if cache_value=='expired':
-            questions_answers_list=get_questions_inner(topic_id,start,end)
-            cache.set(cache_key,questions_answers_list,10)
-            #to_json=json.dumps(questions_answers_list)   
-        else:
-            questions_answers_list=cache_value
-            #to_json=json.dumps(cache_value)
-               
-        cache_key='topic'+topic_id+'article'+'hot'+start
-        cache_value=cache.get(cache_key,'expired')
-        if cache_value=='expired':
-            articles_list=get_articles_inner(topic_id,start,end)
-            cache.set(cache_key,articles_list,10)
-        else:
-            articles_list=cache_value
-        
+        query_start=int(int_start/LIST_NUM)*LIST_NUM
+        questions_answers_list=get_questions_inner(topic_id,type,query_start,query_start+LIST_NUM)
+        articles_list=get_articles_inner(topic_id,type,query_start,query_start+LIST_NUM)        
         ret=[]
         if questions_answers_list:
             ret+=questions_answers_list
@@ -730,23 +721,56 @@ def get_topic_questions(request,topic_id,order,start,end):
 @csrf_exempt
 def get_questions(request,order,start,end):
     to_json=json.dumps('fail')
-    cache_key='question'+'hot'+start
-    cache_value=cache.get(cache_key,'expired')
-    if cache_value=='expired':
-        questions_answers_list=get_questions_inner('',start,end)
-        cache.set(cache_key,questions_answers_list,10)
-        to_json=json.dumps(questions_answers_list)     
-    else:
-        to_json=json.dumps(cache_value)
+    int_start=int(start)
+    ret=[]
+    follow_topics=request.POST.get('follow_topics')
+    if follow_topics:
+        topics_array=follow_topics.split(',')
+        for topic_id in topics_array:
+            query_start=int(int_start/LIST_NUM/STEP)*LIST_NUM
+            topic_questions_answers_list=get_questions_inner(topic_id,'',query_start,query_start+LIST_NUM)
+            if topic_questions_answers_list:
+                index=int(int_start/STEP)
+                if index<len(topic_questions_answers_list):
+                    ret.append(topic_questions_answers_list[index])
+                
+            topic_articles_list=get_articles_inner(topic_id,'',query_start,query_start+LIST_NUM)
+            if topic_articles_list:
+                index=int(int_start/STEP)
+                if index<len(topic_articles_list):
+                    ret.append(topic_articles_list[index])
+    
+    query_start=int(int_start/LIST_NUM)*LIST_NUM
+    questions_answers_list=get_questions_inner('','',query_start,query_start+LIST_NUM)
+    articles_list=get_articles_inner('','',query_start,query_start+LIST_NUM)   
+    
+    if questions_answers_list:
+        ret+=questions_answers_list
+    if articles_list:
+        ret+=articles_list
+    if ret:
+        to_json=json.dumps(ret)
     return HttpResponse(to_json,content_type='application/json')
 
-def get_questions_inner(topic_id,start,end):
+def get_questions_inner(topic_id,type,start,end):
+    questions=None
+    questions_list=[]
     if ''==topic_id:
-        questions=Question.objects.order_by('pub_date').exclude(push_answer_id=-1)[int(start):int(end)].values("id","title","push_answer_id","topics__id","topics__name")
+        cache_key='question'+'hot'+str(start)
+        print(cache_key)
+        cache_value=cache.get(cache_key,'expired')
+        if cache_value=='expired':
+            questions=Question.objects.order_by('pub_date').exclude(push_answer_id=-1)[int(start):int(end)].values("id","title","push_answer_id","topics__id","topics__name")
+        else:
+            return cache_value
     else:
-        questions=Question.objects.order_by('pub_date').filter(topics__id=topic_id,answer_nums__gte=1)[int(start):int(end)].values("id","title","push_answer_id","topics__id","topics__name")
+        cache_key='topic'+topic_id+'question'+type+str(start)
+        cache_value=cache.get(cache_key,'expired')
+        if cache_value=='expired':
+            questions=Question.objects.order_by('pub_date').filter(topics__id=topic_id,answer_nums__gte=1)[int(start):int(end)].values("id","title","push_answer_id","topics__id","topics__name")
+        else:
+            return cache_value
     if questions:
-        questions_list=[]
         last_question_id=-1
         push_answers_id_list=[]
         length=len(questions)
@@ -782,14 +806,26 @@ def get_questions_inner(topic_id,start,end):
         #questions_answers_list=[]
         for i,answer in enumerate(push_answers):
             questions_list[i].extend(answer)
-            #questions_answers_list.append(questions_list[i]) 
-        return questions_list#questions_answers_list
+    cache.set(cache_key,questions_list,CACHE_EXPIRED)            
+    return questions_list#questions_answers_list
         
-def get_articles_inner(topic_id,start,end):
+def get_articles_inner(topic_id,type,start,end):
+    articles=None
+    articles_list=[]
     if ''==topic_id:
-        articles=Article.objects.order_by('pub_date')[int(start):int(end)].values("id","title","topics__id","topics__name")
+        cache_key='article'+type+str(start)
+        cache_value=cache.get(cache_key,'expired')
+        if cache_value=='expired':
+            articles=Article.objects.order_by('pub_date')[int(start):int(end)].values("id","title","topics__id","topics__name")
+        else:
+            return cache_value
     else:
-        articles=Article.objects.order_by('pub_date').filter(topics__id=topic_id)[int(start):int(end)].values("id","title","topics__id","topics__name")
+        cache_key='topic'+topic_id+'article'+type+str(start)
+        cache_value=cache.get(cache_key,'expired')
+        if cache_value=='expired':
+            articles=Article.objects.order_by('pub_date').filter(topics__id=topic_id)[int(start):int(end)].values("id","title","topics__id","topics__name")
+        else:
+            return cache_value
     if articles:
         articles_list=[]
         last_article_id=-1
@@ -825,5 +861,6 @@ def get_articles_inner(topic_id,start,end):
         "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
         for i,article_ext in enumerate(articles_ext):
             articles_list[i].extend(article_ext)
-        return articles_list
+    cache.set(cache_key,articles_list,CACHE_EXPIRED)  
+    return articles_list
     

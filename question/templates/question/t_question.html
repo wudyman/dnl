@@ -141,7 +141,7 @@
         <div class="Card AnswerCard">
         <div class="QuestionAnswer-content">
         <div class="ScrollIntoMark">
-        <div class="ContentItem AnswerItem" data-answer-id="{{push_answer.id}}" data-comment-nums="{{push_answer.comment_nums}}">
+        <div class="ContentItem AnswerItem" data-content-id="{{push_answer.id}}" data-content-type="answer" data-comment-nums="{{push_answer.comment_nums}}">
         <div class="ContentItem-meta">
         <div class="AnswerItem-meta AnswerItem-meta--related">
         <div class="AuthorInfo">
@@ -208,7 +208,7 @@
         
         {% for answer in more_answers %}
         <div class="List-item ScrollIntoMark">
-        <div class="ContentItem AnswerItem" data-answer-id="{{answer.id}}" data-comment-nums="{{answer.comment_nums}}">
+        <div class="ContentItem AnswerItem" data-content-id="{{answer.id}}" data-content-type="answer" data-comment-nums="{{answer.comment_nums}}">
         <div class="ContentItem-meta">
         <div class="AnswerItem-meta AnswerItem-meta--related">
         <div class="AuthorInfo">
