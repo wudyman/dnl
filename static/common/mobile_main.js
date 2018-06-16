@@ -345,14 +345,16 @@ function appendCommentsElement(ret)
 
 function appendAnswerElementList(ret,type,direction)
 {
+    //console.log(ret.sort());
+    ret.sort();
     for(i in ret)
     {
         if(("all"==type))
         {
             var answer_id=ret[i][0];
             var answer_content=ret[i][1];
-            var answer_like_nums=ret[i][2];
-            var answer_comment_nums=ret[i][3];
+            var like_nums=ret[i][2];
+            var comment_nums=ret[i][3];
             var answer_pub_date=ret[i][4];
             var author_id=ret[i][5];
             var author_name=ret[i][6];
@@ -371,24 +373,53 @@ function appendAnswerElementList(ret,type,direction)
             var expand_btn_class="Button ContentItem-more ContentItem-rightButton Button--plain is-hide";
             var collapse_btn_class="Button ContentItem-less ContentItem-rightButton Button--plain is-hide";
 
-            var question_title_element="";
+            var content_type_element='data-content-type="answer" data-content-id="'+answer_id+'"';
             var expand_icon_svg='<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';
             var collapsed_icon_svg='<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';            
-            var rich_content='<div class="RichContent '+richContent_class+'"><div class="RichContent-expand"><div class="RichContent-inner" style="max-height: 400px;"><span class="RichText CopyrightRichText-richText">'+addClassImg(answer_content,'class="origin_image"')+'</span></div><button class="'+expand_btn_class+'" type="button">展开阅读全文'+expand_icon_svg+'</button></div><div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button" data-answer-id="'+answer_id+'"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>'+share_button+'<button class="'+collapse_btn_class+'" type="button"><span class="RichContent-collapsedText">收起</span>'+collapsed_icon_svg+'</button></div></div>';
+            var rich_content='<div class="RichContent '+richContent_class+'"><div class="RichContent-expand"><div class="RichContent-inner" style="max-height: 400px;"><span class="RichText CopyrightRichText-richText">'+addClassImg(answer_content,'class="origin_image"')+'</span></div><button class="'+expand_btn_class+'" type="button">展开阅读全文'+expand_icon_svg+'</button></div><div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+comment_nums+' 条评论</button>'+share_button+'<button class="'+collapse_btn_class+'" type="button"><span class="RichContent-collapsedText">收起</span>'+collapsed_icon_svg+'</button></div></div>';
         }
         else if(("topic"==type)||("homepage"==type))
         {
             if("topic"==type)
             {
+                var content_type=ret[i][2];       
+                if("article"==content_type)
+                {
+                    var article_id=ret[i][0];
+                    var article_title=ret[i][1];
+                    var topics=ret[i][3];
+                    var click_nums=ret[i][4];
+                    var question_title_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/article/'+article_id+'/">'+article_title+'</a></div></h2>';
+                    var data_content_url='data-content-url="/article/'+article_id+'/"';
+                    var content_type_element='data-content-type="article" data-content-id="'+article_id+'"';
+                    var like_element_attr='data-like-type="article" data-like-id="'+article_id+'"';
+                    
+                    if($.inArray(""+article_id,g_cache_article_id_list)>=0)
+                        continue;
+                    else
+                        g_cache_article_id_list.push(""+article_id);
+                }
+                else
+                {
                 var question_id=ret[i][0];
                 var question_title=ret[i][1];
-                var question_push_answer_id=ret[i][2];
                 var topics=ret[i][3];
                 var answer_id=ret[i][4];
+                    var question_title_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>';
+                    var data_content_url='data-content-url="/question/'+question_id+'/?ans='+answer_id+'"';
+                    var content_type_element='data-content-type="answer" data-content-id="'+answer_id+'"';
+                    var like_element_attr='data-like-type="answer" data-like-id="'+answer_id+'"';
+                    
+                    if($.inArray(""+question_id,g_cache_question_id_list)>=0)
+                        continue;
+                    else
+                        g_cache_question_id_list.push(""+question_id);
+                }
+        
                 var answer_push_index=ret[i][5];
                 var answer_content=ret[i][6];
-                var answer_like_nums=ret[i][7];
-                var answer_comment_nums=ret[i][8];
+                var like_nums=ret[i][7];
+                var comment_nums=ret[i][8];
                 var author_id=ret[i][9];
                 var author_name=ret[i][10];
                 var author_avatar=ret[i][11];
@@ -400,7 +431,7 @@ function appendAnswerElementList(ret,type,direction)
                 var author_followto_nums=ret[i][17];
                 var author_follower_nums=ret[i][18];
                 var author_followtopic_nums=ret[i][19];
-                var author_followquestion_nums=ret[i][20];
+                var author_followquestion_nums=ret[i][20];                              
             }
             else if("homepage"==type)
             {
@@ -408,21 +439,25 @@ function appendAnswerElementList(ret,type,direction)
                 var question_id=ret[i][1];
                 var question_title=ret[i][2];
                 var answer_content=ret[i][3];
-                var answer_like_nums=ret[i][4];
-                var answer_comment_nums=ret[i][5];
+                var like_nums=ret[i][4];
+                var comment_nums=ret[i][5];
                 
                 var author_id=ret[i][6];
                 var author_name=ret[i][7];
                 var author_avatar=ret[i][8];
                 var author_mood=ret[i][9];
+                
+                var question_title_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>';
+                var data_content_url='data-content-url="/question/'+question_id+'/?ans='+answer_id+'"';
+                var content_type_element='data-content-type="answer" data-content-id="'+answer_id+'"';
+                var like_element_attr='data-like-type="answer" data-like-id="'+answer_id+'"';
             }
             var index_img_url=getIndexImg(answer_content);
-            var question_title_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>';
-            var rich_content='<div class="RichContent is-collapsed RichContent--withMask"><div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'"><div class="RichContent-cover RichContent-cover--mobile"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div></div><div class="RichContent-inner RichContent-inner--collapsed"><span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span></div></div><div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>'+share_button+'</div></div>';
+            var rich_content='<div class="RichContent is-collapsed RichContent--withMask"><div class="RichContent-content" '+data_content_url+'><div class="RichContent-cover RichContent-cover--mobile"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div></div><div class="RichContent-inner RichContent-inner--collapsed"><span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span></div></div><div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" '+like_element_attr+'>'+like_icon_svg+like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+comment_nums+' 条评论</button>'+share_button+'</div></div>';
         }
         
         
-        var appendElement='<div class="List-item ScrollIntoMark"><div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'">'+question_title_element+'<div class="ContentItem-meta"><div class="AuthorInfo AnswerItem-authorInfo AuthorInfo--plain"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/"><img class="Avatar AuthorInfo-avatar" width="24" height="24" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/">'+author_name+'</a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div>'+rich_content+'</div></div>';
+        var appendElement='<div class="List-item ScrollIntoMark"><div class="ContentItem AnswerItem" '+content_type_element+' data-comment-nums="'+comment_nums+'">'+question_title_element+'<div class="ContentItem-meta"><div class="AuthorInfo AnswerItem-authorInfo AuthorInfo--plain"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/"><img class="Avatar AuthorInfo-avatar" width="24" height="24" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/">'+author_name+'</a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div>'+rich_content+'</div></div>';
         
         if("prepend"==direction)
             $("#appendArea").prepend(appendElement);
@@ -432,17 +467,46 @@ function appendAnswerElementList(ret,type,direction)
 }
 function appendAnswerElementCard(ret,type,direction)
 {
+    ret.sort();
     for(i in ret)
     {
-        var question_id=ret[i][0];
-        var question_title=ret[i][1];
-        var question_push_answer_id=ret[i][2];
-        var topics=ret[i][3];
-        var answer_id=ret[i][4];
-        var answer_push_index=ret[i][5];
-        var answer_content=ret[i][6];
-        var answer_like_nums=ret[i][7];
-        var answer_comment_nums=ret[i][8];
+        var content_type=ret[i][2];       
+        if("article"==content_type)
+        {
+            var article_id=ret[i][0];
+            var article_title=ret[i][1];
+            var topics=ret[i][3];
+            var click_nums=ret[i][4];
+            var question_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/article/'+article_id+'/">'+article_title+'</a></div>';
+            var data_content_url='data-content-url="/article/'+article_id+'/"';
+            var content_type_element='data-content-type="article" data-content-id="'+article_id+'"';
+            var like_element_attr='data-like-type="article" data-like-id="'+article_id+'"';
+            
+            if($.inArray(""+article_id,g_cache_article_id_list)>=0)
+                continue;
+            else
+                g_cache_article_id_list.push(""+article_id);
+        }
+        else
+        {
+            var question_id=ret[i][0];
+            var question_title=ret[i][1];
+            var topics=ret[i][3];
+            var answer_id=ret[i][4];
+            var question_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>';
+            var data_content_url='data-content-url="/question/'+question_id+'/?ans='+answer_id+'"';
+            var content_type_element='data-content-type="answer" data-content-id="'+answer_id+'"';
+            var like_element_attr='data-like-type="answer" data-like-id="'+answer_id+'"';
+            
+            if($.inArray(""+question_id,g_cache_question_id_list)>=0)
+                continue;
+            else
+                g_cache_question_id_list.push(""+question_id);
+        }
+        var push_index=ret[i][5];
+        var content=ret[i][6];
+        var like_nums=ret[i][7];
+        var comment_nums=ret[i][8];
         var author_id=ret[i][9];
         var author_name=ret[i][10];
         var author_avatar=ret[i][11];
@@ -465,13 +529,13 @@ function appendAnswerElementCard(ret,type,direction)
         }
 
         var topic_element='<div class="FeedSource-firstline"><span>'+topics_data+'</span></div>';
-        var question_element='<h2 class="ContentItem-title"><a href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></h2>';
 
-        var index_img_url=getIndexImg(answer_content);
+
+        var index_img_url=getIndexImg(content);
         
 
         var author_info_element='<div class="AuthorInfo FeedSource-byline AuthorInfo--plain"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/"><img class="Avatar AuthorInfo-avatar" width="24" height="24" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" target="_blank" href="/er/'+author_id+'/">'+author_name+'</a><a class="UserLink-badge" 111data-tooltip="优秀回答者" href="/er/'+author_id+'/" target="_blank"><svg viewBox="0 0 20 20" class="Icon Icon--badgeGlorious" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title>用户标识</title><g><g fill="none" fill-rule="evenodd">     <path d="M.64 11.39c1.068.895 1.808 2.733 1.66 4.113l.022-.196c-.147 1.384.856 2.4 2.24 2.278l-.198.016c1.387-.12 3.21.656 4.083 1.735l-.125-.154c.876 1.085 2.304 1.093 3.195.028l-.127.152c.895-1.068 2.733-1.808 4.113-1.66l-.198-.022c1.386.147 2.402-.856 2.28-2.238l.016.197c-.12-1.388.656-3.212 1.735-4.084l-.154.125c1.084-.876 1.093-2.304.028-3.195l.152.127c-1.068-.895-1.808-2.732-1.66-4.113l-.022.198c.147-1.386-.856-2.4-2.24-2.28l.198-.016c-1.387.122-3.21-.655-4.083-1.734l.125.153C10.802-.265 9.374-.274 8.483.79L8.61.64c-.895 1.068-2.733 1.808-4.113 1.662l.198.02c-1.386-.147-2.4.857-2.28 2.24L2.4 4.363c.12 1.387-.656 3.21-1.735 4.084l.154-.126C-.265 9.2-.274 10.626.79 11.517L.64 11.39z" fill="#FF9500"></path>     <path d="M10.034 12.96L7.38 14.58c-.47.286-.747.09-.618-.45l.72-3.024-2.36-2.024c-.418-.357-.318-.68.235-.725l3.1-.25 1.195-2.87c.21-.508.55-.513.763 0l1.195 2.87 3.1.25c.547.043.657.365.236.725l-2.362 2.024.72 3.025c.13.535-.143.74-.616.45l-2.654-1.62z" fill="#FFF"></path>   </g></g></svg></a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div>';
-        var answer_element='<div class="ContentItem AnswerItem" data-answer-id="'+answer_id+'" data-comment-nums="'+answer_comment_nums+'"><h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2><div class="ContentItem-meta"></div><div class="RichContent is-collapsed RichContent--withMask"><div class="RichContent-content" data-content-url="/question/'+question_id+'/?ans='+answer_id+'"><div class="RichContent-cover RichContent-cover--mobile"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div></div><div class="RichContent-inner RichContent-inner--collapsed" style="1max-height:400px"><span class="RichText CopyrightRichText-richText">'+removeImg(answer_content)+'</span></div></div><div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" data-like-type="answer" data-like-id="'+answer_id+'">'+like_icon_svg+answer_like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+answer_comment_nums+' 条评论</button>'+share_button+'</div></div>';
+        var answer_element='<div class="ContentItem AnswerItem" '+content_type_element+' data-comment-nums="'+comment_nums+'">'+question_element+'<div class="ContentItem-meta"></div><div class="RichContent is-collapsed RichContent--withMask"><div class="RichContent-content" '+data_content_url+'><div class="RichContent-cover RichContent-cover--mobile"><div class="RichContent-cover-inner" data-index-img-url="'+index_img_url+'"></div></div><div class="RichContent-inner RichContent-inner--collapsed" style="1max-height:400px"><span class="RichText CopyrightRichText-richText">'+removeImg(content)+'</span></div></div><div class="ContentItem-actions"><span><button class="Button-like-nouse Button Button--plain" type="button" '+like_element_attr+'>'+like_icon_svg+like_nums+'</button></span><button class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" type="button"><span style="display: inline-flex; align-items: center;">&#8203;'+comment_icon_svg+'</span>'+comment_nums+' 条评论</button>'+share_button+'</div></div>';
         var appendElement='<div class="Card TopstoryItem TopstoryItem--experimentExpand ScrollIntoMark"><div class="Feed"><div class="FeedSource">'+topic_element+author_info_element+answer_element+'</div></div></div>';
                            
         if("prepend"==direction)
@@ -555,7 +619,7 @@ function appendSettingPageElement(ret)
     
             if (conversation_delete_id==g_user_id) //user have delete this message
                 continue;
-
+                
             if(initator_id!=g_user_id)
             {
                 var er_id=initator_id;
@@ -1678,8 +1742,8 @@ function checkComment()
         }
         else
         {
-            var c_type="answer";
-            var a_id=$(this).parents(".ContentItem.AnswerItem").attr("data-answer-id");
+            var c_type=$(this).parents(".ContentItem.AnswerItem").attr("data-content-type");
+            var a_id=$(this).parents(".ContentItem.AnswerItem").attr("data-content-id");
         }
         if (typeof(parent_comment_id) == "undefined")
         {
@@ -1765,9 +1829,9 @@ function checkComment()
     $(".Comments-Packup-Button").on("click",function(){
         var parent_element=$(this).parents(".ContentItem.AnswerItem");
         parent_element.find(".Comments-container").remove();
-        var answer_comment_nums=parent_element.attr("data-comment-nums");
+        var comment_nums=parent_element.attr("data-comment-nums");
         var icon_element=parent_element.find(".Zi--Comment.Button-zi").closest("span");
-        parent_element.find(".Zi--Comment.Button-zi").closest("button").empty().append(icon_element).children("span").after(answer_comment_nums+" 条评论");
+        parent_element.find(".Zi--Comment.Button-zi").closest("button").empty().append(icon_element).children("span").after(comment_nums+" 条评论");
         $(this).closest("span").remove();
     });
     
@@ -1850,15 +1914,15 @@ function checkInteractionButton()
             if(parent_element.find(".Comments-container").length>0)
             {
                 parent_element.find(".Comments-container").remove();
-                var answer_comment_nums=parent_element.attr("data-comment-nums");
+                var comment_nums=parent_element.attr("data-comment-nums");
                 var icon_element=$(this).children("span");
-                $(this).empty().append(icon_element).children("span").after(answer_comment_nums+" 条评论");
+                $(this).empty().append(icon_element).children("span").after(comment_nums+" 条评论");
                 parent_element.find(".Comments-Packup-Button").closest("span").remove();
             }
             else
             {
-                var answer_comment_nums=parent_element.attr("data-comment-nums");
-                var comment_list_element='<div class="Comments-container"><div class="Comments Comments--withEditor Comments-withPagination"><div class="Topbar CommentTopbar"><div class="Topbar-title"><h2 class="CommentTopbar-title">'+answer_comment_nums+' 条评论</h2></div><div class="Topbar-options"><button type="button" class="Button Button--plain Button--withIcon Button--withLabel"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Switch Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M13.004 7V4.232c0-.405.35-.733.781-.733.183 0 .36.06.501.17l6.437 5.033c.331.26.376.722.1 1.033a.803.803 0 0 1-.601.264H2.75a.75.75 0 0 1-.75-.75V7.75A.75.75 0 0 1 2.75 7h10.254zm-1.997 9.999v2.768c0 .405-.35.733-.782.733a.814.814 0 0 1-.5-.17l-6.437-5.034a.702.702 0 0 1-.1-1.032.803.803 0 0 1 .6-.264H21.25a.75.75 0 0 1 .75.75v1.499a.75.75 0 0 1-.75.75H11.007z" fill-rule="evenodd"></path></svg></span>切换为时间排序</button></div></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--green">评论</button></div><div class="CommentList"></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse CommentEditor--nouse--bottom is-hide"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--green">评论</button></div></div></div>';
+                var comment_nums=parent_element.attr("data-comment-nums");
+                var comment_list_element='<div class="Comments-container"><div class="Comments Comments--withEditor Comments-withPagination"><div class="Topbar CommentTopbar"><div class="Topbar-title"><h2 class="CommentTopbar-title">'+comment_nums+' 条评论</h2></div><div class="Topbar-options"><button type="button" class="Button Button--plain Button--withIcon Button--withLabel"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Switch Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M13.004 7V4.232c0-.405.35-.733.781-.733.183 0 .36.06.501.17l6.437 5.033c.331.26.376.722.1 1.033a.803.803 0 0 1-.601.264H2.75a.75.75 0 0 1-.75-.75V7.75A.75.75 0 0 1 2.75 7h10.254zm-1.997 9.999v2.768c0 .405-.35.733-.782.733a.814.814 0 0 1-.5-.17l-6.437-5.034a.702.702 0 0 1-.1-1.032.803.803 0 0 1 .6-.264H21.25a.75.75 0 0 1 .75.75v1.499a.75.75 0 0 1-.75.75H11.007z" fill-rule="evenodd"></path></svg></span>切换为时间排序</button></div></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--green">评论</button></div><div class="CommentList"></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse CommentEditor--nouse--bottom is-hide"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--green">评论</button></div></div></div>';
                 parent_element.append(comment_list_element);
 
                 var icon_element=$(this).children("span");
@@ -1866,9 +1930,9 @@ function checkInteractionButton()
                 
                 var packup_button_element='<span><button class="Comments-Packup-Button" style="left:unset;right: 3px;z-index:999;"">收起评论<svg viewBox="0 0 10 6" class="Icon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button></span>';
                 parent_element.append(packup_button_element);
-                var answer_id=parent_element.attr("data-answer-id");
-                var type="answer";
-                getComments(type,answer_id);
+                var content_id=parent_element.attr("data-content-id");
+                var content_type=parent_element.attr("data-content-type");
+                getComments(content_type,content_id);
             }
         }
     });
@@ -2121,7 +2185,7 @@ function getMoreData()
         var start=nums;
         var end=start+STEP;
         var url='/ajax/questions/'+order+'/'+start+'/'+end+'/';
-        var post_data='';
+        var post_data={'follow_topics':""+g_user_follow_topics_list};
     }
     else if("question"==g_module)
     {
@@ -2853,6 +2917,9 @@ function initCommon()
     g_user_follow_topics_list=[];
     g_user_follow_questions_list=[];
     
+    g_cache_question_id_list=[];
+    g_cache_article_id_list=[];
+           
     modify_icon_svg='<svg viewBox="0 0 12 12" class="Icon ModifyButton-icon Icon--modify" width="12" height="16" aria-hidden="true" style="height: 16px; width: 12px;"><title></title><g><path d="M.423 10.32L0 12l1.667-.474 1.55-.44-2.4-2.33-.394 1.564zM10.153.233c-.327-.318-.85-.31-1.17.018l-.793.817 2.49 2.414.792-.814c.318-.328.312-.852-.017-1.17l-1.3-1.263zM3.84 10.536L1.35 8.122l6.265-6.46 2.49 2.414-6.265 6.46z" fill-rule="evenodd"></path></g></svg>';
     like_icon_svg='<svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg" class="Icon Icon--like Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M.718 7.024c-.718 0-.718.63-.718.63l.996 9.693c0 .703.718.65.718.65h1.45c.916 0 .847-.65.847-.65V7.793c-.09-.88-.853-.79-.846-.79l-2.446.02zm11.727-.05S13.2 5.396 13.6 2.89C13.765.03 11.55-.6 10.565.53c-1.014 1.232 0 2.056-4.45 5.83C5.336 6.965 5 8.01 5 8.997v6.998c-.016 1.104.49 2 1.99 2h7.586c2.097 0 2.86-1.416 2.86-1.416s2.178-5.402 2.346-5.91c1.047-3.516-1.95-3.704-1.95-3.704l-5.387.007z"></path></g></svg>';
     comment_icon_svg='<svg class="Zi Zi--Comment Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M10.241 19.313a.97.97 0 0 0-.77.2 7.908 7.908 0 0 1-3.772 1.482.409.409 0 0 1-.38-.637 5.825 5.825 0 0 0 1.11-2.237.605.605 0 0 0-.227-.59A7.935 7.935 0 0 1 3 11.25C3 6.7 7.03 3 12 3s9 3.7 9 8.25-4.373 9.108-10.759 8.063z" fill-rule="evenodd"></path></svg>'
