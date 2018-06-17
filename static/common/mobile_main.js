@@ -809,7 +809,7 @@ function invite()
                 return;
             g_lock_ajax="true";
             $.post("/ajax/invite/",{question:g_question_id,to:receiver},function(ret){
-                alert(ret);
+                $(element).attr("disabled","").text("已邀请");
                 g_lock_ajax="false";
             });
         });
@@ -827,6 +827,7 @@ function showInvite()
     $.post("/ajax/topic_adept/",{"topics":topics},function(ret){
         if("fail"!=ret)
         {
+            $(".QuestionInvitation-content.List").empty();
             appendInviteElement(ret);
             $("#inviteModal").modal('show');
             checkSets();

@@ -659,7 +659,7 @@ function appendInviteElement(ret)
         var adept_avatar=ret[i][2];
         var adept_mood=ret[i][3];
 
-        var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+adept_id+'"><img class="Avatar Avatar--large UserLink-avatar PeoplePopover" width="60" height="60" src="'+adept_avatar+'" srcset="'+adept_avatar+'" alt="'+adept_name+'" data-author-id="'+adept_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true"></a></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><a class="UserLink-link" target="_blank" href="/er/'+adept_id+'"><span class="RichText">'+adept_name+'</span></a></span></div></h2><div class="ContentItem-meta"><div><div class="ContentItem-status"><div class="ContentItem-statusItem">'+adept_mood+'</div></div></div></div></div><div class="ContentItem-extra"><button class="Button Button--green Invite" type="button" data-receiver="'+adept_id+'">邀请回答</button></div></div></div></div>';
+        var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+adept_id+'"><img class="Avatar Avatar--large UserLink-avatar 1PeoplePopover" width="60" height="60" src="'+adept_avatar+'" srcset="'+adept_avatar+'" alt="'+adept_name+'" data-author-id="'+adept_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true"></a></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><a class="UserLink-link" target="_blank" href="/er/'+adept_id+'"><span class="RichText">'+adept_name+'</span></a></span></div></h2><div class="ContentItem-meta"><div><div class="ContentItem-status"><div class="ContentItem-statusItem">'+adept_mood+'</div></div></div></div></div><div class="ContentItem-extra"><button class="Button Button--green Invite" type="button" data-receiver="'+adept_id+'">邀请回答</button></div></div></div></div>';
         $(".QuestionInvitation-content.List").append(data);
     }
 }
@@ -900,7 +900,7 @@ function invite()
                 return;
             g_lock_ajax="true";
             $.post("/ajax/invite/",{question:g_question_id,to:receiver},function(ret){
-                alert(ret);
+                $(element).attr("disabled","").text("已邀请");
                 g_lock_ajax="false";
             });
         });
@@ -918,6 +918,7 @@ function showInvite()
     $.post("/ajax/topic_adept/",{"topics":topics},function(ret){
         if("fail"!=ret)
         {
+            $(".QuestionInvitation-content.List").empty();
             appendInviteElement(ret);
             $("#inviteModal").modal('show');
             checkSets();
