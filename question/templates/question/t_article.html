@@ -15,7 +15,7 @@
 <div class="Post-Author">
 <div class="AuthorInfo">
 <span class="UserLink AuthorInfo-avatarWrapper">
-<a class="UserLink-link PeoplePopover" target="_blank" href="" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">
+<a class="UserLink-link PeoplePopover" target="_blank" href="" "data-author-id="{{article.author__id}}" data-author-name="{{article.author__first_name}}" data-author-avatar="{{article.author__userprofile__avatar}}" data-author-mood="{{article.author__userprofile__mood}}" data-author-sexual="{{article.author__userprofile__sexual}}" data-author-answer-nums="{{article.author__userprofile__answer_nums}}" data-author-article-nums="{{article.author__userprofile__article_nums}}" data-author-follower-nums="{{article.author__userprofile__follower_nums}}" data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true">
 <img class="Avatar Avatar--round AuthorInfo-avatar" width="38" height="38" src="" alt="">
 </a>
 </span>
@@ -48,7 +48,7 @@
 {% for topic in topics %}
 <div class="Tag Topic">
 <span class="Tag-content">
-<a class="TopicLink TopicPopover" href="/topic/{{topic.topics__id}}/" data-topic-id="{{topic.topics__id}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{topic.topics__name}}</a>
+<a class="TopicLink TopicPopover" href="/topic/{{topic.topics__id}}/" data-topic-id="{{topic.topics__id}}" data-topic-name="{{topic.topics__name}}" data-topic-avatar="{{topic.topics__avatar}}" data-topic-detail="{{topic.topics__detail}}" data-topic-question-nums="{{topic.topics__question_nums}}" data-topic-article-nums="{{topic.topics__article_nums}}" data-topic-follower-nums="{{topic.topics__follower_nums}}" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">{{topic.topics__name}}</a>
 </span>
 </div>
 {% endfor %}

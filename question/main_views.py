@@ -279,11 +279,12 @@ class ArticleView(generic.ListView):
         else:
             logged='false'
         article_id=self.kwargs.get('article_id')
-        article=Article.objects.filter(pk=article_id).values("id","title","content","click_nums","like_nums","comment_nums","pub_date","author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood",'author__userprofile__sexual')
+        article=Article.objects.filter(pk=article_id).values("id","title","content","click_nums","like_nums","comment_nums","pub_date","author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood",'author__userprofile__sexual'
+        ,'author__userprofile__answer_nums','author__userprofile__article_nums','author__userprofile__follower_nums')
         article_data=article[0]
         article_data['pub_date']=str(article_data['pub_date'])
         
-        topics=Article.objects.filter(pk=article_id).values("topics__id","topics__name","topics__avatar","topics__detail")
+        topics=Article.objects.filter(pk=article_id).values("topics__id","topics__name","topics__avatar","topics__detail","topics__question_nums","topics__article_nums","topics__follower_nums")
         return render(request,self.template_name,{'logged':logged,'article':article_data,"topics":topics})
             
 class TradeView(LoginRequiredMixin,generic.ListView):
