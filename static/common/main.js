@@ -644,7 +644,7 @@ function appendTopicElement(ret)
         if($.inArray(""+topic_id,g_user_follow_topics_list)>=0)
             var follow_button_data='<button class="Button Button--grey FollowButton" type="button" data-follow-type="topic" data-topic-id="'+topic_id+'" data-followed="true">已关注</button>';
         else
-            var follow_button_data='<button class="Button Button--green FollowButton" type="button" data-follow-type="topic" data-topic-id="'+topic_id+'" data-followed="false">关注话题</button>';
+            var follow_button_data='<button class="Button Button--green FollowButton" type="button" data-follow-type="topic" data-topic-id="'+topic_id+'" data-followed="false">关注栏目</button>';
 
         var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="TopicLink TopicItem-avatar"><a class="TopicLink-link" target="_blank" href="/topic/'+topic_id+'"><img class="Avatar Avatar--large TopicLink-avatar" width="60" height="60" src="'+topic_avatar+'"  alt="'+topic_name+'"></a></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="TopicItem-title"><span class="TopicLink TopicItem-name"><a class="TopicLink-link" target="_blank" href="/topic/'+topic_id+'"><span class="RichText">'+topic_name+'</span></a></span></div></h2><div class="ContentItem-meta"><div><div class="ContentItem-status"><div class="ContentItem-statusItem">'+topic_detail+'</div></div></div></div></div><div class="ContentItem-extra">'+follow_button_data+'</div></div></div></div>';
         $("#appendArea").append(data);
@@ -869,7 +869,7 @@ function appendFollowOrMoreElement(ret)
 }
 function appendFollowOrMoreHead()
 {       
-    var data='<div class="List" id="Profile-following"><div class="List-header"><h4 class="List-headerText"><div class="SubTabs"><a class="SubTabs-item" href="/er/'+g_er_id+'/following/followtos">'+g_who_han+'关注的人</a><a class="SubTabs-item" href="/er/'+g_er_id+'/following/followers">关注'+g_who_han+'的人</a><a class="SubTabs-item" href="/er/'+g_er_id+'/following/topics">'+g_who_han+'关注的话题</a><a class="SubTabs-item" href="/er/'+g_er_id+'/following/questions">'+g_who_han+'关注的问题</a></div></h4></div><div id="appendArea"></div></div>';
+    var data='<div class="List" id="Profile-following"><div class="List-header"><h4 class="List-headerText"><div class="SubTabs"><a class="SubTabs-item" href="/er/'+g_er_id+'/following/followtos">'+g_who_han+'关注的人</a><a class="SubTabs-item" href="/er/'+g_er_id+'/following/followers">关注'+g_who_han+'的人</a><a class="SubTabs-item" href="/er/'+g_er_id+'/following/topics">'+g_who_han+'关注的栏目</a><a class="SubTabs-item" href="/er/'+g_er_id+'/following/questions">'+g_who_han+'关注的问题</a></div></h4></div><div id="appendArea"></div></div>';
     $("#profileMainContent").append(data);
     
     $(".SubTabs-item").each(function(){
@@ -994,7 +994,7 @@ function checkFollow()
             }
             else if("topic"==button.attr("data-follow-type"))
             {
-                var follow_tips="关注话题";
+                var follow_tips="关注栏目";
                 var follow_type="topic";
                 var update_value_type="topic-followed";
                 var follow_id=button.attr("data-topic-id");
@@ -2791,7 +2791,7 @@ function initElement()
         if($.inArray(""+g_topic_id,g_user_follow_topics_list)>=0)
             $(".FollowButton.TopicCard-followButton").removeClass("Button--green").addClass("Button--grey").attr("data-topic-id",g_topic_id).attr("data-followed","true").text("已关注");
         else
-            $(".FollowButton.TopicCard-followButton").removeClass("Button--grey").addClass("Button--green").attr("data-topic-id",g_topic_id).attr("data-followed","false").text("关注话题");   
+            $(".FollowButton.TopicCard-followButton").removeClass("Button--grey").addClass("Button--green").attr("data-topic-id",g_topic_id).attr("data-followed","false").text("关注栏目");   
     }
     else if("mytopic"==g_module)
     {
@@ -3013,7 +3013,7 @@ function initElement()
         var data='<div class="NumberBoard FollowshipCard-counts NumberBoard--divider"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+g_er_id+'/following/followtos"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注了</div><strong class="NumberBoard-itemValue">'+g_followto_nums+'</strong></div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+g_er_id+'/following/followers"><div class="NumberBoard-itemInner"><div class="NumberBoard-itemName">关注者</div><strong class="NumberBoard-itemValue NumberBoard-value" data-update-value-type="people-followed">'+g_follower_nums+'</strong></div></a></div>';
         $(".Card.FollowshipCard").append(data);
         
-        var data='<a class="Profile-lightItem" href="/er/'+g_er_id+'/following/topics"><span class="Profile-lightItemName">关注的话题</span><span class="Profile-lightItemValue">'+g_followtopic_nums+'</span></a><a class="Profile-lightItem" href="/er/'+g_er_id+'/following/questions"><span class="Profile-lightItemName">关注的问题</span><span class="Profile-lightItemValue">'+g_followquestion_nums+'</span></a>';
+        var data='<a class="Profile-lightItem" href="/er/'+g_er_id+'/following/topics"><span class="Profile-lightItemName">关注的栏目</span><span class="Profile-lightItemValue">'+g_followtopic_nums+'</span></a><a class="Profile-lightItem" href="/er/'+g_er_id+'/following/questions"><span class="Profile-lightItemName">关注的问题</span><span class="Profile-lightItemValue">'+g_followquestion_nums+'</span></a>';
         
         $(".Profile-lightList").append(data);
         
