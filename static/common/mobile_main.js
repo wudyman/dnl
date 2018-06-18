@@ -1236,8 +1236,8 @@ function checkSignAndMiscPage()
             $(this).text("登录");
             $("#registerLoginText").text("已有帐号？");
             swith_element.attr("data-action","register");
-            $(".SignFlowHeader-title").text("注册知乎");
-            $(".SignFlowHeader-slogen").text("注册知乎，发现更大的世界");
+            $(".SignFlowHeader-title").text("注册大农令");
+            $(".SignFlowHeader-slogen").text("注册大农令，发现更大的世界");
             $("#register").removeClass("is-hide");
             $("#login").addClass("is-hide");
         }
@@ -1246,8 +1246,8 @@ function checkSignAndMiscPage()
             $(this).text("注册");
             $("#registerLoginText").text("没有帐号？");
             swith_element.attr("data-action","login");
-            $(".SignFlowHeader-title").text("登录知乎");
-            $(".SignFlowHeader-slogen").text("登录知乎，发现更大的世界");
+            $(".SignFlowHeader-title").text("登录大农令");
+            $(".SignFlowHeader-slogen").text("登录大农令，发现更大的世界");
             $("#register").addClass("is-hide");
             $("#login").removeClass("is-hide");
         }
@@ -3025,7 +3025,7 @@ if (getScrollTop() + getClientHeight() +10 >= getScrollHeight()) {
         getMoreData();
     } 
 }
-SITE="知乎";
+SITE="大农令";
 STEP=10;
 g_lock_ajax="false";
 g_init_done="false";
