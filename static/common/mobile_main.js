@@ -1,3 +1,16 @@
+function utf8_to_b64(str) {   
+    //return window.btoa(encodeURIComponent(str));
+    return window.btoa(unescape(encodeURIComponent(str)));
+    //return encodeURIComponent(str);
+    //return encodeURI(str);
+}
+
+function b64_to_utf8(str) {
+    //return decodeURIComponent(window.atob(str));
+    return decodeURIComponent(escape(window.atob(str)));
+    //return decodeURIComponent(str);
+    //return decodeURI(str);
+}
 function setCookie(name,value,secs)
 {
     var exp = new Date();
@@ -373,6 +386,7 @@ function appendAnswerElementList(ret,type,direction)
             var expand_btn_class="Button ContentItem-more ContentItem-rightButton Button--plain is-hide";
             var collapse_btn_class="Button ContentItem-less ContentItem-rightButton Button--plain is-hide";
 
+            var question_title_element="";
             var content_type_element='data-content-type="answer" data-content-id="'+answer_id+'"';
             var expand_icon_svg='<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';
             var collapsed_icon_svg='<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';            
@@ -882,6 +896,8 @@ function checkFollow()
         var button=$(this);
         button.click(function(){
             console.log("checkFollow");
+            if(false==veriLogin())
+                return;
             if("true"==button.attr("data-followed"))
             {
                 follow_action="0";
@@ -1960,6 +1976,8 @@ function checkAnswerQuestion()
     
     $(".ShowAnswerBar-nouse").off("click");
     $(".ShowAnswerBar-nouse").on("click",function(){
+        if(false==veriLogin())
+            return;
         if($(".AnswerToolbar").hasClass("is-hide"))
         {
             $(".AnswerToolbar").removeClass("is-hide");
@@ -2062,6 +2080,8 @@ function checkAsk()
     checkAskDetail();   
     
     $('#askModal').on('shown.bs.modal', function(){
+        if(false==veriLogin())
+            return;
         $("#askModal").off('click.dismiss.bs.modal','[data-dismiss="modal"]');
         $("#askModal").on('click.dismiss.bs.modal','[data-dismiss="modal"]',function(){
             $('#askModal .modal').modal('hide');
@@ -2702,19 +2722,6 @@ function initElement()
     }
     g_init_element_done="true";
 }
-function utf8_to_b64(str) {   
-    //return window.btoa(encodeURIComponent(str));
-    return window.btoa(unescape(encodeURIComponent(str)));
-    //return encodeURIComponent(str);
-    //return encodeURI(str);
-}
-
-function b64_to_utf8(str) {
-    //return decodeURIComponent(window.atob(str));
-    return decodeURIComponent(escape(window.atob(str)));
-    //return decodeURIComponent(str);
-    //return decodeURI(str);
-}
 function initData()
 {
 	var str_main_data=$("main").attr("data-dfs-main");
@@ -3030,3 +3037,14 @@ STEP=10;
 g_lock_ajax="false";
 g_init_done="false";
 ENABLE_SCREEN_LOG="true";//"false"
+
+function veriLogin()
+{
+    if("true"!=g_logged)
+    {
+        var old_href=location.href;
+        location.href="/signinup/?next="+old_href;
+        return false;
+    }
+    return true;
+}
