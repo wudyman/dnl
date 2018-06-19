@@ -46,11 +46,15 @@ class IndexView(generic.ListView):
             question.quizzer=quizzer 
             question.save()
             
+            quizzer.userprofile.question_nums+=1
+            quizzer.userprofile.contribution+=5
+            quizzer.userprofile.save()
+            
             for topic_str in topics:
                 topic_array=topic_str.split(':')
                 topic=get_object_or_404(Topic,id=topic_array[0])
                 topic.question.add(question)
-                topic.question_nums=topic.question.count()
+                topic.question_nums+=1 ##topic.question.count()
                 topic.save()
             result='/question/'+str(question.id)+'/'
             return HttpResponseRedirect(result)

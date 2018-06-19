@@ -42,13 +42,19 @@ def follow(request):
                 if int(follow_action):
                     question.follower.add(user)
                     question.follower_nums+=1
+                    user.userprofile.followquestion_nums+=1
                 else:
                     question.follower.remove(user)
                     if question.follower_nums>0:
                         question.follower_nums-=1
                     else:
-                        question.follower_nums=question.follower.count()
+                        question.follower_nums=question.follower.count() 
+                    if user.userprofile.followquestion_nums>0:
+                        user.userprofile.followquestion_nums-=1
+                    else:
+                        user.userprofile.followquestion_nums=user.followquestions.count()
                 question.save()
+                user.userprofile.save()
                 ret_data=[]
                 ret_data.append(question.follower_nums)
                 follow_questions=user.followquestions.values_list("id",flat=True)
@@ -75,7 +81,7 @@ def follow(request):
                     else:
                         user.userprofile.followto_nums=user.followto.count()
                 er.userprofile.save()
-                user.save()
+                user.userprofile.save()
                 ret_data=[]
                 ret_data.append(er.userprofile.follower_nums)
                 follow_peoples=user.followto.all().values_list("id",flat=True)
@@ -87,13 +93,19 @@ def follow(request):
                 if int(follow_action):
                     topic.follower.add(user)
                     topic.follower_nums+=1
+                    user.userprofile.followtopic_nums+=1
                 else:
                     topic.follower.remove(user)
                     if topic.follower_nums>0:
                         topic.follower_nums-=1
                     else:
                         topic.follower_nums=topic.follower.count()
+                    if user.userprofile.followtopic_nums>0:
+                        user.userprofile.followtopic_nums-=1
+                    else:
+                        user.userprofile.followtopic_nums=user.followtopics.count()
                 topic.save()
+                user.userprofile.save()
                 ret_data=[]
                 ret_data.append(topic.follower_nums)
                 follow_topics=user.followtopics.values_list("id",flat=True)
@@ -114,6 +126,9 @@ def answer_question(request,question_id):
             answer.author=author
             answer.question=question
             answer.save()
+            author.userprofile.answer_nums+=1
+            author.userprofile.contribution+=10
+            author.userprofile.save()
             question.answer_nums+=1#question.be_answers.count();
             question.push_answer_id=answer.id
             question.save()
