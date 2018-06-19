@@ -112,7 +112,7 @@ class NotificationView(LoginRequiredMixin,generic.ListView):
         if user.is_authenticated:
             return render(request,self.template_name,{'type':self.type,'logged':'true'})
         else:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/signinup/?next=/notifications/')
         
 class ConversationView(LoginRequiredMixin,generic.ListView):
     login_url='/'
@@ -137,13 +137,13 @@ class ConversationView(LoginRequiredMixin,generic.ListView):
             else:
                 return render(request,self.template_name,{'type':self.type,'conversation_id':'','logged':'true'})
         else:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/signinup/?next=/conversations/')
         #user=request.user #get_object_or_404(User,username=request.user)
         #conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
         #conversation_list=conversations.order_by('-update_date')[:10]
         #return render(request,self.template_name,{'conversation_list':conversation_list})
         
-class SettingsView(LoginRequiredMixin,generic.ListView):
+class SettingsView(generic.ListView):
     login_url='/'
     template_name='question/t_setting.html'
     type='settings'
@@ -165,13 +165,13 @@ class SettingsView(LoginRequiredMixin,generic.ListView):
                 self.sub_type='profile'
             return render(request,self.template_name,{'type':self.type,'sub_type':self.sub_type,'logged':'true'})
         else:
-            return HttpResponseRedirect('/signinup/')
+            return HttpResponseRedirect('/signinup/?next=/settings/')
         #user=request.user #get_object_or_404(User,username=request.user)
         #conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
         #conversation_list=conversations.order_by('-update_date')[:10]
         #return render(request,self.template_name,{'conversation_list':conversation_list})
         
-class AnswerView(LoginRequiredMixin,generic.ListView):
+class AnswerView(generic.ListView):
     login_url='/'
     template_name='question/t_answer.html'
     type='recommend'
@@ -191,7 +191,7 @@ class AnswerView(LoginRequiredMixin,generic.ListView):
                 self.type='recommend'
             return render(request,self.template_name,{'type':self.type,'logged':logged})
         else:
-            return HttpResponseRedirect('/signinup/')
+            return HttpResponseRedirect('/signinup/?next=/answer_page/')
         
 class SearchView(generic.ListView):
     #login_url='/'
@@ -235,11 +235,11 @@ class WriteView(generic.ListView):
         if user.is_authenticated:
             return render(request,self.template_name,{'logged':'true'})
         else:
-            return HttpResponseRedirect('/signinup/')
+            return HttpResponseRedirect('/signinup/?next=/write/')
     def post(self,request):
         user=request.user
         if not user.is_authenticated:
-            return HttpResponseRedirect('/signinup/')
+            return HttpResponseRedirect('/signinup/?next=/write/')
         else:
             topics=request.POST.getlist('topics_selected')#('topics')#
             #prima_topic_array=topics[0].split(':')
@@ -288,7 +288,7 @@ class ArticleView(generic.ListView):
         topics=Article.objects.filter(pk=article_id).values("topics__id","topics__name","topics__avatar","topics__detail","topics__question_nums","topics__article_nums","topics__follower_nums")
         return render(request,self.template_name,{'logged':logged,'article':article_data,"topics":topics})
             
-class TradeView(LoginRequiredMixin,generic.ListView):
+class TradeView(generic.ListView):
     login_url='/'
     template_name='question/t_no_feature.html'
     def get_queryset(self):
@@ -303,4 +303,4 @@ class TradeView(LoginRequiredMixin,generic.ListView):
         if user.is_authenticated:
             return render(request,self.template_name,{'logged':'true'})
         else:
-            return HttpResponseRedirect('/signinup/')
+            return HttpResponseRedirect('/signinup/?next=/trade/')

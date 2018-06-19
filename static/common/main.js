@@ -1,3 +1,16 @@
+function utf8_to_b64(str) {   
+    //return window.btoa(encodeURIComponent(str));
+    return window.btoa(unescape(encodeURIComponent(str)));
+    //return encodeURIComponent(str);
+    //return encodeURI(str);
+}
+
+function b64_to_utf8(str) {
+    //return decodeURIComponent(window.atob(str));
+    return decodeURIComponent(escape(window.atob(str)));
+    //return decodeURIComponent(str);
+    //return decodeURI(str);
+}
 function setCookie(name,value,secs)
 {
     var exp = new Date();
@@ -974,6 +987,8 @@ function checkFollow()
         var button=$(this);
         button.click(function(){
             console.log("checkFollow");
+            if(false==veriLogin())
+                return;
             if("true"==button.attr("data-followed"))
             {
                 follow_action="0";
@@ -1508,6 +1523,7 @@ function checkSignAndMiscPage()
             $("#registerLoginText").text("已有帐号？");
             swith_element.attr("data-action","register");
             $(".SignFlowHeader-title").text("注册大农令");
+            $(".SignFlowHeader-slogen").text("注册大农令，发现更大的世界");
             $("#register").removeClass("is-hide");
             $("#login").addClass("is-hide");
         }
@@ -1517,6 +1533,7 @@ function checkSignAndMiscPage()
             $("#registerLoginText").text("没有帐号？");
             swith_element.attr("data-action","login");
             $(".SignFlowHeader-title").text("登录大农令");
+            $(".SignFlowHeader-slogen").text("登录大农令，发现更大的世界");
             $("#register").addClass("is-hide");
             $("#login").removeClass("is-hide");
         }
@@ -2284,6 +2301,8 @@ function checkAnswerQuestion()
     
     $(".ShowAnswerBar-nouse").off("click");
     $(".ShowAnswerBar-nouse").on("click",function(){
+        if(false==veriLogin())
+            return;
         if($(".AnswerToolbar").hasClass("is-hide"))
         {
             $(".AnswerToolbar").removeClass("is-hide");
@@ -2386,6 +2405,8 @@ function checkAsk()
     checkAskDetail();   
     
     $('#askModal').on('shown.bs.modal', function(){
+        if(false==veriLogin())
+            return;
         $("#askModal").off('click.dismiss.bs.modal','[data-dismiss="modal"]');
         $("#askModal").on('click.dismiss.bs.modal','[data-dismiss="modal"]',function(){
             $('#askModal .modal').modal('hide');
@@ -3102,19 +3123,7 @@ function initElement()
     }
     g_init_element_done="true";
 }
-function utf8_to_b64(str) {   
-    //return window.btoa(encodeURIComponent(str));
-    return window.btoa(unescape(encodeURIComponent(str)));
-    //return encodeURIComponent(str);
-    //return encodeURI(str);
-}
 
-function b64_to_utf8(str) {
-    //return decodeURIComponent(window.atob(str));
-    return decodeURIComponent(escape(window.atob(str)));
-    //return decodeURIComponent(str);
-    //return decodeURI(str);
-}
 function initData()
 {
 	var str_main_data=$("main").attr("data-dfs-main");
@@ -3436,6 +3445,17 @@ g_lock_ajax="false";
 g_init_done="false";
 ENABLE_SCREEN_LOG="true";//"false"
 
+function veriLogin()
+{
+    if("true"!=g_logged)
+    {
+        var old_href=location.href;
+        location.href="/signinup/?next="+old_href;
+        return false;
+    }
+    return true;
+}
+
 function hashChange()
 {
         g_last_getmoredata_index=0;
@@ -3460,4 +3480,6 @@ function hashChange()
         $('#appendArea').empty();
         getMoreData();      
 }
+
+
 
