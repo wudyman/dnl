@@ -247,16 +247,17 @@ class WriteView(generic.ListView):
             article=Article()
             article.title=request.POST.get('writeTitle')
             article.content=request.POST.get('writeContent')
-            article.author=user
-            #article.prima_topic_id=int(prima_topic_array[0])
-            #article.prima_topic_name=prima_topic_array[1]            
+            article.author=user           
             article.save()
+            user.userprofile.article_nums+=1
+            user.userprofile.contribution+=10
+            user.userprofile.save()
             
             for topic_str in topics:
                 topic_array=topic_str.split(':')
                 topic=get_object_or_404(Topic,id=topic_array[0])
                 topic.article.add(article)
-                topic.article_nums=topic.article.count()
+                topic.article_nums+=1
                 topic.save()
             result='/article/'+str(article.id)+'/'
             return HttpResponseRedirect(result)
