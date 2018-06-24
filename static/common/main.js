@@ -1,3 +1,20 @@
+if (!HTMLCanvasElement.prototype.toBlob) {
+        Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
+            value: function (callback, type, quality) {
+                var canvas = this;
+                setTimeout(function() {
+                    var binStr = atob(canvas.toDataURL(type, quality).split(',')[1]);
+                    var len = binStr.length, arr = new Uint8Array(len);
+
+                    for (var i = 0; i < len; i++ ) {
+                        arr[i] = binStr.charCodeAt(i);
+                    }
+
+                    callback(new Blob([arr], {type: type || 'image/png'}));
+                });
+            }
+        });
+    }
 function utf8_to_b64(str) {   
     //return window.btoa(encodeURIComponent(str));
     return window.btoa(unescape(encodeURIComponent(str)));
@@ -35,9 +52,8 @@ function delCookie(name)
         document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 }
 
-
 function getDateDiff(dateStr) {
-    var timestamp = Date.parse(new Date(dateStr));
+    var timestamp = Date.parse(new Date(dateStr.replace(/-/g,"/")));
     var publishTime = timestamp / 1000,
     d_seconds,
     d_minutes,
@@ -74,6 +90,7 @@ function getDateDiff(dateStr) {
     d_hours = parseInt(d / 3600);
     d_minutes = parseInt(d / 60);
     d_seconds = parseInt(d);
+    
 
     if (d_days > 0 && d_days < 3) {
     return d_days + '天前';
@@ -93,6 +110,7 @@ function getDateDiff(dateStr) {
     return Y + '-' + M + '-' + D;// + ' ' + H + ':' + m;
     }
 }
+
 function countDown()
 {
     if(0==g_countdown_secs)
@@ -401,7 +419,7 @@ function appendCommentsElement(ret)
         var comment_author_mood=ret[i][8];
         
         var element_data='<div class="CommentItem" data-comment-id="'+comment_id+'" data-comment-author-name="'+comment_author_name+'"><div><div class="CommentItem-meta"><span class="UserLink CommentItem-avatar"><a class="UserLink-link" target="_blank" href="/er/'+comment_author_id+'"><img class="Avatar UserLink-avatar" width="24" height="24" src="'+comment_author_avatar+'" alt="'+comment_author_name+'"></a></span><span class="UserLink"><a class="UserLink-link" target="_blank" href="'+comment_author_id+'">'+comment_author_name+'</a></span><span class="CommentItem-time">'+getDateDiff(comment_pub_date)+'</span></div><div class="RichText ztext CommentItem-content">'+comment_content+'</div><div class="CommentItem-footer"><button type="button" class="Button-like-nouse Button CommentItem-likeBtn Button--plain" data-like-type="comment" data-like-id="'+comment_id+'">'+like_icon_svg+comment_like_nums+'</button><button type="button" class="Button CommentItem-hoverBtn Button--plain"><svg viewBox="0 0 22 16" class="Icon Icon--reply Icon--left" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M21.96 13.22c-1.687-3.552-5.13-8.062-11.637-8.65-.54-.053-1.376-.436-1.376-1.56V.677c0-.52-.635-.915-1.116-.52L.47 6.67C.18 6.947 0 7.334 0 7.763c0 .376.14.722.37.987 0 0 6.99 6.818 7.442 7.114.453.295 1.136.124 1.135-.5V13c.027-.814.703-1.466 1.532-1.466 1.185-.14 7.596-.077 10.33 2.396 0 0 .395.257.535.257.892 0 .614-.967.614-.967z"></path></g></svg>回复</button></div></div></div>';
-        $(".CommentList").append(element_data);
+        $(".CommentList.CommentList--current").append(element_data);
         if(0!=comment_parent_id)
         {
             $(".CommentItem").each(function(){
@@ -1765,16 +1783,18 @@ function checkAvatar(){
     
     $(".Mask-content").click(function(){
             $("#id_avatar_input").click();
-            $("#id_avatar_input").on("change",function(){
-               $("#upAvatarModal").modal('show');
-                var objUrl = getObjectURL(this.files[0]);
-                if (objUrl) { 
-                    $("#preview_avatar").attr("src", objUrl);
-                    $("#adjust_choosebox").val(50);                    
-                    
-                    setTimeout(adjustChooseBox,1*1000);
-                }
-            });
+    });
+    
+    $("#id_avatar_input").on("change",function(){
+       console.log("********************");
+       $("#upAvatarModal").modal('show');
+        var objUrl = getObjectURL(this.files[0]);
+        if (objUrl) { 
+            $("#preview_avatar").attr("src", objUrl);
+            $("#adjust_choosebox").val(50);                    
+            
+            setTimeout(adjustChooseBox,1*1000);
+        }
     });
     
     $(".AvatarSave").click(function(){
@@ -2263,8 +2283,9 @@ function checkInteractionButton()
             }
             else
             {
+                $(".CommentList").removeClass("CommentList--current");
                 var comment_nums=parent_element.attr("data-comment-nums");
-                var comment_list_element='<div class="Comments-container"><div class="Comments Comments--withEditor Comments-withPagination"><div class="Topbar CommentTopbar"><div class="Topbar-title"><h2 class="CommentTopbar-title">'+comment_nums+' 条评论</h2></div><div class="Topbar-options"><button type="button" class="Button Button--plain Button--withIcon Button--withLabel"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Switch Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M13.004 7V4.232c0-.405.35-.733.781-.733.183 0 .36.06.501.17l6.437 5.033c.331.26.376.722.1 1.033a.803.803 0 0 1-.601.264H2.75a.75.75 0 0 1-.75-.75V7.75A.75.75 0 0 1 2.75 7h10.254zm-1.997 9.999v2.768c0 .405-.35.733-.782.733a.814.814 0 0 1-.5-.17l-6.437-5.034a.702.702 0 0 1-.1-1.032.803.803 0 0 1 .6-.264H21.25a.75.75 0 0 1 .75.75v1.499a.75.75 0 0 1-.75.75H11.007z" fill-rule="evenodd"></path></svg></span>切换为时间排序</button></div></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--green">评论</button></div><div class="CommentList"></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse CommentEditor--nouse--bottom is-hide"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--green">评论</button></div></div></div>';
+                var comment_list_element='<div class="Comments-container"><div class="Comments Comments--withEditor Comments-withPagination"><div class="Topbar CommentTopbar"><div class="Topbar-title"><h2 class="CommentTopbar-title">'+comment_nums+' 条评论</h2></div><div class="Topbar-options"><button type="button" class="Button Button--plain Button--withIcon Button--withLabel"><span style="display: inline-flex; align-items: center;">&#8203;<svg class="Zi Zi--Switch Button-zi" fill="currentColor" viewBox="0 0 24 24" width="1.2em" height="1.2em"><path d="M13.004 7V4.232c0-.405.35-.733.781-.733.183 0 .36.06.501.17l6.437 5.033c.331.26.376.722.1 1.033a.803.803 0 0 1-.601.264H2.75a.75.75 0 0 1-.75-.75V7.75A.75.75 0 0 1 2.75 7h10.254zm-1.997 9.999v2.768c0 .405-.35.733-.782.733a.814.814 0 0 1-.5-.17l-6.437-5.034a.702.702 0 0 1-.1-1.032.803.803 0 0 1 .6-.264H21.25a.75.75 0 0 1 .75.75v1.499a.75.75 0 0 1-.75.75H11.007z" fill-rule="evenodd"></path></svg></span>切换为时间排序</button></div></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--green">评论</button></div><div class="CommentList CommentList--current"></div><div class="Comments-footer CommentEditor--normal CommentEditor--nouse CommentEditor--nouse--bottom is-hide"><div class="CommentEditor-input Input-wrapper Input-wrapper--spread Input-wrapper--large Input-wrapper--noPadding"><div class="Input Editable"><div class="Dropzone RichText ztext" style="min-height: 198px;"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner">写下你的评论...</div></div><div class="DraftEditor-editorContainer"><div class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" tabindex="0" style="outline: none; white-space: pre-wrap; word-wrap: break-word;"></div></div></div></div><div></div></div></div><button disabled="" type="button" class="Button Button-comment-send CommentEditor-singleButton Button--primary Button--green">评论</button></div></div></div>';
                 parent_element.append(comment_list_element);
 
                 var icon_element=$(this).children("span");
