@@ -1071,4 +1071,11 @@ a.QuestionMainAction:hover{color:#228b22}
 }
 
 /************for green config****************/
+/********************** IE ********************************/
+.QuestionInvitation-content{-webkit-box-flex:1;-ms-flex:0 0 auto;flex:0 0 auto;overflow-x:hidden;overflow-y:auto;}
+.AnswerAuthor-buttons .Button{-webkit-box-flex:1;-ms-flex:0 0 auto;flex:0 0 auto;}
+.QuestionAsk .ModalButtonGroup--vertical .Button{display:block;width:220px;margin-right:0;margin-left:0}
+.AnswerToolbar--close{margin-left:500px;}
+.CommentList{-webkit-box-flex:1;-ms-flex:0 0 auto;flex:0 0 auto;}
+/********************** IE ******************************/
 
