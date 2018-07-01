@@ -2546,7 +2546,7 @@ function initElement()
     {
         if("password_reset"!=g_arg)
         {
-            var data='<div class="" style="position:relative;padding:0 16px;margin:100px auto;"><div class="" style="font-size:20px;font-weight:600;font-synthesis:style;color:#1a1a1a;text-align:center;padding:10px auto;"><h1 id="errorText" style="margin:20px auto;color:red;"></h1><a id="returnLink" style="color:blue;" href="/"></a></div></div>';
+            var data='<div class="" style="position:relative;padding:0 16px;margin:100px auto;"><div class="" style="font-size:20px;font-weight:600;font-synthesis:style;color:#1a1a1a;text-align:center;padding:10px auto;"><h1 id="errorText" style="margin:20px auto;color:red;"></h1><a id="returnLink" style="color:blue;" href="/signinup/?next=/"></a></div></div>';
             $("main").empty().append(data);
             if("e_veri_code"==g_arg)
             {
@@ -2717,7 +2717,6 @@ function initElement()
             toolbar: [
             // [groupName, [list of button]]
             ['style', ['bold', 'italic', 'underline']],
-            ['font', ['strikethrough', 'superscript', 'subscript']],
             ['para', ['paragraph']],
             ['table', ['table']],
             ['link', ['link']],
@@ -2953,14 +2952,13 @@ function initCommon()
     $('#summernote_question').summernote({
         toolbar: [
         // [groupName, [list of button]]
-        ['style', ['italic']],
-        ['font', ['superscript', 'subscript']],
+        ['style', ['bold', 'italic', 'underline']],
         ['table', ['table']],
         ['link', ['link']],
         ['picture', ['picture']],
         ['video', ['video']]
         ],
-        minHeight:150,
+        minHeight:100,
         lang:'zh-CN',
         placeholder:'问题背景、条件等详细信息',
         callbacks: {
@@ -2976,8 +2974,7 @@ function initCommon()
     $('#summernote_answer').summernote({
     toolbar: [
         // [groupName, [list of button]]
-        ['style', ['bold', 'italic']],
-        ['font', ['superscript', 'subscript']],
+        ['style', ['bold', 'italic', 'underline']],
         ['para', ['paragraph']],
         ['table', ['table']],
         ['link', ['link']],

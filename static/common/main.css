@@ -990,6 +990,7 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
 #askModal .note-editor .modal-dialog{
     width:96%;
 }
+.AnswerToolbar .note-editor{margin-bottom:0;}
 
 
 
@@ -998,7 +999,10 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
 .btn-primary:disabled{background:#0f88eb;}
 .btn-primary:disabled:hover{background:#2b6a9e;border: 1px solid #2b6a9e;}
 /************for 3rd modal****************/
-
+/************for signflow****************/
+.SignFlow .SignFlow-submitButton{padding:0;}
+.SignFlow .Register-submitButton{padding:0;}
+/************for signflow****************/
 /************for green config****************/
 .btn:disabled{cursor:default;opacity:.2}
 .btn-primary{background:#228b22;border: 1px solid #228b22;}
