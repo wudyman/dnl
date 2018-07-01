@@ -2827,14 +2827,15 @@ function initElement()
             hot_active_class="is-active";
         }
         $(".Tabs.Topic-tabs").append('<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-hot"><a class="Tabs-link '+hot_active_class+'" href="/topic/'+g_topic_id+'/hot">讨论</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-wait"><a class="Tabs-link '+unanswered_active_class+'" href="/topic/'+g_topic_id+'/unanswered">等待回答</a></li>');
-        $(".TopicCard-image").empty().append('<img alt="'+g_topic_name+'" src="'+g_topic_avatar+'">');
+        //$(".TopicCard-image").empty().append('<img alt="'+g_topic_name+'" src="'+g_topic_avatar+'">');
         $(".TopicCard-titleText").text(g_topic_name);
         $(".TopicCard-description>.RichText").text(g_topic_detail);
         $(".NumberBoard-value").append(g_topic_follower_nums);
         if($.inArray(""+g_topic_id,g_user_follow_topics_list)>=0)
             $(".FollowButton.TopicCard-followButton").removeClass("Button--green").addClass("Button--grey").attr("data-topic-id",g_topic_id).attr("data-followed","true").text("已关注");
         else
-            $(".FollowButton.TopicCard-followButton").removeClass("Button--grey").addClass("Button--green").attr("data-topic-id",g_topic_id).attr("data-followed","false").text("关注栏目");   
+            $(".FollowButton.TopicCard-followButton").removeClass("Button--grey").addClass("Button--green").attr("data-topic-id",g_topic_id).attr("data-followed","false").text("关注栏目"); 
+        checkAvatar();
     }
     else if("mytopic"==g_module)
     {
@@ -2926,7 +2927,7 @@ function initElement()
     {
         if("password_reset"!=g_arg)
         {
-            var data='<div class="" style="position:relative;padding:0 16px;margin:100px auto;"><div class="" style="font-size:20px;font-weight:600;font-synthesis:style;color:#1a1a1a;text-align:center;padding:10px auto;"><h1 id="errorText" style="margin:20px auto;color:red;"></h1><a id="returnLink" style="color:blue;" href="/"></a></div></div>';
+            var data='<div class="" style="position:relative;padding:0 16px;margin:100px auto;"><div class="" style="font-size:20px;font-weight:600;font-synthesis:style;color:#1a1a1a;text-align:center;padding:10px auto;"><h1 id="errorText" style="margin:20px auto;color:red;"></h1><a id="returnLink" style="color:blue;" href="/signinup/?next=/"></a></div></div>';
             $("main").empty().append(data);
             if("e_veri_code"==g_arg)
             {
