@@ -2488,7 +2488,7 @@ function initElement()
         $(".Tabs.Topic-tabs").append('<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-hot"><a class="Tabs-link '+hot_active_class+'" href="/topic/'+g_topic_id+'/hot">讨论</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-wait"><a class="Tabs-link '+unanswered_active_class+'" href="/topic/'+g_topic_id+'/unanswered">等待回答</a></li>');
         $(".TopicCard-image").empty().append('<img alt="'+g_topic_name+'" src="'+g_topic_avatar+'">');
         $(".TopicCard-title").append(g_topic_name);
-        $(".TopicCard-description").append(g_topic_detail);
+        $(".TopicCard-description").html(g_topic_detail);
         $(".NumberBoard-value").append(g_topic_follower_nums);
         if($.inArray(""+g_topic_id,g_user_follow_topics_list)>=0)
             $(".FollowButton.TopicCard-followButton").removeClass("Button--green").addClass("Button--grey").attr("data-topic-id",g_topic_id).attr("data-followed","true").text("已关注");
@@ -2590,9 +2590,9 @@ function initElement()
     {
         $(".Profile-avatar").attr("src",g_er_avatar);
         $(".Profile-name").text(g_er_name);
-        $(".Profile-headline").text(g_er_mood);
-        $("#residence").text(g_er_residence);
-        $("#job").text(g_er_job);
+        $(".Profile-headline").html(g_er_mood);
+        $("#residence").html(g_er_residence);
+        $("#job").html(g_er_job);
         $("#followers").text(g_follower_nums);
         $("#followtos").text(g_followto_nums);
         if("f"==g_er_sexual)
@@ -2699,7 +2699,7 @@ function initElement()
         
         $(".Post-Author .AuthorInfo-avatarWrapper .UserLink-link").attr("href","/er/"+g_article_author_id).attr("data-author-id",g_article_author_id).children("img").attr("alt",g_article_author_name).attr("src",g_article_author_avatar);
         $(".Post-Author .AuthorInfo-name .UserLink-link").attr("href","/er/"+g_article_author_id).empty().text(g_article_author_name);
-        $(".Post-Author .AuthorInfo-detail .AuthorInfo-badgeText").empty().text(g_article_author_mood);
+        $(".Post-Author .AuthorInfo-detail .AuthorInfo-badgeText").html(g_article_author_mood);
         
         var pub_date_text="发布于 "+g_article_pub_date.split('.')[0];
         $(".ContentItem-time>a").attr("href","/article/"+g_article_id+"/").children("span").attr("data-tooltip",pub_date_text).text(pub_date_text);

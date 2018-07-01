@@ -2829,8 +2829,9 @@ function initElement()
         $(".Tabs.Topic-tabs").append('<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-hot"><a class="Tabs-link '+hot_active_class+'" href="/topic/'+g_topic_id+'/hot">讨论</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Topic-wait"><a class="Tabs-link '+unanswered_active_class+'" href="/topic/'+g_topic_id+'/unanswered">等待回答</a></li>');
         //$(".TopicCard-image").empty().append('<img alt="'+g_topic_name+'" src="'+g_topic_avatar+'">');
         $(".TopicCard-titleText").text(g_topic_name);
-        $(".TopicCard-description>.RichText").text(g_topic_detail);
-        $(".NumberBoard-value").append(g_topic_follower_nums);
+        console.log(g_topic_detail);
+        $(".TopicCard-description>.RichText").html(g_topic_detail);
+        $(".NumberBoard-value").empty().append(g_topic_follower_nums);
         if($.inArray(""+g_topic_id,g_user_follow_topics_list)>=0)
             $(".FollowButton.TopicCard-followButton").removeClass("Button--green").addClass("Button--grey").attr("data-topic-id",g_topic_id).attr("data-followed","true").text("已关注");
         else
@@ -2867,7 +2868,7 @@ function initElement()
         $(".Card-section.Topic--current .TopicLink-link").attr("href","/topic/"+g_topic_id+"/");
         $(".Card-section.Topic--current img").attr("src",g_topic_avatar).attr("alt",g_topic_name);
         $(".Card-section.Topic--current .RichText").empty().text(g_topic_name);
-        $(".Card-section.Topic--current .ContentItem-statusItem").empty().text(g_topic_detail);
+        $(".Card-section.Topic--current .ContentItem-statusItem").html(g_topic_detail);
         $('#appendArea').empty();
                 
         
@@ -2972,7 +2973,7 @@ function initElement()
         $("#MenuPopover").attr({"src":g_user_avatar,"srcset":g_user_avatar,"data-er-id":g_user_id});
         $(".ProfileHeader-name").text(g_er_name);
         $("#id_avatar").attr({"src":g_er_avatar,"srcset":g_er_avatar});
-        $(".ProfileHeader-headline").text(g_er_mood);
+        $(".ProfileHeader-headline").html(g_er_mood);
         
         var job_element='<div class="ProfileHeader-infoItem"><div class="ProfileHeader-iconWrapper"><svg viewBox="0 0 20 18" class="Icon Icon--company" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></div>'+g_er_job+'</div>'
         
@@ -3104,7 +3105,7 @@ function initElement()
         
         $(".Post-Author .AuthorInfo-avatarWrapper .UserLink-link").attr("href","/er/"+g_article_author_id).children("img").attr("alt",g_article_author_name).attr("src",g_article_author_avatar);
         $(".Post-Author .AuthorInfo-name .UserLink-link").attr("href","/er/"+g_article_author_id).empty().text(g_article_author_name);
-        $(".Post-Author .AuthorInfo-detail .AuthorInfo-badgeText").empty().text(g_article_author_mood);
+        $(".Post-Author .AuthorInfo-detail .AuthorInfo-badgeText").html(g_article_author_mood);
         
         var pub_date_text="发布于 "+g_article_pub_date.split('.')[0];
         $(".ContentItem-time>a").attr("href","/article/"+g_article_id+"/").children("span").attr("data-tooltip",pub_date_text).text(pub_date_text);
@@ -3498,7 +3499,7 @@ function hashChange()
         $(".Card-section.Topic--current .TopicLink-link").attr("href","/topic/"+g_topic_id+"/");
         $(".Card-section.Topic--current img").attr("src",g_topic_avatar).attr("alt",g_topic_name);
         $(".Card-section.Topic--current .RichText").empty().text(g_topic_name);
-        $(".Card-section.Topic--current .ContentItem-statusItem").empty().text(g_topic_detail);
+        $(".Card-section.Topic--current .ContentItem-statusItem").html(g_topic_detail);
         $('#appendArea').empty();
         getMoreData();      
 }
