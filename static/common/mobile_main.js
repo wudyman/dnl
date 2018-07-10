@@ -1269,8 +1269,8 @@ function checkSignAndMiscPage()
             $(this).text("登录");
             $("#registerLoginText").text("已有帐号？");
             swith_element.attr("data-action","register");
-            $(".SignFlowHeader-title").text("注册大农令");
-            $(".SignFlowHeader-slogen").text("注册大农令，发现更大的世界");
+            $(".SignFlowHeader-title").text("注册"+SITE);
+            $(".SignFlowHeader-subTitle").text(SITE_SLOGAN);
             $("#register").removeClass("is-hide");
             $("#login").addClass("is-hide");
         }
@@ -1279,8 +1279,8 @@ function checkSignAndMiscPage()
             $(this).text("注册");
             $("#registerLoginText").text("没有帐号？");
             swith_element.attr("data-action","login");
-            $(".SignFlowHeader-title").text("登录大农令");
-            $(".SignFlowHeader-slogen").text("登录大农令，发现更大的世界");
+            $(".SignFlowHeader-title").text("登录"+SITE);
+            $(".SignFlowHeader-subTitle").text(SITE_SLOGAN);
             $("#register").addClass("is-hide");
             $("#login").removeClass("is-hide");
         }
@@ -2426,6 +2426,7 @@ function initElement()
     { 
         appendLetterModal();
     }
+    $('title').text(SITE+" - "+SITE_SLOGAN);
     if("question"==g_module)
     {
         
@@ -2474,6 +2475,7 @@ function initElement()
     }
     else if("topic"==g_module)
     {
+        $('title').text(g_topic_name+" - "+SITE);
         var hot_active_class="";
         var unanswered_active_class="";
         if("hot"==g_type)
@@ -2497,11 +2499,13 @@ function initElement()
     }
     else if("mytopic"==g_module)
     {
+        $('title').text("我关注的栏目"+" - "+SITE);
         if("true"==g_logged)
             $("#myfollow").attr("href","/er/"+g_user_id+"/following/topics/");
     }
     else if("search"==g_module)
     {
+        $('title').text("搜索"+" - "+SITE);
         if(""==g_search_type)
         {
             g_search_type="question";
@@ -2515,6 +2519,7 @@ function initElement()
     }
     else if("setting"==g_module)
     {
+        $('title').text("设置"+" - "+SITE);
         $(".Tabs-link").removeClass("is-active");
         $(".Tabs-link").each(function(){
             if($(this).attr("href"))
@@ -2532,6 +2537,9 @@ function initElement()
     }
     else if("sign"==g_module)
     {
+        $('title').text(SITE+" - "+SITE_SLOGAN);
+        $(".SignFlowHeader-title").text("登录"+SITE);
+        $(".SignFlowHeader-subTitle").text(SITE_SLOGAN);
         checkSmsSend();
         checkSignAndMiscPage();
         var secs=getCookie("countdown");
@@ -2588,6 +2596,7 @@ function initElement()
     }
     else if("home"==g_module)
     {
+        $('title').text(g_er_name+"的主页"+" - "+SITE);
         $(".Profile-avatar").attr("src",g_er_avatar);
         $(".Profile-name").text(g_er_name);
         $(".Profile-headline").html(g_er_mood);
@@ -2663,6 +2672,7 @@ function initElement()
     }
     else if("answer_page"==g_module)
     {
+        $('title').text("回答"+" - "+SITE);
         $(".ContentLayout-mainColumn .Tabs-item").each(function(){
             if(g_type==$(this).attr("data-type"))
                 $(this).children(".Tabs-link").addClass("is-active");
@@ -2677,6 +2687,7 @@ function initElement()
     }
     else if("article"==g_module)
     {
+        $('title').text(g_article_title+" - "+SITE);
         $(".Post-Title").empty().append(g_article_title);
         var article_content=$("main").attr("data-article-content");
         $(".Post-RichText").empty().append(addClassImg(article_content,'class="origin_image zh-lightbox-thumb lazy"'));
@@ -2713,6 +2724,7 @@ function initElement()
     }
     else if("write"==g_module)
     {
+        $('title').text("写文章"+" - "+SITE);
         $('#summernote_write').summernote({
             toolbar: [
             // [groupName, [list of button]]
@@ -3048,6 +3060,7 @@ if (getScrollTop() + getClientHeight() +10 >= getScrollHeight()) {
     } 
 }
 SITE="大农令";
+SITE_SLOGAN="关注新农业,新农村,新农民";
 STEP=10;
 g_lock_ajax="false";
 g_init_done="false";
