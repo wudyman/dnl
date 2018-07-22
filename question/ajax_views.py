@@ -705,7 +705,38 @@ def user_data(request,userid):
             user.userprofile.follower_nums,user.userprofile.followtopic_nums,user.userprofile.followquestion_nums]
             to_json=json.dumps(user_profile)       
     return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt   
+def app_signin(request):
+    print(request.session.session_key)
+    user=request.user
+    if user.is_authenticated:
+        print('use have login')
+    to_json=json.dumps('fail')
+    phoneNo=request.POST.get('phoneNo')
+    password=request.POST.get('password')
+    if phoneNo and password:
+        print(phoneNo)
+        print(password)
+        user=authenticate(username=phoneNo,password=password)
+        if user is not None:
+            ret=login(request,user)
+            #print(dir(request.session))
+            #print(request.session.keys())
+            print(request.session.session_key)
+            to_json=json.dumps('success')
+    return HttpResponse(to_json,content_type='application/json')
  
+@csrf_exempt   
+def app_signup(request):
+    to_json=json.dumps('fail')
+    phoneNo=request.POST.get('phoneNo')
+    password=request.POST.get('password')
+    if phoneNo and password:
+        print(phoneNo)
+        print(password)
+        to_json=json.dumps('success')
+    return HttpResponse(to_json,content_type='application/json')
 
 STEP=10
 LIST_NUM=10 
