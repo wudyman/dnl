@@ -731,11 +731,23 @@ def app_signin(request):
 def app_signup(request):
     to_json=json.dumps('fail')
     phoneNo=request.POST.get('phoneNo')
+    smsCode=request.POST.get('smsCode')
+    nickName=request.POST.get('nickName')
     password=request.POST.get('password')
-    if phoneNo and password:
+    if phoneNo and smsCode and nickName and password:
         print(phoneNo)
+        print(smsCode)
+        print(nickName)
         print(password)
         to_json=json.dumps('success')
+    return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt   
+def app_logout(request):
+    to_json=json.dumps('fail')
+    logout(request)
+    print('log out success')
+    to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
 
 STEP=10

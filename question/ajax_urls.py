@@ -33,4 +33,5 @@ urlpatterns= [
     url(r'^user_data/(?P<userid>[0-9]+)/$',views.user_data,name='user_data'),
     url(r'^app_signin/$',views.app_signin,name='app_signin'),
     url(r'^app_signup/$',views.app_signup,name='app_signup'),
+    url(r'^app_logout/$',views.app_logout,name='app_logout'),
 ]

@@ -2422,6 +2422,10 @@ function initElement()
 {
     if("false"==g_init_data_done)
         return;
+    setTimeout(function(){
+    if(typeof(g_is_app) == "undefined" ? true : false)
+        $(".Mobile-header").removeClass("is-hide");
+    },100);
     if("true"==g_logged)
     { 
         appendLetterModal();
@@ -3020,6 +3024,7 @@ function slog(arg)
 
 $(document).ready(function(){
     console.log("init");
+    //g_is_app="true";
     initCommon();
     init();
 });
@@ -3061,6 +3066,7 @@ if (getScrollTop() + getClientHeight() +10 >= getScrollHeight()) {
 }
 SITE="大农令";
 SITE_SLOGAN="关注新农业,新农村,新农民";
+//g_is_app="false";
 STEP=10;
 g_lock_ajax="false";
 g_init_done="false";
