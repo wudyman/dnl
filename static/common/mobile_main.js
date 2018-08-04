@@ -451,18 +451,19 @@ function appendAnswerElementList(ret,type,direction)
                 var answer_content=ret[i][6];
                 var like_nums=ret[i][7];
                 var comment_nums=ret[i][8];
-                var author_id=ret[i][9];
-                var author_name=ret[i][10];
-                var author_avatar=ret[i][11];
-                var author_mood=ret[i][12];
-                var author_sexual=ret[i][13];
-                var author_question_nums=ret[i][14];
-                var author_article_nums=ret[i][15];
-                var author_answer_nums=ret[i][16];
-                var author_followto_nums=ret[i][17];
-                var author_follower_nums=ret[i][18];
-                var author_followtopic_nums=ret[i][19];
-                var author_followquestion_nums=ret[i][20];                              
+                var pub_date=ret[i][9];
+                var author_id=ret[i][10];
+                var author_name=ret[i][11];
+                var author_avatar=ret[i][12];
+                var author_mood=ret[i][13];
+                var author_sexual=ret[i][14];
+                var author_question_nums=ret[i][15];
+                var author_article_nums=ret[i][16];
+                var author_answer_nums=ret[i][17];
+                var author_followto_nums=ret[i][18];
+                var author_follower_nums=ret[i][19];
+                var author_followtopic_nums=ret[i][21];
+                var author_followquestion_nums=ret[i][21];                              
             }
             else if("homepage"==type)
             {
@@ -538,18 +539,19 @@ function appendAnswerElementCard(ret,type,direction)
         var content=ret[i][6];
         var like_nums=ret[i][7];
         var comment_nums=ret[i][8];
-        var author_id=ret[i][9];
-        var author_name=ret[i][10];
-        var author_avatar=ret[i][11];
-        var author_mood=ret[i][12];
-        var author_sexual=ret[i][13];
-        var author_question_nums=ret[i][14];
-        var author_article_nums=ret[i][15];
-        var author_answer_nums=ret[i][16];
-        var author_followto_nums=ret[i][17];
-        var author_follower_nums=ret[i][18];
-        var author_followtopic_nums=ret[i][19];
-        var author_followquestion_nums=ret[i][20];
+        var pub_date=ret[i][9];
+        var author_id=ret[i][10];
+        var author_name=ret[i][11];
+        var author_avatar=ret[i][12];
+        var author_mood=ret[i][13];
+        var author_sexual=ret[i][14];
+        var author_question_nums=ret[i][15];
+        var author_article_nums=ret[i][16];
+        var author_answer_nums=ret[i][17];
+        var author_followto_nums=ret[i][18];
+        var author_follower_nums=ret[i][19];
+        var author_followtopic_nums=ret[i][20];
+        var author_followquestion_nums=ret[i][21];
         
         var topics_data='';
         for(i in topics)
@@ -2620,7 +2622,7 @@ function initElement()
             var who_han="他";
             g_er_sexual_han="男";
         }
-        if(g_user_id==g_er_id)
+        if(("true"==g_logged)&&(g_er_id==g_user_id))
         {
             var who="me";
             var who_han="我";

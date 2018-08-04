@@ -100,7 +100,7 @@
 <span class="UserLink AuthorInfo-name">
 <a class="UserLink-link" target="_blank" href="/er/{{push_answer.author__id}}">{{push_answer.author__first_name}}</a></span></div>
 <div class="AuthorInfo-detail"><div class="AuthorInfo-badge">
-<div class="RichText AuthorInfo-badgeText">{{push_answer.author__userprofile__mood}}</div></div></div></div></div>
+<div class="RichText AuthorInfo-badgeText">{{push_answer.author__userprofile__mood|safe}}</div></div></div></div></div>
 </div>
 <div class="RichContent RichContent--unescapable RichContent--withMask">
 <div class="RichContent-expand">
@@ -138,7 +138,7 @@
 </span>
 <div class="AuthorInfo-content">
 <div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" target="_blank" href="/er/{{answer.author__id}}/">{{answer.author__first_name}}</a></span></div>
-<div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">{{answer.author__userprofile__mood}}</div></div></div>
+<div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">{{answer.author__userprofile__mood|safe}}</div></div></div>
 </div>
 </div>
 </div>

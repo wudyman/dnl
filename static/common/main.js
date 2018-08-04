@@ -537,18 +537,19 @@ function appendAnswerElementList(ret,type,direction)
                 var answer_content=ret[i][6];
                 var like_nums=ret[i][7];
                 var comment_nums=ret[i][8];
-                var author_id=ret[i][9];
-                var author_name=ret[i][10];
-                var author_avatar=ret[i][11];
-                var author_mood=ret[i][12];
-                var author_sexual=ret[i][13];
-                var author_question_nums=ret[i][14];
-                var author_article_nums=ret[i][15];
-                var author_answer_nums=ret[i][16];
-                var author_followto_nums=ret[i][17];
-                var author_follower_nums=ret[i][18];
-                var author_followtopic_nums=ret[i][19];
-                var author_followquestion_nums=ret[i][20];                              
+                var pub_date=ret[i][9];
+                var author_id=ret[i][10];
+                var author_name=ret[i][11];
+                var author_avatar=ret[i][12];
+                var author_mood=ret[i][13];
+                var author_sexual=ret[i][14];
+                var author_question_nums=ret[i][15];
+                var author_article_nums=ret[i][16];
+                var author_answer_nums=ret[i][17];
+                var author_followto_nums=ret[i][18];
+                var author_follower_nums=ret[i][19];
+                var author_followtopic_nums=ret[i][20];
+                var author_followquestion_nums=ret[i][21];                              
             }
             else if("homepage"==type)
             {
@@ -625,18 +626,19 @@ function appendAnswerElementCard(ret,type,direction)
         var content=ret[i][6];
         var like_nums=ret[i][7];
         var comment_nums=ret[i][8];
-        var author_id=ret[i][9];
-        var author_name=ret[i][10];
-        var author_avatar=ret[i][11];
-        var author_mood=ret[i][12];
-        var author_sexual=ret[i][13];
-        var author_question_nums=ret[i][14];
-        var author_article_nums=ret[i][15];
-        var author_answer_nums=ret[i][16];
-        var author_followto_nums=ret[i][17];
-        var author_follower_nums=ret[i][18];
-        var author_followtopic_nums=ret[i][19];
-        var author_followquestion_nums=ret[i][20];
+        var pub_date=ret[i][9];
+        var author_id=ret[i][10];
+        var author_name=ret[i][11];
+        var author_avatar=ret[i][12];
+        var author_mood=ret[i][13];
+        var author_sexual=ret[i][14];
+        var author_question_nums=ret[i][15];
+        var author_article_nums=ret[i][16];
+        var author_answer_nums=ret[i][17];
+        var author_followto_nums=ret[i][18];
+        var author_follower_nums=ret[i][19];
+        var author_followtopic_nums=ret[i][20];
+        var author_followquestion_nums=ret[i][21];
         
         var topics_data='';
         for(i in topics)
@@ -2979,7 +2981,6 @@ function initElement()
     else if("home"==g_module)
     {
         $('title').text(g_er_name+"的主页"+" - "+SITE);
-        $("#MenuPopover").attr({"src":g_user_avatar,"srcset":g_user_avatar,"data-er-id":g_user_id});
         $(".ProfileHeader-name").text(g_er_name);
         $("#id_avatar").attr({"src":g_er_avatar,"srcset":g_er_avatar});
         $(".ProfileHeader-headline").html(g_er_mood);
@@ -3004,8 +3005,9 @@ function initElement()
         }
         g_contentbody_data='<div class="ProfileHeader-info">'+job_element+sexual_icon+'</div>';
         $(".ProfileHeader-contentBody").empty().append(g_contentbody_data);
-        var detail_icon_svg='<svg viewBox="0 0 10 6" class="Icon ProfileHeader-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';
-        if(g_er_id==g_user_id)
+        var detail_icon_svg='<svg viewBox="0 0 10 6" class="Icon ProfileHeader-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';       
+        
+        if(("true"==g_logged)&&(g_er_id==g_user_id))
         {
             g_who="me";
             g_who_han="我";
