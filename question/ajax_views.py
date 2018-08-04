@@ -493,19 +493,19 @@ def search(request,type,order,start,end):
 @csrf_exempt
 def answer_page(request,type,order,start,end):
     to_json=json.dumps('fail')
-    user=request.user
-    if user.is_authenticated:
-        if type=='recommend':
-            questions=Question.objects.filter(answer_nums__lte=0)[int(start):int(end)].values_list("id","title","answer_nums","follower_nums","pub_date")
-            if questions:
-                questions_list=list(questions)
-                to_json=json.dumps(questions_list,cls=CJsonEncoder)
-        elif type=='all':
-            questions=Question.objects.filter(answer_nums__lte=0)[int(start):int(end)].values_list("id","title","answer_nums","follower_nums","pub_date")
-            if questions:
-                questions_list=list(questions)
-                to_json=json.dumps(questions_list,cls=CJsonEncoder)
-        elif type=='invited':
+    if type=='recommend':
+        questions=Question.objects.filter(answer_nums__lte=0)[int(start):int(end)].values_list("id","title","answer_nums","follower_nums","pub_date")
+        if questions:
+            questions_list=list(questions)
+            to_json=json.dumps(questions_list,cls=CJsonEncoder)
+    elif type=='all':
+        questions=Question.objects.filter(answer_nums__lte=0)[int(start):int(end)].values_list("id","title","answer_nums","follower_nums","pub_date")
+        if questions:
+            questions_list=list(questions)
+            to_json=json.dumps(questions_list,cls=CJsonEncoder)
+    elif type=='invited':
+        user=request.user
+        if user.is_authenticated:
             notifications=user.receives.filter(type='invite').order_by('-pub_date')[int(start):int(end)].values_list("id","type","pub_date","sender__id","sender__first_name","target__id","target__title","target__answer_nums","target__follower_nums","status")           
             if notifications:
                 notification_list=list(notifications)
@@ -768,7 +768,7 @@ def get_topic_questions(request,topic_id,order,start,end):
         if articles_list:
             ret+=articles_list
         if ret:
-            to_json=json.dumps(ret)
+            to_json=json.dumps(ret,cls=CJsonEncoder)
     elif 'unanswered'==type:
         questions=Question.objects.filter(topics__id=topic_id,answer_nums__lte=0)[int(start):int(end)].values("id","title","answer_nums","follower_nums","pub_date")
         if questions:
@@ -807,7 +807,7 @@ def get_questions(request,order,start,end):
     if articles_list:
         ret+=articles_list
     if ret:
-        to_json=json.dumps(ret)
+        to_json=json.dumps(ret,cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
 
 def get_questions_inner(topic_id,type,start,end):
@@ -857,7 +857,7 @@ def get_questions_inner(topic_id,type,start,end):
         
         push_answers=Answer.objects.filter(id__in=push_answers_id_list).extra(
         select={'manual': 'FIELD(question_answer.id,%s)' % ','.join(map(str, push_answers_id_list))},order_by=['manual']).values_list(
-        "id","push_index","content","like_nums","comment_nums",
+        "id","push_index","content","like_nums","comment_nums","pub_date",
         "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
         "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
         #answer_list=list(push_answers)
@@ -914,7 +914,7 @@ def get_articles_inner(topic_id,type,start,end):
         
         articles_ext=Article.objects.filter(id__in=article_id_list).extra(
         select={'manual': 'FIELD(question_article.id,%s)' % ','.join(map(str, article_id_list))},order_by=['manual']).values_list(
-        "click_nums","push_index","content","like_nums","comment_nums",
+        "click_nums","push_index","content","like_nums","comment_nums","pub_date",
         "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
         "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
         for i,article_ext in enumerate(articles_ext):
