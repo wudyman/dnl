@@ -2836,8 +2836,9 @@ function initElement()
         console.log(g_topic_detail);
         $(".TopicCard-description>.RichText").html(g_topic_detail);
         $(".NumberBoard-value").empty().append(g_topic_follower_nums);
+
         if($.inArray(""+g_topic_id,g_user_follow_topics_list)>=0)
-            $(".FollowButton.TopicCard-followButton").removeClass("Button--green").addClass("Button--grey").attr("data-topic-id",g_topic_id).attr("data-followed","true").text("已关注");
+            $(".FollowButton.TopicActions-followButton").removeClass("Button--green").addClass("Button--grey").attr("data-topic-id",g_topic_id).attr("data-followed","true").text("已关注");
         else
             $(".FollowButton.TopicCard-followButton").removeClass("Button--grey").addClass("Button--green").attr("data-topic-id",g_topic_id).attr("data-followed","false").text("关注栏目"); 
         checkAvatar();

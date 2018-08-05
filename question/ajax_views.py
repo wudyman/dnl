@@ -706,6 +706,23 @@ def user_data(request,userid):
             to_json=json.dumps(user_profile)       
     return HttpResponse(to_json,content_type='application/json')
     
+@csrf_exempt
+def app_user_data(request):
+    to_json=json.dumps('fail')
+    user=request.user
+    if user.is_authenticated:
+        ret_list=[]
+
+        follow_topics=user.followtopics.values_list("id","name","avatar")
+        user_profile=[user.id,user.first_name,user.userprofile.avatar,user.userprofile.mood]
+
+        ret_list.append(user_profile)
+        ret_list.append(list(follow_topics))
+        to_json=json.dumps(ret_list)
+    else:
+        to_json=json.dumps('nologin')
+    return HttpResponse(to_json,content_type='application/json')
+    
 @csrf_exempt   
 def app_signin(request):
     print(request.session.session_key)
