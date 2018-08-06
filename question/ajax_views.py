@@ -572,7 +572,7 @@ def send_sms(request):
             status_code=eval(str(smsResponse,encoding = "utf8"))['Code']
             if 'OK'==status_code:
                 request.session[phone_no]=verification_code
-                to_json=json.dumps(verification_code)
+                to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
