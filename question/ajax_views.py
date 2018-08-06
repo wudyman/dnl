@@ -556,7 +556,7 @@ def send_sms(request):
             status_code=eval(str(smsResponse,encoding = "utf8"))['Code']
             if 'OK'==status_code:
                 request.session[phone_no]=verification_code
-                to_json=json.dumps(verification_code)
+                to_json=json.dumps('success')
     elif type=='password_reset':
         print('aaa')
         if not User.objects.filter(username=phone_no):
