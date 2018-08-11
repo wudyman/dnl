@@ -1526,7 +1526,7 @@ function checkHomePage()
         }
         else
         {
-            var data='<div class="Card"><div class="ProfileHeader-expandActions ProfileEdit-expandActions"><button class="1Button 1Button--primary Button--green ReturnHomePage" style="margin:3px" type="button">返回我的主页</button></div><div class="Profile-intro"><img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt=""><input id="id_avatar_input" name="file" type="file" accept="image/*" capture="camera" multiple="multiple" style="display: none;"/><div class="MaskAvatar"><div class="MaskAvatar-black"></div><div class="MaskAvatar-content"><svg class="Zi Zi--Camera MaskAvatar-cameraIcon" fill="currentColor" viewBox="0 0 24 24" width="36" height="36"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill-rule="evenodd"></path></svg><div class="UserAvatarEditor-maskInnerText">点击修改头像</div></div></div></div><div class="Profile-data"><div class="Profile-datalist"><div class="Field List-item"><h6>昵称</h6><div class="Field-content" data-field-type="nickname"><div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>性别</h6><div class="Field-content" data-field-type="sexual"><div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content" data-field-type="mood"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>居住地</h6><div class="Field-content" data-field-type="residence"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>所在行业</h6><div class="Field-content" data-field-type="job"><div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>个人简介</h6><div class="Field-content" data-field-type="intro"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div></div></div></div>';
+            var data='<div class="Card"><div class="ProfileHeader-expandActions ProfileEdit-expandActions"><button class="1Button 1Button--primary Button--green ReturnHomePage" style="margin:3px" type="button">返回我的主页</button></div><div class="Profile-intro"><img id="id_avatar" class="Profile-avatar Modify-avatar" src="'+g_er_avatar+'"alt=""><input id="id_avatar_input" name="file" type="file" accept="image/*" 1capture="camera" 1multiple="multiple" style="display: none;"/><div class="MaskAvatar"><div class="MaskAvatar-black"></div><div class="MaskAvatar-content"><svg class="Zi Zi--Camera MaskAvatar-cameraIcon" fill="currentColor" viewBox="0 0 24 24" width="36" height="36"><path d="M20.094 6S22 6 22 8v10.017S22 20 19 20H4.036S2 20 2 18V7.967S2 6 4 6h3s1-2 2-2h6c1 0 2 2 2 2h3.094zM12 16a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7zm0 1.5a5 5 0 1 0-.001-10.001A5 5 0 0 0 12 17.5zm7.5-8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill-rule="evenodd"></path></svg><div class="UserAvatarEditor-maskInnerText">点击修改头像</div></div></div></div><div class="Profile-data"><div class="Profile-datalist"><div class="Field List-item"><h6>昵称</h6><div class="Field-content" data-field-type="nickname"><div><span class="Field-text"><span class="RichText">'+g_er_name+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>性别</h6><div class="Field-content" data-field-type="sexual"><div><span class="Field-text">'+g_er_sexual_han+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>一句话介绍</h6><div class="Field-content" data-field-type="mood"><div><span class="Field-text"><span class="RichText">'+g_er_mood+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>居住地</h6><div class="Field-content" data-field-type="residence"><div><span class="Field-text"><span class="RichText">'+g_er_residence+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>所在行业</h6><div class="Field-content" data-field-type="job"><div><span class="Field-text">'+g_er_job+'</span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div><div class="Field List-item"><h6>个人简介</h6><div class="Field-content" data-field-type="intro"><div class="DescriptionField-content"><span class="Field-text"><span class="RichText">'+g_er_intro+'</span></span><button class="Button ModifyButton Button--link" type="button">'+modify_icon_svg+'修改</button></div></div></div></div></div></div>';
             
             $("main").empty().append(data);
             checkReturnHomePage();
@@ -2749,6 +2749,16 @@ function initElement()
             callbacks: {
                 onImageUpload: function(files){
                     scaleAndUploadImage("forWrite",files[0],720);
+                },
+                onInit:function(){              
+                    $("#summernote_write + .note-editor .note-btn-group.btn-group.note-picture").empty().html('<input id="summernote_write_picture" name="file" type="file" accept="image/*" style="display: none;"/><div class="note-btn btn btn-default btn-sm"><i class="note-icon-picture"></i></div>');
+                    $("#summernote_write + .note-editor .note-btn-group.btn-group.note-picture .note-btn").click(function(){
+                        $("#summernote_write_picture").click();
+                    });
+                    $("#summernote_write_picture").on("change",function(){
+                        var file = $('#summernote_write_picture')[0].files[0];
+                        scaleAndUploadImage("forWrite",file,720);
+                    });
                 }
             }
         });
@@ -2985,6 +2995,15 @@ function initCommon()
             },
             onInit:function(){
                 $(".note-statusbar").addClass("is-hide");
+                
+                $("#summernote_question + .note-editor .note-btn-group.btn-group.note-picture").empty().html('<input id="summernote_question_picture" name="file" type="file" accept="image/*" style="display: none;"/><div class="note-btn btn btn-default btn-sm"><i class="note-icon-picture"></i></div>');
+                $("#summernote_question + .note-editor .note-btn-group.btn-group.note-picture .note-btn").click(function(){
+                    $("#summernote_question_picture").click();
+                });
+                $("#summernote_question_picture").on("change",function(){
+                    var file = $('#summernote_question_picture')[0].files[0];
+                    scaleAndUploadImage("forQuestion",file,720);
+                });
             }
         }
     });
@@ -3008,6 +3027,15 @@ function initCommon()
             },
             onInit:function(){
                 $(".note-statusbar").addClass("is-hide");
+                
+                $("#summernote_answer + .note-editor .note-btn-group.btn-group.note-picture").empty().html('<input id="summernote_answer_picture" name="file" type="file" accept="image/*" style="display: none;"/><div class="note-btn btn btn-default btn-sm"><i class="note-icon-picture"></i></div>');
+                $("#summernote_answer + .note-editor .note-btn-group.btn-group.note-picture .note-btn").click(function(){
+                    $("#summernote_answer_picture").click();
+                });
+                $("#summernote_answer_picture").on("change",function(){
+                    var file = $('#summernote_answer_picture')[0].files[0];
+                    scaleAndUploadImage("forAnswer",file,720);
+                });
             }
         }
     });
