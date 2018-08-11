@@ -1081,6 +1081,59 @@ function checkContentExpand(){
     });
 }
 
+function checkQuestionDetailCollapse(){
+    $(".QuestionHeader-detail-less").off("click");
+    $(".QuestionHeader-detail-less").each(function(){
+        $(this).click(function(){
+            $(this).addClass("is-hide");
+            $(this).parents(".RichContent").find(".QuestionHeader-detail-more").removeClass("is-hide");
+            $(this).parents(".RichContent").addClass("is-collapsed");
+            $(this).parents(".RichContent").find(".RichContent-inner").css("max-height","200px");
+            
+            if($(this).parents(".ScrollIntoMark").length>0)
+            {
+                var id=$(this).parents(".ScrollIntoMark").attr("id");
+                document.getElementById(id).scrollIntoView();
+                $(this).parents(".ScrollIntoMark").removeAttr("id");
+            }
+        });
+    });
+}
+
+function checkQuestionDetailExpand(){
+    $(".QuestionHeader-detail-expand").off("click");
+    $(".QuestionHeader-detail-expand").each(function(){
+        console.log($(this).height());
+        if($(this).height()>=200)
+        {
+            $(this).find(".QuestionHeader-detail-more").removeClass("is-hide");
+            $(this).parents(".RichContent").addClass("is-collapsed");
+        }
+        else
+        {
+            $(this).find(".QuestionHeader-detail-more").addClass("is-hide");
+            $(this).parents(".RichContent").find(".QuestionHeader-detail-less").addClass("is-hide");
+        }
+        if($(this).parents(".ScrollIntoMark").length>0)
+        {
+            var randomId=""+Math.random();
+            $(this).parents(".ScrollIntoMark").attr("id",randomId);
+        }
+        $(this).click(function(){
+            $(this).children(".QuestionHeader-detail-more").addClass("is-hide");
+            $(this).parents(".RichContent").find(".QuestionHeader-detail-less").removeClass("is-hide");
+            $(this).parent().removeClass("is-collapsed");
+            $(this).children(".RichContent-inner").css("max-height","");
+            
+            if($(this).parents(".ScrollIntoMark").length>0)
+            {
+                var randomId=""+Math.random();
+                $(this).parents(".ScrollIntoMark").attr("id",randomId);
+            }
+        });
+    });
+}
+
 function checkSearchSelect()
 {
     $(".Menu-item").off("mouseenter mouseleave");
@@ -2420,6 +2473,7 @@ function show_conversion_messages(conversation_id,er_id,er_name)
         g_lock_ajax="false";
     });
 }
+
 function initElement()
 {
     if("false"==g_init_data_done)
@@ -2432,11 +2486,11 @@ function initElement()
     { 
         appendLetterModal();
     }
-    $('title').text(SITE+" - "+SITE_SLOGAN);
+    $('head title').text(SITE+" - "+SITE_SLOGAN);
     if("question"==g_module)
     {
         
-        $('title').text(g_question_title+" - "+SITE);
+        $('head title').text(g_question_title+" - "+SITE);
         $(".QuestionHeader-title").empty().append('<a href="/question/'+g_question_id+'">'+g_question_title+'</a>');
         if($.inArray(""+g_question_id,g_user_follow_questions_list)>=0)
         {
@@ -2477,11 +2531,13 @@ function initElement()
             follow_botton.removeClass("Button--grey").addClass("Button--green").attr("data-followed","false").attr("data-who",who).text("关注"+who_han);
         }
         setLetterReceiver(author_id,author_name);
+        checkQuestionDetailExpand();
+        checkQuestionDetailCollapse();
         
     }
     else if("topic"==g_module)
     {
-        $('title').text(g_topic_name+" - "+SITE);
+        $('head title').text(g_topic_name+" - "+SITE);
         var hot_active_class="";
         var unanswered_active_class="";
         if("hot"==g_type)
@@ -2505,13 +2561,13 @@ function initElement()
     }
     else if("mytopic"==g_module)
     {
-        $('title').text("我关注的栏目"+" - "+SITE);
+        $('head title').text("我关注的栏目"+" - "+SITE);
         if("true"==g_logged)
             $("#myfollow").attr("href","/er/"+g_user_id+"/following/topics/");
     }
     else if("search"==g_module)
     {
-        $('title').text("搜索"+" - "+SITE);
+        $('head title').text("搜索"+" - "+SITE);
         if(""==g_search_type)
         {
             g_search_type="question";
@@ -2525,7 +2581,7 @@ function initElement()
     }
     else if("setting"==g_module)
     {
-        $('title').text("设置"+" - "+SITE);
+        $('head title').text("设置"+" - "+SITE);
         $(".Tabs-link").removeClass("is-active");
         $(".Tabs-link").each(function(){
             if($(this).attr("href"))
@@ -2543,7 +2599,7 @@ function initElement()
     }
     else if("sign"==g_module)
     {
-        $('title').text(SITE+" - "+SITE_SLOGAN);
+        $('head title').text(SITE+" - "+SITE_SLOGAN);
         $(".SignFlowHeader-title").text("登录"+SITE);
         $(".SignFlowHeader-subTitle").text(SITE_SLOGAN);
         checkSmsSend();
@@ -2602,7 +2658,7 @@ function initElement()
     }
     else if("home"==g_module)
     {
-        $('title').text(g_er_name+"的主页"+" - "+SITE);
+        $('head title').text(g_er_name+"的主页"+" - "+SITE);
         $(".Profile-avatar").attr("src",g_er_avatar);
         $(".Profile-name").text(g_er_name);
         $(".Profile-headline").html(g_er_mood);
@@ -2678,7 +2734,7 @@ function initElement()
     }
     else if("answer_page"==g_module)
     {
-        $('title').text("回答"+" - "+SITE);
+        $('head title').text("回答"+" - "+SITE);
         $(".ContentLayout-mainColumn .Tabs-item").each(function(){
             if(g_type==$(this).attr("data-type"))
                 $(this).children(".Tabs-link").addClass("is-active");
@@ -2693,7 +2749,7 @@ function initElement()
     }
     else if("article"==g_module)
     {
-        $('title').text(g_article_title+" - "+SITE);
+        $('head title').text(g_article_title+" - "+SITE);
         $(".Post-Title").empty().append(g_article_title);
         var article_content=$("main").attr("data-article-content");
         $(".Post-RichText").empty().append(addClassImg(article_content,'class="origin_image zh-lightbox-thumb lazy"'));
@@ -2730,7 +2786,7 @@ function initElement()
     }
     else if("write"==g_module)
     {
-        $('title').text("写文章"+" - "+SITE);
+        $('head title').text("写文章"+" - "+SITE);
         $('#summernote_write').summernote({
             toolbar: [
             // [groupName, [list of button]]

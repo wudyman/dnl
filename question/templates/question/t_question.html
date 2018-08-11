@@ -15,7 +15,7 @@
     <div>
         <div class="QuestionStatus"></div>
         
-        <div class="QuestionHeader">
+        <div class="QuestionHeader ScrollIntoMark">
         <div class="QuestionHeader-content">
         <div class="QuestionHeader-main">
         
@@ -34,7 +34,16 @@
         </div>
         
         <h1 class="QuestionHeader-title"></h1>
-        <div class="QuestionHeader-detail"><div class="QuestionRichText QuestionRichText--collapsed"><div><span class="RichText">{{question.2}}</span></div></div></div>
+        <div class="QuestionHeader-detail RichContent RichContent--unescapable is-collapsed" >
+            <div class="QuestionHeader-detail-expand">
+            <div class=" RichContent-inner" style="max-height:200px;">
+            <span class="RichText CopyrightRichText-richText">{{question.2|safe}}</span>
+            </div>
+            <button class="Button QuestionHeader-detail-more ContentItem-rightButton Button--plain is-hide" type="button" style="bottom:25px;">查看问题详细描述<svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
+            </div>
+            <br/>
+            <button class="Button QuestionHeader-detail-less ContentItem-rightButton Button--plain is-hide" type="button" style="position:relative; float:right; margin-right:15px;bottom:30px;"><span class="RichContent-collapsedText">收起问题描述</span><svg viewBox="0 0 10 6" class="Icon ContentItem-arrowIcon is-active Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></button>
+        </div>
         </div>
         
         <div class="QuestionHeader-side">
