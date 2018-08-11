@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="zh" data-hairline="true" data-android="true" data-theme="light">
+{% include 'question/head_mobile.html' %}
+<body class="Mobile-body">
+<div id="root">
+<div class="1App">
+<div class="LoadingBar">
+</div>
+<div class="Mobile-header is-hide">
+{% include 'question/header_mobile.html' %}
+</div>
+
+<!--------------------main---------------------->
+<main role="main" class="App-main" data-module="ask" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}"}'>
+<div class="Layout av-cardBackground">
+<div class="Layout-main av-card">
+<form method="post" action="/ask/">
+{% csrf_token %}
+<div class="AskHeaderTitle">
+<h3 class="Ask-title">写下你的问题</h3>
+<div class="Ask-subtitle">描述精确的问题更易得到解答</div>
+</div>
+
+<div class="Ask-content">
+    <div class="QuestionAsk">        
+        <div class="QuestionAsk-section">
+            <div class="QuestionAsk-title">
+                <div class="Input-wrapper Input-wrapper--spread Input-wrapper--multiline Input-wrapper--large">
+                    <textarea required="" name="title" rows="2" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-activedescendant="AutoComplet-64372-3800-0" id="Popover-64372-42711-toggle" aria-haspopup="true" aria-owns="Popover-64372-42711-content" class="Input" placeholder="问题标题"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="QuestionAsk-section">
+            <div class="TagInput TagInput--empty">
+                <select id="topics_select" name="topics_selected" class="selectpicker show-menu-arrow form-control" multiple data-live-search="true" data-live-search-placeholder="搜索并添加栏目" data-max-options="5" data-style="Input-wrapper Input-wrapper--spread Input-wrapper--large" title="添加栏目"></select>
+            </div>
+        </div>
+            
+        <input id="hide_for_submit" type="hidden" name="topics" value="null123">
+
+        <div class="QuestionAsk-section QuestionAsk-DetailSection">问题描述（可选）:<textarea id="summernote_question" name="tmpDetail" 1rows="5" 1cols="70" 1maxlength="160"></textarea><input type="hidden" name="detail" value="">              
+        </div>
+           
+        <div class="ModalButtonGroup QuestionAsk-buttonGroup ModalButtonGroup--vertical">
+            <button class="Button Button--primary Button--green" type="button" form="form_ask" disabled>提交问题</button>
+        </div>
+    </div>
+</div>
+
+</form>
+</div>
+</div>     
+</main>
+<!--------------------main end-------------------->
+
+<!-- ask（Modal） -->
+<!--{% include 'question/ask_modal_mobile.html' %}-->
+<!-- ask（Modal） -->
+
+<!-- letter（Modal） -->
+<!-- append by js -->
+<!-- letter（Modal） -->
+</body>
+</html>

@@ -704,7 +704,7 @@ label {
     -moz-box-sizing: content-box;
     box-sizing: content-box;
 }
-/*----for write----------------*/
+/*----for writePage----------------*/
 .Layout {
     background: #fff;
     min-height: 660px;
@@ -715,10 +715,25 @@ label {
     width: 660px;
     z-index: 1;
 }
+.Write-title {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 500;
+    color: #1a1a1a;
+    text-align: center;
+}
+.Write-subtitle {
+    padding: 0 38px;
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #8590a6;
+    text-align: center;
+}
 .WriteIndex-titleInput {
     margin: 16px 0;
     border: 0;
-    padding: 0;
+    padding: 4px 5px;
     height: auto;
     width: 100%;
     position: relative;
@@ -781,7 +796,73 @@ label {
 .btn-group:focus{
     border-color: #aaa !important;
 }
+/*----for askPage----------------*/
+.Layout {
+    background: #fff;
+    min-height: 660px;
+}
+.Layout-main {
+    margin: 47px auto 0;
+    padding: 0;
+    width: 660px;
+    z-index: 1;
+}
+.Ask-title {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 500;
+    color: #1a1a1a;
+    text-align: center;
+}
+.Ask-subtitle {
+    padding: 0 38px;
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #8590a6;
+    text-align: center;
+}
 
+.Ask-content {
+    padding: 0 5px 20px;
+    margin-top: 20px;
+    line-height: 1.7;
+    opacity: 1;
+}
+.note-editor.note-frame {
+    border: 1px solid #e7eaf1;
+    border-radius: 3px;
+}
+.note-btn.btn.btn-default.btn-sm {
+    border-color: #fff;
+}
+.panel-default>.panel-heading {
+    background-color:#fff;
+    border-color: #fff;
+}
+
+.Wirte-content  .panel-default>.panel-heading {
+    border-color: #fff;
+}
+
+.bootstrap-select .dropdown-toggle:focus {
+    outline:None !important;
+}
+.btn-group.open .dropdown-toggle {
+    -webkit-box-shadow: None !important;
+    box-shadow: None !important;
+
+}
+
+.bs-searchbox .form-control {
+    width: auto;
+}
+.form-control:focus{
+    border-color: #aaa;
+}
+.btn-group:focus{
+    border-color: #aaa !important;
+}
 /*----for article----------------*/
 .App-main{padding-bottom:46px}
 @media (max-width:690px){body{background:#fff}
