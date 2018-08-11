@@ -2381,16 +2381,16 @@ function checkAsk()
     {
         if((""!=title)&&(select_topic.length>0))
         {
-            $("#askModal .QuestionAsk-buttonGroup>button").removeAttr("disabled");
+            $(".QuestionAsk .QuestionAsk-buttonGroup>button").removeAttr("disabled");
         }
         else
         {
-            $("#askModal .QuestionAsk-buttonGroup>button").attr("disabled","");
+            $(".QuestionAsk .QuestionAsk-buttonGroup>button").attr("disabled","");
         }
     }
     function checkAskTitle()
     {
-        $("#askModal .QuestionAsk-title textarea").on("input",function(){
+        $(".QuestionAsk .QuestionAsk-title textarea").on("input",function(){
             title=$("textarea[name='title']").val();
             checkAskValid();
         });
@@ -2410,7 +2410,7 @@ function checkAsk()
             content=contents.replace("<p><br></p>","").replace("<p>","").replace("</p>","");
         });
     }
-    $("#askModal .QuestionAsk-buttonGroup>button").click(function(){
+    $(".QuestionAsk .QuestionAsk-buttonGroup>button").click(function(){
         if(title.length>LITTLE_TEXT_MAX_LENGTH)
         {
             title=title.substr(0,LITTLE_TEXT_MAX_LENGTH-1);
@@ -3171,9 +3171,10 @@ function initData()
 
     if("question"==g_module)
     {
+        g_question_detail=$("main").attr("data-question-detail");
+        
         g_question_id=main_data.question_id;
         g_question_title=main_data.question_title;
-        g_question_detail=$("main").attr("data-question-detail");
         g_question_follower_nums=main_data.question_follower_nums;
         g_question_answer_nums=main_data.question_answer_nums;
         g_question_click_nums=main_data.question_click_nums;

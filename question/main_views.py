@@ -262,6 +262,48 @@ class WriteView(generic.ListView):
             result='/article/'+str(article.id)+'/'
             return HttpResponseRedirect(result)
 
+class AskView(generic.ListView):
+    login_url='/'
+    template_name='question/t_ask.html'
+    def get_queryset(self):
+        return
+    def get(self,request,*args,**kwargs):
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print('is moblie:',is_mobile)
+        if is_mobile:
+            self.template_name='question/t_ask_mobile.html'
+        user=request.user
+        if user.is_authenticated:
+            return render(request,self.template_name,{'logged':'true'})
+        else:
+            return HttpResponseRedirect('/signinup/?next=/ask/')
+    def post(self,request):
+        user=request.user
+        if not user.is_authenticated:
+            return HttpResponseRedirect('/signinup/?next=/ask/')
+        else:            
+            topics=request.POST.getlist('topics_selected')#('topics')
+
+            question=Question()
+            question.title=request.POST.get('title')
+            question.detail=request.POST.get('detail')
+            question.quizzer=user 
+            question.save()
+            
+            user.userprofile.question_nums+=1
+            user.userprofile.contribution+=5
+            user.userprofile.save()
+            
+            for topic_str in topics:
+                topic_array=topic_str.split(':')
+                topic=get_object_or_404(Topic,id=topic_array[0])
+                topic.question.add(question)
+                topic.question_nums+=1 ##topic.question.count()
+                topic.save()
+            result='/question/'+str(question.id)+'/'
+            return HttpResponseRedirect(result)
+
 class ArticleView(generic.ListView):
     login_url='/'
     template_name='question/t_article.html'
