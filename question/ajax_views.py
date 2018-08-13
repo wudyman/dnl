@@ -766,6 +766,24 @@ def app_logout(request):
     print('log out success')
     to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def app_follow_topics(request):
+    to_json=json.dumps('fail')
+    user=request.user
+    if user.is_authenticated:
+        topicsIds=request.POST.get('topicsIds')
+        if topicsIds:
+            topicsIdsArray=topicsIds.split(',')
+            user.followtopics.clear()
+            user.save()
+            for topicId in topicsIdsArray:
+                topic=get_object_or_404(Topic,pk=topicId)
+                if topic:
+                    topic.follower.add(user)
+                    topic.save()
+            to_json=json.dumps('success')
+    return HttpResponse(to_json,content_type='application/json')
 
 STEP=10
 LIST_NUM=10 
