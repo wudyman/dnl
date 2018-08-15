@@ -713,7 +713,7 @@ def app_user_data(request):
     if user.is_authenticated:
         ret_list=[]
 
-        follow_topics=user.followtopics.values_list("id","name","avatar")
+        follow_topics=user.followtopics.order_by('question_topic_follower.id').values_list("id","name","avatar")
         user_profile=[user.id,user.first_name,user.userprofile.avatar,user.userprofile.mood]
 
         ret_list.append(user_profile)
@@ -772,17 +772,35 @@ def app_follow_topics(request):
     to_json=json.dumps('fail')
     user=request.user
     if user.is_authenticated:
+        userId=user.id
         topicsIds=request.POST.get('topicsIds')
         if topicsIds:
-            topicsIdsArray=topicsIds.split(',')
             user.followtopics.clear()
-            user.save()
+            topicsIdsArray=topicsIds.split(',')
+            topicNum=len(topicsIdsArray)
+            #user.userprofile.followtopic_nums=len(topicsIdsArray)
+            sdlStr="INSERT INTO `question_topic_follower` (`topic_id`, `user_id`) VALUES "
             for topicId in topicsIdsArray:
-                topic=get_object_or_404(Topic,pk=topicId)
-                if topic:
-                    topic.follower.add(user)
-                    topic.save()
-            to_json=json.dumps('success')
+                sdlStr+="("+str(topicId)+","+str(userId)+"),"
+            cursor=connection.cursor()
+            cursor.execute(sdlStr[:-1])
+            #cursor.execute("DELETE FROM question_topic_follower WHERE question_topic_follower.user_id = 2")
+            #cursor.execute("INSERT INTO `question_topic_follower` (`topic_id`, `user_id`) VALUES (6,2),(2,2),(1,2),(3,2),(5,2)")
+            #cursor.execute("INSERT INTO `question_topic_follower` (`topic_id`, `user_id`) VALUES (6,2),(2,2),(1,2),(3,2),(5,2)")
+            #topics=Topic.objects.filter(id__in=topicsIdsArray).extra(select={'manual': 'FIELD(question_topic.id,%s)' % ','.join(map(str, topicsIdsArray))},order_by=['manual'])
+            #for topic in topics:
+                #print(topic.id)
+                #user.followtopics.add(topic)
+            #user.followtopics.clear()
+            #user.followtopics.add(*topics)
+            UserProfile.objects.filter(user__id=userId).update(followtopic_nums=topicNum)
+        else:
+            #user.userprofile.followtopic_nums=0
+            user.followtopics.clear()
+            UserProfile.objects.filter(user__id=userId).update(followtopic_nums=0)
+        #user.userprofile.save()
+        #user.save()
+        to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
 
 STEP=10
