@@ -3453,6 +3453,7 @@ function initCommon()
             },
             onInit:function(){
                 $(".note-statusbar").addClass("is-hide");
+                $(".note-editor").append('<div id="uploadingImage" class="spinner is-hide"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>');
             }
         }
     });
