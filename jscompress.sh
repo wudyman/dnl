@@ -1,5 +1,6 @@
 #!/bin/bash
 
+java -version || exit 1;
 time=$(date "+%Y%m%d%H%M%S")
 echo "${time}"
 
