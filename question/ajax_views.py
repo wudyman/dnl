@@ -558,12 +558,9 @@ def send_sms(request):
                 request.session[phone_no]=verification_code
                 to_json=json.dumps('success')
     elif type=='password_reset':
-        print('aaa')
         if not User.objects.filter(username=phone_no):
-            print('bbb')
             to_json=json.dumps('unregistered')
         else:
-            print('ccc')
             verification_code=str(random.randint(100000,999999))
             __business_id = uuid.uuid1()
             params = {'code':verification_code}
@@ -582,12 +579,9 @@ def check_sms(request):
     type=request.POST.get('type')
     veri_code=request.POST.get('veri_code')
     if type=='password_reset':
-        print('aaa')
         if not User.objects.filter(username=phone_no):
-            print('bbb')
             to_json=json.dumps('unregistered')
         else:
-            print('ccc')
             to_json=json.dumps('veri_code_error')
             cach_veri_code=request.session.get(phone_no,None)
             if cach_veri_code:
@@ -725,22 +719,17 @@ def app_user_data(request):
     
 @csrf_exempt   
 def app_signin(request):
-    print(request.session.session_key)
-    user=request.user
-    if user.is_authenticated:
-        print('use have login')
+    #print(request.session.session_key)
     to_json=json.dumps('fail')
     phoneNo=request.POST.get('phoneNo')
     password=request.POST.get('password')
     if phoneNo and password:
-        print(phoneNo)
-        print(password)
         user=authenticate(username=phoneNo,password=password)
         if user is not None:
-            ret=login(request,user)
+            login(request,user)
             #print(dir(request.session))
             #print(request.session.keys())
-            print(request.session.session_key)
+            #print(request.session.session_key)
             to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
  
@@ -750,20 +739,28 @@ def app_signup(request):
     phoneNo=request.POST.get('phoneNo')
     smsCode=request.POST.get('smsCode')
     nickName=request.POST.get('nickName')
-    password=request.POST.get('password')
-    if phoneNo and smsCode and nickName and password:
-        print(phoneNo)
-        print(smsCode)
-        print(nickName)
-        print(password)
-        to_json=json.dumps('success')
+    pwd=request.POST.get('password')
+    if phoneNo and smsCode and pwd:     
+        if User.objects.filter(username=phoneNo):
+            print(phoneNo+':have registered!')
+            to_json=json.dumps('registered')
+        else:
+            cacheSmsCode=request.session.get(phoneNo,None)
+            if cacheSmsCode and smsCode==cacheSmsCode:
+                user=User.objects.create_user(username=phoneNo,password=pwd)
+                user.first_name=nickName
+                user.save()
+                userprofile=UserProfile()
+                userprofile.user=user
+                userprofile.phone=phoneNo
+                userprofile.save()
+                to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt   
 def app_logout(request):
     to_json=json.dumps('fail')
     logout(request)
-    print('log out success')
     to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
     
