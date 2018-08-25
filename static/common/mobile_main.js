@@ -2474,10 +2474,34 @@ function show_conversion_messages(conversation_id,er_id,er_name)
     });
 }
 
+function checkAndroidOrIos()
+{
+  var u = navigator.userAgent;
+  var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android
+  var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios
+  alert(u);
+  if (isAndroid)
+  {
+    alert('是Android');
+    return "android";
+  }
+  else if (isiOS)
+  {
+    alert('是iOS');
+    return "ios";
+  }
+  else
+  {
+      alert('未知手机类型');
+      return "unknown";
+  }
+}
+
 function initElement()
 {
     if("false"==g_init_data_done)
         return;
+    
     setTimeout(function(){
     if(typeof(g_is_app) == "undefined" ? true : false)
         $(".Mobile-header").removeClass("is-hide");
@@ -2487,6 +2511,11 @@ function initElement()
         appendLetterModal();
     }
     $('head title').text(SITE+" - "+SITE_SLOGAN);
+    
+    if("ios"==checkAndroidOrIos())
+        $(".MobileAppHeader-downloadLink").attr("href","");
+    else
+        $(".MobileAppHeader-downloadLink").attr("href","http://3rd.danongling.com/danongling-arm.apk");
     if("question"==g_module)
     {
         
