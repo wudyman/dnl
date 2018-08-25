@@ -2479,23 +2479,53 @@ function checkAndroidOrIos()
   var u = navigator.userAgent;
   var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android
   var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios
-  alert(u);
-  if (isAndroid)
-  {
-    alert('是Android');
-    return "android";
-  }
-  else if (isiOS)
-  {
-    alert('是iOS');
-    return "ios";
-  }
+  if (isiOS)
+      $(".MobileAppHeader-downloadLink").attr("href","");
   else
+      $(".MobileAppHeader-downloadLink").attr("href","http://3rd.danongling.com/danongling-arm.apk");
+}
+
+function checkIsWeChat()
+{
+  var u = navigator.userAgent;
+  var isWechat = u.indexOf('MicroMessenger') > -1;//wechat
+  if (isWechat)
   {
-      alert('未知手机类型');
-      return "unknown";
+        var winHeight = typeof window.innerHeight != 'undefined' ? window.innerHeight : document.documentElement.clientHeight;  //网页可视区高度
+        var weixinTip = $('<div id="weixinTip"><p><img src="static/common/img/tip_download.png" alt="微信打开"/></p></div>');
+
+        $("body").append(weixinTip);
+
+        $("#weixinTip").css({
+            "position": "fixed",
+            "left": "0",
+            "top": "0",
+            "height": winHeight,
+            "width": "100%",
+            "z-index": "1000",
+            "background-color": "rgba(0,0,0,0.8)",
+            "filter": "alpha(opacity=80)",
+        }).addClass("is-hide");
+        $("#weixinTip p").css({
+            "text-align": "center",
+            "margin-top": "10%",
+            "padding-left": "5%",
+            "padding-right": "5%"
+        });
+        $("#weixinTip p img").css({
+            "max-width": "100%",
+            "height": "auto"
+        });
+        $(".MobileAppHeader-downloadLink").attr("href","javascript:;");
+        $(".MobileAppHeader-downloadLink").click(function(){
+            $("#weixinTip").removeClass("is-hide");
+            return false;
+        });
   }
 }
+
+
+
 
 function initElement()
 {
@@ -2511,11 +2541,8 @@ function initElement()
         appendLetterModal();
     }
     $('head title').text(SITE+" - "+SITE_SLOGAN);
-    
-    if("ios"==checkAndroidOrIos())
-        $(".MobileAppHeader-downloadLink").attr("href","");
-    else
-        $(".MobileAppHeader-downloadLink").attr("href","http://3rd.danongling.com/danongling-arm.apk");
+    checkAndroidOrIos();  
+    checkIsWeChat();
     if("question"==g_module)
     {
         
