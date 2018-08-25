@@ -639,7 +639,7 @@ label {
 }
 
 .QuestionAsk-section {
-    margin-bottom: 2px;
+    margin-bottom: 10px;
 }
 
 .ModalButtonGroup--vertical {
@@ -711,17 +711,17 @@ label {
     margin: 16px 0;
     border: 0;
     padding: 4px 5px;
-    height: auto;
+    height: 32px !important;
     width: 100%;
     position: relative;
 }
 .WriteIndex-titleInput .Input {
-    height: 44px;
-    min-height: 44px;
+    height: 32px;
+    min-height: 32px;
     display: block;
     width: 100%;
     border: 0;
-    font-size: 32px;
+    font-size: 28px;
     line-height: 1.4;
     font-weight: 600;
     font-synthesis: style;
@@ -748,14 +748,18 @@ label {
 }
 
 .Wirte-select {
-    margin: 20px 0;
+    margin: 10px 0;
 }
 .Wirte-select .Input-wrapper {
     padding: 4px 5px;
-    font-size: 24px;
+    font-size: 20px;
     background: #fff;
     border-color: #fff;
 }
+.Wirte-select .dropdown-menu, .Wirte-select .dropdown-menu .form-control {
+    font-size: 20px;
+}
+
 .bootstrap-select .dropdown-toggle:focus {
     outline:None !important;
 }
@@ -809,6 +813,10 @@ label {
     opacity: 1;
 }
 
+.Ask-content .Input-wrapper, .Ask-content .dropdown-menu, .Ask-content .dropdown-menu .form-control {
+    font-size: 20px;
+}
+
 .note-editor.note-frame {
     border: 1px solid #e7eaf1;
     border-radius: 3px;
@@ -818,10 +826,6 @@ label {
 }
 .panel-default>.panel-heading {
     background-color:#fff;
-    border-color: #fff;
-}
-
-.Wirte-content  .panel-default>.panel-heading {
     border-color: #fff;
 }
 
@@ -1082,6 +1086,10 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
 #askModal .QuestionAsk-buttonGroup{
     display:flex;
     justify-content:center;
+}
+
+#askModal .Modal-content .Input-wrapper, #askModal .Modal-content .dropdown-menu, #askModal .Modal-content .dropdown-menu .form-control{
+    font-size: 20px;
 }
 /*********for header************/
 .Header-Icon{position: relative; padding: 0 10px;}
