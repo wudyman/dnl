@@ -1219,5 +1219,9 @@ button.CountingDownButton {color: #228b22;border: 1px solid #228b22;}
 .MobileSearchPage input:focus{border:1px solid #228b22;outline:none}
 /************for green config****************/
 
+.RichContent--unescapable.is-collapsed .ContentItem-rightButton{
+    bottom: 55px;
+}
+
 
 
