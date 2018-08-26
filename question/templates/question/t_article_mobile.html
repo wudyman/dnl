@@ -8,7 +8,7 @@
 <div class="Mobile-header is-hide">
 {% include 'question/header_mobile.html' %}
 </div>
-<main role="main" class="App-main" data-module="article" data-article-content="{{article.content}}" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","article_id":"{{article.id}}","article_title":"{{article.title}}","article_click_nums":"{{article.click_nums}}","article_like_nums":"{{article.like_nums}}","article_comment_nums":"{{article.comment_nums}}","article_pub_date":"{{article.pub_date}}","author_id":"{{article.author__id}}","author_name":"{{article.author__first_name}}","author_avatar":"{{article.author__userprofile__avatar}}","author_mood":"{{article.author__userprofile__mood}}","author_sexual":"{{article.author__userprofile__sexual}}"}'>
+<main role="main" class="App-main" data-module="article" data-article-content="{{article.content}}" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","article_id":"{{article.id}}","article_title":"{{article.title}}","article_click_nums":"{{article.click_nums}}","article_like_nums":"{{article.like_nums}}","article_comment_nums":"{{article.comment_nums}}","article_pub_date":"{{article.pub_date|date:"Y-m-d H:i:s"}}","author_id":"{{article.author__id}}","author_name":"{{article.author__first_name}}","author_avatar":"{{article.author__userprofile__avatar}}","author_mood":"{{article.author__userprofile__mood}}","author_sexual":"{{article.author__userprofile__sexual}}"}'>
 
 <div class="Post-content">
 <!--<img class="TitleImage" src="" alt="">-->

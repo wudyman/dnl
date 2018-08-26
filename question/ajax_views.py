@@ -228,12 +228,12 @@ def get_er_all(request,erid,command):
     end=request.POST.get('end')
     #er=get_object_or_404(User,pk=erid)
     if 'answers'==command:
-        answers=User.objects.filter(id=erid).values_list("answers__id","answers__question__id","answers__question__title","answers__content","answers__like_nums","answers__comment_nums","id","first_name","userprofile__avatar","userprofile__mood")[int(start):int(end)]
+        answers=User.objects.filter(id=erid).values_list("answers__id","answers__question__id","answers__question__title","answers__content","answers__pub_date","answers__like_nums","answers__comment_nums","id","first_name","userprofile__avatar","userprofile__mood")[int(start):int(end)]
         #answers=er.answers.all()
         #answers=er.answers.values_list("id","question__id","question__title","content","like_nums","comment_nums")
         if answers and answers[0][0]!=None:
             answers_list=list(answers)
-            to_json=json.dumps(answers_list)
+            to_json=json.dumps(answers_list,cls=CJsonEncoder)
     elif 'asks'==command:
         #questions=er.selfquestions.all()
         questions=User.objects.filter(id=erid).values_list("selfquestions__id","selfquestions__title","selfquestions__answer_nums","selfquestions__follower_nums","selfquestions__pub_date")[int(start):int(end)]
