@@ -4,7 +4,7 @@
 <body class="">
 {% include 'question/header.html' %}
 <div class="LoadingBar"></div>
-<main role="main" class="App-main" data-module="article" data-article-content="{{article.content}}" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","article_id":"{{article.id}}","article_title":"{{article.title}}","article_click_nums":"{{article.click_nums}}","article_like_nums":"{{article.like_nums}}","article_comment_nums":"{{article.comment_nums}}","article_pub_date":"{{article.pub_date}}","author_id":"{{article.author__id}}","author_name":"{{article.author__first_name}}","author_avatar":"{{article.author__userprofile__avatar}}","author_mood":"{{article.author__userprofile__mood}}","author_sexual":"{{article.author__userprofile__sexual}}"}'>
+<main role="main" class="App-main" data-module="article" data-article-content="{{article.content}}" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","article_id":"{{article.id}}","article_title":"{{article.title}}","article_click_nums":"{{article.click_nums}}","article_like_nums":"{{article.like_nums}}","article_comment_nums":"{{article.comment_nums}}","article_pub_date":"{{article.pub_date|date:"Y-m-d H:i:s"}}","author_id":"{{article.author__id}}","author_name":"{{article.author__first_name}}","author_avatar":"{{article.author__userprofile__avatar}}","author_mood":"{{article.author__userprofile__mood}}","author_sexual":"{{article.author__userprofile__sexual}}"}'>
 
 <div class="Post-content">
 <!--<img class="TitleImage" src="" alt="">-->
@@ -64,11 +64,13 @@
 <div class="RichContent-actions-anchor"></div>
 <div class="Recommendations-Main" style="width: auto">
 <h3 class="BlockTitle Recommendations-BlockTitle">推荐阅读</h3>
+<!--
 <ul class="Recommendations-List">
 <button class="PagingButton PagingButton-Previous" disabled=""><svg class="Zi Zi--ArrowLeft" fill="#d3d3d3" viewBox="0 0 24 24" width="40" height="40"><path d="M14.782 16.78a.737.737 0 0 1-1.052 0L9.218 12.53a.758.758 0 0 1 0-1.063L13.73 7.22a.737.737 0 0 1 1.052 0c.29.294.29.77.001 1.063L11 12l3.782 3.716c.29.294.29.77 0 1.063z" fill-rule="evenodd"></path></svg></button>
 <a href="http://zhuanlan.zhihu.com/p/37273806" class="PostItem"><div><h1 class="PostItem-Title">摩根·弗里曼被指控性骚扰？我并不意外</h1><p class="PostItem-Summary">看到8名女性指控摩根·弗里曼性骚扰的CNN新闻，以及弗里曼本人的回应：“如有让任何人觉得不舒服或不被尊重，我道歉，但我绝不是有意。”并不意外。一位接受CNN采访的制作助理目睹过弗里曼…</p><div class="PostItem-Footer"><span>雅君</span><span class="PostItem-FooterTitle">发表于雅君的好用...</span></div></div></a>
 <button class="PagingButton PagingButton-Next"><svg class="Zi Zi--ArrowRight" fill="#d3d3d3" viewBox="0 0 24 24" width="40" height="40"><path d="M9.218 16.78a.737.737 0 0 0 1.052 0l4.512-4.249a.758.758 0 0 0 0-1.063L10.27 7.22a.737.737 0 0 0-1.052 0 .759.759 0 0 0-.001 1.063L13 12l-3.782 3.716a.758.758 0 0 0 0 1.063z" fill-rule="evenodd"></path></svg></button>
 </ul>
+-->
 </div>
 
 <div class="Comments-container">

@@ -92,7 +92,7 @@ function getDateDiff(dateStr) {
     d_seconds = parseInt(d);
     
 
-    if (d_days > 0 && d_days < 3) {
+    if (d_days > 0 && d_days < 8) {
     return d_days + '天前';
     } else if (d_days <= 0 && d_hours > 0) {
     return d_hours + '小时前';
@@ -104,10 +104,10 @@ function getDateDiff(dateStr) {
     } else {
       return d_seconds + '秒前';
     }
-    } else if (d_days >= 3 && d_days < 30) {
-    return M + '-' + D;// + ' ' + H + ':' + m;
+    } else if (d_days >= 8 && d_days < 30) {
+    return Y + '-' + M + '-' + D + ' ' + H + ':' + m;
     } else if (d_days >= 30) {
-    return Y + '-' + M + '-' + D;// + ' ' + H + ':' + m;
+    return Y + '-' + M + '-' + D + ' ' + H + ':' + m;
     }
 }
 
@@ -471,7 +471,7 @@ function appendAnswerElementList(ret,type,direction)
             var answer_content=ret[i][1];
             var like_nums=ret[i][2];
             var comment_nums=ret[i][3];
-            var answer_pub_date=ret[i][4];
+            var pub_date=ret[i][4];
             var author_id=ret[i][5];
             var author_name=ret[i][6];
             var author_avatar=ret[i][7];
@@ -557,13 +557,14 @@ function appendAnswerElementList(ret,type,direction)
                 var question_id=ret[i][1];
                 var question_title=ret[i][2];
                 var answer_content=ret[i][3];
-                var like_nums=ret[i][4];
-                var comment_nums=ret[i][5];
+                var pub_date=ret[i][4];
+                var like_nums=ret[i][5];
+                var comment_nums=ret[i][6];
                 
-                var author_id=ret[i][6];
-                var author_name=ret[i][7];
-                var author_avatar=ret[i][8];
-                var author_mood=ret[i][9];
+                var author_id=ret[i][7];
+                var author_name=ret[i][8];
+                var author_avatar=ret[i][9];
+                var author_mood=ret[i][10];
                 
                 var question_title_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>';
                 var data_content_url='data-content-url="/question/'+question_id+'/?ans='+answer_id+'"';
@@ -576,7 +577,7 @@ function appendAnswerElementList(ret,type,direction)
         }
 
         var people_popover_data='data-author-id="'+author_id+'" data-author-name="'+author_name+'" data-author-avatar="'+author_avatar+'" data-author-mood="'+author_mood+'" data-author-sexual="'+author_sexual+'" data-author-answer-nums="'+author_answer_nums+'" data-author-article-nums="'+author_article_nums+'" data-author-follower-nums="'+author_follower_nums+'"';
-        var appendElement='<div class="List-item ScrollIntoMark"><div class="ContentItem AnswerItem" '+content_type_element+' data-comment-nums="'+comment_nums+'">'+question_title_element+'<div class="ContentItem-meta"><div class="AnswerItem-meta AnswerItem-meta--related"><div class="AuthorInfo"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link PeoplePopover" href="/er/'+author_id+'" '+people_popover_data+' data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"><img class="Avatar AuthorInfo-avatar" width="40" height="40" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div></div>'+rich_content+'</div></div>';
+        var appendElement='<div class="List-item ScrollIntoMark"><div class="ContentItem AnswerItem" '+content_type_element+' data-comment-nums="'+comment_nums+'">'+question_title_element+'<div class="ContentItem-meta"><div class="AnswerItem-meta AnswerItem-meta--related"><div class="AuthorInfo"><span class="UserLink AuthorInfo-avatarWrapper"><a class="UserLink-link PeoplePopover" href="/er/'+author_id+'" '+people_popover_data+' data-toggle="popover" data-placement="right" data-trigger="manual" data-content="null" data-html="true"><img class="Avatar AuthorInfo-avatar" width="40" height="40" src="'+author_avatar+'" srcset="'+author_avatar+'" alt="'+author_name+'"></a></span><div class="AuthorInfo-content"><div class="AuthorInfo-head"><span class="UserLink AuthorInfo-name"><a class="UserLink-link" href="/er/'+author_id+'">'+author_name+'</a></span></div><div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText AuthorInfo-badgeText">'+author_mood+'</div></div></div></div></div></div></div><div class="ContentItem-time"><span>'+getDateDiff(pub_date)+'</span></div>'+rich_content+'</div></div>';
         
         if("prepend"==direction)
             $("#appendArea").prepend(appendElement);
@@ -785,7 +786,7 @@ function appendSettingPageElement(ret)
             }
             $(".Conversation-messages-head .zg-gray-darker").text(letter_name);
             $(".Conversation-messages-head #letterText").attr("data-receiver-id",letter_id);
-            var data='<div class="List-item Conversation-messages-item" data-action="delete_conversation_message" data-action-id="'+message_id+'"><a class="zm-item-link-avatar50" href="/er/'+sender_id+'"><img class="zm-item-img-avatar50" src="'+sender_avatar+'"></a><div class="zm-pm-item-main"><a class="pm-touser author-link" href="/er/'+sender_id+'">'+sender_name+'</a>：'+message_content+'</div><div class="zg-gray zu-pm-item-meta"><span class="zg-gray zg-left">'+message_pub_date+'</span><a class="zg-link-litblue" href="javascript:;" name="delete">删除</a></div></div>';
+            var data='<div class="List-item Conversation-messages-item" data-action="delete_conversation_message" data-action-id="'+message_id+'"><a class="zm-item-link-avatar50" href="/er/'+sender_id+'"><img class="zm-item-img-avatar50" src="'+sender_avatar+'"></a><div class="zm-pm-item-main"><a class="pm-touser author-link" href="/er/'+sender_id+'">'+sender_name+'</a>：'+message_content+'</div><div class="zg-gray zu-pm-item-meta"><span class="zg-gray zg-left">'+getDateDiff(message_pub_date)+'</span><a class="zg-link-litblue" href="javascript:;" name="delete">删除</a></div></div>';
 
             $('#appendArea').append(data);
         }
@@ -803,7 +804,7 @@ function appendSettingPageElement(ret)
             if("invite"==notification_type)
             {
                 var question_title=ret[i][7];
-                var data='<div class="List-item day"><h3>'+notification_pub_date+'</h3><div><i></i><div><span><span><a href="/er/'+notification_sender_id+'" target="_blank">'+notification_sender_first_name+'</a></span>邀请你回答 <a href="/question/'+notification_target_id+'">'+notification_target_title+'</a></span></div></div></div>';
+                var data='<div class="List-item day"><h3>'+getDateDiff(notification_pub_date)+'</h3><div><i></i><div><span><span><a href="/er/'+notification_sender_id+'" target="_blank">'+notification_sender_first_name+'</a></span>邀请你回答 <a href="/question/'+notification_target_id+'">'+notification_target_title+'</a></span></div></div></div>';
             }
             $("#appendArea").append(data);
         }
@@ -825,7 +826,7 @@ function appendInvitedQuestionElement(ret)
         var notification_question_follower_nums=ret[i][8];
         var notification_status=ret[i][9];
         
-        var data='<div class="List-item"><div class="ContentItem"><h3 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+notification_question_id+'" target="_blank">'+notification_question_title+'</a></div></h3><div class="ContentItem-status"><span class="ContentItem-statusItem"><a href="/er/'+notification_sender_id+'">'+notification_sender_first_name+'</a></span><span class="ContentItem-statusItem">邀请你回答</span><span class="ContentItem-statusItem">'+notification_pub_date+' </span><span class="ContentItem-statusItem">'+notification_question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+notification_question_follower_nums+' 个关注</span></div></div></div>';
+        var data='<div class="List-item"><div class="ContentItem"><h3 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+notification_question_id+'" target="_blank">'+notification_question_title+'</a></div></h3><div class="ContentItem-status"><span class="ContentItem-statusItem"><a href="/er/'+notification_sender_id+'">'+notification_sender_first_name+'</a></span><span class="ContentItem-statusItem">邀请你回答</span><span class="ContentItem-statusItem">'+getDateDiff(notification_pub_date)+' </span><span class="ContentItem-statusItem">'+notification_question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+notification_question_follower_nums+' 个关注</span></div></div></div>';
         $("#appendArea").append(data);
     }
 }
@@ -837,9 +838,9 @@ function appendQuestionElement(ret)
         var question_title=ret[i][1];
         var question_answer_nums=ret[i][2];
         var question_follower_nums=ret[i][3];
-        var question_pubdate=ret[i][4].split(".")[0];
+        var question_pub_date=ret[i][4];
         
-        var data='<div class="List-item"><div class="ContentItem"><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
+        var data='<div class="List-item"><div class="ContentItem"><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+getDateDiff(question_pub_date)+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
         $("#appendArea").append(data);
     }
 }
@@ -894,9 +895,9 @@ function appendFollowOrMoreElement(ret)
             var question_title=ret[i][1];
             var question_answer_nums=ret[i][2];
             var question_follower_nums=ret[i][3];
-            var question_pubdate=ret[i][4];
+            var question_pub_date=ret[i][4];
             var data='\
-                    <div class="List-item"><div class="ContentItem" ><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+question_pubdate+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
+                    <div class="List-item"><div class="ContentItem" ><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+getDateDiff(question_pub_date)+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
             $("#appendArea").append(data);
         }
     }
@@ -2867,6 +2868,9 @@ function initElement()
         {
             follow_botton.removeClass("Button--grey").addClass("Button--green").attr("data-followed","false").attr("data-who",who).text("关注"+who_han);
         }
+        $(".ContentItem-time span").each(function(){
+            $(this).text(getDateDiff($(this).text()));
+        })
         setLetterReceiver(author_id,author_name);
         checkQuestionDetailExpand();
         checkQuestionDetailCollapse();
@@ -3177,7 +3181,7 @@ function initElement()
         $(".Post-Author .AuthorInfo-name .UserLink-link").attr("href","/er/"+g_article_author_id).empty().text(g_article_author_name);
         $(".Post-Author .AuthorInfo-detail .AuthorInfo-badgeText").html(g_article_author_mood);
         
-        var pub_date_text="发布于 "+g_article_pub_date.split('.')[0];
+        var pub_date_text="发布于 "+getDateDiff(g_article_pub_date);
         $(".ContentItem-time>a").attr("href","/article/"+g_article_id+"/").children("span").attr("data-tooltip",pub_date_text).text(pub_date_text);
         
         $(".Comment--nums--nouse").empty().text(g_article_comment_nums);
