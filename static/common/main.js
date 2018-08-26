@@ -3204,7 +3204,7 @@ function initElement()
             height:null,
             minHeight:500,
             lang:'zh-CN',
-            placeholder:'请输入文章内容(至少100字)',
+            placeholder:'请输入文章内容(不少于'+TEXT_MIN_LENGTH_HIGH+'个字)',
             disableDragAndDrop:true,
             callbacks: {
                 onImageUpload: function(files){
@@ -3410,8 +3410,8 @@ function initCommon()
     LARGE_TEXT_MAX_LENGTH=10000;
     MIDDLE_TEXT_MAX_LENGTH=500;
     LITTLE_TEXT_MAX_LENGTH=100;
-    TEXT_MIN_LENGTH_HIGH=100;
-    TEXT_MIN_LENGTH_MID=50;
+    TEXT_MIN_LENGTH_HIGH=20;
+    TEXT_MIN_LENGTH_MID=15;
     TEXT_MIN_LENGTH_LOW=10;
     notifications="null";
     messages="null";
@@ -3471,7 +3471,7 @@ function initCommon()
         ],
         minHeight:150,
         lang:'zh-CN',
-        placeholder:'写回答...',
+        placeholder:'写回答(不少于'+TEXT_MIN_LENGTH_LOW+'个字)',
         callbacks: {
             onImageUpload: function(files){
                 scaleAndUploadImage("forAnswer",files[0],720);
