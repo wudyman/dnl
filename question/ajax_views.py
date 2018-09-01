@@ -14,7 +14,7 @@ from PIL import Image
 from django.db import connection
 from . import dysms
 import uuid
-from datetime import datetime
+from datetime import datetime,timedelta
 #from itertools import chain
 #import numpy as np
 from django.core.cache import cache
@@ -705,14 +705,26 @@ def app_user_data(request):
     to_json=json.dumps('fail')
     user=request.user
     if user.is_authenticated:
+        lastNotificationTime=request.POST.get('lastNotificationTime')
+        lastConversationTime=request.POST.get('lastConversationTime')
+        if not lastNotificationTime:
+            lastNotificationTime= datetime.now()+ timedelta(days=-30)
+        if not lastConversationTime:
+            lastConversationTime= datetime.now()+ timedelta(days=-30)
+            
         ret_list=[]
-
-        follow_topics=user.followtopics.order_by('question_topic_follower.id').values_list("id","name","avatar")
         user_profile=[user.id,user.first_name,user.userprofile.avatar,user.userprofile.mood]
+        follow_topics=user.followtopics.order_by('question_topic_follower.id').values_list("id","name","avatar")
+        notifications=user.receives.order_by('-pub_date').filter(pub_date__gt=lastNotificationTime).values_list("id","type","pub_date","sender__id","sender__first_name","target__id","target__title","status")
+        conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
+        conversations=conversations.order_by('-update_date').filter(update_date__gt=lastConversationTime).values_list("id","delete_id","update_date","initator__id","initator__first_name","initator__userprofile__avatar",
+        "parter__id","parter__first_name","parter__userprofile__avatar","latest_message_content")
 
         ret_list.append(user_profile)
         ret_list.append(list(follow_topics))
-        to_json=json.dumps(ret_list)
+        ret_list.append(list(notifications))
+        ret_list.append(list(conversations))
+        to_json=json.dumps(ret_list,cls=CJsonEncoder)
     else:
         to_json=json.dumps('nologin')
     return HttpResponse(to_json,content_type='application/json')
