@@ -413,13 +413,15 @@ function appendAnswerElementList(ret,type,direction)
         {
             if("topic"==type)
             {
-                var content_type=ret[i][2];       
+                var content_type=ret[i][22];       
                 if("article"==content_type)
                 {
                     var article_id=ret[i][0];
                     var article_title=ret[i][1];
-                    var topics=ret[i][3];
-                    var click_nums=ret[i][4];
+                    var click_nums=ret[i][2];
+                    var article_id_nouse1=ret[i][3];
+                    var topics=ret[i][4];
+                    var article_id_nouse2=ret[i][5];
                     var question_title_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/article/'+article_id+'/">'+article_title+'</a></div></h2>';
                     var data_content_url='data-content-url="/article/'+article_id+'/"';
                     var content_type_element='data-content-type="article" data-content-id="'+article_id+'"';
@@ -432,10 +434,12 @@ function appendAnswerElementList(ret,type,direction)
                 }
                 else
                 {
-                var question_id=ret[i][0];
-                var question_title=ret[i][1];
-                var topics=ret[i][3];
-                var answer_id=ret[i][4];
+                    var question_id=ret[i][0];
+                    var question_title=ret[i][1];
+                    var click_nums=ret[i][2];
+                    var push_answer_id=ret[i][3];
+                    var topics=ret[i][4];
+                    var answer_id=ret[i][5];
                     var question_title_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>';
                     var data_content_url='data-content-url="/question/'+question_id+'/?ans='+answer_id+'"';
                     var content_type_element='data-content-type="answer" data-content-id="'+answer_id+'"';
@@ -447,7 +451,6 @@ function appendAnswerElementList(ret,type,direction)
                         g_cache_question_id_list.push(""+question_id);
                 }
         
-                var answer_push_index=ret[i][5];
                 var answer_content=ret[i][6];
                 var like_nums=ret[i][7];
                 var comment_nums=ret[i][8];
@@ -503,13 +506,15 @@ function appendAnswerElementCard(ret,type,direction)
     ret.sort();
     for(i in ret)
     {
-        var content_type=ret[i][2];       
+        var content_type=ret[i][22];       
         if("article"==content_type)
         {
             var article_id=ret[i][0];
             var article_title=ret[i][1];
-            var topics=ret[i][3];
-            var click_nums=ret[i][4];
+            var click_nums=ret[i][2];
+            var article_id_nouse1=ret[i][3];
+            var topics=ret[i][4];
+            var article_id_nouse2=ret[i][5];
             var question_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/article/'+article_id+'/">'+article_title+'</a></div>';
             var data_content_url='data-content-url="/article/'+article_id+'/"';
             var content_type_element='data-content-type="article" data-content-id="'+article_id+'"';
@@ -524,8 +529,10 @@ function appendAnswerElementCard(ret,type,direction)
         {
             var question_id=ret[i][0];
             var question_title=ret[i][1];
-            var topics=ret[i][3];
-            var answer_id=ret[i][4];
+            var click_nums=ret[i][2];
+            var push_answer_id=ret[i][3];
+            var topics=ret[i][4];
+            var answer_id=ret[i][5];
             var question_element='<h2 class="ContentItem-title"><div><a target="_blank" href="/question/'+question_id+'/?ans='+answer_id+'">'+question_title+'</a></div></h2>';
             var data_content_url='data-content-url="/question/'+question_id+'/?ans='+answer_id+'"';
             var content_type_element='data-content-type="answer" data-content-id="'+answer_id+'"';
@@ -536,7 +543,6 @@ function appendAnswerElementCard(ret,type,direction)
             else
                 g_cache_question_id_list.push(""+question_id);
         }
-        var push_index=ret[i][5];
         var content=ret[i][6];
         var like_nums=ret[i][7];
         var comment_nums=ret[i][8];
@@ -555,10 +561,12 @@ function appendAnswerElementCard(ret,type,direction)
         var author_followquestion_nums=ret[i][21];
         
         var topics_data='';
-        for(i in topics)
+        var topics_array=eval("("+topics+")");
+        for(i in topics_array)
         {
-            var topic_id=topics[i][0];
-            var topic_name=topics[i][1];
+            var topic_array=topics_array[i].split(':');
+            var topic_id=topic_array[0];
+            var topic_name=topic_array[1];
             topics_data+='<span style="margin-right:15px;"><a href="/topic/'+topic_id+'/" class="1TopicPopover" data-topic-id="'+topic_id+'" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true">'+topic_name+'</a></span>';
         }
 
