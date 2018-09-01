@@ -45,4 +45,5 @@ urlpatterns = [
     url(r'^topic/',include('question.topic_urls')),
     url(r'^ajax/',include('question.ajax_urls')),
     url(r'^er/',include('question.er_urls')),
+    url(r'^self_check/',include('question.self_check_urls')),
 ]

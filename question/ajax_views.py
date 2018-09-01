@@ -880,53 +880,33 @@ def get_questions_inner(topic_id,type,start,end):
         print(cache_key)
         cache_value=cache.get(cache_key,'expired')
         if cache_value=='expired':
-            questions=Question.objects.order_by('pub_date').exclude(push_answer_id=-1)[int(start):int(end)].values("id","title","push_answer_id","topics__id","topics__name")
+            questions=Question.objects.order_by('pub_date').exclude(push_answer_id=-1)[int(start):int(end)].values_list("id","title","click_nums","push_answer_id","topics_array")
         else:
             return cache_value
     else:
         cache_key='topic'+topic_id+'question'+type+str(start)
         cache_value=cache.get(cache_key,'expired')
         if cache_value=='expired':
-            questions=Question.objects.order_by('pub_date').filter(topics__id=topic_id,answer_nums__gte=1)[int(start):int(end)].values("id","title","push_answer_id","topics__id","topics__name")
+            questions=Question.objects.order_by('pub_date').filter(topics__id=topic_id,answer_nums__gte=1)[int(start):int(end)].values_list("id","title","click_nums","push_answer_id","topics_array")
         else:
             return cache_value
     if questions:
-        last_question_id=-1
         push_answers_id_list=[]
-        length=len(questions)
         for i,question in enumerate(questions):
-            if last_question_id!=question['id']:
-                if i!=0:
-                    item.append(topic_list)
-                    questions_list.append(item)                
-                topic_list=[]
-                item=[question['id'],question['title'],'question']
-                push_answers_id_list.append(question['push_answer_id'])
-                topic=[question['topics__id'],question['topics__name']]
-                topic_list.append(topic)
-                
-                if i==length-1:
-                    item.append(topic_list)
-                    questions_list.append(item)  
-                    
-                last_question_id=question['id']
-            else:
-                topic=[question['topics__id'],question['topics__name']]
-                topic_list.append(topic)
-                if i==length-1:
-                    item.append(topic_list)
-                    questions_list.append(item)
+            questions_list.append(list(question))
+            push_answers_id_list.append(question[3])
+            #print(str(question[0])+':'+str(question[3]))
         
         push_answers=Answer.objects.filter(id__in=push_answers_id_list).extra(
         select={'manual': 'FIELD(question_answer.id,%s)' % ','.join(map(str, push_answers_id_list))},order_by=['manual']).values_list(
-        "id","push_index","content","like_nums","comment_nums","pub_date",
+        "id","content","like_nums","comment_nums","pub_date",
         "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
         "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
-        #answer_list=list(push_answers)
-        #questions_answers_list=[]
+
         for i,answer in enumerate(push_answers):
             questions_list[i].extend(answer)
-    cache.set(cache_key,questions_list,CACHE_EXPIRED)            
+            questions_list[i].append('question')
+    cache.set(cache_key,questions_list,CACHE_EXPIRED)
     return questions_list#questions_answers_list
         
 def get_articles_inner(topic_id,type,start,end):
@@ -936,16 +916,23 @@ def get_articles_inner(topic_id,type,start,end):
         cache_key='article'+type+str(start)
         cache_value=cache.get(cache_key,'expired')
         if cache_value=='expired':
-            articles=Article.objects.order_by('pub_date')[int(start):int(end)].values("id","title","topics__id","topics__name")
+            articles=Article.objects.order_by('pub_date')[int(start):int(end)].values_list(
+            "id","title","click_nums","id","topics_array","id","content","like_nums","comment_nums","pub_date",
+            "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
+            "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
         else:
             return cache_value
     else:
         cache_key='topic'+topic_id+'article'+type+str(start)
         cache_value=cache.get(cache_key,'expired')
         if cache_value=='expired':
-            articles=Article.objects.order_by('pub_date').filter(topics__id=topic_id)[int(start):int(end)].values("id","title","topics__id","topics__name")
+            articles=Article.objects.order_by('pub_date').filter(topics__id=topic_id)[int(start):int(end)].values_list(
+            "id","title","click_nums","id","topics_array","id","content","like_nums","comment_nums","pub_date",
+            "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
+            "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
         else:
             return cache_value
+    '''
     if articles:
         articles_list=[]
         last_article_id=-1
@@ -981,6 +968,11 @@ def get_articles_inner(topic_id,type,start,end):
         "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
         for i,article_ext in enumerate(articles_ext):
             articles_list[i].extend(article_ext)
-    cache.set(cache_key,articles_list,CACHE_EXPIRED)  
+    '''
+    for article in articles:
+        article=list(article)
+        article.append('article')
+        articles_list.append(list(article))
+    cache.set(cache_key,articles_list,CACHE_EXPIRED)
     return articles_list
     

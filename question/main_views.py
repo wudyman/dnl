@@ -247,7 +247,8 @@ class WriteView(generic.ListView):
             article=Article()
             article.title=request.POST.get('writeTitle')
             article.content=request.POST.get('writeContent')
-            article.author=user           
+            article.author=user
+            article.topics_array=topics             
             article.save()
             user.userprofile.article_nums+=1
             user.userprofile.contribution+=10
