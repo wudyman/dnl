@@ -3130,8 +3130,8 @@ function sendPageInfoToApp()
             thumbImage=$(".RichText.ztext.Post-RichText img:first").attr("src");          
         }
         else if("home"==g_module){
-            content=g_user_mood;
-            thumbImage=g_user_avatar; 
+            content=g_er_mood;
+            thumbImage=g_er_avatar; 
         }
         
         if(thumbImage&&(thumbImage.indexOf('http')<0))
