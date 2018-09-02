@@ -2509,8 +2509,8 @@ function checkAndroidOrIos()
   }
   else
   {
-      $(".MobileAppHeader-downloadLink").attr("href","http://3rd.danongling.com/danongling-arm.apk");
-      $("#download_app").attr("href","http://3rd.danongling.com/danongling-arm.apk");
+      $(".MobileAppHeader-downloadLink").attr("href",APP_URL);
+      $("#download_app").attr("href",APP_URL);
   }
 }
 
@@ -3109,11 +3109,43 @@ function sendPageInfoToApp()
     }
     else
     {
+        var url=location.href;
+        var title=$('head title').text();
+        var content='';
+        var thumbImage='';
+        if("question"==g_module){
+            content=$(".Question-main .RichText.CopyrightRichText-richText:first").text();
+            thumbImage=$(".Question-main .RichText.CopyrightRichText-richText:first img:first").attr("src"); 
+            if(!content)
+                content=$(".QuestionHeader .RichText.CopyrightRichText-richText").text();
+            if(!thumbImage)
+                thumbImage=$(".QuestionHeader .RichText.CopyrightRichText-richText img:first").attr("src");          
+        }
+        else if("topic"==g_module){
+            content=g_topic_detail;
+            thumbImage=g_topic_avatar; 
+        }
+        else if("article"==g_module){
+            content=$(".RichText.ztext.Post-RichText").text();
+            thumbImage=$(".RichText.ztext.Post-RichText img:first").attr("src");          
+        }
+        else if("home"==g_module){
+            content=g_user_mood;
+            thumbImage=g_user_avatar; 
+        }
+        
+        if(thumbImage&&(thumbImage.indexOf('http')<0))
+        {
+            thumbImage=SITE_URL+thumbImage;
+        }
+        
         var data={
             command: "page",
             payload:{
-                url:location.href,
-                title:$('head title').text(),
+                url:url,
+                title:title,
+                content:content,
+                thumbImage:thumbImage
             }
         }
         window.postMessage(JSON.stringify(data));
@@ -3125,7 +3157,7 @@ function init()
     initData();
     initElement();
     action();
-    setTimeout(sendPageInfoToApp,1000);
+    setTimeout(sendPageInfoToApp,2000);
     
 }
 function initCommon()
@@ -3254,7 +3286,6 @@ window.onscroll = function () {
             if("true"==g_sticky_show)
             {
                 $(".Sticky.RichContent-actions").removeClass("is-fixed").attr("style","");
-                $(".Sticky--holder").remove();
                  g_sticky_show="false";
             }
         }
@@ -3263,8 +3294,6 @@ window.onscroll = function () {
             if("false"==g_sticky_show)
             {
                 $(".Sticky.RichContent-actions").addClass("is-fixed").attr("style","width: 690px; bottom: 0px; left: auto;");
-                $(".Sticky--holder").remove();
-                $(".RichContent-actions-nouse").after('<div class="Sticky--holder" style="position: static; top: auto; right: auto; bottom: 0px; left: 0px; display: block; float: none; margin: 0px 0px 10px; height: 54px;"></div>');
                 g_sticky_show="true";
             }
         }
@@ -3275,6 +3304,8 @@ if (getScrollTop() + getClientHeight() +10 >= getScrollHeight()) {
     } 
 }
 SITE="大农令";
+SITE_URL="http://www.danongling.com";
+APP_URL=SITE_URL+"/danongling-arm.apk"
 SITE_SLOGAN="关注新农业,新农村,新农民";
 //g_is_app="false";
 STEP=10;
