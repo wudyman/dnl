@@ -638,6 +638,10 @@ label {
     color:#8590a6;
 }
 
+.pull-left.selected{
+   color:#000;
+}
+
 .QuestionAsk-section {
     margin-bottom: 10px;
 }
