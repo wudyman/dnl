@@ -859,6 +859,8 @@ function invite()
 }
 function showInvite()
 {
+    if(false==veriLogin())
+        return;
     var topics="";
     $(".TopicLink").each(function(){
         topics+=($(this).attr("data-topic-id"))+";";
@@ -1820,6 +1822,7 @@ function checkSelectOption()
             console.log("select has init");
         }
         
+        
     });
 }
 
@@ -1835,6 +1838,8 @@ function checkComment()
     $(".Button-comment-send").off("mousedown");
     $(".Button-comment-send").on("mousedown",function(){
         console.log("mousedown");
+        if(false==veriLogin())
+            return;
         var parent_comment_id=$(this).closest(".CommentItem").attr("data-comment-id");
         if("article"==g_module)
         {
@@ -2136,7 +2141,10 @@ function checkAsk()
     {
         $('.QuestionAsk .selectpicker').on('changed.bs.select',function(e){
             select_topic=$('.QuestionAsk .selectpicker').val();
-            console.log(select_topic.length);
+            if(select_topic.length>0)
+                $(".QuestionAsk .pull-left").addClass("selected");
+            else
+                $(".QuestionAsk .pull-left").removeClass("selected");
             checkAskValid();
             $(".bootstrap-select .dropdown-menu").trigger("click");
         });
@@ -2223,7 +2231,10 @@ function checkWrite()
     {
         $('.Wirte-select .selectpicker').on('changed.bs.select',function(e){
             select_topic=$('.Wirte-select .selectpicker').val();
-            console.log(select_topic.length);
+            if(select_topic.length>0)
+                $(".Wirte-select .pull-left").addClass("selected");
+            else
+                $(".Wirte-select .pull-left").removeClass("selected");
             checkWriteValid();
             $(".bootstrap-select .dropdown-menu").trigger("click");
         });
@@ -3090,12 +3101,32 @@ function action()
     g_init_done="true";
     console.log("init done");
 }
+function sendPageInfoToApp()
+{
+    if(typeof(g_is_app) == "undefined" ? true : false)
+    {
+        $(".Mobile-header").removeClass("is-hide");
+    }
+    else
+    {
+        var data={
+            command: "page",
+            payload:{
+                url:location.href,
+                title:$('head title').text(),
+            }
+        }
+        window.postMessage(JSON.stringify(data));
+    }
+}
 function init()
 {
     g_module=$("main").attr("data-module");
     initData();
     initElement();
     action();
+    setTimeout(sendPageInfoToApp,1000);
+    
 }
 function initCommon()
 {
@@ -3255,8 +3286,21 @@ function veriLogin()
 {
     if("true"!=g_logged)
     {
-        var old_href=location.href;
-        location.href="/signinup/?next="+old_href;
+        if(typeof(g_is_app) == "undefined" ? true : false)
+        {
+            var old_href=location.href;
+            location.href="/signinup/?next="+old_href;
+        }
+        else
+        {
+            var data={
+                command: "login",
+                payload:{
+                    status: "false",
+                }
+            }
+            window.postMessage(JSON.stringify(data));
+        }
         return false;
     }
     return true;
