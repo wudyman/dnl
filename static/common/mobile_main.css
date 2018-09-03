@@ -688,7 +688,7 @@ label {
 /*----for writePage----------------*/
 .Layout {
     background: #fff;
-    min-height: 660px;
+    min-height: 320px;
 }
 .Layout-main {
     margin: 0 auto 0;
@@ -784,16 +784,6 @@ label {
 }
 
 /*----for askPage----------------*/
-.Layout {
-    background: #fff;
-    min-height: 660px;
-}
-.Layout-main {
-    margin: 0 auto 0;
-    padding: 0;
-    width: auto;
-    z-index: 1;
-}
 .Ask-title {
     margin-top: 20px;
     font-size: 24px;
@@ -820,38 +810,6 @@ label {
 .Ask-content .Input-wrapper, .Ask-content .dropdown-menu, .Ask-content .dropdown-menu .form-control {
     font-size: 20px;
 }
-
-.note-editor.note-frame {
-    border: 1px solid #e7eaf1;
-    border-radius: 3px;
-}
-.note-btn.btn.btn-default.btn-sm {
-    border-color: #fff;
-}
-.panel-default>.panel-heading {
-    background-color:#fff;
-    border-color: #fff;
-}
-
-.bootstrap-select .dropdown-toggle:focus {
-    outline:None !important;
-}
-.btn-group.open .dropdown-toggle {
-    -webkit-box-shadow: None !important;
-    box-shadow: None !important;
-
-}
-
-.bs-searchbox .form-control {
-    width: auto;
-}
-.form-control:focus{
-    border-color: #aaa;
-}
-.btn-group:focus{
-    border-color: #aaa !important;
-}
-
 
 /*----for article----------------*/
 
