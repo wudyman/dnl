@@ -2166,10 +2166,12 @@ function checkAsk()
     $(".AskNextButton").click(function(){
         $(".QuestionAsk-step1").addClass("is-hide");
         $(".QuestionAsk-step2").removeClass("is-hide");
+        document.getElementById("root").scrollIntoView();
     });
     $(".AskLastButton").click(function(){
         $(".QuestionAsk-step1").removeClass("is-hide");
         $(".QuestionAsk-step2").addClass("is-hide");
+        document.getElementById("root").scrollIntoView();
     });
     $(".AskPost").click(function(){
         if(title.length>LITTLE_TEXT_MAX_LENGTH)
@@ -2275,10 +2277,12 @@ function checkWrite()
     $(".WriteNextButton").click(function(){
         $(".Write-step1").addClass("is-hide");
         $(".Write-step2").removeClass("is-hide");
+        document.getElementById("root").scrollIntoView();
     });
     $(".WriteLastButton").click(function(){
         $(".Write-step1").removeClass("is-hide");
         $(".Write-step2").addClass("is-hide");
+        document.getElementById("root").scrollIntoView();
     });
     $(".WritePost").click(function(){
         if(title.length>LITTLE_TEXT_MAX_LENGTH)
