@@ -2121,13 +2121,21 @@ function checkAsk()
     var content="";
     function checkAskValid()
     {
-        if((""!=title)&&(select_topic.length>0))
+        if((""!=title))
         {
-            $(".QuestionAsk .QuestionAsk-buttonGroup>button").removeAttr("disabled");
+            $(".AskNextButton").removeAttr("disabled");
         }
         else
         {
-            $(".QuestionAsk .QuestionAsk-buttonGroup>button").attr("disabled","");
+            $(".AskNextButton").attr("disabled","");
+        }
+        if((""!=title)&&(select_topic.length>0))
+        {
+            $(".AskPost").removeAttr("disabled");
+        }
+        else
+        {
+            $(".AskPost").attr("disabled","");
         }
     }
     function checkAskTitle()
@@ -2155,7 +2163,15 @@ function checkAsk()
             content=contents.replace("<p><br></p>","").replace("<p>","").replace("</p>","");
         });
     }
-    $(".QuestionAsk .QuestionAsk-buttonGroup>button").click(function(){
+    $(".AskNextButton").click(function(){
+        $(".QuestionAsk-step1").addClass("is-hide");
+        $(".QuestionAsk-step2").removeClass("is-hide");
+    });
+    $(".AskLastButton").click(function(){
+        $(".QuestionAsk-step1").removeClass("is-hide");
+        $(".QuestionAsk-step2").addClass("is-hide");
+    });
+    $(".AskPost").click(function(){
         if(title.length>LITTLE_TEXT_MAX_LENGTH)
         {
             title=title.substr(0,LITTLE_TEXT_MAX_LENGTH-1);
@@ -2172,6 +2188,7 @@ function checkAsk()
     checkAskSelect();
     checkAskDetail();   
     
+    /*
     $('#askModal').on('shown.bs.modal', function(){
         if(false==veriLogin())
             return;
@@ -2203,6 +2220,7 @@ function checkAsk()
         g_selectpicker_init="false";
         $('#summernote_question').summernote('code','');
     });
+    */
 }
 function checkWrite()
 {
@@ -2211,7 +2229,15 @@ function checkWrite()
     var content="";
     function checkWriteValid()
     {
-        if((""!=title)&&(select_topic.length>0)&&(content.length>=TEXT_MIN_LENGTH_HIGH))
+        if((""!=title)&&(content.length>=TEXT_MIN_LENGTH_HIGH))
+        {
+            $(".WriteNextButton").removeAttr("disabled");
+        }
+        else
+        {
+            $(".WriteNextButton").attr("disabled","");
+        }
+        if((""!=title)&&(content.length>=TEXT_MIN_LENGTH_HIGH)&&(select_topic.length>0))
         {
             $(".WritePost").removeAttr("disabled");
         }
@@ -2246,6 +2272,14 @@ function checkWrite()
             checkWriteValid();
         });
     }
+    $(".WriteNextButton").click(function(){
+        $(".Write-step1").addClass("is-hide");
+        $(".Write-step2").removeClass("is-hide");
+    });
+    $(".WriteLastButton").click(function(){
+        $(".Write-step1").removeClass("is-hide");
+        $(".Write-step2").addClass("is-hide");
+    });
     $(".WritePost").click(function(){
         if(title.length>LITTLE_TEXT_MAX_LENGTH)
         {
@@ -3157,8 +3191,7 @@ function init()
     initData();
     initElement();
     action();
-    setTimeout(sendPageInfoToApp,2000);
-    
+    setTimeout(sendPageInfoToApp,1000);  
 }
 function initCommon()
 {
