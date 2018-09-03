@@ -480,14 +480,32 @@ def search(request,type,order,start,end):
     to_json=json.dumps('fail')
     keyword=request.POST.get('keyword')
     if keyword:
-        if type=='all' or type=='question':
-            questions=Question.objects.filter(title__contains=keyword)[int(start):int(end)].values_list("id","title","answer_nums")
-            if questions:
-                to_json=json.dumps(list(questions))
+        ret_list=[]
+        questions=[]
+        articles=[]
+        users=[]
+        topics=[]
+        if type=='all':
+            questions=Question.objects.filter(title__contains=keyword)[int(start):int(end)].values_list("id","title")
+            articles=Article.objects.filter(title__contains=keyword)[int(start):int(end)].values_list("id","title")
+            users=User.objects.filter(first_name__contains=keyword)[int(start):int(end)].values_list("id","first_name","userprofile__avatar","userprofile__mood")
+            topics=Topic.objects.filter(name__contains=keyword)[int(start):int(end)].values_list("id","name","avatar","detail")
+        elif type=='content':
+            questions=Question.objects.filter(title__contains=keyword)[int(start):int(end)].values_list("id","title")
+            articles=Article.objects.filter(title__contains=keyword)[int(start):int(end)].values_list("id","title")
+        elif type=='question':
+            questions=Question.objects.filter(title__contains=keyword)[int(start):int(end)].values_list("id","title")
+        elif type=='article':
+            articles=Article.objects.filter(title__contains=keyword)[int(start):int(end)].values_list("id","title")
         elif type=='people':
-            print(type)
+            users=User.objects.filter(first_name__contains=keyword)[int(start):int(end)].values_list("id","first_name","userprofile__avatar","userprofile__mood")
         elif type=='topic':
-            print(type)
+            topics=Topic.objects.filter(name__contains=keyword)[int(start):int(end)].values_list("id","name","avatar","detail")
+        ret_list.append(list(questions))
+        ret_list.append(list(articles))
+        ret_list.append(list(users))
+        ret_list.append(list(topics))
+        to_json=json.dumps(ret_list)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
@@ -932,43 +950,6 @@ def get_articles_inner(topic_id,type,start,end):
             "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
         else:
             return cache_value
-    '''
-    if articles:
-        articles_list=[]
-        last_article_id=-1
-        article_id_list=[]
-        length=len(articles)
-        for i,article in enumerate(articles):
-            if last_article_id!=article['id']:
-                if i!=0:
-                    item.append(topic_list)
-                    articles_list.append(item)                
-                topic_list=[]
-                item=[article['id'],article['title'],'article']
-                article_id_list.append(article['id'])
-                topic=[article['topics__id'],article['topics__name']]
-                topic_list.append(topic)
-                
-                if i==length-1:
-                    item.append(topic_list)
-                    articles_list.append(item)  
-                    
-                last_article_id=article['id']
-            else:
-                topic=[article['topics__id'],article['topics__name']]
-                topic_list.append(topic)
-                if i==length-1:
-                    item.append(topic_list)
-                    articles_list.append(item)
-        
-        articles_ext=Article.objects.filter(id__in=article_id_list).extra(
-        select={'manual': 'FIELD(question_article.id,%s)' % ','.join(map(str, article_id_list))},order_by=['manual']).values_list(
-        "click_nums","push_index","content","like_nums","comment_nums","pub_date",
-        "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
-        "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
-        for i,article_ext in enumerate(articles_ext):
-            articles_list[i].extend(article_ext)
-    '''
     for article in articles:
         article=list(article)
         article.append('article')

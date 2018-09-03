@@ -623,14 +623,29 @@ function appendInviteElement(ret)
 }
 function appendSearchPageElement(ret)
 {
-    for ( var i in ret)
+    var questions=ret[0];
+    var articles=ret[1];
+    var users=ret[2];
+    var topics=ret[3];
+    //var contents=questions.concat(articles);
+    if('content'==g_search_type)
     {
-        var question_id=ret[i][0];
-        var question_title=ret[i][1];
-        var question_answer_nums=ret[i][2];
-        question_title=question_title.replace(g_search_keyword,"<em>"+g_search_keyword+"</em>");
-        var data='<div class="List-item"><div class="ContentItem AnswerItem"><h2 class="ContentItem-title"><div><meta itemprop="url" content="/question/'+question_id+'"><a target="_blank" href="/question/'+question_id+'"><span class="Highlight">'+question_title+'</span></a></div></h2></div></div>';
-        $("#appendArea").append(data);
+        for ( var i in questions)
+        {
+            var question_id=questions[i][0];
+            var question_title=questions[i][1];
+            question_title=question_title.replace(g_search_keyword,"<em>"+g_search_keyword+"</em>");
+            var data='<div class="List-item"><div class="ContentItem AnswerItem"><h2 class="ContentItem-title"><div><meta itemprop="url" content="/question/'+question_id+'"><a target="_blank" href="/question/'+question_id+'"><span class="Highlight">'+question_title+'</span></a></div></h2></div></div>';
+            $("#appendArea").append(data);
+        }
+        for ( var i in articles)
+        {
+            var article_id=articles[i][0];
+            var article_title=articles[i][1];
+            article_title=article_title.replace(g_search_keyword,"<em>"+g_search_keyword+"</em>");
+            var data='<div class="List-item"><div class="ContentItem AnswerItem"><h2 class="ContentItem-title"><div><meta itemprop="url" content="/article/'+article_id+'"><a target="_blank" href="/article/'+article_id+'"><span class="Highlight">'+article_title+'</span></a></div></h2></div></div>';
+            $("#appendArea").append(data);
+        }
     }
 }
 function pushOneConversationMessagesElement(message_id)
@@ -2710,7 +2725,7 @@ function initElement()
         $('head title').text("搜索"+" - "+SITE);
         if(""==g_search_type)
         {
-            g_search_type="question";
+            g_search_type="content";
         }
         $(".Tabs-link").removeClass("is-active");
         $(".Tabs-link").each(function(){
