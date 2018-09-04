@@ -501,11 +501,12 @@ def search(request,type,order,start,end):
             users=User.objects.filter(first_name__contains=keyword)[int(start):int(end)].values_list("id","first_name","userprofile__avatar","userprofile__mood")
         elif type=='topic':
             topics=Topic.objects.filter(name__contains=keyword)[int(start):int(end)].values_list("id","name","avatar","detail")
-        ret_list.append(list(questions))
-        ret_list.append(list(articles))
-        ret_list.append(list(users))
-        ret_list.append(list(topics))
-        to_json=json.dumps(ret_list)
+        if questions or articles or users or topics:
+            ret_list.append(list(questions))
+            ret_list.append(list(articles))
+            ret_list.append(list(users))
+            ret_list.append(list(topics))
+            to_json=json.dumps(ret_list)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt

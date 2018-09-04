@@ -304,20 +304,6 @@ function appendNotificationElement(ret)
     }
 }
 
-function appendPopoverSearchElement(ret,keyword)
-{
-    var data='<div class="Popover-content Popover-content--bottom Popover-content--fixed Popover-content-enter Popover-content-enter-active" style="left: 212.4px; top: 43px;"><div class="Menu AutoComplete-menu SearchBar-menu" role="listbox"><div id="IdQuestion" class="AutoComplete-group"></div><div class="AutoComplete-group"><div role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div><a class="SearchBar-searchLink" data-za-not-track-link="true" href="/search?type=all&amp;q='+keyword+'" target="_blank">查看全部搜索结果</a></div></div></div></div></div></div></div>';
-    $('#searchInput').attr("data-content",data);
-    $('#searchInput').popover('show');
-    for (var i in ret)
-    {
-        var question_id=ret[i][0];
-        var question_title=ret[i][1];
-        var question_answer_num=ret[i][2];
-        var data='<div class="Menu-item" role="option"><div data-za-module="TopNavBar"><div data-za-module="SearchResultList"><div data-za-detail-view-path-module="QuestionItem"><a class="SearchBar-contentResult" data-za-not-track-link="true" href="/question/'+question_id+'" target="_blank">'+question_title+'<span class="SearchBar-contentSuffix">'+question_answer_num+' 个回答</span></a></div></div></div></div>';
-        $("#IdQuestion").append(data);
-    }
-}
 function appendCommentsElement(ret)
 {
     for( var i in ret)
@@ -647,6 +633,30 @@ function appendSearchPageElement(ret)
             $("#appendArea").append(data);
         }
     }
+    else if('people'==g_search_type)
+    {
+        for ( var i in users)
+        {
+            var people_id=users[i][0];
+            var people_name=users[i][1];
+            var people_avatar=users[i][2];
+            var people_mood=users[i][3];
+            var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><div class="Popover"><a class="UserLink-link" target="_blank" href="/er/'+people_id+'"><img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+people_avatar+'" srcset="'+people_avatar+'" alt="'+people_name+'"></a></div></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><div class="Popover"><a class="UserLink-link" data-za-detail-view-element_name="User" target="_blank" href="/er/'+people_id+'">'+people_name+'</a></div></span></div></h2><div class="ContentItem-meta"><div><div class="RichText">'+people_mood+'</div></div></div></div></div></div></div>';
+            $("#appendArea").append(data);
+        }
+    }
+    else if('topic'==g_search_type)
+    {
+        for ( var i in topics)
+        {
+            var topic_id=topics[i][0];
+            var topic_name=topics[i][1];
+            var topic_avatar=topics[i][2];
+            var topic_detail=topics[i][3];
+            var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><img class="Avatar Avatar--large" width="60" height="60" src="'+topic_avatar+'" srcset="'+topic_avatar+' 2x"></div><div class="ContentItem-head"><h2 class="ContentItem-title"><a class="TopicLink" href="/topic/'+topic_id+'" target="_blank"><div class="Popover"><div>'+topic_name+'</div></div></a></h2><div class="ContentItem-meta"><div class="ContentItem-status">'+topic_detail+'</div></div></div></div></div></div>';
+            $("#appendArea").append(data);
+        }
+    }
 }
 function pushOneConversationMessagesElement(message_id)
 {
@@ -814,7 +824,7 @@ function appendFollowOrMoreElement(ret)
             //    var followed_each_html='<span class="FollowStatus">相互关注</span>';
             //else
                 var followed_each_html='';
-            var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><div class="Popover"><div id="Popover-28784-64463-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-64463-content"><a class="UserLink-link" target="_blank" href="/er/'+people_id+'"><img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+people_avatar+'" srcset="'+people_avatar+'" alt="'+people_name+'"></a></div></div></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><div class="Popover"><div id="Popover-28784-44728-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-28784-44728-content"><a class="UserLink-link" data-za-detail-view-element_name="User" target="_blank" href="/er/'+people_id+'">'+people_name+'</a></div></div></span>'+followed_each_html+'</div></h2><div class="ContentItem-meta"><div><div class="RichText">'+people_mood+'</div><div class="ContentItem-status"><span class="ContentItem-statusItem">'+people_anwser_nums+' 回答</span><span class="ContentItem-statusItem">'+people_article_nums+' 文章</span><span class="ContentItem-statusItem">'+people_follower_nums+' 关注者</span></div></div></div></div><div class="ContentItem-extra">'+followed_html+'</div></div></div></div>';
+            var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><span class="UserLink UserItem-avatar"><div class="Popover"><div><a class="UserLink-link" target="_blank" href="/er/'+people_id+'"><img class="Avatar Avatar--large UserLink-avatar" width="60" height="60" src="'+people_avatar+'" srcset="'+people_avatar+'" alt="'+people_name+'"></a></div></div></span></div><div class="ContentItem-head"><h2 class="ContentItem-title"><div class="UserItem-title"><span class="UserLink UserItem-name"><div class="Popover"><div><a class="UserLink-link" data-za-detail-view-element_name="User" target="_blank" href="/er/'+people_id+'">'+people_name+'</a></div></div></span>'+followed_each_html+'</div></h2><div class="ContentItem-meta"><div><div class="RichText">'+people_mood+'</div><div class="ContentItem-status"><span class="ContentItem-statusItem">'+people_anwser_nums+' 回答</span><span class="ContentItem-statusItem">'+people_article_nums+' 文章</span><span class="ContentItem-statusItem">'+people_follower_nums+' 关注者</span></div></div></div></div><div class="ContentItem-extra">'+followed_html+'</div></div></div></div>';
             $("#appendArea").append(data);
         }
         else if("topics"==g_subcmd)
@@ -824,7 +834,7 @@ function appendFollowOrMoreElement(ret)
             var topic_avatar=ret[i][2];
             var topic_detail=ret[i][3];
             
-            var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><img class="Avatar Avatar--large" width="60" height="60" src="'+topic_avatar+'" srcset="'+topic_avatar+' 2x"></div><div class="ContentItem-head"><h2 class="ContentItem-title"><a class="TopicLink" href="/topic/'+topic_id+'" target="_blank"><div class="Popover"><div id="Popover-92518-2569-toggle" aria-haspopup="true" aria-expanded="false" aria-owns="Popover-92518-2569-content">'+topic_name+'</div></div></a></h2><div class="ContentItem-meta"><div class="ContentItem-status">'+topic_detail+'</div></div></div></div></div></div>';
+            var data='<div class="List-item"><div class="ContentItem"><div class="ContentItem-main"><div class="ContentItem-image"><img class="Avatar Avatar--large" width="60" height="60" src="'+topic_avatar+'" srcset="'+topic_avatar+' 2x"></div><div class="ContentItem-head"><h2 class="ContentItem-title"><a class="TopicLink" href="/topic/'+topic_id+'" target="_blank"><div class="Popover"><div>'+topic_name+'</div></div></a></h2><div class="ContentItem-meta"><div class="ContentItem-status">'+topic_detail+'</div></div></div></div></div></div>';
             $("#appendArea").append(data);
         }
         else if("questions"==g_subcmd)
@@ -2732,6 +2742,7 @@ function initElement()
             if($(this).attr("data-search-type")==g_search_type)
                 $(this).addClass("is-active");
         });
+        $("#searchInput").focus();
         checkSearch();
     }
     else if("setting"==g_module)
@@ -3326,7 +3337,6 @@ $(document).click(function(e) {
     $("#NotificationPopover").popover("hide");
     $("#MessagePopover").popover("hide");
     $("#MenuPopover").popover("hide");
-    $("#SearchPopover").popover("hide");
 });
 window.onscroll = function () { 
     if("false"==g_init_done)
