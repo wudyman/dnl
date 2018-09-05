@@ -148,3 +148,11 @@ class Message(models.Model):
     pub_date=models.DateTimeField('published',default=timezone.now)
     def __str__(self):
         return str(self.id)
+class Keyword(models.Model):
+    #id=models.BigAutoField(primary_key=True)
+    name=models.CharField(max_length=100)
+    hot=models.IntegerField(default=0)
+    sums=models.IntegerField(default=0)
+    update_date=models.DateTimeField('update',auto_now=True)
+    def __str__(self):
+        return str(self.id)
