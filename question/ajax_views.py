@@ -502,6 +502,16 @@ def search(request,type,order,start,end):
         elif type=='topic':
             topics=Topic.objects.filter(name__contains=keyword)[int(start):int(end)].values_list("id","name","avatar","detail")
         if questions or articles or users or topics:
+            ky=None
+            try:
+                ky=Keyword.objects.get(name=keyword)
+            except Keyword.DoesNotExist:
+                print("none data")
+            if not ky:
+                ky=Keyword()
+                ky.name=keyword
+            ky.sums+=1
+            ky.save()
             ret_list.append(list(questions))
             ret_list.append(list(articles))
             ret_list.append(list(users))
