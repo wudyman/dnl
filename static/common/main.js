@@ -1298,14 +1298,28 @@ function checkSearch()
                 if (""!=g_search_keyword)
                 {
                     $(".Icon.Icon--search").css({"fill":"#228b22"});
-                    $("#appendArea").empty();
-                    g_last_getmoredata_index=0;
-                    getMoreData();
                 }
                 else
                 {
                     $(".Icon.Icon--search").css({"fill":"#afbdcf"});
                 }
+            }
+        }
+    });
+    
+    $("#search_button").off("click");
+    $("#search_button").on("click",function(){
+        if("false"==input_lock)
+        {
+            if (""!=g_search_keyword)
+            {
+                $("#appendArea").empty();
+                g_last_getmoredata_index=0;
+                getMoreData();
+            }
+            else
+            {
+                $("#appendArea").empty().append('<div class="List-item NoMoreData"><div class="ContentItem" ><div class="ContentItem-status"  style="text-align:center">请输入有效的关键字</div></div></div>');
             }
         }
     });
@@ -2998,6 +3012,7 @@ function initElement()
             if($(this).attr("data-search-type")==g_search_type)
                 $(this).addClass("is-active");
         });
+        $("#search_button").removeClass("is-hide");
         $("#searchInput").focus();
         checkSearch();
     }
