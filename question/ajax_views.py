@@ -692,6 +692,7 @@ def comment(request):
                 comment_list=[[comment.id,comment.content,comment.like_nums,comment.parent_id,str(comment.pub_date),comment.author.id,comment.author.first_name,comment.author.userprofile.avatar,comment.author.userprofile.mood]]
                 to_json=json.dumps(comment_list)
     return HttpResponse(to_json,content_type='application/json')
+@csrf_exempt
 def hotwords(request):
     to_json=json.dumps('fail')
     hotwords=Keyword.objects.order_by('-sums')[0:10].values_list('name','sums')
