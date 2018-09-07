@@ -704,6 +704,12 @@ def user_data(request,userid):
     user=request.user
     if user.is_authenticated:
         type=request.POST.get('type')
+        lastNotificationTime=request.POST.get('lastNotificationTime')
+        lastConversationTime=request.POST.get('lastConversationTime')
+        if not lastNotificationTime:
+            lastNotificationTime= datetime.now()+ timedelta(days=-30)
+        if not lastConversationTime:
+            lastConversationTime= datetime.now()+ timedelta(days=-30)
         if 'all'==type:
             ret_list=[]
 
@@ -711,12 +717,18 @@ def user_data(request,userid):
             follow_topics=user.followtopics.values_list("id",flat=True)
             follow_questions=user.followquestions.values_list("id",flat=True)
             user_profile=[user.id,user.first_name,user.userprofile.avatar,user.userprofile.mood]
+            notifications=user.receives.order_by('-pub_date').filter(pub_date__gt=lastNotificationTime).values_list("id","type","pub_date","sender__id","sender__first_name","target__id","target__title","status")
+            conversations=Conversation.objects.filter(initator__id=user.id) | Conversation.objects.filter(parter__id=user.id)
+            conversations=conversations.order_by('-update_date').filter(update_date__gt=lastConversationTime).values_list("id","delete_id","update_date","initator__id","initator__first_name","initator__userprofile__avatar",
+            "parter__id","parter__first_name","parter__userprofile__avatar","latest_message_content")
 
             ret_list.append(list(follow_peoples))
             ret_list.append(list(follow_topics))
             ret_list.append(list(follow_questions))
             ret_list.append(user_profile)
-            to_json=json.dumps(ret_list)
+            ret_list.append(list(notifications))
+            ret_list.append(list(conversations))
+            to_json=json.dumps(ret_list,cls=CJsonEncoder)
         elif 'follow'==type:
             ret_list=[]
 
