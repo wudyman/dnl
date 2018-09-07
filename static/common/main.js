@@ -1282,6 +1282,35 @@ function checkSearchSelect()
     
     });
 }
+function checkSearchHot()
+{
+    var url="/ajax/hotwords/";
+    if("true"==g_lock_ajax)
+        return;
+    g_lock_ajax="true";
+    $.post(url,function(ret){
+        if('fail'!=ret)
+        {
+            for (i in ret)
+            {
+                var keyword=ret[i][0];
+                var data='<div class="TopSearch-item"><a class="TopSearch-itemLink" target="_blank" href="javascript:"><span class="TopSearch-itemText">'+keyword+'</span></a></div>';
+                $(".TopSearch-items").append(data);
+            }
+            
+            $(".TopSearch-itemLink").each(function(){
+                $(this).click(function(){
+                    g_search_keyword=$(this).children(".TopSearch-itemText").text();
+                    $("#searchInput").val(g_search_keyword);
+                    $("#appendArea").empty();
+                    g_last_getmoredata_index=0;
+                    getMoreData();
+                });
+            });
+        }
+        g_lock_ajax="false";
+    });
+}
 function checkSearch()
 {
     var input_lock="false";
@@ -3001,9 +3030,6 @@ function initElement()
         $(".Card-section.Topic--current .RichText").empty().text(g_topic_name);
         $(".Card-section.Topic--current .ContentItem-statusItem").html(g_topic_detail);
         $('#appendArea').empty();
-                
-        
-
     }
     else if("alltopics"==g_module)
     {
@@ -3023,6 +3049,7 @@ function initElement()
         });
         $("#search_button").removeClass("is-hide");
         $("#searchInput").focus();
+        checkSearchHot();
         checkSearch();
     }
     else if("setting"==g_module)
