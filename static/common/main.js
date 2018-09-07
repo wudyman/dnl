@@ -883,6 +883,18 @@ function appendQuestionElement(ret)
         $("#appendArea").append(data);
     }
 }
+function appendArticleElement(ret)
+{
+    for (var i in ret)
+    {
+        var article_id=ret[i][0];
+        var article_title=ret[i][1];
+        var article_pub_date=ret[i][2];
+        
+        var data='<div class="List-item"><div class="ContentItem"><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/article/'+article_id+'" target="_blank">'+article_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+getDateDiff(article_pub_date)+'</span></div></div></div>';
+        $("#appendArea").append(data);
+    }
+}
 function appendFollowOrMoreElement(ret)
 {
     for (var i in ret)
@@ -1407,7 +1419,7 @@ function checkPopoverShow(){
                 var who_han="他";
             }
             
-            var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+author_avatar+'" srcset="'+author_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><span><a href="/er/'+author_id+'">'+author_name+'</a></span></div><div class="HoverCard-subtitle"><span class="RichText">'+author_mood+'</span></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+author_answer_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/posts"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">'+author_article_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="people-followed">'+author_follower_nums+'</div></a></div>';
+            var data1='<div><div class="HoverCard-titleContainer HoverCard-titleContainer--noAvatar"><img class="Avatar Avatar--large HoverCard-avatar" width="68" height="68" src="'+author_avatar+'" srcset="'+author_avatar+'"><div class="HoverCard-titleText"><div class="HoverCard-title"><span><a href="/er/'+author_id+'">'+author_name+'</a></span></div><div class="HoverCard-subtitle"><span class="RichText">'+author_mood+'</span></div></div></div></div><div class="HoverCard-item"><div class="NumberBoard"><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/answers"><div class="NumberBoard-name">回答</div><div class="NumberBoard-value">'+author_answer_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/articles"><div class="NumberBoard-name">文章</div><div class="NumberBoard-value">'+author_article_nums+'</div></a><a class="Button NumberBoard-item Button--plain" type="button" href="/er/'+author_id+'/followers"><div class="NumberBoard-name">关注者</div><div class="NumberBoard-value" data-update-value-type="people-followed">'+author_follower_nums+'</div></a></div>';
             if($.inArray(""+author_id,g_user_follow_peoples_list)>=0)
                 var data2='<div class="MemberButtonGroup ProfileButtonGroup HoverCard-buttons"><button class="Button FollowButton Button--primary Button--grey" type="button" data-er-id="'+author_id+'" data-follow-type="people" data-followed="true" data-who="'+who+'">已关注</button><button class="Button" type="button" data-toggle="modal" data-target="#letterModal">'+letter_icon_svg+'<span>发私信</span></button></div></div>';
             else
@@ -2780,12 +2792,17 @@ function getMoreData()
         else if ("asks"==g_command)
         {
             var url="/ajax/er/"+g_er_id+"/asks/";
-            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP*10};
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP};
+        }
+        else if ("articles"==g_command)
+        {
+            var url="/ajax/er/"+g_er_id+"/articles/";
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP};
         }
         else if ("following"==g_command)
         {
             var url="/ajax/er/"+g_er_id+"/following/"+g_subcmd+"/";
-            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP*10};
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP};
         }
     }
     else if("answer_page"==g_module)
@@ -2850,6 +2867,10 @@ function getMoreData()
                 else if ("asks"==g_command)
                 {
                     appendQuestionElement(ret);
+                }
+                else if ("articles"==g_command)
+                {
+                    appendArticleElement(ret);
                 }
                 else if ("following"==g_command)
                 {
@@ -3199,37 +3220,35 @@ function initElement()
            
         var answers_active="";
         var asks_active="";
-        var posts_active="";
+        var articles_active="";
         var following_active="";	
         if ("answers"==g_command)
         {
             answers_active="is-active";
             var data='<div class="List Profile-answers"><div class="List-header"><h4 class="List-headerText"><span>'+g_who_han+'的回答</span></h4></div><div id="appendArea"></div></div>';
             $("#profileMainContent").append(data);
-            //appendAnswerElement();
         }
         else if("asks"==g_command)
         {
             asks_active="is-active";
             var data='<div class="List Profile-answers"><div class="List-header"><h4 class="List-headerText"><span>'+g_who_han+'的问题</span></h4></div><div id="appendArea"></div></div>';
             $("#profileMainContent").append(data);
-            //appendQuestionElement();
         }
-        else if("posts"==g_command)
+        else if("articles"==g_command)
         {
-            posts_active="is-active";
-            //appendQuestionElement();
+            articles_active="is-active";
+            var data='<div class="List Profile-answers"><div class="List-header"><h4 class="List-headerText"><span>'+g_who_han+'的文章</span></h4></div><div id="appendArea"></div></div>';
+            $("#profileMainContent").append(data);
         }
         else if("following"==g_command)
         {
             following_active="is-active";
             appendFollowOrMoreHead();
-            //appendFollowElement();
         }
         else 
             console.log("false");
         
-        var tabs='<li role="tab" class="Tabs-item" aria-controls="Profile-answers"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答<span class="Tabs-meta">'+g_answer_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-asks"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问<span class="Tabs-meta">'+g_question_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-posts"><a class="Tabs-link '+posts_active+'" href="/er/'+g_er_id+'/posts/">文章<span class="Tabs-meta">0</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-following"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注<span class="Tabs-meta"><svg viewBox="0 0 10 6" class="Icon ProfileMain-tabIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></span></a></li>';
+        var tabs='<li role="tab" class="Tabs-item" aria-controls="Profile-answers"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答<span class="Tabs-meta">'+g_answer_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-asks"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问<span class="Tabs-meta">'+g_question_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-articles"><a class="Tabs-link '+articles_active+'" href="/er/'+g_er_id+'/articles/">文章<span class="Tabs-meta">'+g_article_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-following"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注<span class="Tabs-meta"><svg viewBox="0 0 10 6" class="Icon ProfileMain-tabIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></span></a></li>';
         $(".Tabs.ProfileMain-tabs").append(tabs);
         
         

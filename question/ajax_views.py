@@ -235,11 +235,15 @@ def get_er_all(request,erid,command):
             answers_list=list(answers)
             to_json=json.dumps(answers_list,cls=CJsonEncoder)
     elif 'asks'==command:
-        #questions=er.selfquestions.all()
         questions=User.objects.filter(id=erid).values_list("selfquestions__id","selfquestions__title","selfquestions__answer_nums","selfquestions__follower_nums","selfquestions__pub_date")[int(start):int(end)]
         if questions and questions[0][0]!=None:
             questions_list=list(questions)
             to_json=json.dumps(questions_list,cls=CJsonEncoder)
+    elif 'articles'==command:
+        articles=User.objects.filter(id=erid).values_list("selfarticles__id","selfarticles__title","selfarticles__pub_date","selfarticles__update_date")[int(start):int(end)]
+        if articles and articles[0][0]!=None:
+            articles_list=list(articles)
+            to_json=json.dumps(articles_list,cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt

@@ -795,6 +795,18 @@ function appendQuestionElement(ret)
         $("#appendArea").append(data);
     }
 }
+function appendArticleElement(ret)
+{
+    for (var i in ret)
+    {
+        var article_id=ret[i][0];
+        var article_title=ret[i][1];
+        var article_pub_date=ret[i][2];
+        
+        var data='<div class="List-item"><div class="ContentItem"><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/article/'+article_id+'" target="_blank">'+article_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+getDateDiff(article_pub_date)+'</span></div></div></div>';
+        $("#appendArea").append(data);
+    }
+}
 function appendFollowOrMoreElement(ret)
 {
     for (var i in ret)
@@ -1858,7 +1870,6 @@ function checkSelectOption()
             console.log("select has init");
         }
         
-        
     });
 }
 
@@ -2447,7 +2458,12 @@ function getMoreData()
         else if ("asks"==g_command)
         {
             var url="/ajax/er/"+g_er_id+"/asks/";
-            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP*10};
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP};
+        }
+        else if ("articles"==g_command)
+        {
+            var url="/ajax/er/"+g_er_id+"/articles/";
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP};
         }
         else if ("following"==g_command)
         {
@@ -2455,7 +2471,7 @@ function getMoreData()
             if($("main").find(".ReturnHomePage").length<=0)
                 return;
             var url="/ajax/er/"+g_er_id+"/following/"+g_subcmd+"/";
-            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP*10};
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP};
         }
     }
     else if("answer_page"==g_module)
@@ -2516,6 +2532,10 @@ function getMoreData()
                 else if ("asks"==g_command)
                 {
                     appendQuestionElement(ret);
+                }
+                else if ("articles"==g_command)
+                {
+                    appendArticleElement(ret);
                 }
                 else if ("following"==g_command)
                 {
@@ -2876,33 +2896,29 @@ function initElement()
            
         var answers_active="";
         var asks_active="";
-        var posts_active="";
+        var articles_active="";
         var following_active="";	
         if ("answers"==g_command)
         {
             answers_active="is-active";
-            //appendAnswerElement();
         }
         else if("asks"==g_command)
         {
             asks_active="is-active";
-            //appendQuestionElement();
         }
-        else if("posts"==g_command)
+        else if("articles"==g_command)
         {
-            posts_active="is-active";
-            //appendQuestionElement();
+            articles_active="is-active";
         }
         else if("following"==g_command)
         {
             following_active="is-active";
             appendFollowOrMoreHead();
-            //appendFollowElement();
         }
         else 
             console.log("false");
         
-        var ul_list='<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-answers"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-articals"><a class="Tabs-link '+posts_active+'" href="/er/'+g_er_id+'/posts/">文章</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-questions"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注</a></li>'
+        var ul_list='<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-answers"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-articals"><a class="Tabs-link '+articles_active+'" href="/er/'+g_er_id+'/articles/">文章</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-questions"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注</a></li>'
         $(".Tabs.ProfileBar").append(ul_list);
         
         setLetterReceiver(g_er_id,g_er_name);
@@ -3142,7 +3158,6 @@ function initData()
             
             g_init_data_done="true";
         }
-
     }
     else
 {
