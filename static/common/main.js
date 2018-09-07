@@ -51,7 +51,11 @@ function delCookie(name)
     if(cval!=null)
         document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 }
-
+function getTimeNow()
+{
+    var date=new Date();
+    return date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+' '+date.getHours()+ ':' +date.getMinutes()+':'+date.getSeconds();
+}
 function getDateDiff(dateStr) {
     var timestamp = Date.parse(new Date(dateStr.replace(/-/g,"/")));
     var publishTime = timestamp / 1000,
@@ -1443,7 +1447,9 @@ function checkPopoverShow(){
 
     $('#NotificationPopover').off("click");
     $('#NotificationPopover').click(function(e){
-        console.log("NotificationPopover click");
+        saveUserDataToCookie("lnt",getTimeNow());
+        saveUserDataToCookie("gnn",0);
+        $("#NotificationPopover .PushNotifications-count").addClass("is-hide");
         $("#MessagePopover").popover("hide");
         $("#MenuPopover").popover("hide");
         e.stopPropagation();
@@ -1484,6 +1490,9 @@ function checkPopoverShow(){
     
     $('#MessagePopover').off("click");
     $('#MessagePopover').click(function(e){
+        saveUserDataToCookie("lct",getTimeNow());
+        saveUserDataToCookie("gcn",0);
+        $("#MessagePopover .Messages-count").addClass("is-hide");
         $("#NotificationPopover").popover("hide");
         $("#MenuPopover").popover("hide");
         e.stopPropagation();
@@ -2874,6 +2883,10 @@ function initElement()
     if("true"==g_logged)
     { 
         $("#MenuPopover").attr("data-er-id",g_user_id).attr("data-er-avatar",g_user_avatar).find("img").attr("src",g_user_avatar).removeClass("is-hide");
+        if(gNotificationsNums>0)
+            $("#NotificationPopover .PushNotifications-count").removeClass("is-hide").text(gNotificationsNums);
+        if(gConversationsNums>0)
+            $("#MessagePopover .Messages-count").removeClass("is-hide").text(gConversationsNums);
         appendLetterModal();
     }
     $('head title').text(SITE+" - "+SITE_SLOGAN);
@@ -3032,6 +3045,18 @@ function initElement()
         {
             var data='<div class="List-item"><div><label><input type="radio" name="notification-receive" value="all" checked="">允许接收通知</label>&nbsp;<label><input type="radio" name="notification-receive" value="all" checked="">禁止接收通知</label></div><button type="submit" class="Button Button--primary Button--green">保存</button></div><div class="List-item"><div><label><input type="radio" name="inboxmsg-receive" value="all" checked="">允许接收私信</label>&nbsp;<label><input type="radio" name="inboxmsg-receive" value="all" checked="">禁止接收私信</label></div><button type="submit" class="Button Button--primary Button--green">保存</button></div>';;
             $('#appendArea').prepend(data);
+        }
+        else if("notifications"==g_setting_type)
+        {
+            saveUserDataToCookie("lnt",getTimeNow());
+            saveUserDataToCookie("gnn",0);
+            $("#NotificationPopover .PushNotifications-count").addClass("is-hide");
+        }
+        else if("conversations"==g_setting_type)
+        {
+            saveUserDataToCookie("lct",getTimeNow());
+            saveUserDataToCookie("gcn",0);
+            $("#MessagePopover .Messages-count").addClass("is-hide");
         }
         checkSettingPage();
     }
@@ -3382,7 +3407,10 @@ function initData()
         
         g_user_token=g_user_id.substr(g_user_id.length-5,g_user_id.length); 
         g_cookie_expire=1*24*60*60;        
-                            
+        
+        gNotificationsNums=getCookie("gnn"+g_user_token);
+        gConversationsNums=getCookie("gcn"+g_user_token);
+                    
         var user_follow_peoples=getCookie("ufp"+g_user_token);
         var user_follow_topics=getCookie("uft"+g_user_token);
         var user_follow_questions=getCookie("ufq"+g_user_token);
@@ -3390,7 +3418,9 @@ function initData()
         if((null==user_follow_peoples)||(null==user_follow_questions)||(null==user_follow_topics)|(null==user_profile))
         {          
             var url='/ajax/user_data/'+g_user_id+'/';
-            var post_data={"type":"all"};
+            var lastNotificationTime=getCookie("lnt"+g_user_token);
+            var lastConversationTime=getCookie("lct"+g_user_token);
+            var post_data={"type":"all","lastNotificationTime":lastNotificationTime,"lastConversationTime":lastConversationTime};
             $.post(url,post_data,function(ret){
                 if("fail"!=ret)
                 {
@@ -3405,6 +3435,11 @@ function initData()
                     saveUserDataToCookie("uft",ret[1]);
                     saveUserDataToCookie("ufq",ret[2]);
                     saveUserDataToCookie("up",ret[3]);
+                    
+                    gNotificationsNums=ret[4].length;
+                    gConversationsNums=ret[5].length;
+                    saveUserDataToCookie("gnn",gNotificationsNums);
+                    saveUserDataToCookie("gcn",gConversationsNums);        
                 }
                 g_init_data_done="true";
                 initElement();
@@ -3422,7 +3457,6 @@ function initData()
             
             g_init_data_done="true";
         }
-
     }
     else
     {
@@ -3432,10 +3466,15 @@ function initData()
 
 function saveUserDataToCookie(type,data)
 {
-    if("ufp11"==type)
+    if(("lnt"==type)||("lct"==type))
     {
-        delCookie("ufp"+g_user_token);
-        setCookie("ufp"+g_user_token,utf8_to_b64(data),g_cookie_expire);
+        delCookie(type+g_user_token);
+        setCookie(type+g_user_token,data,30*24*60*60);
+    }
+    else if(("gnn"==type)||("gcn"==type))
+    {
+        delCookie(type+g_user_token);
+        setCookie(type+g_user_token,data,30*24*60*60);
     }
     else{
         delCookie(type+g_user_token);
