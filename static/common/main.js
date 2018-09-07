@@ -91,7 +91,6 @@ function getDateDiff(dateStr) {
     d_minutes = parseInt(d / 60);
     d_seconds = parseInt(d);
     
-
     if (d_days > 0 && d_days < 8) {
     return d_days + '天前';
     } else if (d_days <= 0 && d_hours > 0) {
@@ -110,7 +109,6 @@ function getDateDiff(dateStr) {
     return Y + '-' + M + '-' + D + ' ' + H + ':' + m;
     }
 }
-
 function countDown()
 {
     if(0==g_countdown_secs)
@@ -271,6 +269,10 @@ function uploadImage(type,file)
                 {
                     $("#upAvatarModal").modal('hide');
                     $("#id_avatar").attr("src",url).attr("srcset",url);
+                    var user_profile=getCookie("up"+g_user_token);
+                    g_user_profile_list=b64_to_utf8(user_profile).split(",");
+                    g_user_profile_list[2]=url;
+                    saveUserDataToCookie("up",g_user_profile_list);
                 }                  
             }
         }
@@ -1105,24 +1107,18 @@ function checkFollow()
                     
                     if("question"==follow_type)
                     {
-                        delCookie("ufq"+g_user_token);
-                        setCookie("ufq"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
-                        var user_follow_questions=getCookie("ufq"+g_user_token);
-                        g_user_follow_questions_list=b64_to_utf8(user_follow_questions).split(",");                        
+                        saveUserDataToCookie("ufq",ret[1]);
+                        g_user_follow_questions_list=String(ret[1]).split(",");                       
                     }
                     else if("people"==follow_type)
                     {
-                        delCookie("ufp"+g_user_token);
-                        setCookie("ufp"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
-                        var user_follow_peoples=getCookie("ufp"+g_user_token);
-                        g_user_follow_peoples_list=b64_to_utf8(user_follow_peoples).split(",");
+                        saveUserDataToCookie("ufp",ret[1]);
+                        g_user_follow_peoples_list=String(ret[1]).split(",");
                     }
                     else if("topic"==follow_type)
                     {
-                        delCookie("uft"+g_user_token);
-                        setCookie("uft"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
-                        var user_follow_topics=getCookie("uft"+g_user_token);
-                        g_user_follow_topics_list=b64_to_utf8(user_follow_topics).split(",");
+                        saveUserDataToCookie("uft",ret[1]);
+                        g_user_follow_topics_list=String(ret[1]).split(",");
                     }
                     updateFollowValue(update_value_type,ret[0]);
                 }
@@ -3283,7 +3279,6 @@ function initElement()
 function initData()
 {
 	var str_main_data=$("main").attr("data-dfs-main");
-	console.log(str_main_data);
 	var main_data=JSON.parse(str_main_data);//str_main_data.parseJSON();
 	g_logged=main_data.logged;
 
@@ -3383,8 +3378,7 @@ function initData()
     {               
         g_user_id=main_data.user_id;
         g_user_name=main_data.user_name;
-        //g_user_avatar=main_data.user_avatar;
-        //g_user_mood=main_data.user_mood;
+        g_user_avatar='';
         
         g_user_token=g_user_id.substr(g_user_id.length-5,g_user_id.length); 
         g_cookie_expire=1*24*60*60;        
@@ -3405,25 +3399,15 @@ function initData()
                     g_user_follow_questions_list=String(ret[2]).split(",");
                     g_user_profile_list=ret[3];
                     
-                    //g_user_id=g_user_profile_list[0];
-                    //g_user_name=g_user_profile_list[1];
                     g_user_avatar=g_user_profile_list[2];
-                    g_user_mood=g_user_profile_list[3];
                     
-
-            
-                    delCookie("ufp"+g_user_token);
-                    delCookie("uft"+g_user_token);
-                    delCookie("ufq"+g_user_token);
-                    delCookie("up"+g_user_token);
-                    
-                    setCookie("ufp"+g_user_token,utf8_to_b64(ret[0]),g_cookie_expire);
-                    setCookie("uft"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
-                    setCookie("ufq"+g_user_token,utf8_to_b64(ret[2]),g_cookie_expire);
-                    setCookie("up"+g_user_token,utf8_to_b64(ret[3]),g_cookie_expire);  
+                    saveUserDataToCookie("ufp",ret[0]);
+                    saveUserDataToCookie("uft",ret[1]);
+                    saveUserDataToCookie("ufq",ret[2]);
+                    saveUserDataToCookie("up",ret[3]);
                 }
                 g_init_data_done="true";
-                initElement()
+                initElement();
                 action();
             });
         }
@@ -3434,10 +3418,7 @@ function initData()
             g_user_follow_questions_list=b64_to_utf8(user_follow_questions).split(",");
             g_user_profile_list=b64_to_utf8(user_profile).split(",");           
             
-            //g_user_id=g_user_profile_list[0];
-            //g_user_name=g_user_profile_list[1];
             g_user_avatar=g_user_profile_list[2];
-            g_user_mood=g_user_profile_list[3];
             
             g_init_data_done="true";
         }
@@ -3448,6 +3429,19 @@ function initData()
         g_init_data_done="true";
     }
 } 
+
+function saveUserDataToCookie(type,data)
+{
+    if("ufp11"==type)
+    {
+        delCookie("ufp"+g_user_token);
+        setCookie("ufp"+g_user_token,utf8_to_b64(data),g_cookie_expire);
+    }
+    else{
+        delCookie(type+g_user_token);
+        setCookie(type+g_user_token,utf8_to_b64(data),g_cookie_expire);
+    }
+}
 function action()
 {
     if("false"==g_init_element_done)
