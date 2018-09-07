@@ -52,7 +52,6 @@ function delCookie(name)
         document.cookie= name + "="+cval+";expires="+exp.toGMTString()+";path=/";
 }
 
-
 function getDateDiff(dateStr) {
     var timestamp = Date.parse(new Date(dateStr.replace(/-/g,"/")));
     var publishTime = timestamp / 1000,
@@ -185,6 +184,10 @@ function uploadImage(type,file)
                 else if(("forAvatar"==type)||("forTopicAvatar"==type))
                 {
                     $("#id_avatar").attr("src",url).attr("srcset",url);  
+                    var user_profile=getCookie("up"+g_user_token);
+                    g_user_profile_list=b64_to_utf8(user_profile).split(",");
+                    g_user_profile_list[2]=url;
+                    saveUserDataToCookie("up",g_user_profile_list);
                 }
             }
         }
@@ -451,7 +454,7 @@ function appendAnswerElementList(ret,type,direction)
                 var author_answer_nums=ret[i][17];
                 var author_followto_nums=ret[i][18];
                 var author_follower_nums=ret[i][19];
-                var author_followtopic_nums=ret[i][21];
+                var author_followtopic_nums=ret[i][20];
                 var author_followquestion_nums=ret[i][21];                              
             }
             else if("homepage"==type)
@@ -786,7 +789,7 @@ function appendQuestionElement(ret)
         var question_title=ret[i][1];
         var question_answer_nums=ret[i][2];
         var question_follower_nums=ret[i][3];
-        var question_pub_date=ret[i][4].split(".")[0];
+        var question_pub_date=ret[i][4];
         
         var data='<div class="List-item"><div class="ContentItem"><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/question/'+question_id+'" target="_blank">'+question_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+getDateDiff(question_pub_date)+'</span><span class="ContentItem-statusItem">'+question_answer_nums+' 个回答</span><span class="ContentItem-statusItem">'+question_follower_nums+' 个关注</span></div></div></div>';
         $("#appendArea").append(data);
@@ -1007,24 +1010,18 @@ function checkFollow()
                     
                     if("question"==follow_type)
                     {
-                        delCookie("ufq"+g_user_token);
-                        setCookie("ufq"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
-                        var user_follow_questions=getCookie("ufq"+g_user_token);
-                        g_user_follow_questions_list=b64_to_utf8(user_follow_questions).split(",");                        
+                        saveUserDataToCookie("ufq",ret[1]);
+                        g_user_follow_questions_list=String(ret[1]).split(",");                       
                     }
                     else if("people"==follow_type)
                     {
-                        delCookie("ufp"+g_user_token);
-                        setCookie("ufp"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
-                        var user_follow_peoples=getCookie("ufp"+g_user_token);
-                        g_user_follow_peoples_list=b64_to_utf8(user_follow_peoples).split(",");
+                        saveUserDataToCookie("ufp",ret[1]);
+                        g_user_follow_peoples_list=String(ret[1]).split(",");
                     }
                     else if("topic"==follow_type)
                     {
-                        delCookie("uft"+g_user_token);
-                        setCookie("uft"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
-                        var user_follow_topics=getCookie("uft"+g_user_token);
-                        g_user_follow_topics_list=b64_to_utf8(user_follow_topics).split(",");
+                        saveUserDataToCookie("uft",ret[1]);
+                        g_user_follow_topics_list=String(ret[1]).split(",");
                     }
                     updateFollowValue(update_value_type,ret[0]);
                 }
@@ -2950,7 +2947,7 @@ function initElement()
         }
         $(".FollowButton").addClass(button_follow_class).removeClass("is-hide").attr("data-er-id",g_article_author_id).attr("data-followed",followed).attr("data-who",data_who).children("span").text(follow_text);
         
-        $(".Post-Author .AuthorInfo-avatarWrapper .UserLink-link").attr("href","/er/"+g_article_author_id).attr("data-author-id",g_article_author_id).children("img").attr("alt",g_article_author_name).attr("src",g_article_author_avatar);
+        $(".Post-Author .AuthorInfo-avatarWrapper .UserLink-link").attr("href","/er/"+g_article_author_id).children("img").attr("alt",g_article_author_name).attr("src",g_article_author_avatar);
         $(".Post-Author .AuthorInfo-name .UserLink-link").attr("href","/er/"+g_article_author_id).empty().text(g_article_author_name);
         $(".Post-Author .AuthorInfo-detail .AuthorInfo-badgeText").html(g_article_author_mood);
         
@@ -3006,7 +3003,6 @@ function initElement()
 function initData()
 {
 	var str_main_data=$("main").attr("data-dfs-main");
-	console.log(str_main_data);
 	var main_data=JSON.parse(str_main_data);//str_main_data.parseJSON();
 	g_logged=main_data.logged;
                     
@@ -3102,8 +3098,7 @@ function initData()
     {               
         g_user_id=main_data.user_id;
         g_user_name=main_data.user_name;
-        //g_user_avatar=main_data.user_avatar;
-        //g_user_mood=main_data.user_mood;
+        g_user_avatar='';
         
         g_user_token=g_user_id.substr(g_user_id.length-5,g_user_id.length); 
         g_cookie_expire=1*24*60*60;        
@@ -3124,25 +3119,15 @@ function initData()
                     g_user_follow_questions_list=String(ret[2]).split(",");
                     g_user_profile_list=ret[3];
                     
-                    //g_user_id=g_user_profile_list[0];
-                    //g_user_name=g_user_profile_list[1];
                     g_user_avatar=g_user_profile_list[2];
-                    g_user_mood=g_user_profile_list[3];
                     
-
-            
-                    delCookie("ufp"+g_user_token);
-                    delCookie("uft"+g_user_token);
-                    delCookie("ufq"+g_user_token);
-                    delCookie("up"+g_user_token);
-                    
-                    setCookie("ufp"+g_user_token,utf8_to_b64(ret[0]),g_cookie_expire);
-                    setCookie("uft"+g_user_token,utf8_to_b64(ret[1]),g_cookie_expire);
-                    setCookie("ufq"+g_user_token,utf8_to_b64(ret[2]),g_cookie_expire);
-                    setCookie("up"+g_user_token,utf8_to_b64(ret[3]),g_cookie_expire);  
+                    saveUserDataToCookie("ufp",ret[0]);
+                    saveUserDataToCookie("uft",ret[1]);
+                    saveUserDataToCookie("ufq",ret[2]);
+                    saveUserDataToCookie("up",ret[3]);
 } 
                 g_init_data_done="true";
-                initElement()
+                initElement();
                 action();
             });
         }
@@ -3153,10 +3138,7 @@ function initData()
             g_user_follow_questions_list=b64_to_utf8(user_follow_questions).split(",");
             g_user_profile_list=b64_to_utf8(user_profile).split(",");           
 
-            //g_user_id=g_user_profile_list[0];
-            //g_user_name=g_user_profile_list[1];
             g_user_avatar=g_user_profile_list[2];
-            g_user_mood=g_user_profile_list[3];
             
             g_init_data_done="true";
         }
@@ -3167,6 +3149,19 @@ function initData()
         g_init_data_done="true";
     }
 } 
+
+function saveUserDataToCookie(type,data)
+{
+    if("ufp11"==type)
+    {
+        delCookie("ufp"+g_user_token);
+        setCookie("ufp"+g_user_token,utf8_to_b64(data),g_cookie_expire);
+    }
+    else{
+        delCookie(type+g_user_token);
+        setCookie(type+g_user_token,utf8_to_b64(data),g_cookie_expire);
+    }
+}
 function action()
 {
     if("false"==g_init_element_done)
@@ -3343,7 +3338,6 @@ function slog(arg)
 
 $(document).ready(function(){
     console.log("init");
-    //g_is_app="true";
     initCommon();
     init();
 });
@@ -3383,7 +3377,6 @@ SITE="大农令";
 SITE_URL="http://www.danongling.com";
 APP_URL=SITE_URL+"/danongling-arm.apk"
 SITE_SLOGAN="关注新农业,新农村,新农民";
-//g_is_app="false";
 STEP=10;
 g_lock_ajax="false";
 g_init_done="false";
