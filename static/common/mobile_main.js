@@ -2276,6 +2276,12 @@ function checkWrite()
     var title="";
     var select_topic=[];
     var content="";
+    if('revise'==g_module)
+    {
+        title=g_article_title;
+        select_topic=['fake'];
+        content=g_article_content;
+    }
     function checkWriteValid()
     {
         if((""!=title)&&(content.length>=TEXT_MIN_LENGTH_HIGH))
@@ -2946,22 +2952,31 @@ function initElement()
         $(".Post-Title").empty().append(g_article_title);
         var article_content=$("main").attr("data-article-content");
         $(".Post-RichText").empty().append(addClassImg(article_content,'class="origin_image zh-lightbox-thumb lazy"'));
-        var follow_text="关注她";
-        var button_follow_class="Button--green";
-        var data_who="she";
-        if("f"!=g_article_author_sexual)
+        if(("true"==g_logged)&&(g_user_id==g_article_author_id))
         {
-            follow_text="关注他";
-            data_who="he";
+            $(".FollowButton").remove();
+            var reviseButton='<button type="button" class="Button ReviseButton Button--green"><a href="/revise/?a='+g_article_id+'"><span>修改文章</span></a></button>';
+            $(".Post-Author").append(reviseButton);
         }
-        var followed="false";
-        if($.inArray(""+g_article_author_id,g_user_follow_peoples_list)>=0)
+        else
         {
-            button_follow_class="Button--grey";
-            follow_text="已关注";
-            followed="true";
+            var follow_text="关注她";
+            var button_follow_class="Button--green";
+            var data_who="she";
+            if("f"!=g_article_author_sexual)
+            {
+                follow_text="关注他";
+                data_who="he";
+            }
+            var followed="false";
+            if($.inArray(""+g_article_author_id,g_user_follow_peoples_list)>=0)
+            {
+                button_follow_class="Button--grey";
+                follow_text="已关注";
+                followed="true";
+            }
+            $(".FollowButton").addClass(button_follow_class).removeClass("is-hide").attr("data-er-id",g_article_author_id).attr("data-followed",followed).attr("data-who",data_who).children("span").text(follow_text);
         }
-        $(".FollowButton").addClass(button_follow_class).removeClass("is-hide").attr("data-er-id",g_article_author_id).attr("data-followed",followed).attr("data-who",data_who).children("span").text(follow_text);
         
         $(".Post-Author .AuthorInfo-avatarWrapper .UserLink-link").attr("href","/er/"+g_article_author_id).children("img").attr("alt",g_article_author_name).attr("src",g_article_author_avatar);
         $(".Post-Author .AuthorInfo-name .UserLink-link").attr("href","/er/"+g_article_author_id).empty().text(g_article_author_name);
@@ -2977,7 +2992,7 @@ function initElement()
         checkInteractionButton();
         getComments("article",g_article_id);
     }
-    else if("write"==g_module)
+    else if(("write"==g_module)||("revise"==g_module))
     {
         $('head title').text("写文章"+" - "+SITE);
         $('#summernote_write').summernote({
@@ -2985,7 +3000,6 @@ function initElement()
             // [groupName, [list of button]]
             ['style', ['bold', 'italic', 'underline']],
             ['para', ['paragraph']],
-            ['table', ['table']],
             ['link', ['link']],
             ['picture', ['picture']],
             ['video', ['video']]
@@ -3012,6 +3026,12 @@ function initElement()
             }
         });
         $(".note-statusbar").addClass("is-hide");
+        if("revise"==g_module)
+        {
+            $('head title').text("修改文章"+" - "+SITE);
+            $("input[name='writeTitle']").val(g_article_title);
+            $('#summernote_write').summernote('code',g_article_content);
+        }
         checkWrite();
     }
     g_init_element_done="true";
@@ -3104,6 +3124,13 @@ function initData()
         g_article_author_avatar=main_data.author_avatar;
         g_article_author_mood=main_data.author_mood;
         g_article_author_sexual=main_data.author_sexual;
+    }
+    else if("revise"==g_module)
+    {
+        g_article_id=main_data.article_id;
+        g_article_title=main_data.article_title;
+        g_article_content=$("main").attr("data-article-content");
+        g_article_author_id=main_data.author_id;
     }
     else if("answer_page"==g_module)
     {
@@ -3280,7 +3307,6 @@ function initCommon()
         toolbar: [
         // [groupName, [list of button]]
         ['style', ['bold', 'italic', 'underline']],
-        ['table', ['table']],
         ['link', ['link']],
         ['picture', ['picture']],
         ['video', ['video']]
@@ -3312,7 +3338,6 @@ function initCommon()
         // [groupName, [list of button]]
         ['style', ['bold', 'italic', 'underline']],
         ['para', ['paragraph']],
-        ['table', ['table']],
         ['link', ['link']],
         ['picture', ['picture']],
         ['video', ['video']]

@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="zh" data-hairline="true" data-android="true" data-theme="light">
+{% include 'question/head_mobile.html' %}
+<body class="Mobile-body">
+<div id="root">
+<div class="1App">
+<div class="LoadingBar">
+</div>
+<div class="Mobile-header is-hide">
+{% include 'question/header_mobile.html' %}
+</div>
+
+<!--------------------main---------------------->
+<main role="main" class="App-main" data-module="revise" data-article-content="{{article.content}}" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","article_id":"{{article.id}}","article_title":"{{article.title}}","author_id":"{{article.author__id}}"}'>
+<div class="Layout av-cardBackground">
+<div class="Layout-main av-card">
+<form method="post">
+{% csrf_token %}
+<!--
+<div class="WriteCover-wrapper is-hide">
+<div class="WriteCover-previewWrapper WriteCover-previewWrapper--empty">
+<i class="WriteCover-uploadIcon icon-ic_phot_camera_alt"></i>
+<input type="file" class="WriteCover-uploadInput" name="upload_file" accept=".jpeg, .jpg, .png">
+</div>
+</div>
+-->
+
+<div class="WriteHeaderTitle">
+    <h3 class="Write-title">修改文章</h3>
+</div>
+<div class="WriteIndex-titleInput Input-wrapper Input-wrapper--multiline">
+    <input type="text" name="writeTitle" class="Input" placeholder="修改标题"></input>
+</div>
+<div class="Wirte-content">
+    <textarea id="summernote_write" name="tmpWriteContent"></textarea> 
+    <input type="hidden" name="writeContent" value="">              
+</div>
+<div style="display:flex;justify-content:center;">
+    <button class="WritePost Button Button--primary Button--green" type="button">修改</button>
+</div>
+
+</form>
+</div>
+</div>     
+</main>
+<!--------------------main end-------------------->
+
+<!-- ask（Modal） -->
+<!-- ask（Modal） -->
+
+<!-- letter（Modal） -->
+<!-- append by js -->
+<!-- letter（Modal） -->
+</body>
+</html>

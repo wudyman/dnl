@@ -330,6 +330,44 @@ class ArticleView(generic.ListView):
         
         topics=Article.objects.filter(pk=article_id).values("topics__id","topics__name","topics__avatar","topics__detail","topics__question_nums","topics__article_nums","topics__follower_nums")
         return render(request,self.template_name,{'logged':logged,'article':article_data,"topics":topics})
+        
+class ReviseView(generic.ListView):
+    login_url='/'
+    template_name='question/t_revise.html'
+    def get_queryset(self):
+        return
+    def get(self,request,*args,**kwargs):
+        ua=request.META['HTTP_USER_AGENT']
+        is_mobile=ua.upper().find('MOBILE')>=0
+        print('is moblie:',is_mobile)
+        if is_mobile:
+            self.template_name='question/t_revise_mobile.html'
+        article_id=request.GET.get('a')   
+        user=request.user
+        if user.is_authenticated:
+            logged='true'
+        else:
+            return HttpResponseRedirect('/signinup/?next=/revise/?a='+article_id)
+        article=Article.objects.filter(pk=article_id).values("id","title","content","author__id")
+        article_data=article[0]
+        if article_data and user.id==article_data['author__id']:
+            return render(request,self.template_name,{'logged':logged,'article':article_data})
+        else:
+            return HttpResponseRedirect('/')
+    def post(self,request):
+        user=request.user
+        if not user.is_authenticated:
+            return HttpResponseRedirect('/signinup/?next=/')
+        else:
+            article_id=request.GET.get('a')
+            article=get_object_or_404(Article,pk=article_id,author__id=user.id)
+            article.title=request.POST.get('writeTitle')
+            article.content=request.POST.get('writeContent')           
+            article.save()
+      
+            result='/article/'+str(article.id)+'/'
+            return HttpResponseRedirect(result)
+            
             
 class TradeView(generic.ListView):
     login_url='/'

@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^write/$',main_views.WriteView.as_view()),
     url(r'^ask/$',main_views.AskView.as_view()),
     url(r'^article/(?P<article_id>[0-9]+)/$',main_views.ArticleView.as_view()),
+    url(r'^revise/',main_views.ReviseView.as_view()),
     url(r'^trade/$',main_views.TradeView.as_view()),
 	#url(r'^form/',index_view.FormView.form1,name='form1'),
 	#url(r'^form/',index_view.FormView.as_view(),name='form'),
