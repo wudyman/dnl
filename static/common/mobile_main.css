@@ -736,6 +736,11 @@ label {
     border: 1px solid #e7eaf1;
     border-radius: 3px;
 }
+.note-editor img {
+    display: block;
+    max-width: 50%;
+    margin: 24px auto;
+}
 .note-btn.btn.btn-default.btn-sm {
     border-color: #fff;
 }

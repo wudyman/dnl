@@ -759,6 +759,11 @@ label {
     border: 1px solid #e7eaf1;
     border-radius: 3px;
 }
+.note-editor img {
+    display: block;
+    max-width: 50%;
+    margin: 24px auto;
+}
 .note-btn.btn.btn-default.btn-sm {
     border-color: #fff;
 }
@@ -833,40 +838,7 @@ label {
     line-height: 1.7;
     opacity: 1;
 }
-.note-editor.note-frame {
-    border: 1px solid #e7eaf1;
-    border-radius: 3px;
-}
-.note-btn.btn.btn-default.btn-sm {
-    border-color: #fff;
-}
-.panel-default>.panel-heading {
-    background-color:#fff;
-    border-color: #fff;
-}
 
-.Wirte-content  .panel-default>.panel-heading {
-    border-color: #fff;
-}
-
-.bootstrap-select .dropdown-toggle:focus {
-    outline:None !important;
-}
-.btn-group.open .dropdown-toggle {
-    -webkit-box-shadow: None !important;
-    box-shadow: None !important;
-
-}
-
-.bs-searchbox .form-control {
-    width: auto;
-}
-.form-control:focus{
-    border-color: #aaa;
-}
-.btn-group:focus{
-    border-color: #aaa !important;
-}
 /*----for article----------------*/
 .App-main{padding-bottom:46px}
 @media (max-width:690px){body{background:#fff}
