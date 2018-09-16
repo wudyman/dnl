@@ -880,6 +880,8 @@ function appendLetterModal()
     
     $("#letterModal").on("show.bs.modal", function(){
         $(".PeoplePopover").popover("hide");
+        if(false==veriLogin())
+            return;
     });
 }
 function invite()
@@ -2676,11 +2678,8 @@ function initElement()
     if(typeof(g_is_app) == "undefined" ? true : false)
         $(".Mobile-header").removeClass("is-hide");
     },100);
-    if("true"==g_logged)
-    { 
-        appendLetterModal();
-    }
-    else
+    appendLetterModal();
+    if("true"!=g_logged)
     {
         checkAndroidOrIos();  
         checkIsWeChat();

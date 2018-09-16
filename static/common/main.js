@@ -976,6 +976,8 @@ function appendLetterModal()
     
     $("#letterModal").on("show.bs.modal", function(){
         $(".PeoplePopover").popover("hide");
+        if(false==veriLogin())
+            return;
     });
 }
 function invite()
@@ -2938,6 +2940,7 @@ function initElement()
 {
     if("false"==g_init_data_done)
         return;
+    appendLetterModal();
     if("true"==g_logged)
     { 
         $("#MenuPopover").attr("data-er-id",g_user_id).attr("data-er-avatar",g_user_avatar).find("img").attr("src",g_user_avatar).removeClass("is-hide");
@@ -2945,7 +2948,6 @@ function initElement()
             $("#NotificationPopover .PushNotifications-count").removeClass("is-hide").text(gNotificationsNums);
         if(gConversationsNums>0)
             $("#MessagePopover .Messages-count").removeClass("is-hide").text(gConversationsNums);
-        appendLetterModal();
     }
     $('head title').text(SITE+" - "+SITE_SLOGAN);
     if("question"==g_module)
