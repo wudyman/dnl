@@ -37,7 +37,7 @@ class Article(models.Model):
 
 class Topic(models.Model):
     name=models.CharField(max_length=100)
-    avatar=models.CharField(max_length=100,default='/media/avatar/default.jpg',verbose_name='peoplehead')
+    avatar=models.CharField(max_length=100,default='/media/avatar/topic_default.jpg',verbose_name='peoplehead')
     detail=models.CharField(default='&nbsp;',max_length=500,null=True,blank=True)
     question=models.ManyToManyField(Question,related_name='topics',blank=True)
     question_nums=models.IntegerField(default=0)
