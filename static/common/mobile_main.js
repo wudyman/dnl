@@ -183,11 +183,17 @@ function uploadImage(type,file)
                     $("#summernote_write").summernote('insertImage', url, 'image name');
                 else if(("forAvatar"==type)||("forTopicAvatar"==type))
                 {
-                    $("#id_avatar").attr("src",url).attr("srcset",url);  
-                    var user_profile=getCookie("up"+g_user_token);
-                    g_user_profile_list=b64_to_utf8(user_profile).split(",");
-                    g_user_profile_list[2]=url;
-                    saveUserDataToCookie("up",g_user_profile_list);
+                    $("#id_avatar").attr("src",url).attr("srcset",url);
+                    if("forAvatar"==type)
+                    {
+                        var user_profile=getCookie("up"+g_user_token);
+                        g_user_profile_list=b64_to_utf8(user_profile).split(",");
+                        g_user_profile_list[2]=url;
+                        saveUserDataToCookie("up",g_user_profile_list);
+                        
+                        g_er_avatar=url;
+                        sendUserInfoToApp();
+                    }
                 }
             }
         }
@@ -1633,7 +1639,6 @@ function checkAvatar()
 function checkHomePage()
 {
     $(".ProfileEditButton,.Profile-infosOia").click(function(){
-        console.log(this);
         g_cache_page=$("main").html();
         if($(this).hasClass("Profile-infosOia"))
         {
@@ -1712,6 +1717,7 @@ function checkHomePage()
  
                     }
                     _this.parents(".Field-content").empty().append(data);
+                    sendUserInfoToApp();
                 }
                 g_lock_ajax="false";
                 checkProfileModify();
@@ -1792,7 +1798,6 @@ function checkSettingPage()
     $("a[name='messages']").off("click");
     $("a[name='messages']").on("click",function(){
         var element=$(this).parents(".List-item");
-        console.log(element);
         var conversation_id=element.attr("data-action-id");
         var id=element.attr("data-receiver-id");
         var name=element.attr("data-receiver-name");
@@ -1823,6 +1828,36 @@ function checkSettingPage()
             g_lock_ajax="false";
         });
     });
+    
+    function show_conversion_messages(conversation_id,er_id,er_name)
+    {
+        var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">'+er_name+'</span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="'+er_id+'"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--green" type="button" onclick="sendLetter()">发送</button></div></div></div>';
+        $('#appendArea').empty().prepend(data);
+        g_last_getmoredata_index=0;
+        g_setting_type="conversation_messages";
+        var nums=g_last_getmoredata_index;//$('.Setting-item').length;
+        var order=1;//pub_date
+        var start=nums;
+        var end=start+STEP;
+        var url='/ajax/'+g_setting_type+'/'+conversation_id+'/'+order+'/'+start+'/'+end+'/';
+        var post_data='';
+        if("true"==g_lock_ajax)
+            return;
+        g_lock_ajax="true";
+        $.post(url,post_data,function(ret){
+            if("fail"!=ret)
+            {
+                g_last_getmoredata_index+=STEP;
+                appendSettingPageElement(ret);
+            }
+            else
+            {
+                console.log("no more data");
+                $("#appendArea").append('<div class="List-item NoMoreData"><div class="ContentItem" ><div class="ContentItem-status"  style="text-align:center">没有更多内容</div></div></div>');
+            }
+            g_lock_ajax="false";
+        });
+    }
 }
 
 function checkSelectOption()
@@ -1875,6 +1910,22 @@ function checkSelectOption()
     });
 }
 
+function getComments(type,id)
+{
+    var post_data={c_type:type,a_id:id};
+    if("true"==g_lock_ajax)
+        return;
+    g_lock_ajax="true";
+    $.post("/ajax/get_comments/",post_data,function(ret){
+        if("fail"!=ret)
+        {
+            console.log("get comments success");
+            appendCommentsElement(ret);
+        }
+        checkComment();
+        g_lock_ajax="false";
+    });
+}
 
 function checkComment()
 {
@@ -2368,22 +2419,7 @@ function checkSets()
     checkExpandBtn();
     checkAnswerQuestion();
 }
-function getComments(type,id)
-{
-    var post_data={c_type:type,a_id:id};
-    if("true"==g_lock_ajax)
-        return;
-    g_lock_ajax="true";
-    $.post("/ajax/get_comments/",post_data,function(ret){
-        if("fail"!=ret)
-        {
-            console.log("get comments success");
-            appendCommentsElement(ret);
-        }
-        checkComment();
-        g_lock_ajax="false";
-    });
-}
+
 function getMoreData()
 {
     if($(".List-item.NoMoreData").length>0)
@@ -2569,106 +2605,19 @@ function getMoreData()
         //setLockScrollMoreData("false");
     });
 }
-function show_conversion_messages(conversation_id,er_id,er_name)
+
+function action()
 {
-    var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">'+er_name+'</span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="'+er_id+'"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--green" type="button" onclick="sendLetter()">发送</button></div></div></div>';
-    $('#appendArea').empty().prepend(data);
-    g_last_getmoredata_index=0;
-    g_setting_type="conversation_messages";
-    var nums=g_last_getmoredata_index;//$('.Setting-item').length;
-    var order=1;//pub_date
-    var start=nums;
-    var end=start+STEP;
-    var url='/ajax/'+g_setting_type+'/'+conversation_id+'/'+order+'/'+start+'/'+end+'/';
-    var post_data='';
-    if("true"==g_lock_ajax)
+    if("false"==g_init_element_done)
         return;
-    g_lock_ajax="true";
-    $.post(url,post_data,function(ret){
-        if("fail"!=ret)
-        {
-            g_last_getmoredata_index+=STEP;
-            appendSettingPageElement(ret);
-        }
-        else
-        {
-            console.log("no more data");
-            $("#appendArea").append('<div class="List-item NoMoreData"><div class="ContentItem" ><div class="ContentItem-status"  style="text-align:center">没有更多内容</div></div></div>');
-        }
-        g_lock_ajax="false";
-    });
+    if(("sign"!=g_module)&&("misc"!=g_module)&&("nofeature"!=g_module))
+    {
+        getMoreData();
+        checkSets();
+    }
+    g_init_done="true";
+    console.log("init done");
 }
-
-function checkAndroidOrIos()
-{
-  var u = navigator.userAgent;
-  var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android
-  var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios
-  if (isiOS)
-  {
-      $(".MobileAppHeader-downloadLink").attr("href","");
-      $("#download_app").attr("href","");
-  }
-  else
-  {
-      $(".MobileAppHeader-downloadLink").attr("href",APP_URL).removeClass("is-hide");
-      $(".MobileAppHeader-expand").prepend('<a id="download_app" href=""><svg class="Zi Zi--DownLoad" fill="#8590a6" viewBox="0 0 32 32" width="24" height="24"><path d="M28 12c-1.1 0-2 0.9-2 2v8c0 1.1 0.9 2 2 2s2-0.9 2-2v-8c0-1.1-0.9-2-2-2zM4 12c-1.1 0-2 0.9-2 2v8c0 1.1 0.9 2 2 2s2-0.9 2-2v-8c0-1.1-0.9-2-2-2zM7 23c0 1.657 1.343 3 3 3v0 4c0 1.1 0.9 2 2 2s2-0.9 2-2v-4h4v4c0 1.1 0.9 2 2 2s2-0.9 2-2v-4c1.657 0 3-1.343 3-3v-11h-18v11z"></path><path d="M24.944 10c-0.304-2.746-1.844-5.119-4.051-6.551l1.001-2.001c0.247-0.494 0.047-1.095-0.447-1.342s-1.095-0.047-1.342 0.447l-1.004 2.009-0.261-0.104c-0.893-0.297-1.848-0.458-2.84-0.458s-1.947 0.161-2.84 0.458l-0.261 0.104-1.004-2.009c-0.247-0.494-0.848-0.694-1.342-0.447s-0.694 0.848-0.447 1.342l1.001 2.001c-2.207 1.433-3.747 3.805-4.051 6.551v1h17.944v-1h-0.056zM13 8c-0.552 0-1-0.448-1-1s0.447-0.999 0.998-1c0.001 0 0.002 0 0.003 0s0.001-0 0.002-0c0.551 0.001 0.998 0.448 0.998 1s-0.448 1-1 1zM19 8c-0.552 0-1-0.448-1-1s0.446-0.999 0.998-1c0 0 0.001 0 0.002 0s0.002-0 0.003-0c0.551 0.001 0.998 0.448 0.998 1s-0.448 1-1 1z"></path></svg>下载 App</a>');
-      $("#download_app").attr("href",APP_URL);
-  }
-}
-
-function checkIsWeChat()
-{
-  var u = navigator.userAgent;
-  var isWechat = u.indexOf('MicroMessenger') > -1;//wechat
-  if (isWechat)
-  {
-        if($("#weixinTip").length<=0)
-        {
-            var winHeight = typeof window.innerHeight != 'undefined' ? window.innerHeight : document.documentElement.clientHeight;  //网页可视区高度
-            var weixinTip = $('<div id="weixinTip"><p><img src="/static/common/img/tip_download.png" alt="webchat"/></p></div>');
-
-            $("body").append(weixinTip);
-
-            $("#weixinTip").css({
-                "position": "fixed",
-                "left": "0",
-                "top": "0",
-                "height": winHeight,
-                "width": "100%",
-                "z-index": "1000",
-                "background-color": "rgba(0,0,0,0.8)",
-                "filter": "alpha(opacity=80)",
-            }).addClass("is-hide");
-            $("#weixinTip p").css({
-                "text-align": "center",
-                "margin-top": "10%",
-                "padding-left": "5%",
-                "padding-right": "5%"
-            });
-            $("#weixinTip p img").css({
-                "max-width": "100%",
-                "height": "auto"
-            });
-        }
-        
-        $(".MobileAppHeader-downloadLink").attr("href","javascript:;");
-        $(".MobileAppHeader-downloadLink").off("click");
-        $(".MobileAppHeader-downloadLink").on("click",function(){
-            $("#weixinTip").removeClass("is-hide");
-            return false;
-        });
-        $("#download_app").attr("href","javascript:;");
-        $("#download_app").off("click");
-        $("#download_app").on("click",function(){
-            $("#weixinTip").removeClass("is-hide");
-            return false;
-        });
-  }
-}
-
-
-
 
 function initElement()
 {
@@ -3192,80 +3141,6 @@ function initData()
     }
 } 
 
-function saveUserDataToCookie(type,data)
-{
-    if("ufp11"==type)
-    {
-        delCookie("ufp"+g_user_token);
-        setCookie("ufp"+g_user_token,utf8_to_b64(data),g_cookie_expire);
-    }
-    else{
-        delCookie(type+g_user_token);
-        setCookie(type+g_user_token,utf8_to_b64(data),g_cookie_expire);
-    }
-}
-function action()
-{
-    if("false"==g_init_element_done)
-        return;
-    if(("sign"!=g_module)&&("misc"!=g_module)&&("nofeature"!=g_module))
-    {
-        getMoreData();
-        checkSets();
-    }
-    g_init_done="true";
-    console.log("init done");
-}
-function sendPageInfoToApp()
-{
-    if(typeof(g_is_app) == "undefined" ? true : false)
-    {
-        $(".Mobile-header").removeClass("is-hide");
-    }
-    else
-    {
-        var url=location.href;
-        var title=$('head title').text();
-        var content='';
-        var thumbImage='';
-        if("question"==g_module){
-            content=$(".Question-main .RichText.CopyrightRichText-richText:first").text();
-            thumbImage=$(".Question-main .RichText.CopyrightRichText-richText:first img:first").attr("src"); 
-            if(!content)
-                content=$(".QuestionHeader .RichText.CopyrightRichText-richText").text();
-            if(!thumbImage)
-                thumbImage=$(".QuestionHeader .RichText.CopyrightRichText-richText img:first").attr("src");          
-        }
-        else if("topic"==g_module){
-            content=g_topic_detail;
-            thumbImage=g_topic_avatar; 
-        }
-        else if("article"==g_module){
-            content=$(".RichText.ztext.Post-RichText").text();
-            thumbImage=$(".RichText.ztext.Post-RichText img:first").attr("src");          
-        }
-        else if("home"==g_module){
-            content=g_er_mood;
-            thumbImage=g_er_avatar; 
-        }
-        
-        if(thumbImage&&(thumbImage.indexOf('http')<0))
-        {
-            thumbImage=SITE_URL+thumbImage;
-        }
-        
-        var data={
-            command: "page",
-            payload:{
-                url:url,
-                title:title,
-                content:content,
-                thumbImage:thumbImage
-            }
-        }
-        window.postMessage(JSON.stringify(data));
-    }
-}
 function init()
 {
     g_module=$("main").attr("data-module");
@@ -3367,25 +3242,27 @@ function initCommon()
     checkSelectOption();
 }
 
-function slog(arg)
-{
-    if("true"==ENABLE_SCREEN_LOG)
-    {
-        var data='<div>'+arg+'</div>';
-        $("#debug").append(data);
-    }
-}
-
 $(document).ready(function(){
     console.log("init");
     initCommon();
     init();
 });
+
+SITE="大农令";
+SITE_URL="http://www.danongling.com";
+APP_URL=SITE_URL+"/danongling-arm.apk"
+SITE_SLOGAN="关注新农业,新农村,新农民";
+STEP=10;
+g_lock_ajax="false";
+g_init_done="false";
+ENABLE_SCREEN_LOG="true";//"false"
+
 $(document).click(function(e) {
     $("#NotificationPopover").popover("hide");
     $("#MessagePopover").popover("hide");
     $("#MenuPopover").popover("hide");
 });
+
 window.onscroll = function () { 
     if("false"==g_init_done)
         return;
@@ -3413,14 +3290,28 @@ if (getScrollTop() + getClientHeight() +10 >= getScrollHeight()) {
         getMoreData();
     } 
 }
-SITE="大农令";
-SITE_URL="http://www.danongling.com";
-APP_URL=SITE_URL+"/danongling-arm.apk"
-SITE_SLOGAN="关注新农业,新农村,新农民";
-STEP=10;
-g_lock_ajax="false";
-g_init_done="false";
-ENABLE_SCREEN_LOG="true";//"false"
+
+function slog(arg)
+{
+    if("true"==ENABLE_SCREEN_LOG)
+    {
+        var data='<div>'+arg+'</div>';
+        $("#debug").append(data);
+    }
+}
+
+function saveUserDataToCookie(type,data)
+{
+    if("ufp11"==type)
+    {
+        delCookie("ufp"+g_user_token);
+        setCookie("ufp"+g_user_token,utf8_to_b64(data),g_cookie_expire);
+    }
+    else{
+        delCookie(type+g_user_token);
+        setCookie(type+g_user_token,utf8_to_b64(data),g_cookie_expire);
+    }
+}
 
 function veriLogin()
 {
@@ -3444,4 +3335,144 @@ function veriLogin()
         return false;
     }
     return true;
+}
+
+function sendPageInfoToApp()
+{
+    if(typeof(g_is_app) == "undefined" ? true : false)
+    {
+        $(".Mobile-header").removeClass("is-hide");
+    }
+    else
+    {
+        var url=location.href;
+        var title=$('head title').text();
+        var content='';
+        var thumbImage='';
+        if("question"==g_module){
+            content=$(".Question-main .RichText.CopyrightRichText-richText:first").text();
+            thumbImage=$(".Question-main .RichText.CopyrightRichText-richText:first img:first").attr("src"); 
+            if(!content)
+                content=$(".QuestionHeader .RichText.CopyrightRichText-richText").text();
+            if(!thumbImage)
+                thumbImage=$(".QuestionHeader .RichText.CopyrightRichText-richText img:first").attr("src");          
+        }
+        else if("topic"==g_module){
+            content=g_topic_detail;
+            thumbImage=g_topic_avatar; 
+        }
+        else if("article"==g_module){
+            content=$(".RichText.ztext.Post-RichText").text();
+            thumbImage=$(".RichText.ztext.Post-RichText img:first").attr("src");          
+        }
+        else if("home"==g_module){
+            content=g_er_mood;
+            thumbImage=g_er_avatar; 
+        }
+        
+        if(thumbImage&&(thumbImage.indexOf('http')<0))
+        {
+            thumbImage=SITE_URL+thumbImage;
+        }
+        
+        var data={
+            command: "page",
+            payload:{
+                url:url,
+                title:title,
+                content:content,
+                thumbImage:thumbImage
+            }
+        }
+        window.postMessage(JSON.stringify(data));
+    }
+}
+
+function sendUserInfoToApp()
+{
+    if(typeof(g_is_app) == "undefined" ? true : false)
+    {
+        console.log("not app");
+    }
+    else
+    {
+        var data={
+            command: "user",
+            payload:{
+                id:g_er_id,
+                name:g_er_name,
+                avatar:g_er_avatar,
+                mood:g_er_mood
+            }
+        }
+        window.postMessage(JSON.stringify(data));
+    }
+}
+
+function checkAndroidOrIos()
+{
+  var u = navigator.userAgent;
+  var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android
+  var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios
+  if (isiOS)
+  {
+      $(".MobileAppHeader-downloadLink").attr("href","");
+      $("#download_app").attr("href","");
+  }
+  else
+  {
+      $(".MobileAppHeader-downloadLink").attr("href",APP_URL).removeClass("is-hide");
+      $(".MobileAppHeader-expand").prepend('<a id="download_app" href=""><svg class="Zi Zi--DownLoad" fill="#8590a6" viewBox="0 0 32 32" width="24" height="24"><path d="M28 12c-1.1 0-2 0.9-2 2v8c0 1.1 0.9 2 2 2s2-0.9 2-2v-8c0-1.1-0.9-2-2-2zM4 12c-1.1 0-2 0.9-2 2v8c0 1.1 0.9 2 2 2s2-0.9 2-2v-8c0-1.1-0.9-2-2-2zM7 23c0 1.657 1.343 3 3 3v0 4c0 1.1 0.9 2 2 2s2-0.9 2-2v-4h4v4c0 1.1 0.9 2 2 2s2-0.9 2-2v-4c1.657 0 3-1.343 3-3v-11h-18v11z"></path><path d="M24.944 10c-0.304-2.746-1.844-5.119-4.051-6.551l1.001-2.001c0.247-0.494 0.047-1.095-0.447-1.342s-1.095-0.047-1.342 0.447l-1.004 2.009-0.261-0.104c-0.893-0.297-1.848-0.458-2.84-0.458s-1.947 0.161-2.84 0.458l-0.261 0.104-1.004-2.009c-0.247-0.494-0.848-0.694-1.342-0.447s-0.694 0.848-0.447 1.342l1.001 2.001c-2.207 1.433-3.747 3.805-4.051 6.551v1h17.944v-1h-0.056zM13 8c-0.552 0-1-0.448-1-1s0.447-0.999 0.998-1c0.001 0 0.002 0 0.003 0s0.001-0 0.002-0c0.551 0.001 0.998 0.448 0.998 1s-0.448 1-1 1zM19 8c-0.552 0-1-0.448-1-1s0.446-0.999 0.998-1c0 0 0.001 0 0.002 0s0.002-0 0.003-0c0.551 0.001 0.998 0.448 0.998 1s-0.448 1-1 1z"></path></svg>下载 App</a>');
+      $("#download_app").attr("href",APP_URL);
+  }
+}
+
+function checkIsWeChat()
+{
+  var u = navigator.userAgent;
+  var isWechat = u.indexOf('MicroMessenger') > -1;//wechat
+  if (isWechat)
+  {
+        if($("#weixinTip").length<=0)
+        {
+            var winHeight = typeof window.innerHeight != 'undefined' ? window.innerHeight : document.documentElement.clientHeight;  //网页可视区高度
+            var weixinTip = $('<div id="weixinTip"><p><img src="/static/common/img/tip_download.png" alt="webchat"/></p></div>');
+
+            $("body").append(weixinTip);
+
+            $("#weixinTip").css({
+                "position": "fixed",
+                "left": "0",
+                "top": "0",
+                "height": winHeight,
+                "width": "100%",
+                "z-index": "1000",
+                "background-color": "rgba(0,0,0,0.8)",
+                "filter": "alpha(opacity=80)",
+            }).addClass("is-hide");
+            $("#weixinTip p").css({
+                "text-align": "center",
+                "margin-top": "10%",
+                "padding-left": "5%",
+                "padding-right": "5%"
+            });
+            $("#weixinTip p img").css({
+                "max-width": "100%",
+                "height": "auto"
+            });
+        }
+        
+        $(".MobileAppHeader-downloadLink").attr("href","javascript:;");
+        $(".MobileAppHeader-downloadLink").off("click");
+        $(".MobileAppHeader-downloadLink").on("click",function(){
+            $("#weixinTip").removeClass("is-hide");
+            return false;
+        });
+        $("#download_app").attr("href","javascript:;");
+        $("#download_app").off("click");
+        $("#download_app").on("click",function(){
+            $("#weixinTip").removeClass("is-hide");
+            return false;
+        });
+  }
 }

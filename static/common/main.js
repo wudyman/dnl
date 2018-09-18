@@ -2185,6 +2185,37 @@ function checkSettingPage()
             g_lock_ajax="false";
         });
     });
+    
+    function show_conversion_messages(conversation_id,er_id,er_name)
+    {
+        var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">'+er_name+'</span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="'+er_id+'"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--green" type="button" onclick="sendLetter()">发送</button></div></div></div>';
+        $('#appendArea').empty().prepend(data);
+        g_last_getmoredata_index=0;
+        g_setting_type="conversation_messages";
+        var nums=g_last_getmoredata_index;//$('.Setting-item').length;
+        var order=1;//pub_date
+        var start=nums;
+        var end=start+STEP;
+        var url='/ajax/'+g_setting_type+'/'+conversation_id+'/'+order+'/'+start+'/'+end+'/';
+        var post_data='';
+        if("true"==g_lock_ajax)
+            return;
+        g_lock_ajax="true";
+        $.post(url,post_data,function(ret){
+            if("fail"!=ret)
+            {
+                g_last_getmoredata_index+=STEP;
+                appendSettingPageElement(ret);
+            }
+            else
+            {
+                console.log("no more data");
+                $("#appendArea").append('<div class="List-item NoMoreData"><div class="ContentItem" ><div class="ContentItem-status"  style="text-align:center">没有更多内容</div></div></div>');
+            }
+            g_lock_ajax="false";
+        });
+    }
+
 }
 
 function checkSelectOption()
@@ -2237,6 +2268,22 @@ function checkSelectOption()
     });
 }
 
+function getComments(type,id)
+{
+    var post_data={c_type:type,a_id:id};
+    if("true"==g_lock_ajax)
+        return;
+    g_lock_ajax="true";
+    $.post("/ajax/get_comments/",post_data,function(ret){
+        if("fail"!=ret)
+        {
+            console.log("get comments success");
+            appendCommentsElement(ret);
+        }
+        checkComment();
+        g_lock_ajax="false";
+    });
+}
 
 function checkComment()
 {
@@ -2694,22 +2741,7 @@ function checkSets()
     checkSearch();
     //checkExpandBtn();
 }
-function getComments(type,id)
-{
-    var post_data={c_type:type,a_id:id};
-    if("true"==g_lock_ajax)
-        return;
-    g_lock_ajax="true";
-    $.post("/ajax/get_comments/",post_data,function(ret){
-        if("fail"!=ret)
-        {
-            console.log("get comments success");
-            appendCommentsElement(ret);
-        }
-        checkComment();
-        g_lock_ajax="false";
-    });
-}
+
 function getMoreData()
 {
     if($(".List-item.NoMoreData").length>0)
@@ -2906,34 +2938,18 @@ function getMoreData()
         //setLockScrollMoreData("false");
     });
 }
-function show_conversion_messages(conversation_id,er_id,er_name)
+
+function action()
 {
-    var data='<div class="List-item Conversation-messages-head"><div class="zg-section"><a href="/conversations">« 返回</a></div><div class="zg-section zg-14px"><span class="zg-gray-normal">发私信给 </span><span class="zg-gray-darker">'+er_name+'</span>：</div><div class="zg-section LetterSend" id="zh-pm-editor-form"><div class="zg-editor-simple-wrap zg-form-text-input"><div class="zg-user-name" style="display:none"></div><textarea id="letterText" class="zg-editor-input zu-seamless-input-origin-element" style="font-weight: normal; height: 22px;" data-receiver-id="'+er_id+'"></textarea></div><div class="zh-pm-warnmsg" style="display:none;text-align:right;color:#C3412F;"></div><div class="zm-command"><button class="Button Messages-sendButton Button--primary Button--green" type="button" onclick="sendLetter()">发送</button></div></div></div>';
-    $('#appendArea').empty().prepend(data);
-    g_last_getmoredata_index=0;
-    g_setting_type="conversation_messages";
-    var nums=g_last_getmoredata_index;//$('.Setting-item').length;
-    var order=1;//pub_date
-    var start=nums;
-    var end=start+STEP;
-    var url='/ajax/'+g_setting_type+'/'+conversation_id+'/'+order+'/'+start+'/'+end+'/';
-    var post_data='';
-    if("true"==g_lock_ajax)
+    if("false"==g_init_element_done)
         return;
-    g_lock_ajax="true";
-    $.post(url,post_data,function(ret){
-        if("fail"!=ret)
-        {
-            g_last_getmoredata_index+=STEP;
-            appendSettingPageElement(ret);
-        }
-        else
-        {
-            console.log("no more data");
-            $("#appendArea").append('<div class="List-item NoMoreData"><div class="ContentItem" ><div class="ContentItem-status"  style="text-align:center">没有更多内容</div></div></div>');
-        }
-        g_lock_ajax="false";
-    });
+    if(("sign"!=g_module)&&("misc"!=g_module)&&("nofeature"!=g_module))
+    {
+        getMoreData();
+        checkSets();
+    }
+    g_init_done="true";
+    console.log("init done");
 }
 
 function initElement()
@@ -3542,35 +3558,6 @@ function initData()
     }
 } 
 
-function saveUserDataToCookie(type,data)
-{
-    if(("lnt"==type)||("lct"==type))
-    {
-        delCookie(type+g_user_token);
-        setCookie(type+g_user_token,data,30*24*60*60);
-    }
-    else if(("gnn"==type)||("gcn"==type))
-    {
-        delCookie(type+g_user_token);
-        setCookie(type+g_user_token,data,30*24*60*60);
-    }
-    else{
-        delCookie(type+g_user_token);
-        setCookie(type+g_user_token,utf8_to_b64(data),g_cookie_expire);
-    }
-}
-function action()
-{
-    if("false"==g_init_element_done)
-        return;
-    if(("sign"!=g_module)&&("misc"!=g_module)&&("nofeature"!=g_module))
-    {
-        getMoreData();
-        checkSets();
-    }
-    g_init_done="true";
-    console.log("init done");
-}
 function init()
 {
     g_module=$("main").attr("data-module");
@@ -3658,25 +3645,26 @@ function initCommon()
     checkSelectOption();
 }
 
-function slog(arg)
-{
-    if("true"==ENABLE_SCREEN_LOG)
-    {
-        var data='<div>'+arg+'</div>';
-        $("#debug").append(data);
-    }
-}
-
 $(document).ready(function() {
     console.log("init");
     initCommon();
     init();
 });
+
+SITE="大农令";
+SITE_URL="http://www.danongling.com";
+SITE_SLOGAN="关注新农业,新农村,新农民";
+STEP=10;
+g_lock_ajax="false";
+g_init_done="false";
+ENABLE_SCREEN_LOG="true";//"false"
+
 $(document).click(function(e) {
     $("#NotificationPopover").popover("hide");
     $("#MessagePopover").popover("hide");
     $("#MenuPopover").popover("hide");
 });
+
 window.onscroll = function (){ 
     if("false"==g_init_done)
         return;
@@ -3704,13 +3692,33 @@ window.onscroll = function (){
                 getMoreData();
         }
 } 
-SITE="大农令";
-SITE_URL="http://www.danongling.com";
-SITE_SLOGAN="关注新农业,新农村,新农民";
-STEP=10;
-g_lock_ajax="false";
-g_init_done="false";
-ENABLE_SCREEN_LOG="true";//"false"
+
+function slog(arg)
+{
+    if("true"==ENABLE_SCREEN_LOG)
+    {
+        var data='<div>'+arg+'</div>';
+        $("#debug").append(data);
+    }
+}
+
+function saveUserDataToCookie(type,data)
+{
+    if(("lnt"==type)||("lct"==type))
+    {
+        delCookie(type+g_user_token);
+        setCookie(type+g_user_token,data,30*24*60*60);
+    }
+    else if(("gnn"==type)||("gcn"==type))
+    {
+        delCookie(type+g_user_token);
+        setCookie(type+g_user_token,data,30*24*60*60);
+    }
+    else{
+        delCookie(type+g_user_token);
+        setCookie(type+g_user_token,utf8_to_b64(data),g_cookie_expire);
+    }
+}
 
 function veriLogin()
 {
