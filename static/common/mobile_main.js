@@ -3250,7 +3250,8 @@ $(document).ready(function(){
 
 SITE="大农令";
 SITE_URL="http://www.danongling.com";
-APP_URL=SITE_URL+"/danongling-arm.apk"
+SITE_3RD_URL="http://3rd.danongling.com";
+APP_URL=SITE_3RD_URL+"/danongling-arm.apk"
 SITE_SLOGAN="关注新农业,新农村,新农民";
 STEP=10;
 g_lock_ajax="false";
