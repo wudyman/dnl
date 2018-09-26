@@ -2950,8 +2950,7 @@ function initElement()
             ['style', ['bold', 'italic', 'underline']],
             ['para', ['paragraph']],
             ['link', ['link']],
-            ['picture', ['picture']],
-            ['video', ['video']]
+            ['picture', ['picture']]
             ],
             height:null,
             minHeight:200,
@@ -3183,8 +3182,7 @@ function initCommon()
         // [groupName, [list of button]]
         ['style', ['bold', 'italic', 'underline']],
         ['link', ['link']],
-        ['picture', ['picture']],
-        ['video', ['video']]
+        ['picture', ['picture']]
         ],
         minHeight:100,
         lang:'zh-CN',
@@ -3214,8 +3212,7 @@ function initCommon()
         ['style', ['bold', 'italic', 'underline']],
         ['para', ['paragraph']],
         ['link', ['link']],
-        ['picture', ['picture']],
-        ['video', ['video']]
+        ['picture', ['picture']]
         ],
         minHeight:150,
         lang:'zh-CN',
