@@ -18,6 +18,7 @@ from datetime import datetime,timedelta
 #from itertools import chain
 #import numpy as np
 from django.core.cache import cache
+from . import configure
 
 class CJsonEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -127,7 +128,7 @@ def answer_question(request,question_id):
             answer.question=question
             answer.save()
             author.userprofile.answer_nums+=1
-            author.userprofile.contribution+=10
+            author.userprofile.contribution+=configure.ANSWER_CONTRIBUTION
             author.userprofile.save()
             question.answer_nums+=1#question.be_answers.count();
             question.push_answer_id=answer.id
@@ -864,18 +865,15 @@ def app_follow_topics(request):
         to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
 
-STEP=10
-LIST_NUM=10 
-CACHE_EXPIRED=30 
 @csrf_exempt
 def get_topic_questions(request,topic_id,order,start,end):
     to_json=json.dumps('fail')
     int_start=int(start)
     type=request.POST.get('type')
     if 'hot'==type:
-        query_start=int(int_start/LIST_NUM)*LIST_NUM
-        questions_answers_list=get_questions_inner(topic_id,type,query_start,query_start+LIST_NUM)
-        articles_list=get_articles_inner(topic_id,type,query_start,query_start+LIST_NUM)        
+        query_start=int(int_start/configure.LIST_NUM)*configure.LIST_NUM
+        questions_answers_list=get_questions_inner(topic_id,type,query_start,query_start+configure.LIST_NUM)
+        articles_list=get_articles_inner(topic_id,type,query_start,query_start+configure.LIST_NUM)        
         ret=[]
         if questions_answers_list:
             ret+=questions_answers_list
@@ -899,22 +897,22 @@ def get_questions(request,order,start,end):
     if follow_topics:
         topics_array=follow_topics.split(',')
         for topic_id in topics_array:
-            query_start=int(int_start/LIST_NUM/STEP)*LIST_NUM
-            topic_questions_answers_list=get_questions_inner(topic_id,'',query_start,query_start+LIST_NUM)
+            query_start=int(int_start/configure.LIST_NUM/configure.STEP)*configure.LIST_NUM
+            topic_questions_answers_list=get_questions_inner(topic_id,'',query_start,query_start+configure.LIST_NUM)
             if topic_questions_answers_list:
-                index=int(int_start/STEP)
+                index=int(int_start/configure.STEP)
                 if index<len(topic_questions_answers_list):
                     ret.append(topic_questions_answers_list[index])
                 
-            topic_articles_list=get_articles_inner(topic_id,'',query_start,query_start+LIST_NUM)
+            topic_articles_list=get_articles_inner(topic_id,'',query_start,query_start+configure.LIST_NUM)
             if topic_articles_list:
-                index=int(int_start/STEP)
+                index=int(int_start/configure.STEP)
                 if index<len(topic_articles_list):
                     ret.append(topic_articles_list[index])
     
-    query_start=int(int_start/LIST_NUM)*LIST_NUM
-    questions_answers_list=get_questions_inner('','',query_start,query_start+LIST_NUM)
-    articles_list=get_articles_inner('','',query_start,query_start+LIST_NUM)   
+    query_start=int(int_start/configure.LIST_NUM)*configure.LIST_NUM
+    questions_answers_list=get_questions_inner('','',query_start,query_start+configure.LIST_NUM)
+    articles_list=get_articles_inner('','',query_start,query_start+configure.LIST_NUM)   
     
     if questions_answers_list:
         ret+=questions_answers_list
@@ -958,7 +956,7 @@ def get_questions_inner(topic_id,type,start,end):
         for i,answer in enumerate(push_answers):
             questions_list[i].extend(answer)
             questions_list[i].append('question')
-    cache.set(cache_key,questions_list,CACHE_EXPIRED)
+    cache.set(cache_key,questions_list,configure.CACHE_EXPIRED)
     return questions_list#questions_answers_list
         
 def get_articles_inner(topic_id,type,start,end):
@@ -988,6 +986,6 @@ def get_articles_inner(topic_id,type,start,end):
         article=list(article)
         article.append('article')
         articles_list.append(list(article))
-    cache.set(cache_key,articles_list,CACHE_EXPIRED)
+    cache.set(cache_key,articles_list,configure.CACHE_EXPIRED)
     return articles_list
     
