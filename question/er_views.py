@@ -34,6 +34,6 @@ class ActiveView(generic.ListView):
         
         er_data=User.objects.filter(id=erid).values("id","first_name","userprofile__avatar","userprofile__avatar","userprofile__avatar","userprofile__avatar","userprofile__avatar"
         ,"userprofile__mood","userprofile__intro","userprofile__sexual","userprofile__residence","userprofile__job","userprofile__question_nums","userprofile__article_nums","userprofile__answer_nums"
-        ,"userprofile__followto_nums","userprofile__follower_nums","userprofile__followtopic_nums","userprofile__followquestion_nums")
+        ,"userprofile__followto_nums","userprofile__follower_nums","userprofile__followtopic_nums","userprofile__followquestion_nums","userprofile__contribution")
 
         return render(request,self.template_name,{'logged':logged,'user':user,'command':command,'subcmd':subcmd,'er':er_data[0]})
