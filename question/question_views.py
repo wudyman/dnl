@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
+from . import configure
 # Create your views here.
 
 class IndexView(generic.ListView):
@@ -49,7 +50,7 @@ class IndexView(generic.ListView):
             question.save()
             
             quizzer.userprofile.question_nums+=1
-            quizzer.userprofile.contribution+=5
+            quizzer.userprofile.contribution+=configure.ASK_CONTRIBUTION
             quizzer.userprofile.save()
             
             for topic_str in topics:

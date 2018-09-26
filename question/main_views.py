@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
+from . import configure
 # Create your views here.
 
 def LogOut(request):
@@ -251,7 +252,7 @@ class WriteView(generic.ListView):
             article.topics_array=topics             
             article.save()
             user.userprofile.article_nums+=1
-            user.userprofile.contribution+=10
+            user.userprofile.contribution+=configure.WRITE_ARTICLE_CONTRIBUTION
             user.userprofile.save()
             
             for topic_str in topics:
@@ -293,7 +294,7 @@ class AskView(generic.ListView):
             question.save()
             
             user.userprofile.question_nums+=1
-            user.userprofile.contribution+=5
+            user.userprofile.contribution+=configure.ASK_CONTRIBUTION
             user.userprofile.save()
             
             for topic_str in topics:
