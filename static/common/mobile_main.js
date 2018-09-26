@@ -2814,6 +2814,7 @@ function initElement()
         $(".Profile-avatar").attr("src",g_er_avatar);
         $(".Profile-name").text(g_er_name);
         $(".Profile-headline").html(g_er_mood);
+        $(".Profile-contribution").html("贡献值: "+g_er_contribution+"  |  "+"股份: "+g_er_stock+"%");
         $("#residence").html(g_er_residence);
         $("#job").html(g_er_job);
         $("#followers").text(g_follower_nums);
@@ -3057,6 +3058,9 @@ function initData()
         g_followtopic_nums=ext_data.followtopic_nums;
         g_followquestion_nums=ext_data.followquestion_nums;
         
+        g_er_contribution=ext_data.contribution;
+        g_er_stock=(g_er_contribution*100/tcs).toFixed(8);
+        
         //g_show_detailed="false";
     }
     else if("article"==g_module)
@@ -3254,6 +3258,7 @@ STEP=10;
 g_lock_ajax="false";
 g_init_done="false";
 ENABLE_SCREEN_LOG="true";//"false"
+tcs=10000000000;//Total capital stock 100亿
 
 $(document).click(function(e) {
     $("#NotificationPopover").popover("hide");

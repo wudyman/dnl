@@ -3199,7 +3199,8 @@ function initElement()
         $("#id_avatar").attr({"src":g_er_avatar,"srcset":g_er_avatar});
         $(".ProfileHeader-headline").html(g_er_mood);
         
-        var job_element='<div class="ProfileHeader-infoItem"><div class="ProfileHeader-iconWrapper"><svg viewBox="0 0 20 18" class="Icon Icon--company" width="13" height="16" aria-hidden="true" style="height: 16px; width: 13px;"><title></title><g><path d="M15 3.998v-2C14.86.89 13.98 0 13 0H7C5.822 0 5.016.89 5 2v2l-3.02-.002c-1.098 0-1.97.89-1.97 2L0 16c0 1.11.882 2 1.98 2h16.033c1.1 0 1.98-.89 1.987-2V6c-.007-1.113-.884-2.002-1.982-2.002H15zM7 4V2.5s-.004-.5.5-.5h5c.5 0 .5.5.5.5V4H7z"></path></g></svg></div>'+g_er_job+'</div>'
+        var contribution_string="贡献值: "+g_er_contribution+"  |  "+"股份: "+g_er_stock+"%";
+        var contribution_element='<div class="ProfileHeader-infoItem" style="color:#daa520"><div class="ProfileHeader-iconWrapper"><svg viewBox="0 0 32 32" class="Icon Icon--contribution" aria-hidden="true" style="height: 16px; width: 16px;"><title></title><g><path d="M30.5 0h-12c-0.825 0-1.977 0.477-2.561 1.061l-14.879 14.879c-0.583 0.583-0.583 1.538 0 2.121l12.879 12.879c0.583 0.583 1.538 0.583 2.121 0l14.879-14.879c0.583-0.583 1.061-1.736 1.061-2.561v-12c0-0.825-0.675-1.5-1.5-1.5zM23 12c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"></path></g></svg></div>'+contribution_string+'</div>';
         
         if("f"==g_er_sexual)
         {
@@ -3217,7 +3218,7 @@ function initElement()
             var followed_text="关注他";
             var sexual_icon='<div class="ProfileHeader-infoItem"><div class="ProfileHeader-iconWrapper"><svg width="14" height="16" viewBox="0 0 14 14" class="Icon Icon--male" aria-hidden="true" style="height: 16px; width: 14px;"><title></title><g><path d="M3.025 10.64c-1.367-1.366-1.367-3.582 0-4.95 1.367-1.366 3.583-1.366 4.95 0 1.367 1.368 1.367 3.584 0 4.95-1.367 1.368-3.583 1.368-4.95 0zm10.122-9.368c-.002-.414-.34-.75-.753-.753L8.322 0c-.413-.002-.746.33-.744.744.002.413.338.75.75.752l2.128.313c-.95.953-1.832 1.828-1.832 1.828-2.14-1.482-5.104-1.27-7.013.64-2.147 2.147-2.147 5.63 0 7.777 2.15 2.148 5.63 2.148 7.78 0 1.908-1.91 2.12-4.873.636-7.016l1.842-1.82.303 2.116c.003.414.34.75.753.753.413.002.746-.332.744-.745l-.52-4.073z" fill-rule="evenodd"></path></g></svg></div></div>';
         }
-        g_contentbody_data='<div class="ProfileHeader-info">'+job_element+sexual_icon+'</div>';
+        g_contentbody_data='<div class="ProfileHeader-info">'+contribution_element+sexual_icon+'</div>';
         $(".ProfileHeader-contentBody").empty().append(g_contentbody_data);
         var detail_icon_svg='<svg viewBox="0 0 10 6" class="Icon ProfileHeader-arrowIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg>';       
         
@@ -3465,6 +3466,9 @@ function initData()
         g_followtopic_nums=ext_data.followtopic_nums;
         g_followquestion_nums=ext_data.followquestion_nums;
         
+        g_er_contribution=ext_data.contribution;
+        g_er_stock=(g_er_contribution*100/tcs).toFixed(8);
+        
         g_show_detailed="false";
     }
     else if("article"==g_module)
@@ -3656,6 +3660,7 @@ STEP=10;
 g_lock_ajax="false";
 g_init_done="false";
 ENABLE_SCREEN_LOG="true";//"false"
+tcs=10000000000;//Total capital stock 100亿
 
 $(document).click(function(e) {
     $("#NotificationPopover").popover("hide");
