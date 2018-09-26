@@ -3601,8 +3601,7 @@ function initCommon()
         ['font', ['superscript', 'subscript']],
         ['table', ['table']],
         ['link', ['link']],
-        ['picture', ['picture']],
-        ['video', ['video']]
+        ['picture', ['picture']]
         ],
         minHeight:150,
         lang:'zh-CN',
@@ -3626,8 +3625,7 @@ function initCommon()
         ['para', ['paragraph']],
         ['table', ['table']],
         ['link', ['link']],
-        ['picture', ['picture']],
-        ['video', ['video']]
+        ['picture', ['picture']]
         ],
         minHeight:150,
         lang:'zh-CN',
