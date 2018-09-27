@@ -23,7 +23,7 @@ import question.main_views as main_views
 urlpatterns = [
     #url(r'^$',main_views.IndexView.as_view(),name='homepage'),
     url(r'^',include('question.question_urls')),
-    url(r'^admin/', admin.site.urls),
+    url(r'^wudy_s4/', admin.site.urls),
 	url(r'^signinup/$',main_views.SigninupView.as_view(),name='signinup'),
     url(r'^account/$',main_views.AccountView.as_view(),name='account'),
     url(r'^topics/$',main_views.AllTopicsView.as_view(),name='alltopics'),
