@@ -116,6 +116,7 @@ CACHES = {
         }
     }
 }
+'''
 #print sqlite
 LOGGING = {
 
@@ -135,6 +136,7 @@ LOGGING = {
         },
     }
 }
+'''
 
 CRONJOBS = [
     ('*/3 * * * *','question.cron.test','>>/tmp/cron.log'),
