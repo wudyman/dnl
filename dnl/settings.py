@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -135,6 +136,11 @@ LOGGING = {
     }
 }
 
+CRONJOBS = [
+    ('*/3 * * * *','question.cron.test','>>/tmp/cron.log'),
+    ('30 2 * * *','question.cron.d_task','>>/tmp/cron.log'),
+    ('30 3 2 * *','question.cron.m_task','>>/tmp/cron.log'),
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
