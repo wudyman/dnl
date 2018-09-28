@@ -104,3 +104,4 @@ ENV/
 dnl.sock
 cache
 static/admin
+dnl/database.py
