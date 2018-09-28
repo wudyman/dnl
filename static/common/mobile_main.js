@@ -3381,7 +3381,7 @@ function sendPageInfoToApp()
         {
             thumbImage=SITE_URL+thumbImage;
         }
-        content=content.replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,50);
+        content=content.replace(/<[^>]+>/g,"").replace(/&nbsp;/ig,"").substr(0,100);
         var data={
             command: "page",
             payload:{
