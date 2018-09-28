@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from . import database
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -80,11 +81,11 @@ DATABASES = {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',  # 或者使用 mysql.connector.django
-        'NAME': 'dnl',
-        'USER': 'root',
-        'PASSWORD': 'Shenlin_830924',
-        'HOST':'localhost',
-        'PORT':'3306',
+        'NAME': database.NAME,
+        'USER': database.USER,
+        'PASSWORD': database.PASSWORD,
+        'HOST':database.HOST,
+        'PORT':database.PORT,
     }
 }
 
