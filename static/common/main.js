@@ -3352,6 +3352,10 @@ function initElement()
         checkInteractionButton();
         getComments("article",g_article_id);
     }
+    else if("ask"==g_module)
+    {
+        $('head title').text("提问题"+" - "+SITE);
+    }
     else if(("write"==g_module)||("revise"==g_module))
     {
         $('head title').text("写文章"+" - "+SITE);
