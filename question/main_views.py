@@ -290,7 +290,8 @@ class AskView(generic.ListView):
             question=Question()
             question.title=request.POST.get('title')
             question.detail=request.POST.get('detail')
-            question.quizzer=user 
+            question.quizzer=user
+            question.topics_array=topics
             question.save()
             
             user.userprofile.question_nums+=1
