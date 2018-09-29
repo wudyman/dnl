@@ -39,7 +39,6 @@ class IndexView(generic.ListView):
         else:
             quizzer=request.user #get_object_or_404(User,username=request.user)
             topics=request.POST.getlist('topics_selected')#('topics')
-            print(topics)
 
             question=Question()
             question.title=request.POST.get('title')
