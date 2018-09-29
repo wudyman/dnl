@@ -920,6 +920,7 @@ def get_questions(request,order,start,end):
         ret+=articles_list
     if ret:
         to_json=json.dumps(ret,cls=CJsonEncoder)
+
     return HttpResponse(to_json,content_type='application/json')
 
 def get_questions_inner(topic_id,type,start,end):
@@ -930,14 +931,14 @@ def get_questions_inner(topic_id,type,start,end):
         print(cache_key)
         cache_value=cache.get(cache_key,'expired')
         if cache_value=='expired':
-            questions=Question.objects.order_by('pub_date').exclude(push_answer_id=-1)[int(start):int(end)].values_list("id","title","click_nums","push_answer_id","topics_array")
+            questions=Question.objects.order_by('-pub_date').exclude(push_answer_id=-1)[int(start):int(end)].values_list("id","title","click_nums","push_answer_id","topics_array")
         else:
             return cache_value
     else:
         cache_key='topic'+topic_id+'question'+type+str(start)
         cache_value=cache.get(cache_key,'expired')
         if cache_value=='expired':
-            questions=Question.objects.order_by('pub_date').filter(topics__id=topic_id,answer_nums__gte=1)[int(start):int(end)].values_list("id","title","click_nums","push_answer_id","topics_array")
+            questions=Question.objects.order_by('-pub_date').filter(topics__id=topic_id,answer_nums__gte=1)[int(start):int(end)].values_list("id","title","click_nums","push_answer_id","topics_array")
         else:
             return cache_value
     if questions:
@@ -966,7 +967,7 @@ def get_articles_inner(topic_id,type,start,end):
         cache_key='article'+type+str(start)
         cache_value=cache.get(cache_key,'expired')
         if cache_value=='expired':
-            articles=Article.objects.order_by('pub_date')[int(start):int(end)].values_list(
+            articles=Article.objects.order_by('-pub_date')[int(start):int(end)].values_list(
             "id","title","click_nums","id","topics_array","id","content","like_nums","comment_nums","pub_date",
             "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
             "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
@@ -976,7 +977,7 @@ def get_articles_inner(topic_id,type,start,end):
         cache_key='topic'+topic_id+'article'+type+str(start)
         cache_value=cache.get(cache_key,'expired')
         if cache_value=='expired':
-            articles=Article.objects.order_by('pub_date').filter(topics__id=topic_id)[int(start):int(end)].values_list(
+            articles=Article.objects.order_by('-pub_date').filter(topics__id=topic_id)[int(start):int(end)].values_list(
             "id","title","click_nums","id","topics_array","id","content","like_nums","comment_nums","pub_date",
             "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
             "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
