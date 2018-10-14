@@ -155,4 +155,17 @@ class Keyword(models.Model):
     sums=models.IntegerField(default=0)
     update_date=models.DateTimeField('update',auto_now=True)
     def __str__(self):
-        return str(self.id)
+        return str(self.name)
+class BusinessInfo(models.Model):
+    #id=models.BigAutoField(primary_key=True)
+    title=models.CharField(max_length=100)
+    detail=models.CharField(max_length=500,null=True,blank=True)
+    poster=models.ForeignKey(User,related_name='selfbusinesses',on_delete=models.CASCADE)
+    type=models.CharField(default='sell',max_length=11)   
+    addr=models.CharField(max_length=100)
+    addr_value=models.CharField(max_length=100)
+    contact=models.CharField(max_length=100,null=True,blank=True)
+    pictures=models.CharField(max_length=500,null=True,blank=True)    
+    update_date=models.DateTimeField('update',auto_now=True)
+    def __str__(self):
+        return str(self.title)
