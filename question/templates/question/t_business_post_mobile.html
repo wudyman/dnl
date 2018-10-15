@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="zh" data-hairline="true" data-android="true" data-theme="light">
+{% include 'question/head_mobile.html' %}
+
+<body class="Mobile-body">
+<div id="root">
+<div class="App">
+<div class="LoadingBar"></div>
+<div class="Mobile-header is-hide">
+{% include 'question/header_mobile.html' %}
+</div>
+
+<main role="main" class="App-main" data-module="setting" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}","type":"{{type}}","conversation_id":"{{conversation_id}}"}'>
+
+<div id="settings">
+
+<div class="Card">
+<div>
+<div>
+<div class="Sticky" style=""></div>
+</div>
+</div>
+<div class="Topic-bar">
+<ul role="tablist" class="Tabs Topic-tabs">
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><a class="Tabs-link is-active" href="/notifications">通知</a></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><a class="Tabs-link" href="/conversations">私信</a></li>
+<li role="tab" class="Tabs-item Tabs-item--noMeta"><a class="Tabs-link" href="/settings">设置</a></li>
+</ul>
+</div>
+</div>
+
+<div class="Card">
+<div class="List">
+<div id="appendArea" class="">
+<!--<div class="List-item SearchItem">-->
+</div>
+</div>
+</div>
+
+<!--<button class="OpenInAppButton OpenInApp is-shown">App 内打开</button>-->
+
+</div>
+</main>
+
+</div>
+</div>
+
+<!-- ask（Modal） -->
+{% include 'question/ask_modal_mobile.html' %}
+</body>
+</html>

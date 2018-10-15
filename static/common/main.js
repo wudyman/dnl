@@ -3390,6 +3390,11 @@ function initElement()
         }
         checkWrite();
     }
+    else if("business"==g_module)
+    {
+        $('head title').text("买卖信息"+" - "+SITE);
+        appendBusinessElement();
+    }
     g_init_element_done="true";
 }
 
