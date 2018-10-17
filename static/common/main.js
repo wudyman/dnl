@@ -3390,10 +3390,20 @@ function initElement()
         }
         checkWrite();
     }
+    else if("businesses"==g_module)
+    {
+        $('head title').text("买卖信息"+" - "+SITE);
+        initBusinessesElement();
+    }
     else if("business"==g_module)
     {
         $('head title').text("买卖信息"+" - "+SITE);
-        appendBusinessElement();
+        initBusinessElement();
+    }
+    else if("business-post"==g_module)
+    {
+        $('head title').text("买卖信息发布"+" - "+SITE);
+        initBusinessPostElement();
     }
     g_init_element_done="true";
 }

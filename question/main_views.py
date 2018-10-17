@@ -369,37 +369,3 @@ class ReviseView(generic.ListView):
       
             result='/article/'+str(article.id)+'/'
             return HttpResponseRedirect(result)
-                       
-class BusinessView(generic.ListView):
-    login_url='/'
-    template_name='question/t_business.html'
-    def get_queryset(self):
-        return
-    def get(self,request,*args,**kwargs):
-        ua=request.META['HTTP_USER_AGENT']
-        is_mobile=ua.upper().find('MOBILE')>=0
-        print('is moblie:',is_mobile)
-        if is_mobile:
-            self.template_name='question/t_business_mobile.html'
-        user=request.user
-        if user.is_authenticated:
-            return render(request,self.template_name,{'logged':'true'})
-        else:
-            return HttpResponseRedirect('/signinup/?next=/business/')
-            
-class BusinessPostView(generic.ListView):
-    login_url='/'
-    template_name='question/t_business_post.html'
-    def get_queryset(self):
-        return
-    def get(self,request,*args,**kwargs):
-        ua=request.META['HTTP_USER_AGENT']
-        is_mobile=ua.upper().find('MOBILE')>=0
-        print('is moblie:',is_mobile)
-        if is_mobile:
-            self.template_name='question/t_business_post_mobile.html'
-        user=request.user
-        if user.is_authenticated:
-            return render(request,self.template_name,{'logged':'true'})
-        else:
-            return HttpResponseRedirect('/signinup/?next=/business_post/')

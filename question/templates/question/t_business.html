@@ -15,145 +15,52 @@
 <div class="ContentLayout">
 <div class="ContentLayout-mainColumn">
 
-<!--
-<div class="Card">
+<div class="Post-content">
+<!--<img class="TitleImage" src="" alt="">-->
+<article class="Post-Main Post-NormalMain">
 
-<div class="SearchBar">
-<div class="SearchBar-toolWrapper">
-<div class="SearchBar-input Input-wrapper Input-wrapper--grey">
-<input id="businessSearchInput" type="text" maxlength="100" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-haspopup="true" class="SearchPopover Input" placeholder="搜索关键字..." value="" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
-<div class="Input-after"><button id="1search_button" aria-label="搜索" type="button" class="Button SearchBar-searchIcon Button--primary"><svg viewBox="0 0 16 16" class="Icon Icon--search" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg></button></div>
+<header class="Post-Header">
+<h1 class="Post-Title">{{businessInfo.title}}</h1>
+<div class="ContentItem-time">
+<span>{{businessInfo.update_date|date:"Y-m-d"}}</span>
 </div>
-</div>
-<button id="businessSearchButton" type="button" class="Button Button--primary Button--green is-hide">搜索</button>
-<button type="button" class="Button PostBusinessButton Button--primary Button--green" data-toggle="modal" data-target="#postBusiness">发布信息</button>
-</div>
-
-</div>
-
-<div class="Card">
-<div class="Card-header">
-<div class="Card-headerText">
-<a target="_blank" href="/er/2/following/topics/">选择地区</a> 
-</div>
-</div>
-
-<div class="Card-section">
-<div class="Tag current">
-<span class="Tag-content">
-<a class="1TopicLink" href="#1">数学</a>
+<div class="Post-Author">
+<div class="AuthorInfo">
+<span class="UserLink AuthorInfo-avatarWrapper">
+<a class="UserLink-link" target="_blank" href="/er/{{businessInfo.poster__id}}/">
+<img class="Avatar Avatar--round AuthorInfo-avatar" width="38" height="38" src="{{businessInfo.poster__userprofile__avatar}}" alt="{{businessInfo.poster__first_name}}">
+</a>
+</span>
+<div class="AuthorInfo-content">
+<div class="AuthorInfo-head">
+<span class="UserLink AuthorInfo-name">
+<a class="UserLink-link" target="_blank" href="/er/{{businessInfo.poster__id}}/">{{businessInfo.poster__first_name}}</a>
 </span>
 </div>
-<div class="Tag">
-<span class="Tag-content">
-<a class="1TopicLink" href="#3">英语</a>
-</span>
+<div class="AuthorInfo-detail"><div class="AuthorInfo-badge"><div class="RichText ztext AuthorInfo-badgeText">{{businessInfo.poster__userprofile__mood}}</div></div></div>
 </div>
 </div>
+<button type="button" class="Button FollowButton Button--primary 1is-hide" data-follow-type="people"><span>关注</span></button>
+</div>
+<div><span class="Voters"><button type="button" class="Button Button--plain"><span class="Article--likenums--nouse">10</span> 次浏览</button></span>
+</div>
+</header>
 
-<div class="Card-section">
-<div class="Tag current">
-<span class="Tag-content">
-<a class="1TopicLink" href="#1">数学</a>
-</span>
-</div>
-<div class="Tag">
-<span class="Tag-content">
-<a class="1TopicLink" href="#3">英语</a>
-</span>
-</div>
-</div>
-
-<div class="Card-section">
-<div class="Tag current">
-<span class="Tag-content">
-<a class="1TopicLink" href="#1">数学</a>
-</span>
-</div>
-<div class="Tag">
-<span class="Tag-content">
-<a class="1TopicLink" href="#3">英语</a>
-</span>
-</div>
-</div>
-
-</div>
--->
-
-<div class="Card BusinessHead">
-
-<div class="Card-header">
-<div class="Card-headerText">
-<span>请选择区域><span id='local'></span></span>
-</div>
-<a type="button" class="Button PostBusinessButton Button--primary Button--green" href="/business_post/">免费发布信息</a>
-</div>
-
-<section id="selection">
 <div>
-   
-<dl class="secitem">
-<dt>省份：</dt>
-<dd id="provinces">
-<a class="select select-province" href="javascript:;" data-addr-value="0">全国</a>
-</dd>
-</dl>
-
-<dl class="secitem">
-<dt>城市：</dt>
-<dd id="citys">   
-<a class="select select-city" href="javascript:;" data-addr-value="0">全省</a>
-</dd>
-</dl>
-
-<dl class="secitem">
-<dt>地区：</dt>
-<dd id="districts">   
-<a class="select select-district" href="javascript:;" data-addr-value="0">全市</a>
-</dd>
-</dl>
-
-
-<div id="SearchForm" class="sale_search clearfix_z" style="border-bottom: 0px;">
-<div class="SearchBar">
-<div class="SearchBar-toolWrapper">
-<div class="SearchBar-input Input-wrapper Input-wrapper--grey">
-<input id="businessSearchInput" type="text" maxlength="100" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-haspopup="true" class="SearchPopover Input" placeholder="搜索关键字..." value="" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
-<div class="Input-after"><button id="1search_button" aria-label="搜索" type="button" class="Button SearchBar-searchIcon Button--primary"><svg viewBox="0 0 16 16" class="Icon Icon--search" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg></button></div>
+<div class="RichText ztext Post-RichText" style="1white-space: pre;">
+{{businessInfo.detail}}
 </div>
-</div>
-<button id="businessSearchButton" type="button" class="Button Button--primary Button--green 1is-hide">搜索</button>
-</div>
-<!--
-<form id="search_loc" action="" method="get">
-<span class="search_input">
-<input class="but-wd" value="请输入关键字" maxlength="40" fdv="" id="keyword1" name="b_q" para="key" autocomplete="off">
-</span>
-<span class="selfcata"><input type="submit" id="searchbtn1" class="search_on" value="搜本类"></span>
-<span class="selfcata" id="search_all"><input type="button" value="搜全站"></span>
-</form>
--->
 </div>
 
+<div style="color:red;font-size:16px;margin-top:10px;">
+<div>区域：{{businessInfo.addr}}</div>
+<div>联系方式：{{businessInfo.contact}}</div>
+<div>联系我时，请说是在58同城看到的，谢谢！</div>
+</div>
 
-<!--
-<div class="SearchBar" style="clear:both;">
-<div class="SearchBar-toolWrapper">
-<div class="SearchBar-input Input-wrapper Input-wrapper--grey">
-<input id="businessSearchInput" type="text" maxlength="100" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-haspopup="true" class="SearchPopover Input" placeholder="搜索关键字..." value="" data-toggle="popover" data-placement="bottom" data-trigger="manual" data-content="null" data-html="true" data-container="body">
-<div class="Input-after"><button id="1search_button" aria-label="搜索" type="button" class="Button SearchBar-searchIcon Button--primary"><svg viewBox="0 0 16 16" class="Icon Icon--search" width="16" height="16" aria-hidden="true" style="height: 16px; width: 16px;"><title></title><g><path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z"></path></g></svg></button></div>
+</article>
 </div>
-</div>
-<button id="businessSearchButton" type="button" class="Button Button--primary Button--green is-hide">搜索</button>
-<button type="button" class="Button PostBusinessButton Button--primary Button--green" data-toggle="modal" data-target="#postBusiness">发布信息</button>
-</div>
--->
 
-<div class="selectResult clearfix" id="selected" style="display: none;"><div class="barct clearfix"></div></div>
-</div>
-</section>
-
-</div>
 
 </div>
 </div>
