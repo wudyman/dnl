@@ -1,3 +1,33 @@
+function appendBusinessesElement(ret)
+{
+    for (var i in ret)
+    {
+        var businessInfo_id=ret[i][0];
+        var businessInfo_title=ret[i][1];
+        var businessInfo_detail=ret[i][2];
+        var businessInfo_type=ret[i][3];
+        var businessInfo_addr=ret[i][4];
+        var businessInfo_addr_value=ret[i][5];
+        var businessInfo_contact=ret[i][6];
+        var businessInfo_pictures=ret[i][7];
+        var businessInfo_update_date=ret[i][8];
+        
+        var data='<div class="1List-item" style="position: relative;">\
+        <div class="ContentItem">\
+        <div class="ContentItem-left" style="width:100px;padding:10px 15px;float:left;"><a href="/business/'+businessInfo_id+'/" target="_blank"><img class="" style="width:100px;height:75px;" src="/media/avatar/default.jpg" alt=""></a></div>\
+        <div class="ContentItem-ritht" style="padding:10px 10px 15px 10px;">\
+        <div style="font-size:14px;color:#25d;padding:5px;"><a href="/business/'+businessInfo_id+'/" target="_blank">'+businessInfo_title+'</a></div>\
+        <div style="font-size:12px;color:#666;overflow: hidden;white-space: nowrap;">'+businessInfo_detail+'</div>\
+        <div class="ContentItem-status">\
+        <span class="ContentItem-statusItem" style="font-size:12px;">'+businessInfo_addr+'</span>\
+        <span class="ContentItem-statusItem" style="font-size:12px;">'+getDateDiff(businessInfo_update_date)+'</span>\
+        </div>\
+        </div>\
+        </div>\
+        </div>';
+        $("#appendArea").append(data);
+    }
+}
 function checkSelectDistrict()
 {
     $(".select-district").off("click");
@@ -63,8 +93,19 @@ function checkSelectProvince()
         });
     });
 }
-
-function initBusinessElement()
+function checkBusinessesTypeTab()
+{
+    $(".Businesses-tabs .Tabs-link").off("click");
+    $(".Businesses-tabs .Tabs-link").on("click",function(){
+        $(".Businesses-tabs .Tabs-link").removeClass("is-active");
+        $(this).addClass("is-active");
+        g_business_type=$(this).attr("data-business-type");
+        $("#appendArea").empty();
+        g_last_getmoredata_index=0;
+        getMoreData();
+    });  
+}
+function initBusinessesElement()
 {
     provinces=getProvinces();
     provinces_map={};
@@ -83,7 +124,9 @@ function initBusinessElement()
         provinces_map[value]=i;    
     }  
     checkSelectProvince();
+    checkBusinessesTypeTab();
 }
+/**********businesses module***********/
 
 function addrSelectChange(type)
 {
@@ -245,3 +288,4 @@ function checkBusinessPost()
     checkBusinessPostDetail();
     checkBusinessPostContact();
 }
+/**********business-post module***********/

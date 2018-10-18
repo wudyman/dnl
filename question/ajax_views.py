@@ -12,6 +12,7 @@ from .models import *
 import time,random
 from PIL import Image
 from django.db import connection
+from django.db.models import Q
 from . import dysms
 import uuid
 from datetime import datetime,timedelta
@@ -702,6 +703,23 @@ def hotwords(request):
     to_json=json.dumps('fail')
     hotwords=Keyword.objects.order_by('-sums')[0:10].values_list('name','sums')
     to_json=json.dumps(list(hotwords))
+    return HttpResponse(to_json,content_type='application/json')
+@csrf_exempt
+def businesses(request,type,order,start,end):
+    to_json=json.dumps('fail')
+    keyword=request.POST.get('keyword')
+    #if keyword:
+    businessInfos=[]
+    print(type)
+    if type=='all':
+        #businessInfos=BusinessInfo.objects.filter(Q(type='sell')|Q(type='buy'))[int(start):int(end)].values_list("id","title")
+        businessInfos=BusinessInfo.objects.order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
+    elif type=='sell':
+        businessInfos=BusinessInfo.objects.filter(type=type).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
+    elif type=='buy':
+        businessInfos=BusinessInfo.objects.filter(type=type).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
+    if businessInfos:
+        to_json=json.dumps(list(businessInfos),cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
 @csrf_exempt
 def user_data(request,userid):

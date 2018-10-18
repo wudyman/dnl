@@ -1384,9 +1384,9 @@ function checkSearch()
         input_lock="false";
     });  
 
-    $(".Tabs-link").off("click");
-    $(".Tabs-link").on("click",function(){
-        $(".Tabs-link").removeClass("is-active");
+    $(".SearchTabs .Tabs-link").off("click");
+    $(".SearchTabs .Tabs-link").on("click",function(){
+        $(".SearchTabs .Tabs-link").removeClass("is-active");
         $(this).addClass("is-active");
         g_search_type=$(this).attr("data-search-type");
         $("#appendArea").empty();
@@ -2856,6 +2856,15 @@ function getMoreData()
         var url='/ajax/answer_page/'+g_type+'/'+order+'/'+start+'/'+end+'/';
         var post_data='';
     }
+    else if("businesses"==g_module)
+    {
+        var nums=g_last_getmoredata_index;
+        var order=1;//pub_date
+        var start=nums;
+        var end=start+STEP;
+        var url='/ajax/businesses/'+g_business_type+'/'+order+'/'+start+'/'+end+'/';
+        var post_data='';
+    }
     else
     {
         return;
@@ -2925,6 +2934,10 @@ function getMoreData()
                     appendInvitedQuestionElement(ret)
                 else
                     appendQuestionElement(ret);
+            }
+            else if("businesses"==g_module)
+            {
+                    appendBusinessesElement(ret);
             }
             checkSets();
             g_last_getmoredata_index+=STEP;
@@ -3514,6 +3527,10 @@ function initData()
     else if("answer_page"==g_module)
     {
         g_type=main_data.type;
+    }
+    else if("businesses"==g_module)
+    {
+        g_business_type=$(".Businesses-tabs .Tabs-link.is-active").attr("data-business-type");;
     }
     
     if("true"==g_logged)
