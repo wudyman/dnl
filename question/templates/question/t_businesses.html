@@ -1,10 +1,10 @@
 ﻿<!DOCTYPE html>
 <html lang="zh" data-hairline="true" data-theme="light" data-focus-method="pointer" style="">
+{% include 'question/head.html' %}
 {%load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'common/business.css' %}">
 <script src="{% static 'common/citys.js' %}"></script>
 <script src="{% static 'common/business.js' %}"></script>
-{% include 'question/head.html' %}
 <body class="Entry-body" style="background-color:#fff">
 {% include 'question/header.html' %}
 
@@ -30,21 +30,21 @@
 <dl class="secitem">
 <dt>省份：</dt>
 <dd id="provinces">
-<a class="select select-province" href="javascript:;" data-addr-value="0">全国</a>
+<a class="select select-province" href="javascript:;" data-addr-value="000000">全国</a>
 </dd>
 </dl>
 
 <dl class="secitem">
 <dt>城市：</dt>
 <dd id="citys">   
-<a class="select select-city" href="javascript:;" data-addr-value="0">全部</a>
+<a class="select select-city" href="javascript:;" data-addr-value="000000">全部</a>
 </dd>
 </dl>
 
 <dl class="secitem">
 <dt>地区：</dt>
 <dd id="districts">   
-<a class="select select-district" href="javascript:;" data-addr-value="0">全部</a>
+<a class="select select-district" href="javascript:;" data-addr-value="000000">全部</a>
 </dd>
 </dl>
 

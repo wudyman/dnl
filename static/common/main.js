@@ -278,7 +278,12 @@ function uploadImage(type,file)
                     g_user_profile_list=b64_to_utf8(user_profile).split(",");
                     g_user_profile_list[2]=url;
                     saveUserDataToCookie("up",g_user_profile_list);
-                }                  
+                }
+                else if("forBusiness"==type)
+                {
+                    console.log(url);
+                    appendBusinessPostPicture(url);
+                }
             }
         }
     });
@@ -1939,7 +1944,6 @@ function checkAvatar(){
     });
     
     $("#id_avatar_input").on("change",function(){
-       console.log("********************");
        $("#upAvatarModal").modal('show');
         var objUrl = getObjectURL(this.files[0]);
         if (objUrl) { 
@@ -2863,7 +2867,7 @@ function getMoreData()
         var start=nums;
         var end=start+STEP;
         var url='/ajax/businesses/'+g_business_type+'/'+order+'/'+start+'/'+end+'/';
-        var post_data='';
+        var post_data={'addr':addr,'addr_value':addr_value,'keyword':business_keyword};
     }
     else
     {

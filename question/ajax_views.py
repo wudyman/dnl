@@ -707,13 +707,21 @@ def hotwords(request):
 @csrf_exempt
 def businesses(request,type,order,start,end):
     to_json=json.dumps('fail')
+    addr=request.POST.get('addr')
+    addr_value=request.POST.get('addr_value')
     keyword=request.POST.get('keyword')
-    #if keyword:
+    #print(request.POST)
+    #print(keyword)
+    addr_value_list=[]
+    addr_value_list.append(addr_value[0:6])
+    addr_value_list.append(addr_value[0:12])
+    addr_value_list.append(addr_value)
     businessInfos=[]
-    print(type)
     if type=='all':
-        #businessInfos=BusinessInfo.objects.filter(Q(type='sell')|Q(type='buy'))[int(start):int(end)].values_list("id","title")
-        businessInfos=BusinessInfo.objects.order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
+        if(addr):
+            businessInfos=BusinessInfo.objects.filter(Q(addr_value__contains=addr_value)|Q(addr_value__in=addr_value_list)).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
+        else:
+            businessInfos=BusinessInfo.objects.order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
     elif type=='sell':
         businessInfos=BusinessInfo.objects.filter(type=type).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
     elif type=='buy':
