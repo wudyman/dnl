@@ -711,21 +711,30 @@ def businesses(request,type,order,start,end):
     addr_value=request.POST.get('addr_value')
     keyword=request.POST.get('keyword')
     #print(request.POST)
-    #print(keyword)
+    print(keyword)
     addr_value_list=[]
     addr_value_list.append(addr_value[0:6])
     addr_value_list.append(addr_value[0:12])
     addr_value_list.append(addr_value)
     businessInfos=[]
     if type=='all':
-        if(addr):
+        if addr and keyword:
+            businessInfos=BusinessInfo.objects.filter(Q(addr_value__contains=addr_value)|Q(addr_value__in=addr_value_list),title__contains=keyword).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
+        elif addr:
             businessInfos=BusinessInfo.objects.filter(Q(addr_value__contains=addr_value)|Q(addr_value__in=addr_value_list)).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
+        elif keyword:
+            businessInfos=BusinessInfo.objects.filter(title__contains=keyword).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
         else:
             businessInfos=BusinessInfo.objects.order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
-    elif type=='sell':
-        businessInfos=BusinessInfo.objects.filter(type=type).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
-    elif type=='buy':
-        businessInfos=BusinessInfo.objects.filter(type=type).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
+    else:
+        if addr and keyword:
+            businessInfos=BusinessInfo.objects.filter(Q(addr_value__contains=addr_value)|Q(addr_value__in=addr_value_list),type=type,title__contains=keyword).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
+        elif addr:
+            businessInfos=BusinessInfo.objects.filter(Q(addr_value__contains=addr_value)|Q(addr_value__in=addr_value_list),type=type).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
+        elif keyword:
+            businessInfos=BusinessInfo.objects.filter(type=type,title__contains=keyword).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
+        else:
+            businessInfos=BusinessInfo.objects.filter(type=type).order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","update_date")
     if businessInfos:
         to_json=json.dumps(list(businessInfos),cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')

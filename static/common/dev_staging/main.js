@@ -281,7 +281,6 @@ function uploadImage(type,file)
                 }
                 else if("forBusiness"==type)
                 {
-                    console.log(url);
                     appendBusinessPostPicture(url);
                 }
             }
@@ -3534,7 +3533,7 @@ function initData()
     }
     else if("businesses"==g_module)
     {
-        g_business_type=$(".Businesses-tabs .Tabs-link.is-active").attr("data-business-type");;
+        g_business_type=$(".Businesses-tabs .Tabs-link.is-active").attr("data-business-type");
     }
     
     if("true"==g_logged)

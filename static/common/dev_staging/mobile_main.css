@@ -51,13 +51,12 @@ ol, ul {
 	list-style: none;
 } 
 */
-
+/*
 body {
-  background-color:#f6f6f6;
+  background-color:#f3f3f3;
   background-repeat:no-repeat;
   color: black;
 }
-/*
 .flat-form-nouse {
   background: #6a6a6a;
   margin: 25px auto;
@@ -68,7 +67,7 @@ body {
 .flat-form {
   padding: 3% 1% 3% 3%;
 }
-.1banner{
+.banner{
   line-height:64px;
   height: 80px;
   color: green;
@@ -117,7 +116,6 @@ body {
   text-align: center;
   font-size: 16px;
   padding: 12px 22px 12px 22px;
-
 }
 .tabs a {
   color: grey;
@@ -156,6 +154,7 @@ body {
 	-moz-transition: all 0.5s linear;
 	transition: all 0.5s linear;
 }
+
 .form-action {
   padding: 0 20px;
   position: relative;
@@ -177,22 +176,6 @@ form input[type=text],
 form input[type=password],
 form input[type=submit] {
 }
-*/
-/*
-form input[type=text],
-form input[type=password] {
-  width: 100%;
-  height: 40px;
-  margin-bottom: 10px;
-  padding-left: 15px;
-  background: #fff;
-  border: none;
-  color: #e74c3c;
-  outline: none;
-}
-*/
-
-/*
 .dark-box {
   background: #5e0400;
   box-shadow: 1px 3px 3px #3d0100 inset;
@@ -266,7 +249,6 @@ form input[type=password] {
 .askmodal .font-center{
     text-align:center;
 }
-*/
 .QuestionFrame{
     padding:2%;
     word-wrap:break-word;
@@ -288,19 +270,9 @@ form input[type=password] {
 .popover{
     max-width: 100%;
 }
-
-.ProfileHeader{
-    width:1000px;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-}
-.Profile-main{
-    width:1000px;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-}
+*/
+.ProfileHeader{width:1032px} /* or width=1000px;box-sizing=content-box*/
+.Profile-main{width:1032px}  /* or width=1000px;box-sizing=content-box*/
 .ProfileHeader-main {
     position: relative;
     margin: 0 20px 4px;
@@ -314,6 +286,8 @@ form input[type=password] {
 .keep-zg-left{float:left}
 .Tag.current{position:relative;display:inline-block;height:30px;padding:0 12px;font-size:14px;line-height:30px;vertical-align:top;border-radius:100px;background:#259;border-color:#259;color:#fff}
 .current a{color:#fff}
+
+/*
 .Topic{
     display:-webkit-box;
     display:-ms-flexbox;
@@ -322,6 +296,8 @@ form input[type=password] {
     -ms-flex-align:center;
     align-items:center
 }
+*/
+
 .Topic-avatar{
     vertical-align:top
 }
@@ -330,7 +306,6 @@ form input[type=password] {
     -ms-flex:1;
     flex:1;
     margin-left:14px;
-    /*overflow:hidden*/
 }
 
 .Topic-head{
@@ -658,10 +633,9 @@ label {
 .zu-noti7-all .spinner{height:22px;display:block;background:url(/static/revved/img/spinner2.a45a3423.gif);background-repeat:no-repeat;background-position:0 3px;width:22px;text-indent:999px;overflow:hidden;margin-bottom:-8px}
 .zu-noti7-all .zm-noti7-expandable .zm-noti7-content-item,.zu-noti7-all .unfold{border-top:1px dashed #eee}
 .zu-noti7-all .loading,.zu-noti7-all .empty{padding:60px;text-align:center}
-.zu-noti7-all .day a{color:#259}
 
 .pull-left,.note-placeholder{
-   color:#8590a6;
+    color:#8590a6;
 }
 
 .pull-left.selected{
@@ -669,7 +643,7 @@ label {
 }
 
 .QuestionAsk-section {
-    margin-bottom: 2px;
+    margin-bottom: 10px;
 }
 
 .ModalButtonGroup--vertical {
@@ -708,15 +682,18 @@ label {
     -moz-box-sizing: content-box;
     box-sizing: content-box;
 }
+/*********for search*****************/
+.Highlight em{font-style:normal;color:#f75659}
+/**************************/
 /*----for writePage----------------*/
 .Layout {
     background: #fff;
-    min-height: 660px;
+    min-height: 320px;
 }
 .Layout-main {
-    margin: 47px auto 0;
+    margin: 0 auto 0;
     padding: 0;
-    width: 660px;
+    width: auto;
     z-index: 1;
 }
 .Write-title {
@@ -738,17 +715,17 @@ label {
     margin: 16px 0;
     border: 0;
     padding: 4px 5px;
-    height: auto;
+    height: 32px !important;
     width: 100%;
     position: relative;
 }
 .WriteIndex-titleInput .Input {
-    height: 44px;
-    min-height: 44px;
+    height: 32px;
+    min-height: 32px;
     display: block;
     width: 100%;
     border: 0;
-    font-size: 32px;
+    font-size: 28px;
     line-height: 1.4;
     font-weight: 600;
     font-synthesis: style;
@@ -772,6 +749,7 @@ label {
     border-color: #fff;
 }
 .Wirte-content {
+    margin:1px;
     font-size: 18px;
 }
 .Wirte-content  .panel-default>.panel-heading {
@@ -779,14 +757,18 @@ label {
 }
 
 .Wirte-select {
-    margin: 20px 0;
+    margin: 10px 0;
 }
 .Wirte-select .Input-wrapper {
     padding: 4px 5px;
-    font-size: 24px;
+    font-size: 20px;
     background: #fff;
     border-color: #fff;
 }
+.Wirte-select .dropdown-menu, .Wirte-select .dropdown-menu .form-control {
+    font-size: 20px;
+}
+
 .bootstrap-select .dropdown-toggle:focus {
     outline:None !important;
 }
@@ -805,17 +787,8 @@ label {
 .btn-group:focus{
     border-color: #aaa !important;
 }
+
 /*----for askPage----------------*/
-.Layout {
-    background: #fff;
-    min-height: 660px;
-}
-.Layout-main {
-    margin: 47px auto 0;
-    padding: 0;
-    width: 660px;
-    z-index: 1;
-}
 .Ask-title {
     margin-top: 20px;
     font-size: 24px;
@@ -839,11 +812,20 @@ label {
     opacity: 1;
 }
 
+.Ask-content .Input-wrapper, .Ask-content .dropdown-menu, .Ask-content .dropdown-menu .form-control {
+    font-size: 20px;
+}
+
 /*----for article----------------*/
+
 .App-main{padding-bottom:46px}
 @media (max-width:690px){body{background:#fff}
 html[data-theme=dark] body{background:#1a1a1a}
 .App-main{padding:0}
+}
+
+.Post-Topics .Topic {
+    padding-bottom: 0px !important;
 }
 
 .ContentItem-time{margin-top:10px;font-size:14px;color:#8590a6}
@@ -914,7 +896,8 @@ html[data-android] .BlockTitle{font-weight:700}
 @media (-webkit-min-device-pixel-ratio:4),(min-resolution:384dpi){.BlockTitle{border-width:.25px}
 }
 html[data-theme=dark] .BlockTitle{color:#999;border-color:#444}
-
+.Post-Button-ViewMore{display:block;width:100%;line-height:20px;padding:16px 0;font-size:14px;text-align:center;color:#8590a6}
+html[data-theme=dark] .Post-Button-ViewMore{color:#606a80}
 .MobilePostItem{display:-webkit-box;display:-ms-flexbox;display:flex;position:relative;border-color:#ebebeb;border-bottom-style:solid;border-width:1px}
 @media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi){.MobilePostItem{border-width:.5px}
 }
@@ -1023,6 +1006,9 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
 /*----for article----------------*/
 
 /************for comment****************/
+.Mobile-body .CommentEditor--normal {
+    position: relative;
+}
 .CommentItem.CommentItem--border{border: 1px solid #ddd;background-color:#f6f6f6;}
 /*************for likebutton***************/
 .Button-like-nouse{padding:0;text-align:center;border-radius:3px;-webkit-box-sizing:border-box;box-sizing:border-box}
@@ -1036,6 +1022,47 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
     margin-right: 7px;
     fill: currentColor;
 }
+/************for topic page****************/
+.FollowButton.TopicCard-followButton{padding:0;}
+/************for question page****************/
+.MobileQuestionButtonGroup .Button {
+    margin-right: 16px;
+}
+.MobileQuestionButtonGroup .FollowButton {
+    min-width: 50px;
+}
+.QuestionHeader .Topic {
+    padding-bottom: 0px !important;
+    margin-bottom: 10px;
+}
+#inviteModal .Topbar {
+    height: auto;
+    padding: 0;
+}
+/************for ask modal****************/
+#askModal .Modal-title {
+    margin-top: 20px;
+    line-height: 1.7;
+}
+#askModal .Modal-content {
+    padding: 0 5px 20px;
+    margin-top: 20px;
+    line-height: 1.7;
+    opacity: 1;
+}
+#askModal .QuestionAsk-buttonGroup{
+    display:flex;
+    justify-content:center;
+}
+
+#askModal .Modal-content .Input-wrapper, #askModal .Modal-content .dropdown-menu, #askModal .Modal-content .dropdown-menu .form-control{
+    font-size: 20px;
+}
+/*********for header************/
+.Header-Icon{position: relative; padding: 0 10px;}
+.Header-Icon:after {position: absolute;top: 50%;right: 0;-webkit-transform: translateY(-50%);transform: translateY(-50%);display: block;width: 0;height: 16px;border-left: 1px solid #ebebeb;content: "";}
+.Header-Icon .Header-Icon-Item{padding: 0 10px;}
+/*********for header************/
 /************for 3rd modal****************/
 .note-editor .modal-dialog .form-control{
     -webkit-box-sizing: border-box !important;
@@ -1043,19 +1070,44 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
     box-sizing: border-box !important;
     height:unset;
 }
-
-#askModal .note-editor .modal-dialog{
-    width:96%;
-}
 .AnswerToolbar .note-editor{margin-bottom:0;}
-
-
 
 .btn-primary{background:#0f88eb;border: 1px solid #0f88eb;}
 .btn-primary:hover{background-color:#0d79d1;border: 1px solid #0d79d1;}
 .btn-primary:disabled{background:#0f88eb;}
 .btn-primary:disabled:hover{background:#2b6a9e;border: 1px solid #2b6a9e;}
 /************for 3rd modal****************/
+/********fro homepage edit***************/
+.MaskAvatar {
+    z-index: 1;
+    -webkit-transition: opacity .2s ease-in;
+    transition: opacity .2s ease-in;
+    margin-top:-124px;
+    /*margin-left:100px;*/
+    margin-bottom:30px;
+}
+.MaskAvatar-content {
+    z-index: 5;
+    opacity: .9;
+    color: #fff;
+    text-align: center;
+    margin-top:-100px;
+}
+.MaskAvatar-cameraIcon {
+    margin-bottom: 0px;
+    fill: #fff;
+}
+.MaskAvatar-black {
+    z-index: -1;
+    opacity: .4;
+    width:120px;
+    height:120px;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background: #000;
+}
 /************for signflow****************/
 .SignFlow .SignFlow-submitButton{padding:0;}
 .SignFlow .Register-submitButton{padding:0;}
@@ -1067,8 +1119,7 @@ html[data-theme=dark] .Post-Main .PostIndex-reviewers{color:#606a80}
 .btn-primary:disabled{background:#228b22;}
 .btn-primary:disabled:hover{background:#228b22;}
 
-.Button:disabled{cursor:default;opacity:.2}
-.Button--grey {color: #888888;border-color: #888888;}
+.Button--grey {color: #bbbbbb;border-color: #bbbbbb;}
 
 .Button--green{color:#228b22;border:1px solid #228b22}
 .Button--green:hover{background-color:rgba(0,100,0,.06)}
@@ -1084,15 +1135,9 @@ a:visited {text-decoration: none}
 a:active {text-decoration: none} 
 a:hover{color:#228b22;text-decoration: none}
 
-a.AppHeader-navItem:hover{color:#228b22;}
-
 .Tag{color:#228b22; background: rgba(0,100,0,.05);}
 .Tag:hover{color:#228b22; text-decoration: none;background: rgba(0,100,0,.08);}
 .Tag-content:hover{border-bottom:none}
-
-.Tag.current{background: #006400;border-color:#006400;color: #fff;}
-.Tag.current:hover{color: #fff;}
-.Tag.current a:hover{color: #fff;}
 
 .RichContent--unescapable.is-collapsed .ContentItem-rightButton {color: #228b22;}
 
@@ -1114,6 +1159,11 @@ a.QuestionMainAction:hover{color:#228b22}
 .Icon{fill:currentColor;}
 .SiteLogo {fill: #228b22;}
 
+.MobileAppHeader-logo {fill: #228b22;}
+.MobileAppHeader-actions {color: #228b22;}
+
+.ContentItem-statusItem {color: #888b88;}
+
 #settings a{color:#228b22;}
 #settings a:hover{color:#006400;}
 
@@ -1123,6 +1173,8 @@ a.QuestionMainAction:hover{color:#228b22}
 .SignFlowHeader-slogen {color:#228b22;}
 .SignFlow-smsInputButton {color:#228b22;}
 .SignContainer-switch span {color:#228b22;}
+button.CountingDownButton {color: #228b22;border: 1px solid #228b22;}
+.SignFlowHeader {background: #228b22;}
 
 .settings-link a{color:#228b22;}
 
@@ -1130,36 +1182,118 @@ a.QuestionMainAction:hover{color:#228b22}
     border:1px solid #228b22;-webkit-box-shadow:none;box-shadow:none;
 
 }
-
+.MobileSearchPage input{position:absolute; padding:7px 50px 7px 10px;width:100%;font-size:14px;line-height:17px;background-color:#e1eaf2;border:1px solid;border-radius:4px;box-sizing:border-box;}
+.MobileSearchPage input:focus{border:1px solid #228b22;outline:none}
 /************for green config****************/
-/********************** IE ********************************/
-.QuestionInvitation-content{-webkit-box-flex:1;-ms-flex:0 0 auto;flex:0 0 auto;overflow-x:hidden;overflow-y:auto;}
-.AnswerAuthor-buttons .Button{-webkit-box-flex:1;-ms-flex:0 0 auto;flex:0 0 auto;}
-.QuestionAsk .ModalButtonGroup--vertical .Button{display:block;width:220px;margin-right:0;margin-left:0}
-.AnswerToolbar--close{margin-left:500px;}
-.CommentList{-webkit-box-flex:1;-ms-flex:0 0 auto;flex:0 0 auto;}
-/********************** IE ******************************/
-/********************** uploading img******************************/
-.spinner {width: 100px;height: 100px;position: relative;margin: 0px auto;margin-bottom:100px}
-.double-bounce1, .double-bounce2 {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background-color: #67CF22;
-    opacity: 0.6;
-    position: absolute;
-    top: 0;
-    left: 0;
-    -webkit-animation: bounce 2s infinite ease-in-out;
-    animation: bounce 2s infinite ease-in-out;}
-.double-bounce2 {-webkit-animation-delay:-1s;animation-delay: -1s;} 
-@-webkit-keyframes bounce {
-  1%, 100% { -webkit-transform: scale(0.0) }
-  50% { -webkit-transform: scale(1.0) }
+
+.RichContent--unescapable.is-collapsed .ContentItem-rightButton{
+    bottom: 55px;
 }
-@keyframes bounce {
-  1%, 100% {transform: scale(0.0);-webkit-transform: scale(0.0);}
-  50% {transform: scale(1.0);-webkit-transform: scale(1.0);}
+/********************** business module ******************************/
+.Card.BusinessHead .Card-header {
+    padding:0;
 }
-/********************** upload img loading ******************************/
+
+.BusinessPostHeader-title {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 500;
+    color: #1a1a1a;
+    text-align: center;
+}
+
+.BusinessPost-content {
+    padding: 0 5px 20px;
+    margin-top: 20px;
+    line-height: 1.7;
+    opacity: 1;
+}
+
+.QuestionAsk-section.QuestionAsk-DetailSection {
+    margin-top: 24px;
+}
+
+.QuestionAsk-section {
+    margin-bottom: 12px;
+}
+
+#selection {
+    border: solid 1px #ddd;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+    clear: both;
+    color: gray;
+    position: relative;
+    z-index: 3;
+    padding-top: 15px;
+    font-size:12px;
+}
+.secitem {
+    display: block;
+    line-height: 28px;
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+    clear:both;
+}
+
+.secitem dt {
+    float: left;
+    display: inline;
+    white-space:nowrap;
+}
+.secitem dd {
+    /*float: left;*/
+    display: inline;
+    white-space:nowrap;
+}
+
+.secitem a {
+    float: left;
+    display: inline;
+    margin-right: 10px;
+}
+
+.secitem a:link{
+    color: #25d;
+}
+
+.secitem a.select {
+    color: #333;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.sale_search {
+    height: 40px;
+    margin: 15px 25px 10px 23px;
+    position: relative;
+    border-bottom: 1px dotted #dcdee1;
+    z-index: 10;
+}
+
+#SearchForm:after, #searchtree dl:after, #selected:after, .bar:after, .barct:after, .secitem:after {
+    display: block;
+    content: ".";
+    clear: both;
+    font-size: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.search_input input {
+    border: 1px solid #bfbfbf;
+    border-right: 0;
+    background: transparent;
+    line-height: 18px;
+    height: 18px;
+    padding: 5px 10px 3px;
+    width: 300px;
+    color: #b3b3b3;
+    font-size: 12px;
+}
+/********************** business module ******************************/
+
+
 

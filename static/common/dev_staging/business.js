@@ -150,6 +150,17 @@ function checkAddrGetBusinessData()
     g_last_getmoredata_index=0;
     getMoreData();
 }
+function checkBusinessesKeyword()
+{
+    $("#businessSearchButton").click(function(){
+        var keyword=$("#businessSearchInput").val();
+        business_keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
+        console.log(keyword);
+        $("#appendArea").empty();
+        g_last_getmoredata_index=0;
+        getMoreData();
+    });
+}
 function checkBusinessesTypeTab()
 {
     $(".Businesses-tabs .Tabs-link").off("click");
@@ -184,6 +195,7 @@ function initBusinessesElement()
     }  
     checkSelectProvince();
     checkBusinessesTypeTab();
+    checkBusinessesKeyword();
 }
 /**********businesses module***********/
 function initBusinessPostProvinces()
@@ -321,7 +333,6 @@ function checkBusinessPost()
         $("#business-picture-input").click();
     });
     $("#business-picture-input").on("change",function(){
-        console.log((this.files[0]));
         scaleAndUploadImage("forBusiness",this.files[0],720);
     });
     $(".BusinessPost").click(function(){
