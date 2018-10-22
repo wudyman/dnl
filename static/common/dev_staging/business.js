@@ -58,7 +58,7 @@ function appendBusinessesElement(ret)
         if(businessInfo_pictures)
             var picture=businessInfo_pictures.split(";")[0];
         else
-            var picture="/media/avatar/default.jpg";
+            var picture="/static/common/img/business_no_picture.jpg";
         
         var data='<div class="1List-item" style="position: relative;">\
         <div class="ContentItem">\
