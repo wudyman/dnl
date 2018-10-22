@@ -195,6 +195,10 @@ function uploadImage(type,file)
                         sendUserInfoToApp();
                     }
                 }
+                else if("forBusiness"==type)
+                {
+                    appendBusinessPostPicture(url);
+                }
             }
         }
     });
@@ -2527,6 +2531,15 @@ function getMoreData()
         var url='/ajax/answer_page/'+g_type+'/'+order+'/'+start+'/'+end+'/';
         var post_data='';
     }
+    else if("businesses"==g_module)
+    {
+        var nums=g_last_getmoredata_index;
+        var order=1;//pub_date
+        var start=nums;
+        var end=start+STEP;
+        var url='/ajax/businesses/'+g_business_type+'/'+order+'/'+start+'/'+end+'/';
+        var post_data={'addr':addr,'addr_value':addr_value,'keyword':business_keyword};
+    }
     else
     {
         return;
@@ -2592,6 +2605,10 @@ function getMoreData()
                     appendInvitedQuestionElement(ret)
                 else
                     appendQuestionElement(ret);
+            }
+            else if("businesses"==g_module)
+            {
+                    appendBusinessesElement(ret);
             }
             checkSets();
             g_last_getmoredata_index+=STEP;
@@ -2987,6 +3004,21 @@ function initElement()
         }
         checkWrite();
     }
+    else if("businesses"==g_module)
+    {
+        $('head title').text("买卖信息"+" - "+SITE);
+        initBusinessesElement();
+    }
+    else if("business"==g_module)
+    {
+        $('head title').text("买卖信息"+" - "+SITE);
+        initBusinessElement();
+    }
+    else if("business-post"==g_module)
+    {
+        $('head title').text("买卖信息发布"+" - "+SITE);
+        initBusinessPostElement();
+    }
     g_init_element_done="true";
 }
 function initData()
@@ -3092,7 +3124,10 @@ function initData()
     {
         g_type=main_data.type;
     }
-    
+    else if("businesses"==g_module)
+    {
+        g_business_type=$(".Businesses-tabs .Tabs-link.is-active").attr("data-business-type");
+    }
     if("true"==g_logged)
     {               
         g_user_id=main_data.user_id;

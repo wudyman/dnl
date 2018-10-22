@@ -37,7 +37,7 @@ class Article(models.Model):
 
 class Topic(models.Model):
     name=models.CharField(max_length=100)
-    avatar=models.CharField(max_length=100,default='/media/avatar/topic_default.jpg',verbose_name='peoplehead')
+    avatar=models.CharField(max_length=100,default='/static/common/img/topic_default.jpg',verbose_name='peoplehead')
     detail=models.CharField(default='&nbsp;',max_length=500,null=True,blank=True)
     question=models.ManyToManyField(Question,related_name='topics',blank=True)
     question_nums=models.IntegerField(default=0)
@@ -88,7 +88,7 @@ class ArticleComment(models.Model):
 
 class UserProfile(models.Model):
     user=models.OneToOneField(User,related_name='userprofile',on_delete=models.CASCADE)
-    avatar=models.CharField(max_length=100,default='/media/avatar/default.jpg',verbose_name='peoplehead')
+    avatar=models.CharField(max_length=100,default='/static/common/img/avatar_default.jpg',verbose_name='peoplehead')
     mood=models.CharField(default='&nbsp;',max_length=100,null=True,blank=True)
     phone=models.CharField(default='&nbsp;',max_length=11,null=True,blank=True)
     intro=models.CharField(default='&nbsp;',max_length=500,null=True,blank=True)
@@ -155,4 +155,17 @@ class Keyword(models.Model):
     sums=models.IntegerField(default=0)
     update_date=models.DateTimeField('update',auto_now=True)
     def __str__(self):
-        return str(self.id)
+        return str(self.name)
+class BusinessInfo(models.Model):
+    #id=models.BigAutoField(primary_key=True)
+    title=models.CharField(max_length=100)
+    detail=models.CharField(max_length=500,null=True,blank=True)
+    poster=models.ForeignKey(User,related_name='selfbusinesses',on_delete=models.CASCADE)
+    type=models.CharField(default='sell',max_length=11)   
+    addr=models.CharField(max_length=100)
+    addr_value=models.CharField(max_length=100)
+    contact=models.CharField(max_length=100,null=True,blank=True)
+    pictures=models.CharField(max_length=500,null=True,blank=True)    
+    update_date=models.DateTimeField('update',auto_now=True)
+    def __str__(self):
+        return str(self.title)

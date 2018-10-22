@@ -278,7 +278,11 @@ function uploadImage(type,file)
                     g_user_profile_list=b64_to_utf8(user_profile).split(",");
                     g_user_profile_list[2]=url;
                     saveUserDataToCookie("up",g_user_profile_list);
-                }                  
+                }
+                else if("forBusiness"==type)
+                {
+                    appendBusinessPostPicture(url);
+                }
             }
         }
     });
@@ -1384,9 +1388,9 @@ function checkSearch()
         input_lock="false";
     });  
 
-    $(".Tabs-link").off("click");
-    $(".Tabs-link").on("click",function(){
-        $(".Tabs-link").removeClass("is-active");
+    $(".SearchTabs .Tabs-link").off("click");
+    $(".SearchTabs .Tabs-link").on("click",function(){
+        $(".SearchTabs .Tabs-link").removeClass("is-active");
         $(this).addClass("is-active");
         g_search_type=$(this).attr("data-search-type");
         $("#appendArea").empty();
@@ -1939,7 +1943,6 @@ function checkAvatar(){
     });
     
     $("#id_avatar_input").on("change",function(){
-       console.log("********************");
        $("#upAvatarModal").modal('show');
         var objUrl = getObjectURL(this.files[0]);
         if (objUrl) { 
@@ -2856,6 +2859,15 @@ function getMoreData()
         var url='/ajax/answer_page/'+g_type+'/'+order+'/'+start+'/'+end+'/';
         var post_data='';
     }
+    else if("businesses"==g_module)
+    {
+        var nums=g_last_getmoredata_index;
+        var order=1;//pub_date
+        var start=nums;
+        var end=start+STEP;
+        var url='/ajax/businesses/'+g_business_type+'/'+order+'/'+start+'/'+end+'/';
+        var post_data={'addr':addr,'addr_value':addr_value,'keyword':business_keyword};
+    }
     else
     {
         return;
@@ -2925,6 +2937,10 @@ function getMoreData()
                     appendInvitedQuestionElement(ret)
                 else
                     appendQuestionElement(ret);
+            }
+            else if("businesses"==g_module)
+            {
+                    appendBusinessesElement(ret);
             }
             checkSets();
             g_last_getmoredata_index+=STEP;
@@ -3390,6 +3406,21 @@ function initElement()
         }
         checkWrite();
     }
+    else if("businesses"==g_module)
+    {
+        $('head title').text("买卖信息"+" - "+SITE);
+        initBusinessesElement();
+    }
+    else if("business"==g_module)
+    {
+        $('head title').text("买卖信息"+" - "+SITE);
+        initBusinessElement();
+    }
+    else if("business-post"==g_module)
+    {
+        $('head title').text("买卖信息发布"+" - "+SITE);
+        initBusinessPostElement();
+    }
     g_init_element_done="true";
 }
 
@@ -3499,6 +3530,10 @@ function initData()
     else if("answer_page"==g_module)
     {
         g_type=main_data.type;
+    }
+    else if("businesses"==g_module)
+    {
+        g_business_type=$(".Businesses-tabs .Tabs-link.is-active").attr("data-business-type");
     }
     
     if("true"==g_logged)
