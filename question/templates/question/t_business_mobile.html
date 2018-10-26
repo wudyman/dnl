@@ -16,7 +16,7 @@
 
 <div class="Post-content">
 <!--<img class="TitleImage" src="" alt="">-->
-<article class="Post-Main Post-NormalMain">
+<article class="Post-Main 1Post-NormalMain">
 
 <header class="Post-Header">
 <h1 class="Post-Title">{{businessInfo.title}}</h1>
@@ -47,11 +47,9 @@
 
 <div>
 <div class="RichText ztext Post-RichText" style="1white-space: pre;">
-{{businessInfo.detail}}
+<div id="business-detail">{{businessInfo.detail}}</div>
+<div id="business-pictures" data-pictures="{{businessInfo.pictures}}"></div>
 </div>
-</div>
-
-<div id="business-pictures" data-pictures="{{businessInfo.pictures}}">
 </div>
 
 <div style="color:red;font-size:16px;margin-top:10px;">
