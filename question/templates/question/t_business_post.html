@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html lang="zh" data-hairline="true" data-theme="light" data-focus-method="pointer" style="">
 {% include 'question/head.html' %}
-<script src="/static/common/prod/citys.min.js"></script>
-<script src="/static/common/prod/business.min.js"></script>
+<script src="/static/common/prod/citys.min.20181030134831.js"></script>
+<script src="/static/common/prod/business.min.20181030134831.js"></script>
 <body class="Entry-body" style="background-color:#fff">
 {% include 'question/header.html' %}
 
@@ -30,25 +30,25 @@
             <div class="BusinessPost-addr" style="padding:0 0 10px 10px;">
 
                 <div id="province" style="float:left;">
-                <select id="province_select" 1onchange="addrSelectChange('province')">
-                <option value="000000">请选择省份</option>
+                <select id="province_select">
+                <option value="000000">请选择省份（必选）</option>
                 </select>
                 </div>
 
                 <div id="city" style="float:left;padding:0 10px 0 10px;">
-                <select id="city_select" 1onchange="addrSelectChange('city')">
+                <select id="city_select">
                 <option value="000000">请选择城市（全部）</option>
                 </select>
                 </div>
 
                 <div id="district">
-                <select id="district_select" 1onchange="addrSelectChange('district')">
+                <select id="district_select">
                 <option value="000000">请选择地区（全部）</option>
                 </select>
                 </div>
 
-                <div id="addr-detail" class="is-hide">
-                    <input name="addr_detail" type="text" disabled placeholder="乡镇,村(可选)">
+                <div id="town" class="1is-hide" style="margin:10px 0 0 0;">
+                    <input name="town" type="text" style="width:78%;" disabled placeholder="乡镇或街道（可选填）" maxlength=50>
                 </div>
                 
                 <input type="hidden" name="addr" value="">
@@ -56,7 +56,7 @@
             </div>
         </div>
         
-        <div class="BusinessPost-section" style="padding:0 0 10px 0;">
+        <div class="BusinessPost-section">
             <div class="BusinessPost-title">
                 <div class="Input-wrapper Input-wrapper--spread Input-wrapper--multiline Input-wrapper--large">
                     <textarea required="" name="title" rows="1" autocomplete="off" role="combobox" class="Input" placeholder="信息标题"></textarea>
@@ -65,7 +65,7 @@
         </div>
         
 
-        <div class="BusinessPost-section BusinessPost-DetailSection" style="padding:0 0 10px 0;">
+        <div class="BusinessPost-section BusinessPost-DetailSection">
             <div class="BusinessPost-detail">
                 <div class="Input-wrapper Input-wrapper--spread Input-wrapper--multiline Input-wrapper--large">
                     <textarea name="detail" rows="5" autocomplete="off" role="combobox" class="Input" placeholder="信息详细描述（可选）"></textarea>
@@ -75,7 +75,7 @@
             </div>
         </div>
         
-        <div class="BusinessPost-section BusinessPost-DetailSection" style="padding:0 0 10px 0;">
+        <div class="BusinessPost-section BusinessPost-DetailSection">
             <div style="float:left;">添加图片(最多4张)：</div>
             <div style="padding:0 0 0 10px;">
                 <button id="business-picture-select" type="button"><svg  viewBox="0 0 32 32" width="24" height="24"><path d="M29.996 4c0.001 0.001 0.003 0.002 0.004 0.004v23.993c-0.001 0.001-0.002 0.003-0.004 0.004h-27.993c-0.001-0.001-0.003-0.002-0.004-0.004v-23.993c0.001-0.001 0.002-0.003 0.004-0.004h27.993zM30 2h-28c-1.1 0-2 0.9-2 2v24c0 1.1 0.9 2 2 2h28c1.1 0 2-0.9 2-2v-24c0-1.1-0.9-2-2-2v0z"></path><path d="M26 9c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z"></path><path d="M28 26h-24v-4l7-12 8 10h2l7-6z"></path></svg><span style="font-size:12px;color:#666;">选择图片</span></button>

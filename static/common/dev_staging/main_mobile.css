@@ -1203,18 +1203,18 @@ button.CountingDownButton {color: #228b22;border: 1px solid #228b22;}
 }
 
 .BusinessPost-content {
-    padding: 0 5px 20px;
+    padding: 0 10px 20px;
     margin-top: 20px;
     line-height: 1.7;
     opacity: 1;
 }
 
-.QuestionAsk-section.QuestionAsk-DetailSection {
-    margin-top: 24px;
+.BusinessPost-section.BusinessPost-DetailSection {
+    margin-top: 0px;
 }
 
-.QuestionAsk-section {
-    margin-bottom: 12px;
+.BusinessPost-section {
+    margin-bottom: 10px;
 }
 
 #selection {

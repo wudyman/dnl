@@ -711,7 +711,7 @@ def businesses(request,type,order,start,end):
     addr_value=request.POST.get('addr_value')
     keyword=request.POST.get('keyword')
     #print(request.POST)
-    print(keyword)
+    #print(keyword)
     addr_value_list=[]
     addr_value_list.append(addr_value[0:6])
     addr_value_list.append(addr_value[0:12])

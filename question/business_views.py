@@ -67,7 +67,7 @@ class BusinessPostView(generic.ListView):
         if not user.is_authenticated:
             return HttpResponseRedirect('/signinup/?next=/business/post/')
         else:
-            print(request.POST)
+            #print(request.POST)
             businessInfo=BusinessInfo()
             businessInfo.poster=user
             businessInfo.title=request.POST.get('title')
