@@ -1,4 +1,5 @@
-function checkAddr()
+/*************business common*******************/
+function checkAddr(town)
 {
     if("000000"==province_value)
     {
@@ -19,9 +20,11 @@ function checkAddr()
     {
         addr_value=province_value+city_value+district_value;
         addr=provinces[provinces_map[province_value]].label+citys[citys_map[city_value]].label+districts[districts_map[district_value]].label;
+        if(""!=town)
+            addr+=town;
     }
 }
-/*************business common*******************/
+/*************business module*******************/
 function initBusinessElement()
 {
     var pictures=$("#business-pictures").attr("data-pictures");
@@ -145,7 +148,7 @@ function checkSelectProvince()
 }
 function checkAddrGetBusinessData()
 {
-    checkAddr();
+    checkAddr("");
     $("#appendArea").empty();
     g_last_getmoredata_index=0;
     getMoreData();
@@ -197,7 +200,7 @@ function initBusinessesElement()
     checkBusinessesTypeTab();
     checkBusinessesKeyword();
 }
-/**********businesses module***********/
+/**********business-post module***********/
 function initBusinessPostProvinces()
 {
     provinces=getProvinces();
@@ -242,12 +245,13 @@ function checkBusinessPost()
     var detail="";
     var type="";
     var contact="";
-    var pictures=""; 
+    var pictures="";
+    var town="";
     
     function checkAddrSelectChange()
     {
         $("#province_select").on("change",function(){
-            $("#addr_detail input").attr("disabled","true").val("");
+            $("#town input").attr("disabled","true").val("");
             province_value = $("#province_select option:selected").attr("value");
             checkBusinessPostValid();
             city_value=district_value="000000";
@@ -269,7 +273,7 @@ function checkBusinessPost()
             
         });
         $("#city_select").on("change",function(){
-            $("#addr_detail input").attr("disabled","true").val("");
+            $("#town input").attr("disabled","true").val("");
             city_value = $("#city_select option:selected").attr("value");
             district_value="000000";
             $("#district_select").empty().append('<option value="000000">请选择城市（全部）</option>');
@@ -288,10 +292,10 @@ function checkBusinessPost()
             }
         });
         $("#district_select").on("change",function(){
-            $("#addr_detail input").attr("disabled","true").val("");
+            $("#town input").attr("disabled","true").val("");
             district_value = $("#district_select option:selected").attr("value");
             if("000000"!=district_value)
-                $("#addr_detail input").removeAttr("disabled");
+                $("#town input").removeAttr("disabled");
         });
     }     
     
@@ -347,7 +351,8 @@ function checkBusinessPost()
             detail=detail.substr(0,MIDDLE_TEXT_MAX_LENGTH-1);
             $("textarea[name='detail']").val(detail);
         }
-        checkAddr();
+        town=$("input[name='town']").val();
+        checkAddr(town);
         pictures=""
         $(".BusinessPicture img").each(function(){
                 pictures+=$(this).attr("src")+";";
@@ -362,4 +367,3 @@ function checkBusinessPost()
     checkBusinessPostDetail();
     checkBusinessPostContact();
 }
-/**********business-post module***********/
