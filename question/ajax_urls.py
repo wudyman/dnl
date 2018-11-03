@@ -38,4 +38,5 @@ urlpatterns= [
     url(r'^app_signup/$',views.app_signup,name='app_signup'),
     url(r'^app_logout/$',views.app_logout,name='app_logout'),
     url(r'^app_follow_topics/$',views.app_follow_topics,name='app_follow_topics'),
+    url(r'^app_business_post/$',views.app_business_post,name='app_business_post'),
 ]

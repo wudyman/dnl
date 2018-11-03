@@ -324,7 +324,7 @@ def upload_img(request):
     if request.user.is_authenticated:
         imgfile=request.FILES.get('imgfile')
         if imgfile: 
-            print(str(time.time()))
+            #print(str(time.time()))
             posttime=request.user.username+str(time.time()).split('.')[0]
             postfix=str(imgfile).split('.')[-1]
             name='media'+'/img/%s.%s'%(posttime,postfix)
@@ -899,7 +899,25 @@ def app_follow_topics(request):
         #user.save()
         to_json=json.dumps('success')
     return HttpResponse(to_json,content_type='application/json')
-
+    
+@csrf_exempt
+def app_business_post(request):
+    to_json=json.dumps('fail')
+    user=request.user
+    if user.is_authenticated:
+        businessInfo=BusinessInfo()
+        businessInfo.poster=user
+        businessInfo.title=request.POST.get('title')
+        businessInfo.detail=request.POST.get('detail')
+        businessInfo.type=request.POST.get('type')
+        businessInfo.addr=request.POST.get('addr')
+        businessInfo.addr_value=request.POST.get('addr_value')
+        businessInfo.contact=request.POST.get('contact')
+        businessInfo.pictures=request.POST.get('pictures')
+        businessInfo.save()
+        to_json=json.dumps(businessInfo.id)
+    return HttpResponse(to_json,content_type='application/json')
+    
 @csrf_exempt
 def get_topic_questions(request,topic_id,order,start,end):
     to_json=json.dumps('fail')
