@@ -56,7 +56,8 @@ function appendBusinessesElement(ret)
         var businessInfo_addr_value=ret[i][5];
         var businessInfo_contact=ret[i][6];
         var businessInfo_pictures=ret[i][7];
-        var businessInfo_update_date=ret[i][8];
+        var businessInfo_pub_date=ret[i][8];
+        var businessInfo_update_date=ret[i][9];
         
         if(businessInfo_pictures)
             var picture=businessInfo_pictures.split(";")[0];
