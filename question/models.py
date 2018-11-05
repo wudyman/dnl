@@ -166,6 +166,7 @@ class BusinessInfo(models.Model):
     addr_value=models.CharField(max_length=100)
     contact=models.CharField(max_length=100,null=True,blank=True)
     pictures=models.CharField(max_length=500,null=True,blank=True)    
+    pub_date=models.DateTimeField('published',default=timezone.now)
     update_date=models.DateTimeField('update',auto_now=True)
     def __str__(self):
         return str(self.title)
