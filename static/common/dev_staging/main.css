@@ -1240,7 +1240,7 @@ a.QuestionMainAction:hover{color:#228b22}
 
 .sale_search {
     height: 40px;
-    margin: 15px 25px 10px 23px;
+    margin: 15px 25px 10px 10px;
     position: relative;
     border-bottom: 1px dotted #dcdee1;
     z-index: 10;

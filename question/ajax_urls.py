@@ -32,6 +32,7 @@ urlpatterns= [
     url(r'^comment/$',views.comment,name='comment'),
     url(r'^hotwords/$',views.hotwords,name='hotwords'),
     url(r'^businesses/(?P<type>[a-z]+)/(?P<order>[0-9]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.businesses,name='businesses'),
+    url(r'^update_business/(?P<type>[a-z]+)/$',views.update_business,name='update_business'),
     url(r'^user_data/(?P<userid>[0-9]+)/$',views.user_data,name='user_data'),
     url(r'^app_user_data/$',views.app_user_data,name='app_user_data'),
     url(r'^app_signin/$',views.app_signin,name='app_signin'),

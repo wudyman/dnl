@@ -25,13 +25,29 @@ function checkAddr(town)
     }
 }
 /*************business module*******************/
+function checkReviseAndUpdate(){
+    $("#update_button").click(function(){
+        var business_id=$("#revise_update").attr("data-business-id");
+        var url="/ajax/update_business/time/";
+        var post_data={'business_id':business_id};
+        $.post(url,post_data,function(ret){
+            if("success"==ret)
+            {
+                $("#update_button").attr("disabled","true").text("已更新");
+            }
+        });
+    });
+    $("#revise_button").click(function(){
+        var business_id=$("#revise_update").attr("data-business-id");
+        location.href="/business/revise/"+business_id+"/";
+    });
+}
 function initBusinessElement()
 {
     var pictures=$("#business-pictures").attr("data-pictures");
     if(""!=pictures)
     {
         pictures_array=pictures.split(";");
-        //console.log(pictures_array);
         for (var i in pictures_array)
         {
             var picture=pictures_array[i];
@@ -42,6 +58,13 @@ function initBusinessElement()
             }
         }
     }
+    
+    var time=$("#pub_time").text();
+    $("#pub_time").text(getDateDiff(time))
+    time=$("#update_time").text();
+    $("#update_time").text(getDateDiff(time));
+    
+    checkReviseAndUpdate();
 }
 /**********businesses module***********/
 function appendBusinessesElement(ret)
@@ -64,7 +87,7 @@ function appendBusinessesElement(ret)
         else
             var picture="/static/common/img/business_no_picture.jpg";
         
-        var data='<div class="1List-item" style="position: relative;">\
+        var data='<div class="1List-item" style="position: relative;clear:both;">\
         <div class="ContentItem">\
         <div class="ContentItem-left" style="width:100px;padding:10px 15px;float:left;"><a href="/business/'+businessInfo_id+'/" target="_blank"><img class="" style="width:100px;height:75px;" src="'+picture+'" alt=""></a></div>\
         <div class="ContentItem-ritht" style="padding:10px 10px 15px 10px;">\
@@ -159,7 +182,6 @@ function checkBusinessesKeyword()
     $("#businessSearchButton").click(function(){
         var keyword=$("#businessSearchInput").val();
         business_keyword=keyword.replace(/[^\a-\z\A-\Z0-9\u4E00-\u9FA5]/g,"");
-        console.log(keyword);
         $("#appendArea").empty();
         g_last_getmoredata_index=0;
         getMoreData();
@@ -230,7 +252,6 @@ function initBusinessPostElement()
 }
 function appendBusinessPostPicture(url)
 {
-    console.log(url);
     var img='<div class="BusinessPicture" style="float:left"><img style="padding:5px;width:72px;height:48px;" src="'+url+'" alt=""><div style="padding-left:30px;font-size:14px;color:red;"><button class="business-picture-delete" type="button">删除</button></div</span>';
     $("#business-pictures").append(img);
     
@@ -302,7 +323,7 @@ function checkBusinessPost()
     
     function checkBusinessPostValid()
     {
-        if((""!=title)&&(""!=contact)&&("000000"!=province_value))
+        if((""!=title)&&(""!=detail)&&(""!=contact)&&("000000"!=province_value))
         {
             $(".BusinessPost").removeAttr("disabled");
         }
@@ -324,6 +345,7 @@ function checkBusinessPost()
     {
         $(".BusinessPost-detail textarea").on("input",function(){
             detail=$("textarea[name='detail']").val();
+            checkBusinessPostValid();
         });
     }
     function checkBusinessPostContact()
@@ -335,13 +357,17 @@ function checkBusinessPost()
     }
 
     $("#business-picture-select").click(function(){
-        $("#business-picture-input").click();
+        if($(".BusinessPicture").length>=8)
+            alert("超出图片上传个数限制，不超过8张！");
+        else
+            $("#business-picture-input").click();
     });
     $("#business-picture-input").on("change",function(){
         scaleAndUploadImage("forBusiness",this.files[0],720);
     });
     $(".BusinessPost").click(function(){
-        type=$("input[name='type']").val();
+        type=$("#type option:selected").attr("value");
+        $("input[name='type']").val(type);
         if(title.length>LITTLE_TEXT_MAX_LENGTH)
         {
             title=title.substr(0,LITTLE_TEXT_MAX_LENGTH-1);

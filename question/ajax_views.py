@@ -738,6 +738,22 @@ def businesses(request,type,order,start,end):
     if businessInfos:
         to_json=json.dumps(list(businessInfos),cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def update_business(request,type):
+    to_json=json.dumps('fail')
+    user=request.user
+    if user.is_authenticated:
+        business_id=request.POST.get('business_id')
+        if business_id:
+            businessInfo=get_object_or_404(BusinessInfo,pk=business_id)
+            if businessInfo:
+                if type=='time':
+                    if user.id==businessInfo.poster.id:
+                        businessInfo.save()
+                        to_json=json.dumps('success')
+    return HttpResponse(to_json,content_type='application/json')
+
 @csrf_exempt
 def user_data(request,userid):
     to_json=json.dumps('fail')

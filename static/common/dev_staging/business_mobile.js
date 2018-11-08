@@ -64,10 +64,10 @@ function appendBusinessesElement(ret)
         else
             var picture="/static/common/img/business_no_picture.jpg";
         
-        var data='<div class="1List-item" style="position: relative;">\
+        var data='<div class="1List-item" style="position: relative;clear:both;">\
         <div class="ContentItem">\
-        <div class="ContentItem-left" style="width:100px;padding:10px 15px;float:left;"><a href="/business/'+businessInfo_id+'/" target="_blank"><img class="" style="width:100px;height:75px;" src="'+picture+'" alt=""></a></div>\
-        <div class="ContentItem-ritht" style="padding:10px 10px 15px 10px;">\
+        <div class="ContentItem-left" style="width:100px;padding:10px 10px;float:left;""><a href="/business/'+businessInfo_id+'/" target="_blank"><img class="" style="width:100px;height:75px;" src="'+picture+'" alt=""></a></div>\
+        <div class="ContentItem-ritht" style="padding:10px 10px 15px 10px;>\
         <div style="font-size:14px;color:#25d;padding:5px;"><a href="/business/'+businessInfo_id+'/" target="_blank">'+businessInfo_title+'</a></div>\
         <div style="font-size:12px;color:#666;overflow: hidden;white-space: nowrap;">'+businessInfo_detail+'</div>\
         <div class="ContentItem-status">\
@@ -302,7 +302,7 @@ function checkBusinessPost()
     
     function checkBusinessPostValid()
     {
-        if((""!=title)&&(""!=contact)&&("000000"!=province_value))
+        if((""!=title)&&(""!=detail)&&(""!=contact)&&("000000"!=province_value))
         {
             $(".BusinessPost").removeAttr("disabled");
         }
@@ -324,6 +324,7 @@ function checkBusinessPost()
     {
         $(".BusinessPost-detail textarea").on("input",function(){
             detail=$("textarea[name='detail']").val();
+            checkBusinessPostValid();
         });
     }
     function checkBusinessPostContact()
@@ -335,13 +336,17 @@ function checkBusinessPost()
     }
 
     $("#business-picture-select").click(function(){
+        if($(".BusinessPicture").length>=4)
+            alert("超出图片上传个数限制，不超过4张！");
+        else
         $("#business-picture-input").click();
     });
     $("#business-picture-input").on("change",function(){
         scaleAndUploadImage("forBusiness",this.files[0],720);
     });
     $(".BusinessPost").click(function(){
-        type=$("input[name='type']").val();
+        type=$("#type option:selected").attr("value");
+        $("input[name='type']").val(type);
         if(title.length>LITTLE_TEXT_MAX_LENGTH)
         {
             title=title.substr(0,LITTLE_TEXT_MAX_LENGTH-1);
