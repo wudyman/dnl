@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="zh" data-hairline="true" data-theme="light" data-focus-method="pointer" style="">
 {% include 'question/head.html' %}
-<script src="/static/common/prod/business.min.20181108171716.js"></script>
+<script src="/static/common/prod/business.min.20181109144051.js"></script>
 <body class="Entry-body" style="background-color:#fff">
 {% include 'question/header.html' %}
 
@@ -19,7 +19,7 @@
 <header class="Post-Header">
 <h1 class="Post-Title">{{businessInfo.title}}</h1>
 <div class="ContentItem-time">
-<span>发布日期  </span><span id="pub_time">{{businessInfo.pub_date|date:"Y-m-d H:i:s"}}</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>更新日期  </span><span id="update_time">{{businessInfo.update_date|date:"Y-m-d H:i:s"}}</span>
+<span>发布时间  </span><span id="pub_time">{{businessInfo.pub_date|date:"Y-m-d H:i:s"}}</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>更新时间  </span><span id="update_time">{{businessInfo.update_date|date:"Y-m-d H:i:s"}}</span>
 </div>
 <div class="Post-Author">
 <div class="AuthorInfo">
@@ -45,8 +45,7 @@
 </div>
 {% endifequal %}
 </div>
-<div class="is-hide"><span class="Voters"><span class="Article--likenums--nouse">10</span> 次浏览</span>
-</div>
+<div class="is-hide"><span class="Voters"><span class="Article--likenums--nouse">10</span> 次浏览</span></div>
 </header>
 
 <div>

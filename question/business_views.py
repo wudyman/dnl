@@ -24,6 +24,7 @@ class BusinessesView(generic.ListView):
             return render(request,self.template_name,{'logged':'true'})
         else:
             return render(request,self.template_name,{'logged':'false'})
+            
 class BusinessView(generic.ListView):
     login_url='/'
     template_name='question/t_business.html'
@@ -45,7 +46,8 @@ class BusinessView(generic.ListView):
                 logged='true'
             else:
                 logged='false'
-            return render(request,self.template_name,{'logged':logged,'businessInfo':businessInfo})           
+            return render(request,self.template_name,{'logged':logged,'businessInfo':businessInfo})
+            
 class BusinessPostView(generic.ListView):
     login_url='/'
     template_name='question/t_business_post.html'
@@ -80,6 +82,7 @@ class BusinessPostView(generic.ListView):
             businessInfo.save()
             result='/business/'+str(businessInfo.id)+'/'
             return HttpResponseRedirect(result)
+                
 class BusinessReviseView(generic.ListView):
     login_url='/'
     template_name='question/t_business_post.html'
@@ -105,21 +108,23 @@ class BusinessReviseView(generic.ListView):
                 return HttpResponseRedirect('/business/')
         else:
             return HttpResponseRedirect('/signinup/?next=/business/revise/'+business_id+'/')
-    def post(self,request):
+    def post(self,request,*args,**kwargs):
         user=request.user
+        business_id=self.kwargs.get('business_id')
         if not user.is_authenticated:
-            return HttpResponseRedirect('/signinup/?next=/business/post/')
+            return HttpResponseRedirect('/signinup/?next=/business/revise/'+business_id+'/')
         else:
-            print(request.POST)
-            businessInfo=BusinessInfo()
-            businessInfo.poster=user
-            businessInfo.title=request.POST.get('title')
-            businessInfo.detail=request.POST.get('detail')
-            businessInfo.type=request.POST.get('type')
-            businessInfo.addr=request.POST.get('addr')
-            businessInfo.addr_value=request.POST.get('addr_value')
-            businessInfo.contact=request.POST.get('contact')
-            businessInfo.pictures=request.POST.get('pictures')
-            businessInfo.save()
-            result='/business/'+str(businessInfo.id)+'/'
-            return HttpResponseRedirect(result)
+            businessInfo=get_object_or_404(BusinessInfo,pk=business_id)
+            if businessInfo and businessInfo.poster.id==user.id:
+                businessInfo.title=request.POST.get('title')
+                businessInfo.detail=request.POST.get('detail')
+                businessInfo.type=request.POST.get('type')
+                businessInfo.addr=request.POST.get('addr')
+                businessInfo.addr_value=request.POST.get('addr_value')
+                businessInfo.contact=request.POST.get('contact')
+                businessInfo.pictures=request.POST.get('pictures')
+                businessInfo.save()
+                result='/business/'+str(businessInfo.id)+'/'
+                return HttpResponseRedirect(result)
+            else:
+                return HttpResponseRedirect('/business/')

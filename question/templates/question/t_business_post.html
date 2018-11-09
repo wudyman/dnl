@@ -1,8 +1,8 @@
 ﻿<!DOCTYPE html>
 <html lang="zh" data-hairline="true" data-theme="light" data-focus-method="pointer" style="">
 {% include 'question/head.html' %}
-<script src="/static/common/prod/citys.min.20181108171716.js"></script>
-<script src="/static/common/prod/business.min.20181108171716.js"></script>
+<script src="/static/common/prod/citys.min.20181109144051.js"></script>
+<script src="/static/common/prod/business.min.20181109144051.js"></script>
 <body class="Entry-body" style="background-color:#fff">
 {% include 'question/header.html' %}
 
@@ -12,13 +12,13 @@
 <main role="main" class="App-main" data-module="business-post" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}"}'>
 <div class="Layout av-cardBackground">
 <div class="Layout-main av-card">
-<form method="post" action="/business/post/">
+<form method="post" action="">
 {% csrf_token %}
 <div class="BusinessPostHeader">
 <h3 class="BusinessPostHeader-title">填写信息</h3>
 </div>
 
-<div class="BusinessPost-content">
+<div class="BusinessPost-content" data-revise="{{revise}}" data-business='{"id":"{{businessInfo.id}}","title":"{{businessInfo.title}}","detail":"{{businessInfo.detail}}","type":"{{businessInfo.type}}","addr":"{{businessInfo.addr}}","addr_value":"{{businessInfo.addr_value}}","contact":"{{businessInfo.contact}}","pictures":"{{businessInfo.pictures}}"}'>
     <div class="1QuestionAsk">
         <div class="BusinessPost-section BusinessPost-DetailSection">类别：
             <div class="BusinessPost-title" style="padding:0 0 0 10px;">
@@ -93,13 +93,13 @@
         <div class="BusinessPost-section">
             <div class="BusinessPost-contact">
                 <div class="Input-wrapper Input-wrapper--spread Input-wrapper--multiline Input-wrapper--large">
-                    <textarea required="" name="contact" rows="1" autocomplete="off" role="combobox" class="Input" placeholder="联系方式（名字，电话等）" maxlength=100></textarea>
+                    <textarea required="" name="contact" rows="1" autocomplete="off" role="combobox" class="Input" placeholder="联系方式（名字，电话等；必填）" maxlength=100></textarea>
                 </div>
             </div>
         </div>
-           
+
         <div style="display:flex;justify-content:center;">
-            <button class="BusinessPost Button Button--primary Button--green" disabled type="button">发布信息</button>
+            <button class="BusinessPostRevise Button Button--primary Button--green" disabled type="button">发布信息</button>
         </div>
     </div>
 </div>
