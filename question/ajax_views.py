@@ -748,10 +748,22 @@ def update_business(request,type):
         if business_id:
             businessInfo=get_object_or_404(BusinessInfo,pk=business_id)
             if businessInfo:
-                if type=='time':
-                    if user.id==businessInfo.poster.id:
+                if user.id==businessInfo.poster.id:
+                    if type=='time':
                         businessInfo.save()
-                        to_json=json.dumps('success')
+                        to_json=json.dumps(businessInfo.update_date,cls=CJsonEncoder)
+                    elif type=='all':
+                        businessInfo.title=request.POST.get('title')
+                        businessInfo.detail=request.POST.get('detail')
+                        businessInfo.type=request.POST.get('type')
+                        businessInfo.addr=request.POST.get('addr')
+                        businessInfo.addr_value=request.POST.get('addr_value')
+                        businessInfo.contact=request.POST.get('contact')
+                        businessInfo.pictures=request.POST.get('pictures')
+                        businessInfo.save()
+                        businessInfoList=BusinessInfo.objects.filter(id=business_id).values_list("id","title","detail","type","addr","addr_value","contact","pictures","pub_date","update_date","poster__id","poster__first_name")
+                        if businessInfoList:
+                            to_json=json.dumps(businessInfoList[0],cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
 
 @csrf_exempt
@@ -931,7 +943,9 @@ def app_business_post(request):
         businessInfo.contact=request.POST.get('contact')
         businessInfo.pictures=request.POST.get('pictures')
         businessInfo.save()
-        to_json=json.dumps(businessInfo.id)
+        businessInfoList=BusinessInfo.objects.filter(id=businessInfo.id).values_list("id","title","detail","type","addr","addr_value","contact","pictures","pub_date","update_date","poster__id","poster__first_name")
+        if businessInfoList:
+            to_json=json.dumps(businessInfoList[0],cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt
