@@ -99,6 +99,7 @@ class UserProfile(models.Model):
     question_nums=models.IntegerField(default=0)
     article_nums=models.IntegerField(default=0)
     answer_nums=models.IntegerField(default=0)
+    business_nums=models.IntegerField(default=0)
     followto_nums=models.IntegerField(default=0)
     follower_nums=models.IntegerField(default=0)
     followtopic_nums=models.IntegerField(default=0)

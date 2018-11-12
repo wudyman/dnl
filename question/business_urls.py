@@ -5,4 +5,5 @@ urlpatterns = [
     url(r'^$',views.BusinessesView.as_view(),name='BusinessesView'),
     url(r'^(?P<business_id>[0-9]+)/$',views.BusinessView.as_view(),name='BusinessView'),
     url(r'^post/$',views.BusinessPostView.as_view(),name='BusinessPostView'),
+    url(r'^revise/(?P<business_id>[0-9]+)/$',views.BusinessReviseView.as_view(),name='BusinessReviseView'),
 ]

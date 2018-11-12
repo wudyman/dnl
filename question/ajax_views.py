@@ -241,6 +241,11 @@ def get_er_all(request,erid,command):
         if questions and questions[0][0]!=None:
             questions_list=list(questions)
             to_json=json.dumps(questions_list,cls=CJsonEncoder)
+    elif 'businesses'==command:
+        businesses=User.objects.filter(id=erid).values_list("selfbusinesses__id","selfbusinesses__title","selfbusinesses__addr","selfbusinesses__pub_date")[int(start):int(end)]
+        if businesses and businesses[0][0]!=None:
+            businesses_list=list(businesses)
+            to_json=json.dumps(businesses_list,cls=CJsonEncoder)
     elif 'articles'==command:
         articles=User.objects.filter(id=erid).values_list("selfarticles__id","selfarticles__title","selfarticles__pub_date","selfarticles__update_date")[int(start):int(end)]
         if articles and articles[0][0]!=None:
@@ -738,6 +743,34 @@ def businesses(request,type,order,start,end):
     if businessInfos:
         to_json=json.dumps(list(businessInfos),cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
+    
+@csrf_exempt
+def update_business(request,type):
+    to_json=json.dumps('fail')
+    user=request.user
+    if user.is_authenticated:
+        business_id=request.POST.get('business_id')
+        if business_id:
+            businessInfo=get_object_or_404(BusinessInfo,pk=business_id)
+            if businessInfo:
+                if user.id==businessInfo.poster.id:
+                    if type=='time':
+                        businessInfo.save()
+                        to_json=json.dumps(businessInfo.update_date,cls=CJsonEncoder)
+                    elif type=='all':
+                        businessInfo.title=request.POST.get('title')
+                        businessInfo.detail=request.POST.get('detail')
+                        businessInfo.type=request.POST.get('type')
+                        businessInfo.addr=request.POST.get('addr')
+                        businessInfo.addr_value=request.POST.get('addr_value')
+                        businessInfo.contact=request.POST.get('contact')
+                        businessInfo.pictures=request.POST.get('pictures')
+                        businessInfo.save()
+                        businessInfoList=BusinessInfo.objects.filter(id=business_id).values_list("id","title","detail","type","addr","addr_value","contact","pictures","pub_date","update_date","poster__id","poster__first_name")
+                        if businessInfoList:
+                            to_json=json.dumps(businessInfoList[0],cls=CJsonEncoder)
+    return HttpResponse(to_json,content_type='application/json')
+
 @csrf_exempt
 def user_data(request,userid):
     to_json=json.dumps('fail')
@@ -915,7 +948,9 @@ def app_business_post(request):
         businessInfo.contact=request.POST.get('contact')
         businessInfo.pictures=request.POST.get('pictures')
         businessInfo.save()
-        to_json=json.dumps(businessInfo.id)
+        businessInfoList=BusinessInfo.objects.filter(id=businessInfo.id).values_list("id","title","detail","type","addr","addr_value","contact","pictures","pub_date","update_date","poster__id","poster__first_name")
+        if businessInfoList:
+            to_json=json.dumps(businessInfoList[0],cls=CJsonEncoder)
     return HttpResponse(to_json,content_type='application/json')
     
 @csrf_exempt

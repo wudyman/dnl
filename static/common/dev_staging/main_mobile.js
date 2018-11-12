@@ -805,6 +805,19 @@ function appendQuestionElement(ret)
         $("#appendArea").append(data);
     }
 }
+function appendHomeBusinessElement(ret)
+{
+    for (var i in ret)
+    {
+        var business_id=ret[i][0];
+        var business_title=ret[i][1];
+        var business_addr=ret[i][2];
+        var business_pub_date=ret[i][3];
+        
+        var data='<div class="List-item"><div class="ContentItem"><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/business/'+business_id+'" target="_blank">'+business_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+getDateDiff(business_pub_date)+'</span><span class="ContentItem-statusItem">'+business_addr+'</span></div></div></div>';
+        $("#appendArea").append(data);
+    }
+}
 function appendArticleElement(ret)
 {
     for (var i in ret)
@@ -2508,6 +2521,11 @@ function getMoreData()
             var url="/ajax/er/"+g_er_id+"/asks/";
             var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP};
         }
+        else if ("businesses"==g_command)
+        {
+            var url="/ajax/er/"+g_er_id+"/businesses/";
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP};
+        }
         else if ("articles"==g_command)
         {
             var url="/ajax/er/"+g_er_id+"/articles/";
@@ -2589,6 +2607,10 @@ function getMoreData()
                 else if ("asks"==g_command)
                 {
                     appendQuestionElement(ret);
+                }
+                else if ("businesses"==g_command)
+                {
+                    appendHomeBusinessElement(ret);
                 }
                 else if ("articles"==g_command)
                 {
@@ -2869,6 +2891,7 @@ function initElement()
            
         var answers_active="";
         var asks_active="";
+        var businesses_active="";
         var articles_active="";
         var following_active="";	
         if ("answers"==g_command)
@@ -2878,6 +2901,10 @@ function initElement()
         else if("asks"==g_command)
         {
             asks_active="is-active";
+        }
+        else if("businesses"==g_command)
+        {
+            businesses_active="is-active";
         }
         else if("articles"==g_command)
         {
@@ -2891,7 +2918,7 @@ function initElement()
         else 
             console.log("false");
         
-        var ul_list='<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-answers"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-articals"><a class="Tabs-link '+articles_active+'" href="/er/'+g_er_id+'/articles/">文章</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-questions"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注</a></li>'
+        var ul_list='<li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-activities"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-answers"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-answers"><a class="Tabs-link '+businesses_active+'" href="/er/'+g_er_id+'/businesses/">买卖</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-articals"><a class="Tabs-link '+articles_active+'" href="/er/'+g_er_id+'/articles/">文章</a></li><li role="tab" class="Tabs-item Tabs-item--noMeta" aria-controls="Profile-questions"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注</a></li>'
         $(".Tabs.ProfileBar").append(ul_list);
         
         setLetterReceiver(g_er_id,g_er_name);
@@ -3089,6 +3116,7 @@ function initData()
         g_question_nums=ext_data.question_nums;
         g_article_nums=ext_data.article_nums;
         g_answer_nums=ext_data.answer_nums;
+        g_business_nums=ext_data.business_nums;
         g_followto_nums=ext_data.followto_nums;
         g_follower_nums=ext_data.follower_nums;
         g_followtopic_nums=ext_data.followtopic_nums;
