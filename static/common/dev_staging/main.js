@@ -888,6 +888,19 @@ function appendQuestionElement(ret)
         $("#appendArea").append(data);
     }
 }
+function appendHomeBusinessElement(ret)
+{
+    for (var i in ret)
+    {
+        var business_id=ret[i][0];
+        var business_title=ret[i][1];
+        var business_addr=ret[i][2];
+        var business_pub_date=ret[i][3];
+        
+        var data='<div class="List-item"><div class="ContentItem"><h2 class="ContentItem-title"><div class="QuestionItem-title"><a href="/business/'+business_id+'" target="_blank">'+business_title+'</a></div></h2><div class="ContentItem-status"><span class="ContentItem-statusItem">'+getDateDiff(business_pub_date)+'</span><span class="ContentItem-statusItem">'+business_addr+'</span></div></div></div>';
+        $("#appendArea").append(data);
+    }
+}
 function appendArticleElement(ret)
 {
     for (var i in ret)
@@ -2839,6 +2852,11 @@ function getMoreData()
             var url="/ajax/er/"+g_er_id+"/asks/";
             var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP};
         }
+        else if ("businesses"==g_command)
+        {
+            var url="/ajax/er/"+g_er_id+"/businesses/";
+            var post_data={'start':g_last_getmoredata_index,'end':g_last_getmoredata_index+STEP};
+        }
         else if ("articles"==g_command)
         {
             var url="/ajax/er/"+g_er_id+"/articles/";
@@ -2921,6 +2939,10 @@ function getMoreData()
                 else if ("asks"==g_command)
                 {
                     appendQuestionElement(ret);
+                }
+                else if ("businesses"==g_command)
+                {
+                    appendHomeBusinessElement(ret);
                 }
                 else if ("articles"==g_command)
                 {
@@ -3263,6 +3285,7 @@ function initElement()
            
         var answers_active="";
         var asks_active="";
+        var businesses_active="";
         var articles_active="";
         var following_active="";	
         if ("answers"==g_command)
@@ -3275,6 +3298,12 @@ function initElement()
         {
             asks_active="is-active";
             var data='<div class="List Profile-answers"><div class="List-header"><h4 class="List-headerText"><span>'+g_who_han+'的问题</span></h4></div><div id="appendArea"></div></div>';
+            $("#profileMainContent").append(data);
+        }
+        else if("businesses"==g_command)
+        {
+            businesses_active="is-active";
+            var data='<div class="List Profile-answers"><div class="List-header"><h4 class="List-headerText"><span>'+g_who_han+'的买卖</span></h4></div><div id="appendArea"></div></div>';
             $("#profileMainContent").append(data);
         }
         else if("articles"==g_command)
@@ -3291,7 +3320,7 @@ function initElement()
         else 
             console.log("false");
         
-        var tabs='<li role="tab" class="Tabs-item" aria-controls="Profile-answers"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答<span class="Tabs-meta">'+g_answer_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-asks"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问<span class="Tabs-meta">'+g_question_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-articles"><a class="Tabs-link '+articles_active+'" href="/er/'+g_er_id+'/articles/">文章<span class="Tabs-meta">'+g_article_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-following"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注<span class="Tabs-meta"><svg viewBox="0 0 10 6" class="Icon ProfileMain-tabIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></span></a></li>';
+        var tabs='<li role="tab" class="Tabs-item" aria-controls="Profile-answers"><a class="Tabs-link '+answers_active+'" href="/er/'+g_er_id+'/answers/">回答<span class="Tabs-meta">'+g_answer_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-asks"><a class="Tabs-link '+asks_active+'" href="/er/'+g_er_id+'/asks/">提问<span class="Tabs-meta">'+g_question_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-articles"><a class="Tabs-link '+businesses_active+'" href="/er/'+g_er_id+'/businesses/">买卖<span class="Tabs-meta">'+g_business_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-articles"><a class="Tabs-link '+articles_active+'" href="/er/'+g_er_id+'/articles/">文章<span class="Tabs-meta">'+g_article_nums+'</span></a></li><li role="tab" class="Tabs-item" aria-controls="Profile-following"><a class="Tabs-link '+following_active+'" href="/er/'+g_er_id+'/following/">关注<span class="Tabs-meta"><svg viewBox="0 0 10 6" class="Icon ProfileMain-tabIcon Icon--arrow" width="10" height="16" aria-hidden="true" style="height: 16px; width: 10px;"><title></title><g><path d="M8.716.217L5.002 4 1.285.218C.99-.072.514-.072.22.218c-.294.29-.294.76 0 1.052l4.25 4.512c.292.29.77.29 1.063 0L9.78 1.27c.293-.29.293-.76 0-1.052-.295-.29-.77-.29-1.063 0z"></path></g></svg></span></a></li>';
         $(".Tabs.ProfileMain-tabs").append(tabs);
         
         
@@ -3496,6 +3525,7 @@ function initData()
         g_question_nums=ext_data.question_nums;
         g_article_nums=ext_data.article_nums;
         g_answer_nums=ext_data.answer_nums;
+        g_business_nums=ext_data.business_nums;
         g_followto_nums=ext_data.followto_nums;
         g_follower_nums=ext_data.follower_nums;
         g_followtopic_nums=ext_data.followtopic_nums;

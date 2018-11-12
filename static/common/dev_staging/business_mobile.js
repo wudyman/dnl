@@ -31,9 +31,10 @@ function checkReviseAndUpdate(){
         var url="/ajax/update_business/time/";
         var post_data={'business_id':business_id};
         $.post(url,post_data,function(ret){
-            if("success"==ret)
+            if("fail"!=ret)
             {
                 $("#update_button").attr("disabled","true").text("已更新");
+                $("#update_time").text(getDateDiff(ret));
             }
         });
     });

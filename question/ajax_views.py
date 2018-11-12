@@ -241,6 +241,11 @@ def get_er_all(request,erid,command):
         if questions and questions[0][0]!=None:
             questions_list=list(questions)
             to_json=json.dumps(questions_list,cls=CJsonEncoder)
+    elif 'businesses'==command:
+        businesses=User.objects.filter(id=erid).values_list("selfbusinesses__id","selfbusinesses__title","selfbusinesses__addr","selfbusinesses__pub_date")[int(start):int(end)]
+        if businesses and businesses[0][0]!=None:
+            businesses_list=list(businesses)
+            to_json=json.dumps(businesses_list,cls=CJsonEncoder)
     elif 'articles'==command:
         articles=User.objects.filter(id=erid).values_list("selfarticles__id","selfarticles__title","selfarticles__pub_date","selfarticles__update_date")[int(start):int(end)]
         if articles and articles[0][0]!=None:

@@ -271,6 +271,9 @@ form input[type=submit] {
     max-width: 100%;
 }
 */
+.ProfileBar .Tabs-item {
+    width: 20%;
+}
 .ProfileHeader{width:1032px} /* or width=1000px;box-sizing=content-box*/
 .Profile-main{width:1032px}  /* or width=1000px;box-sizing=content-box*/
 .ProfileHeader-main {

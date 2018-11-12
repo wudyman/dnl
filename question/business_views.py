@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
+from . import configure
 # Create your views here.
 
 class BusinessesView(generic.ListView):
@@ -80,6 +81,11 @@ class BusinessPostView(generic.ListView):
             businessInfo.contact=request.POST.get('contact')
             businessInfo.pictures=request.POST.get('pictures')
             businessInfo.save()
+            
+            user.userprofile.business_nums+=1
+            user.userprofile.contribution+=configure.BUSINESS_CONTRIBUTION
+            user.userprofile.save()
+            
             result='/business/'+str(businessInfo.id)+'/'
             return HttpResponseRedirect(result)
                 
