@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="zh" data-hairline="true" data-android="true" data-theme="light">
 {% include 'question/head_mobile.html' %}
-<script src="/static/common/prod/business_mobile.min.20181112150805.js"></script>
+<script src="/static/common/prod/business_mobile.min.20181113141103.js"></script>
 <body class="Mobile-body">
 <div id="root">
 <div class="App">
@@ -48,6 +48,12 @@
 </div>
 {% endifequal %}
 <div class="is-hide"><span class="Voters"><span class="Article--likenums--nouse">10</span> 次浏览</span></div>
+
+<div style="font-size:16px;margin-top:20px;padding:10px 10px 10px 10px;border: 1px solid #f4f4f4;">
+<div style="padding:5px;"><span style="color:#aaa;">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{businessInfo.addr}}</span></div>
+<div style="padding:5px;"><span style="color:#aaa;">联系方式&nbsp;&nbsp;&nbsp;&nbsp;</span><span>{{businessInfo.contact}}</span></div>
+</div>
+
 </header>
 
 <div>
@@ -58,9 +64,7 @@
 </div>
 
 <div style="color:red;font-size:16px;margin-top:10px;">
-<div>区域：{{businessInfo.addr}}</div>
-<div>联系方式：{{businessInfo.contact}}</div>
-<div>联系我时，请说是在大农令上看到的，谢谢！</div>
+<div>联系我时，请说是在<a href="http://www.danongling.com/"><b>大农令</b></a>上看到的，谢谢！</div>
 </div>
 
 </article>

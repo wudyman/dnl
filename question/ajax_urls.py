@@ -35,6 +35,7 @@ urlpatterns= [
     url(r'^update_business/(?P<type>[a-z]+)/$',views.update_business,name='update_business'),
     url(r'^user_data/(?P<userid>[0-9]+)/$',views.user_data,name='user_data'),
     url(r'^app_user_data/$',views.app_user_data,name='app_user_data'),
+    url(r'^app_my_data/(?P<type>[a-z]+)/(?P<start>[0-9]+)/(?P<end>[0-9]+)/$',views.app_my_data,name='app_my_data'),
     url(r'^app_signin/$',views.app_signin,name='app_signin'),
     url(r'^app_signup/$',views.app_signup,name='app_signup'),
     url(r'^app_logout/$',views.app_logout,name='app_logout'),

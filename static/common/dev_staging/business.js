@@ -124,6 +124,7 @@ function checkSelectCity()
             $(".select.select-city").removeClass("select");
             $(this).addClass("select");
             city_value=$(this).attr("data-addr-value");
+            district_value="000000";
             $("#districts").empty().append('<a class="select select-district" href="javascript:;" data-addr-value="000000">全部</a>');
             if("000000"!=city_value)
             {
@@ -151,6 +152,7 @@ function checkSelectProvince()
             $(".select.select-province").removeClass("select");
             $(this).addClass("select");
             province_value=$(this).attr("data-addr-value");
+            city_value=district_value="000000";
             $("#citys").empty().append('<a class="select select-city" href="javascript:;" data-addr-value="000000">全部</a>');
             $("#districts").empty().append('<a class="select select-district" href="javascript:;" data-addr-value="000000">全部</a>');
             if("000000"!=province_value)
@@ -174,6 +176,8 @@ function checkSelectProvince()
 function checkAddrGetBusinessData()
 {
     checkAddr("");
+    delCookie("a_v");
+    setCookie("a_v",addr_value,30*24*60*60);
     $("#appendArea").empty();
     g_last_getmoredata_index=0;
     getMoreData();
@@ -223,32 +227,77 @@ function initBusinessesElement()
     checkSelectProvince();
     checkBusinessesTypeTab();
     checkBusinessesKeyword();
+    
+    var temp=getCookie("a_v");
+    if(temp)
+    {
+        addr_value=temp;
+        province_value=addr_value.substr(0,6);
+        city_value=addr_value.substr(6,6);
+        district_value=addr_value.substr(12,6);   
+        if(!province_value)
+            province_value="000000";
+        if(!city_value)
+            city_value="000000";
+        if(!district_value)
+            district_value="000000";
+        
+        if('000000'!=province_value){
+            $(".select.select-province").removeClass("select");
+            $(".select-province").each(function(){
+                if($(this).attr("data-addr-value")==province_value){
+                    $(this).addClass("select");
+                    citys=provinces[provinces_map[province_value]].children;
+                    for (i in citys)
+                    {
+                        var city=citys[i];
+                        var value=city.value;
+                        var name=city.label;
+                        var city_element='<a class="select-city" href="javascript:;" data-addr-value='+value+'>'+name+'</a>';
+                        $("#citys").append(city_element);
+                        citys_map[value]=i;
+                    }
+                }
+            });
+            checkSelectCity(); 
+        }
+        
+        if('000000'!=city_value){
+            $(".select.select-city").removeClass("select");
+            $(".select-city").each(function(){
+                if($(this).attr("data-addr-value")==city_value){
+                    $(this).addClass("select");
+                    districts=citys[citys_map[city_value]].children;
+                    for (i in districts)
+                    {
+                        var district=districts[i];
+                        var value=district.value;
+                        var name=district.label;
+                        var district_element='<a class="select-district" href="javascript:;" data-addr-value='+value+'>'+name+'</a>';
+                        $("#districts").append(district_element);
+                        districts_map[value]=i;
+                    }
+                }
+            });
+            checkSelectDistrict();
+        }
+        
+        if('000000'!=district_value){
+            $(".select.select-district").removeClass("select");
+            $(".select-district").each(function(){
+                if($(this).attr("data-addr-value")==district_value){
+                    $(this).addClass("select");
+                }
+            });
+        }
+        
+        checkAddrGetBusinessData();       
+        
+    }
 }
 /**********business-post module***********/
-function initBusinessPostRevise()
+function initAddrElement()
 {
-    $(".BusinessPostHeader-title").text("修改信息");
-    $(".BusinessPostRevise").text("修改信息");
-    
-    var str_business_data=$(".BusinessPost-content").attr("data-business");
-	var business_data=JSON.parse(str_business_data);
-    id=business_data.id;
-    title=business_data.title;
-    detail=business_data.detail;
-	type=business_data.type;
-    addr=business_data.addr;
-    addr_value=business_data.addr_value;
-    contact=business_data.contact;
-    pictures=business_data.pictures;
-    
-    $("textarea[name='title']").val(title);
-    $("textarea[name='detail']").val(detail);
-    $("textarea[name='contact']").val(contact);
-    $("#type option").each(function(){
-        if($(this).attr("value")==type)
-            $(this).attr("selected",true);
-    });
-    
     province_value=addr_value.substr(0,6);
     city_value=addr_value.substr(6,6);
     district_value=addr_value.substr(12,6);   
@@ -259,9 +308,6 @@ function initBusinessPostRevise()
     if(!district_value)
         district_value="000000";
     
-    console.log(province_value);
-    console.log(city_value);
-    console.log(district_value);
     if(province_value!="000000")
     {
         $("#province_select option").each(function(){
@@ -310,6 +356,32 @@ function initBusinessPostRevise()
             }
         }
     }
+}
+function initBusinessPostRevise()
+{
+    $(".BusinessPostHeader-title").text("修改信息");
+    $(".BusinessPostRevise").text("修改信息");
+    
+    var str_business_data=$(".BusinessPost-content").attr("data-business");
+	var business_data=JSON.parse(str_business_data);
+    id=business_data.id;
+    title=business_data.title;
+    detail=business_data.detail;
+	type=business_data.type;
+    addr=business_data.addr;
+    addr_value=business_data.addr_value;
+    contact=business_data.contact;
+    pictures=business_data.pictures;
+    
+    $("textarea[name='title']").val(title);
+    $("textarea[name='detail']").val(detail);
+    $("textarea[name='contact']").val(contact);
+    $("#type option").each(function(){
+        if($(this).attr("value")==type)
+            $(this).attr("selected",true);
+    });
+    
+    initAddrElement();
     
     if(pictures)
     {
@@ -360,6 +432,12 @@ function initBusinessPostElement()
     
     if("true"==$(".BusinessPost-content").attr("data-revise")){
         initBusinessPostRevise();
+    }
+    
+    var temp=getCookie("a_v");
+    if(temp){
+        addr_value=temp;
+        initAddrElement();
     }
     checkBusinessPost();
 }

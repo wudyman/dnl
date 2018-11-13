@@ -849,6 +849,17 @@ def app_user_data(request):
         to_json=json.dumps('nologin')
     return HttpResponse(to_json,content_type='application/json')
     
+@csrf_exempt
+def app_my_data(request,type,start,end):
+    to_json=json.dumps('fail')
+    user=request.user
+    if user.is_authenticated:
+        if 'business'==type:
+            businessInfos=user.selfbusinesses.order_by('-update_date')[int(start):int(end)].values_list("id","title","detail","type","addr","addr_value","contact","pictures","pub_date","update_date","poster__id","poster__first_name")
+            if businessInfos:
+                to_json=json.dumps(list(businessInfos),cls=CJsonEncoder)
+    return HttpResponse(to_json,content_type='application/json')
+    
 @csrf_exempt   
 def app_signin(request):
     #print(request.session.session_key)
