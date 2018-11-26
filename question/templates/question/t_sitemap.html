@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="zh" data-hairline="true" data-theme="light" data-focus-method="pointer" style="">
+{% include 'question/head.html' %}
+<body class="Entry-body">
+{% include 'question/header.html' %}
+
+<!--<div class="Sticky--holder" style="position: relative; top: 0px; right: 0px; bottom: 0px; left: 0px; display: block; float: none; margin: 0px; height: 53px;">
+</div>-->
+
+<!--------------------main---------------------->
+<main role="main" class="App-main" data-module="sitemap" data-dfs-main='{"logged":"{{logged}}","user_id":"{{user.id}}","user_name":"{{user.first_name}}"}'>
+<div class="ContentLayout">
+<div class="ContentLayout-mainColumn">
+<div class="Card">
+{% include 'question/sitemap_content.html' %}
+</div>
+</div>
+</div>
+</main>
+<!--------------------main end-------------------->
+
+<!-- ask（Modal） -->
+{% include 'question/ask_modal.html' %}
+<!-- ask（Modal） -->
+
+<!-- letter（Modal） -->
+<!-- append by js -->
+<!-- letter（Modal） -->
+
+</body>
+
+</html>
