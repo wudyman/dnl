@@ -870,7 +870,7 @@ def app_signin(request):
         user=authenticate(username=phoneNo,password=password)
         if user is not None:
             login(request,user)
-            request.session.set_expiry(2592000)#30*24*60*60=2592000
+            request.session.set_expiry(15552000)#30*24*60*60=2592000  6*30*24*60*60=15552000
             #print(dir(request.session))
             #print(request.session.keys())
             #print(request.session.session_key)

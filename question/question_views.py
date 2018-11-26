@@ -104,5 +104,11 @@ class QuestionView(generic.ListView):
                 question=item[0:6]
                 topic=item[6:13]
                 topics_list.append(topic)
-            return render(request,self.template_name,{'user':user,'question':question,'topics_list':topics_list,'logged':logged})
+                
+            all_answers_sets_10=Question.objects.filter(id=question_id).values("be_answers__id","be_answers__content","be_answers__like_nums","be_answers__comment_nums","be_answers__pub_date",
+            "be_answers__author__id","be_answers__author__first_name","be_answers__author__userprofile__avatar","be_answers__author__userprofile__mood",
+            "be_answers__author__userprofile__sexual","be_answers__author__userprofile__question_nums","be_answers__author__userprofile__article_nums","be_answers__author__userprofile__answer_nums",
+            "be_answers__author__userprofile__followto_nums","be_answers__author__userprofile__follower_nums","be_answers__author__userprofile__followtopic_nums","be_answers__author__userprofile__followquestion_nums")[0:10]
+
+            return render(request,self.template_name,{'user':user,'question':question,'topics_list':topics_list,'all_answers_sets_10':all_answers_sets_10,'logged':logged})
                 

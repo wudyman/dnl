@@ -369,3 +369,16 @@ class ReviseView(generic.ListView):
       
             result='/article/'+str(article.id)+'/'
             return HttpResponseRedirect(result)
+
+class SiteMapView(generic.ListView):
+    login_url='/'
+    template_name='question/t_sitemap.html'
+    def get_queryset(self):
+        return
+    def get(self,request,*args,**kwargs): 
+        user=request.user
+        if user.is_authenticated:
+            logged='true'
+        else:
+            logged='false'
+        return render(request,self.template_name,{'logged':logged})
