@@ -94,7 +94,7 @@ class QuestionView(generic.ListView):
             
             question_data=[question.id,question.title,question.detail,question.answer_nums,question.follower_nums,question.click_nums]
             topics_list=question.topics.values_list("id","name","avatar","detail","question_nums","article_nums","follower_nums")
-            return render(request,self.template_name,{'user':user,'question':question_data,'topics_list':topics_list,'push_answer':push_answer,'more_answers':more_answers_sets,'logged':logged})
+            return render(request,self.template_name,{'user':user,'question':question_data,'topics_list':topics_list,'push_answer':push_answer,'more_answers':more_answers_sets,'logged':logged,'SITE':configure.SITE})
         else:
             question_data=Question.objects.filter(id=question_id).values_list("id","title","detail","answer_nums","follower_nums","click_nums",
             "topics__id","topics__name","topics__avatar","topics__detail","topics__question_nums","topics__article_nums","topics__follower_nums")
@@ -113,5 +113,5 @@ class QuestionView(generic.ListView):
             if None==all_answers_sets_10[0]['be_answers__id']:
                 all_answers_sets_10=None
 
-            return render(request,self.template_name,{'user':user,'question':question,'topics_list':topics_list,'all_answers_sets_10':all_answers_sets_10,'logged':logged})
+            return render(request,self.template_name,{'user':user,'question':question,'topics_list':topics_list,'all_answers_sets_10':all_answers_sets_10,'logged':logged,'SITE':configure.SITE})
                 

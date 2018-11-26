@@ -331,7 +331,7 @@ class ArticleView(generic.ListView):
         #article_data['pub_date']=str(article_data['pub_date'])
         
         topics=Article.objects.filter(pk=article_id).values("topics__id","topics__name","topics__avatar","topics__detail","topics__question_nums","topics__article_nums","topics__follower_nums")
-        return render(request,self.template_name,{'logged':logged,'article':article_data,"topics":topics})
+        return render(request,self.template_name,{'logged':logged,'SITE':configure.SITE,'article':article_data,"topics":topics})
         
 class ReviseView(generic.ListView):
     login_url='/'

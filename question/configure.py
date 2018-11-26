@@ -1,3 +1,6 @@
+SITE='大农令'
+SITE_URL='http://www.danongling.com';
+
 STEP=10
 LIST_NUM=10 
 CACHE_EXPIRED=30
