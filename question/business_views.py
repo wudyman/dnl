@@ -47,7 +47,7 @@ class BusinessView(generic.ListView):
                 logged='true'
             else:
                 logged='false'
-            return render(request,self.template_name,{'logged':logged,'businessInfo':businessInfo})
+            return render(request,self.template_name,{'logged':logged,'SITE':configure.SITE,'businessInfo':businessInfo})
             
 class BusinessPostView(generic.ListView):
     login_url='/'

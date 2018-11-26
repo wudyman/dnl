@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
+from . import configure
 # Create your views here.
 
 class MyTopicView(generic.ListView):
@@ -57,5 +58,5 @@ class TopicView(generic.ListView):
                 logged='true'
             else:
                 logged='false'
-            return render(request,self.template_name,{'logged':logged,'topic':topic_data,'type':type})
+            return render(request,self.template_name,{'logged':logged,'SITE':configure.SITE,'topic':topic_data,'type':type})
         return HttpResponse('no this page')
