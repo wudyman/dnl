@@ -109,6 +109,9 @@ class QuestionView(generic.ListView):
             "be_answers__author__id","be_answers__author__first_name","be_answers__author__userprofile__avatar","be_answers__author__userprofile__mood",
             "be_answers__author__userprofile__sexual","be_answers__author__userprofile__question_nums","be_answers__author__userprofile__article_nums","be_answers__author__userprofile__answer_nums",
             "be_answers__author__userprofile__followto_nums","be_answers__author__userprofile__follower_nums","be_answers__author__userprofile__followtopic_nums","be_answers__author__userprofile__followquestion_nums")[0:10]
+            
+            if None==all_answers_sets_10[0]['be_answers__id']:
+                all_answers_sets_10=None
 
             return render(request,self.template_name,{'user':user,'question':question,'topics_list':topics_list,'all_answers_sets_10':all_answers_sets_10,'logged':logged})
                 
