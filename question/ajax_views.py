@@ -153,9 +153,9 @@ def answer_question(request,question_id):
 def get_topics(request,bIsGetAll,start,end):
     to_json=json.dumps('fail')
     if '1'==bIsGetAll:
-        topics=Topic.objects.all()
+        topics=Topic.objects.order_by('-nums').all()
     else:
-        topics=Topic.objects.order_by('pub_date')[int(start):int(end)]
+        topics=Topic.objects.order_by('-nums')[int(start):int(end)]
     if topics:
         topic_list=[]
         for topic in topics:
