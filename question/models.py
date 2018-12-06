@@ -45,6 +45,7 @@ class Topic(models.Model):
     article_nums=models.IntegerField(default=0)
     follower=models.ManyToManyField(User,related_name='followtopics',blank=True)
     follower_nums=models.IntegerField(default=0)
+    nums=models.IntegerField(default=0)
     adept=models.ManyToManyField(User,related_name='adepttopics',blank=True)
     pub_date=models.DateTimeField('published',default=timezone.now)
     def __str__(self):

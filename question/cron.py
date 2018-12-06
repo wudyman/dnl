@@ -7,7 +7,7 @@ def test():
     
 def d_task():
     print('day task run')
-    #######site map#########
+    #######site map start#########
     item=''
     filepath=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/question/templates/question/'
     print(filepath)
@@ -38,6 +38,12 @@ def d_task():
         f.write(item)
         
     f.close()
-    #######site map#######
+    #######site map end#######
+    #######topic check start###############
+    topics=Topic.objects.all()
+    for topic in topics:
+        topic.nums=topic.question_nums+topic.article_nums+topic.follower_nums;
+        topic.save()
+    #######topic check end###############
 def m_task():
     print('month task run')

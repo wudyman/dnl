@@ -54,6 +54,11 @@ def check_all(request):
         print(topics_array)
         article.topics_array=topics_array
         article.save()
+        
+    topics=Topic.objects.all()
+    for topic in topics:
+        topic.nums=topic.question_nums+topic.article_nums+topic.follower_nums;
+        topic.save()
     return HttpResponse('success')
     
 @csrf_exempt
