@@ -152,8 +152,14 @@ def answer_question(request,question_id):
 @csrf_exempt
 def get_topics(request,bIsGetAll,start,end):
     to_json=json.dumps('fail')
+    cache_key='topics'
     if '1'==bIsGetAll:
-        topics=Topic.objects.order_by('-nums').all()
+        cache_value=cache.get(cache_key,'expired')
+        if cache_value=='expired':
+            topics=Topic.objects.order_by('-nums').all()
+            cache.set(cache_key,topics,43200)#12*60*60=43200=12 hours
+        else:
+            topics=cache_value
     else:
         topics=Topic.objects.order_by('-nums')[int(start):int(end)]
     if topics:
