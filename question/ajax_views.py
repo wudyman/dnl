@@ -1029,69 +1029,117 @@ def get_questions(request,order,start,end):
     return HttpResponse(to_json,content_type='application/json')
 
 def get_questions_inner(topic_id,type,start,end):
-    questions=None
+    if 'LIKE'==configure.PUSH_MTTHOD:
+        order_type='-like_nums'
+    else:
+        order_type='-pub_date'
+    answers=None
+    questions_id_list=[]
     questions_list=[]
     if ''==topic_id:
         cache_key='question'+'hot'+str(start)
-        print(cache_key)
-        cache_value=cache.get(cache_key,'expired')
-        if cache_value=='expired':
-            questions=Question.objects.order_by('-pub_date').exclude(push_answer_id=-1)[int(start):int(end)].values_list("id","title","click_nums","push_answer_id","topics_array")
-        else:
-            return cache_value
     else:
         cache_key='topic'+topic_id+'question'+type+str(start)
-        cache_value=cache.get(cache_key,'expired')
-        if cache_value=='expired':
-            questions=Question.objects.order_by('-pub_date').filter(topics__id=topic_id,answer_nums__gte=1)[int(start):int(end)].values_list("id","title","click_nums","push_answer_id","topics_array")
-        else:
-            return cache_value
-    if questions:
-        push_answers_id_list=[]
-        for i,question in enumerate(questions):
-            questions_list.append(list(question))
-            push_answers_id_list.append(question[3])
-            #print(str(question[0])+':'+str(question[3]))
-        
-        push_answers=Answer.objects.filter(id__in=push_answers_id_list).extra(
-        select={'manual': 'FIELD(question_answer.id,%s)' % ','.join(map(str, push_answers_id_list))},order_by=['manual']).values_list(
-        "id","content","like_nums","comment_nums","pub_date",
-        "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
-        "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
-
-        for i,answer in enumerate(push_answers):
-            questions_list[i].extend(answer)
-            questions_list[i].append('question')
+    cache_value=cache.get(cache_key,'expired')
+    if cache_value=='expired':
+        answers=Answer.objects.order_by(order_type)[int(start):int(end)].values_list("question__id","question__title","question__click_nums","question__push_answer_id","question__topics_array",
+                "id","content","like_nums","comment_nums","pub_date",
+                "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
+                "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
+    else:
+        return cache_value              
+    if ''==topic_id:
+        for answer in answers:
+            if answer[0] not in questions_id_list:
+                answer=list(answer)
+                answer.append('question')
+                questions_id_list.append(answer[0])
+                questions_list.append(answer)
+    else:
+        for answer in answers:
+            topics_str=answer[4]
+            topic_id_str="\'"+topic_id+":";
+            index=topics_str.find(topic_id_str)
+            if index>=0:
+                if answer[0] not in questions_id_list:
+                    answer=list(answer)
+                    answer.append('question')
+                    questions_id_list.append(answer[0])
+                    questions_list.append(answer)
     cache.set(cache_key,questions_list,configure.CACHE_EXPIRED)
-    return questions_list#questions_answers_list
+    print(questions_list)
+    return questions_list
+    '''
+    else:
+        questions=None
+        questions_list=[]
+        if ''==topic_id:
+            cache_key='question'+'hot'+str(start)
+            cache_value=cache.get(cache_key,'expired')
+            if cache_value=='expired':
+                questions=Question.objects.order_by('-pub_date').exclude(push_answer_id=-1)[int(start):int(end)].values_list("id","title","click_nums","push_answer_id","topics_array")
+            else:
+                return cache_value
+        else:
+            cache_key='topic'+topic_id+'question'+type+str(start)
+            cache_value=cache.get(cache_key,'expired')
+            if cache_value=='expired':
+                questions=Question.objects.order_by('-pub_date').filter(topics__id=topic_id,answer_nums__gte=1)[int(start):int(end)].values_list("id","title","click_nums","push_answer_id","topics_array")
+            else:
+                return cache_value
+        if questions:
+            push_answers_id_list=[]
+            for i,question in enumerate(questions):
+                questions_list.append(list(question))
+                push_answers_id_list.append(question[3])
+                #print(str(question[0])+':'+str(question[3]))
+            
+            push_answers=Answer.objects.filter(id__in=push_answers_id_list).extra(
+            select={'manual': 'FIELD(question_answer.id,%s)' % ','.join(map(str, push_answers_id_list))},order_by=['manual']).values_list(
+            "id","content","like_nums","comment_nums","pub_date",
+            "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
+            "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
+
+            for i,answer in enumerate(push_answers):
+                questions_list[i].extend(answer)
+                questions_list[i].append('question')
+        cache.set(cache_key,questions_list,configure.CACHE_EXPIRED)
+        return questions_list#questions_answers_list
+    '''
         
 def get_articles_inner(topic_id,type,start,end):
+    if 'LIKE'==configure.PUSH_MTTHOD:
+        order_type='-like_nums'
+    else:
+        order_type='-pub_date'
     articles=None
     articles_list=[]
     if ''==topic_id:
         cache_key='article'+type+str(start)
-        cache_value=cache.get(cache_key,'expired')
-        if cache_value=='expired':
-            articles=Article.objects.order_by('-pub_date')[int(start):int(end)].values_list(
-            "id","title","click_nums","id","topics_array","id","content","like_nums","comment_nums","pub_date",
-            "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
-            "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
-        else:
-            return cache_value
     else:
         cache_key='topic'+topic_id+'article'+type+str(start)
-        cache_value=cache.get(cache_key,'expired')
-        if cache_value=='expired':
-            articles=Article.objects.order_by('-pub_date').filter(topics__id=topic_id)[int(start):int(end)].values_list(
-            "id","title","click_nums","id","topics_array","id","content","like_nums","comment_nums","pub_date",
-            "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
-            "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
-        else:
-            return cache_value
-    for article in articles:
-        article=list(article)
-        article.append('article')
-        articles_list.append(list(article))
+    cache_value=cache.get(cache_key,'expired')
+    if cache_value=='expired':
+        articles=Article.objects.order_by(order_type)[int(start):int(end)].values_list(
+        "id","title","click_nums","id","topics_array","id","content","like_nums","comment_nums","pub_date",
+        "author__id","author__first_name","author__userprofile__avatar","author__userprofile__mood","author__userprofile__sexual","author__userprofile__question_nums","author__userprofile__article_nums",
+        "author__userprofile__answer_nums","author__userprofile__followto_nums","author__userprofile__follower_nums","author__userprofile__followtopic_nums","author__userprofile__followquestion_nums")
+    else:
+        return cache_value
+    if ''==topic_id:
+        for article in articles:
+            article=list(article)
+            article.append('article')
+            articles_list.append(list(article))
+    else:
+        for article in articles:
+            topics_str=article[4]
+            topic_id_str="\'"+topic_id+":";
+            index=topics_str.find(topic_id_str)
+            if index>=0:
+                article=list(article)
+                article.append('article')
+                articles_list.append(list(article))
     cache.set(cache_key,articles_list,configure.CACHE_EXPIRED)
     return articles_list
     

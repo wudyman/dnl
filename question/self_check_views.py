@@ -41,7 +41,6 @@ def check_all(request):
         topics=question.topics.all()
         for topic in topics:
             topics_array.append(str(topic.id)+':'+topic.name)
-        print(topics_array)
         question.topics_array=topics_array
         question.save()
         
@@ -51,7 +50,6 @@ def check_all(request):
         topics=article.topics.all()
         for topic in topics:
             topics_array.append(str(topic.id)+':'+topic.name)
-        print(topics_array)
         article.topics_array=topics_array
         article.save()
         
@@ -59,6 +57,20 @@ def check_all(request):
     for topic in topics:
         topic.nums=topic.question_nums+topic.article_nums+topic.follower_nums;
         topic.save()
+        
+    if 'LIKE'==configure.PUSH_MTTHOD:
+        configure.PUSH_MTTHOD='TIME'
+    else:
+        configure.PUSH_MTTHOD='LIKE'
+    print(configure.PUSH_MTTHOD)
+    
+    cache_dir=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/cache/'
+    print(cache_dir)
+    for i in os.listdir(cache_dir):
+        cache_file = os.path.join(cache_dir,i)  # 取文件绝对路径
+        if os.path.isfile(cache_file):
+            os.remove(cache_file)
+    
     return HttpResponse('success')
     
 @csrf_exempt
