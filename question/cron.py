@@ -3,7 +3,7 @@ from .models import *
 from . import configure
 
 def test():
-    print('test task run')
+    #print('test task run')
     
 def d_task():
     print('day task run')
@@ -45,5 +45,18 @@ def d_task():
         topic.nums=topic.question_nums+topic.article_nums+topic.follower_nums;
         topic.save()
     #######topic check end###############
+    #######change push type start###############
+    if 'LIKE'==configure.PUSH_MTTHOD:
+        configure.PUSH_MTTHOD='TIME'
+    else:
+        configure.PUSH_MTTHOD='LIKE'
+    #######change push type end###############
+    #######delete cache start###############
+    cache_dir=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/cache/'
+    for i in os.listdir(cache_dir):
+        cache_file = os.path.join(cache_dir,i)
+        if os.path.isfile(cache_file):
+            os.remove(cache_file)
+    #######delete cache end###############
 def m_task():
     print('month task run')
