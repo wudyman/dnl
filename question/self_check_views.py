@@ -35,6 +35,7 @@ class CJsonEncoder(json.JSONEncoder):
     
 @csrf_exempt
 def check_all(request):
+    '''
     questions=Question.objects.all()
     for question in questions:
         topics_array=[];
@@ -57,12 +58,6 @@ def check_all(request):
     for topic in topics:
         topic.nums=topic.question_nums+topic.article_nums+topic.follower_nums;
         topic.save()
-        
-    if 'LIKE'==configure.PUSH_MTTHOD:
-        configure.PUSH_MTTHOD='TIME'
-    else:
-        configure.PUSH_MTTHOD='LIKE'
-    print(configure.PUSH_MTTHOD)
     
     cache_dir=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/cache/'
     print(cache_dir)
@@ -70,15 +65,17 @@ def check_all(request):
         cache_file = os.path.join(cache_dir,i)  # 取文件绝对路径
         if os.path.isfile(cache_file):
             os.remove(cache_file)
-    
+    '''              
     return HttpResponse('success')
     
 @csrf_exempt
 def check_sitemap(request):
+    '''
     item=''
     filepath=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/question/templates/question/'
     print(filepath)
     f=open (filepath+'sitemap_content.html','w')
+    
     
     f.write('<h1><B>问题列表</B></h1>')
     questions=Question.objects.all()
@@ -97,6 +94,45 @@ def check_sitemap(request):
     for businessInfo in businessInfos:
         item='<h2><a href="'+configure.SITE_URL+'/business/'+str(businessInfo.id)+'/">'+businessInfo.title+'</a></h2>'
         f.write(item)
+      
+    f.write('<br/><h1><B>栏目列表</B></h1>')
+    topics=Topic.objects.all()
+    for topic in topics:
+        item='<h2><a href="'+configure.SITE_URL+'/topic/'+str(topic.id)+'/">'+topic.name+'</a></h2>'
+        f.write(item)
+        
+    f.close()
+    ''' 
+    
+    #######latest content site map start###########################
+    '''
+    find_date=datetime.now()+ timedelta(days=-7)
+    item=''
+    filepath=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/question/templates/question/'
+    f=open (filepath+'sitemap_content.html','w')
+    f.write('<h1><B>最新回答</B></h1>')
+    answers=Answer.objects.order_by('-pub_date').filter(pub_date__gt=find_date).values_list("question__id","question__title","id")
+    for answer in answers:
+        item='<h2><a href="'+configure.SITE_URL+'/question/'+str(answer[0])+'/?ans='+str(answer[2])+'">'+answer[1]+'</a></h2>'
+        f.write(item)
+        
+    f.write('<br/><h1><B>最新文章</B></h1>')
+    articles=Article.objects.order_by('-update_date').filter(update_date__gt=find_date)
+    for article in articles:
+        item='<h2><a href="'+configure.SITE_URL+'/article/'+str(article.id)+'/">'+article.title+'</a></h2>'
+        f.write(item)
+        
+    f.write('<br/><h1><B>最新买卖信息</B></h1>')
+    businessInfos=BusinessInfo.objects.order_by('-update_date').filter(update_date__gt=find_date)
+    for businessInfo in businessInfos:
+        item='<h2><a href="'+configure.SITE_URL+'/business/'+str(businessInfo.id)+'/">'+businessInfo.title+'</a></h2>'
+        f.write(item)
+        
+    f.write('<br/><h1><B>最新问题</B></h1>')
+    questions=Question.objects.order_by('-pub_date').filter(pub_date__gt=find_date)
+    for question in questions:
+        item='<h2><a href="'+configure.SITE_URL+'/question/'+str(question.id)+'/">'+question.title+'</a></h2>'
+        f.write(item)
         
     f.write('<br/><h1><B>栏目列表</B></h1>')
     topics=Topic.objects.all()
@@ -105,4 +141,6 @@ def check_sitemap(request):
         f.write(item)
         
     f.close()
+    '''
+    #######latest content site map end###########################
     return HttpResponse('success')

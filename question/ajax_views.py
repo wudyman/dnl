@@ -20,6 +20,7 @@ from datetime import datetime,timedelta
 #import numpy as np
 from django.core.cache import cache
 from . import configure
+#from . import push_configure
 
 class CJsonEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -1029,10 +1030,12 @@ def get_questions(request,order,start,end):
     return HttpResponse(to_json,content_type='application/json')
 
 def get_questions_inner(topic_id,type,start,end):
-    if 'LIKE'==configure.PUSH_MTTHOD:
-        order_type='-like_nums'
-    else:
+    cache_key='push_method'
+    cache_value=cache.get(cache_key,'expired')
+    if 'TIME'==cache_value:
         order_type='-pub_date'
+    else:
+        order_type='-like_nums'
     answers=None
     questions_id_list=[]
     questions_list=[]
@@ -1108,10 +1111,12 @@ def get_questions_inner(topic_id,type,start,end):
     '''
         
 def get_articles_inner(topic_id,type,start,end):
-    if 'LIKE'==configure.PUSH_MTTHOD:
-        order_type='-like_nums'
-    else:
+    cache_key='push_method'
+    cache_value=cache.get(cache_key,'expired')
+    if 'TIME'==cache_value:
         order_type='-pub_date'
+    else:
+        order_type='-like_nums'
     articles=None
     articles_list=[]
     if ''==topic_id:
