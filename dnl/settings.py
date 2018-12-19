@@ -141,7 +141,7 @@ LOGGING = {
 
 CRONJOBS = [
     ('*/60 * * * *','question.cron.h_task','>>/tmp/cron.log'),
-    ('30 2 * * *','question.cron.d_task','>>/tmp/cron.log'),
+    ('45 3 * * *','question.cron.d_task','>>/tmp/cron.log'),
     ('30 3 2 * *','question.cron.m_task','>>/tmp/cron.log'),
 ]
 

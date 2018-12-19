@@ -109,7 +109,7 @@ def check_sitemap(request):
     find_date=datetime.now()+ timedelta(days=-7)
     item=''
     filepath=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/question/templates/question/'
-    f=open (filepath+'sitemap_content.html','w')
+    f=open (filepath+'sitemap_latest_content.html','w')
     f.write('<h1><B>最新回答</B></h1>')
     answers=Answer.objects.order_by('-pub_date').filter(pub_date__gt=find_date).values_list("question__id","question__title","id")
     for answer in answers:
@@ -134,13 +134,56 @@ def check_sitemap(request):
         item='<h2><a href="'+configure.SITE_URL+'/question/'+str(question.id)+'/">'+question.title+'</a></h2>'
         f.write(item)
         
+    f=open (filepath+'sitemap_latest_content.html','r')
+    sitemap_latest_content=f.read()
+    cache_key='sitemap_latest_content'
+    cache.set(cache_key,sitemap_latest_content,86400)#24*60*60=86400=24 hours
+        
+    f.close()
+    '''
+    #######latest content site map end###########################
+    #######content site map start#########
+    '''
+    find_date=datetime.now()+ timedelta(days=-365)
+    item=''
+    filepath=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/question/templates/question/'
+    f=open (filepath+'sitemap_content.html','w')
+    f.write('<br/><h1><B>回答列表</B></h1>')
+    answers=Answer.objects.order_by('-pub_date').filter(pub_date__gt=find_date).values_list("question__id","question__title","id")
+    for answer in answers:
+        item='<h2><a href="'+configure.SITE_URL+'/question/'+str(answer[0])+'/?ans='+str(answer[2])+'">'+answer[1]+'</a></h2>'
+        f.write(item)
+        
+    f.write('<br/><h1><B>文章列表</B></h1>')
+    articles=Article.objects.order_by('-update_date').filter(update_date__gt=find_date)
+    for article in articles:
+        item='<h2><a href="'+configure.SITE_URL+'/article/'+str(article.id)+'/">'+article.title+'</a></h2>'
+        f.write(item)
+        
+    f.write('<br/><h1><B>买卖信息列表</B></h1>')
+    businessInfos=BusinessInfo.objects.order_by('-update_date').filter(update_date__gt=find_date)
+    for businessInfo in businessInfos:
+        item='<h2><a href="'+configure.SITE_URL+'/business/'+str(businessInfo.id)+'/">'+businessInfo.title+'</a></h2>'
+        f.write(item)
+        
+    f.write('<br/><h1><B>问题列表</B></h1>')
+    questions=Question.objects.order_by('-pub_date').filter(pub_date__gt=find_date)
+    for question in questions:
+        item='<h2><a href="'+configure.SITE_URL+'/question/'+str(question.id)+'/">'+question.title+'</a></h2>'
+        f.write(item)
+        
     f.write('<br/><h1><B>栏目列表</B></h1>')
     topics=Topic.objects.all()
     for topic in topics:
         item='<h2><a href="'+configure.SITE_URL+'/topic/'+str(topic.id)+'/">'+topic.name+'</a></h2>'
         f.write(item)
         
+    f=open (filepath+'sitemap_content.html','r')
+    sitemap_content=f.read()
+    cache_key='sitemap_content'
+    cache.set(cache_key,sitemap_content,86400)#24*60*60=86400=24 hours
+        
     f.close()
     '''
-    #######latest content site map end###########################
+    #######content site map end#######
     return HttpResponse('success')
