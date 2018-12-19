@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
+from django.core.cache import cache
 from . import configure
 # Create your views here.
 
@@ -381,4 +382,9 @@ class SiteMapView(generic.ListView):
             logged='true'
         else:
             logged='false'
-        return render(request,self.template_name,{'logged':logged})
+            
+        cache_key='sitemap_latest_content'
+        sitemap_latest_content=cache.get(cache_key,'expired')
+        cache_key='sitemap_content'
+        sitemap_content=cache.get(cache_key,'expired')
+        return render(request,self.template_name,{'logged':logged,'sitemap_latest_content':sitemap_latest_content,'sitemap_content':sitemap_content})
