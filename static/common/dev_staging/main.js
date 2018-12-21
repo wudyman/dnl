@@ -2170,7 +2170,6 @@ function checkSettingPage()
     $("a[name='messages']").off("click");
     $("a[name='messages']").on("click",function(){
         var element=$(this).parents(".List-item");
-        console.log(element);
         var conversation_id=element.attr("data-action-id");
         var id=element.attr("data-receiver-id");
         var name=element.attr("data-receiver-name");
@@ -3641,12 +3640,12 @@ function init()
 }
 function initCommon()
 {
-    LARGE_TEXT_MAX_LENGTH=10000;
-    MIDDLE_TEXT_MAX_LENGTH=500;
-    LITTLE_TEXT_MAX_LENGTH=100;
-    TEXT_MIN_LENGTH_HIGH=20;
-    TEXT_MIN_LENGTH_MID=15;
-    TEXT_MIN_LENGTH_LOW=10;
+    LARGE_TEXT_MAX_LENGTH=16000;//article and answer
+    MIDDLE_TEXT_MAX_LENGTH=1000;//comment and question,topic detail
+    LITTLE_TEXT_MAX_LENGTH=100;//title
+    TEXT_MIN_LENGTH_HIGH=100;//article
+    TEXT_MIN_LENGTH_MID=50;
+    TEXT_MIN_LENGTH_LOW=10;//answer
     notifications="null";
     messages="null";
     g_last_getmoredata_index=0;

@@ -6,7 +6,7 @@ import django.utils.timezone as timezone
 class Question(models.Model):
     push_index=models.IntegerField(default=0)
     title=models.CharField(max_length=100)
-    detail=models.CharField(max_length=500,null=True,blank=True)
+    detail=models.CharField(max_length=1000,null=True,blank=True)
     quizzer=models.ForeignKey(User,related_name='selfquestions',on_delete=models.CASCADE)
     topics_array=models.CharField(default='',max_length=100,null=True,blank=True)
     answer_nums=models.IntegerField(default=0)
@@ -22,7 +22,7 @@ class Question(models.Model):
 class Article(models.Model):
     push_index=models.IntegerField(default=0)
     title=models.CharField(max_length=100)
-    content=models.CharField(default='',max_length=10000)
+    content=models.CharField(default='',max_length=16000)
     author=models.ForeignKey(User,related_name='selfarticles',on_delete=models.CASCADE)
     topics_array=models.CharField(default='',max_length=100,null=True,blank=True)
     click_nums=models.IntegerField(default=0)
@@ -38,7 +38,7 @@ class Article(models.Model):
 class Topic(models.Model):
     name=models.CharField(max_length=100)
     avatar=models.CharField(max_length=100,default='/static/common/img/topic_default.jpg',verbose_name='peoplehead')
-    detail=models.CharField(default='&nbsp;',max_length=500,null=True,blank=True)
+    detail=models.CharField(default='&nbsp;',max_length=1000,null=True,blank=True)
     question=models.ManyToManyField(Question,related_name='topics',blank=True)
     question_nums=models.IntegerField(default=0)
     article=models.ManyToManyField(Article,related_name='topics',blank=True)
@@ -56,7 +56,7 @@ class Answer(models.Model):
     push_index=models.IntegerField(default=0)
     question=models.ForeignKey(Question,related_name='be_answers',on_delete=models.CASCADE)
     author=models.ForeignKey(User,related_name='answers',on_delete=models.CASCADE)
-    content=models.CharField(default='',max_length=10000)
+    content=models.CharField(default='',max_length=16000)
     like_nums=models.IntegerField(default=0)
     comment_nums=models.IntegerField(default=0)
     pub_date=models.DateTimeField('published',default=timezone.now)
@@ -66,7 +66,7 @@ class Answer(models.Model):
 class AnswerComment(models.Model):
     #id=models.BigAutoField(primary_key=True)
     author=models.ForeignKey(User,related_name='answercomments',on_delete=models.CASCADE)
-    content=models.CharField(max_length=500)
+    content=models.CharField(max_length=1000)
     answer=models.ForeignKey(Answer,related_name='comments',on_delete=models.CASCADE)
     like_nums=models.IntegerField(default=0)
     #parent_id=models.BigIntegerField(default=0)
@@ -78,7 +78,7 @@ class AnswerComment(models.Model):
 class ArticleComment(models.Model):
     #id=models.BigAutoField(primary_key=True)
     author=models.ForeignKey(User,related_name='articlecomments',on_delete=models.CASCADE)
-    content=models.CharField(max_length=500)
+    content=models.CharField(max_length=1000)
     article=models.ForeignKey(Article,related_name='comments',on_delete=models.CASCADE)
     like_nums=models.IntegerField(default=0)
     #parent_id=models.BigIntegerField(default=0)
@@ -92,7 +92,7 @@ class UserProfile(models.Model):
     avatar=models.CharField(max_length=100,default='/static/common/img/avatar_default.jpg',verbose_name='peoplehead')
     mood=models.CharField(default='&nbsp;',max_length=100,null=True,blank=True)
     phone=models.CharField(default='&nbsp;',max_length=11,null=True,blank=True)
-    intro=models.CharField(default='&nbsp;',max_length=500,null=True,blank=True)
+    intro=models.CharField(default='&nbsp;',max_length=1000,null=True,blank=True)
     follower=models.ManyToManyField(User,related_name='followto',blank=True)
     sexual=models.CharField(default='f',max_length=1)
     residence=models.CharField(default='&nbsp;',max_length=100,null=True,blank=True)
@@ -161,7 +161,7 @@ class Keyword(models.Model):
 class BusinessInfo(models.Model):
     #id=models.BigAutoField(primary_key=True)
     title=models.CharField(max_length=100)
-    detail=models.CharField(max_length=500,null=True,blank=True)
+    detail=models.CharField(max_length=5000,null=True,blank=True)
     poster=models.ForeignKey(User,related_name='selfbusinesses',on_delete=models.CASCADE)
     type=models.CharField(default='sell',max_length=11)   
     addr=models.CharField(max_length=100)
