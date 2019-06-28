@@ -9,6 +9,13 @@ from django.contrib.auth import authenticate,login,logout
 from . import configure
 # Create your views here.
 
+class FakeIndexView(generic.ListView):
+    #login_url='/signinup/?next=/'
+    template_name='question/t_fake_index.html'
+    #context_object_name='latest_question_list'
+    def get_queryset(self):
+        pass
+
 class IndexView(generic.ListView):
     #login_url='/signinup/?next=/'
     template_name='question/t_index.html'
