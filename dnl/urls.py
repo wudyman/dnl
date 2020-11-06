@@ -48,4 +48,6 @@ urlpatterns = [
     url(r'^ajax/',include('question.ajax_urls')),
     url(r'^er/',include('question.er_urls')),
     url(r'^self_check/',include('question.self_check_urls')),
+    url(r'^articles/',include('question.redirect_urls')),
+    url(r'^auto_post/',include('question.auto_post_urls')),
 ]

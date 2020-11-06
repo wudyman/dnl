@@ -32,6 +32,72 @@ class CJsonEncoder(json.JSONEncoder):
             return obj.strftime("%Y-%m-%d")
         else:
             return json.JSONEncoder.default(self, obj)
+            
+@csrf_exempt
+def auto_post_article(request):
+    print(request.POST)
+    userId=request.POST.get('user_id')
+    print(userId)
+    user=get_object_or_404(User,id=userId)
+    print(user)
+    print(user.first_name)
+    title=request.POST.get('title')
+    content=request.POST.get('content')
+    topics=request.POST.getlist('topics_array')
+    print(topics)
+    
+    article=Article()
+    article.title=title
+    article.content=content
+    article.author=user
+    article.topics_array=topics             
+    article.save()
+    user.userprofile.article_nums+=1
+    user.userprofile.contribution+=configure.WRITE_ARTICLE_CONTRIBUTION
+    user.userprofile.save()
+    
+    for topic_str in topics:
+        topic_array=topic_str.split(':')
+        topic=get_object_or_404(Topic,id=topic_array[0])
+        topic.article.add(article)
+        topic.article_nums+=1
+        topic.save()
+    print(article.id)
+    return HttpResponse(str(article.id))
+    #result='/article/'+str(article.id)+'/'
+    #return HttpResponseRedirect(result)
+    '''
+    questions=Question.objects.all()
+    for question in questions:
+        topics_array=[];
+        topics=question.topics.all()
+        for topic in topics:
+            topics_array.append(str(topic.id)+':'+topic.name)
+        question.topics_array=topics_array
+        question.save()
+        
+    articles=Article.objects.all()
+    for article in articles:
+        topics_array=[];
+        topics=article.topics.all()
+        for topic in topics:
+            topics_array.append(str(topic.id)+':'+topic.name)
+        article.topics_array=topics_array
+        article.save()
+        
+    topics=Topic.objects.all()
+    for topic in topics:
+        topic.nums=topic.question_nums+topic.article_nums+topic.follower_nums;
+        topic.save()
+    
+    cache_dir=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/cache/'
+    print(cache_dir)
+    for i in os.listdir(cache_dir):
+        cache_file = os.path.join(cache_dir,i)  # 取文件绝对路径
+        if os.path.isfile(cache_file):
+            os.remove(cache_file)
+    '''              
+    #return HttpResponse('success')
     
 @csrf_exempt
 def check_all(request):

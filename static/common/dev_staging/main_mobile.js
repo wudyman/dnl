@@ -375,7 +375,10 @@ function appendCommentsElement(ret)
 function appendAnswerElementList(ret,type,direction)
 {
     //console.log(ret.sort());
-    ret.sort();
+    ret.sort(function(a,b){
+        return a[9] > b[9]?-1:1;
+        
+    });
     for(i in ret)
     {
         if(("all"==type))
@@ -502,7 +505,10 @@ function appendAnswerElementList(ret,type,direction)
 }
 function appendAnswerElementCard(ret,type,direction)
 {
-    ret.sort();
+    ret.sort(function(a,b){
+        return a[9] > b[9]?-1:1;
+        
+    });
     for(i in ret)
     {
         var content_type=ret[i][22];       
@@ -2439,8 +2445,11 @@ function checkSets()
 
 function getMoreData()
 {
+
     if($(".List-item.NoMoreData").length>0)
         return;
+    $("#appendArea .List-item.GetMoreData").remove();
+    $("#appendArea").append('<div class="List-item GetMoreData"><div class="ContentItem" ><div class="ContentItem-status"  style="text-align:center">获取更多内容...</div></div></div>');
     if("index"==g_module)
     {
         var nums=g_last_getmoredata_index;
@@ -2565,6 +2574,7 @@ function getMoreData()
     if("true"==g_lock_ajax)
         return;
     g_lock_ajax="true";
+    console.log('ajax lock:'+g_lock_ajax);
     $.post(url,post_data,function(ret){
         if("fail"!=ret)
         {
@@ -2641,6 +2651,7 @@ function getMoreData()
             $("#appendArea").append('<div class="List-item NoMoreData"><div class="ContentItem" ><div class="ContentItem-status"  style="text-align:center">没有更多内容</div></div></div>');
         }
         g_lock_ajax="false";
+        $("#appendArea .List-item.GetMoreData").remove();
         //setLockScrollMoreData("false");
     });
 }
@@ -3356,8 +3367,12 @@ window.onscroll = function () {
             }
         }
     }
-    
-if (getScrollTop() + getClientHeight() +10 >= getScrollHeight()) {
+
+console.log('###########');
+console.log(getScrollTop());
+console.log(getClientHeight());
+console.log(getScrollHeight());
+if (getScrollTop() + getClientHeight() +100 >= getScrollHeight()) {
         getMoreData();
     } 
 }

@@ -459,7 +459,10 @@ function appendCommentsElement(ret)
 function appendAnswerElementList(ret,type,direction)
 {
     //console.log(ret.sort());
-    ret.sort();
+    ret.sort(function(a,b){
+        return a[9] > b[9]?-1:1;
+        
+    });
     for(i in ret)
     {
         if(("all"==type))
@@ -587,13 +590,16 @@ function appendAnswerElementList(ret,type,direction)
 }
 function appendAnswerElementCard(ret,type,direction)
 {
-    ret.sort();
+    ret.sort(function(a,b){
+        return a[9] > b[9]?-1:1;
+        
+    });
     for(i in ret)
     {
         var content_type=ret[i][22];       
         if("article"==content_type)
         {
-            var article_id=ret[i][0];
+            var article_id=ret[i][0];              
             var article_title=ret[i][1];
             var click_nums=ret[i][2];
             var article_id_nouse1=ret[i][3];
