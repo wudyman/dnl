@@ -23,8 +23,8 @@ except Exception as err:
     raise err
 
 # ACCESS_KEY_ID/ACCESS_KEY_SECRET 根据实际申请的账号信息进行替换
-ACCESS_KEY_ID = "WUDYLTAINpjoVmlpUHyJ"
-ACCESS_KEY_SECRET = "WUDYWJpfDi91zDk3YxvyZsJD4ykzEjMHhm"
+#ACCESS_KEY_ID = ""
+#ACCESS_KEY_SECRET = ""
 # 注意：不要更改
 REGION = "cn-hangzhou"
 PRODUCT_NAME = "Dysmsapi"
